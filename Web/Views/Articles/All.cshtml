@@ -1,0 +1,25 @@
+﻿@model List<ArticleListingViewModel>
+
+ <table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">SizeInDecar</th>
+    </tr>
+  </thead>
+@foreach(var article in Model!)
+{
+      <tbody>
+    <tr>
+      <th scope="row">@article.Id</th>
+      <td>@article.Name</td>
+      <td>@article.ArticleType</td>
+      <td><a asp-controller="Articles" asp-action="Edit" asp-route-id="@article.Id" class="btn btn-primary">Edit</a></td>
+      <td><a asp-controller="Articles" asp-action="Delete" asp-route-id="@article.Id" class="btn btn-danger" 
+                    onclick="return confirm('Are you sure you want to delete areable land : @article.Name')">Delete</a></td>
+    </tr>
+  </tbody>
+}
+</table>
+<a asp-controller="Articles" asp-action="Add" class="btn btn-primary">Add Article</a>

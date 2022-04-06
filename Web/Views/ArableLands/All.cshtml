@@ -1,0 +1,26 @@
+﻿@model List<ArableLandListingViewModel>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">SizeInDecar</th>
+        </tr>
+    </thead>
+    @foreach (var arableland in Model!)
+    {
+        <tbody>
+            <tr>
+                <th scope="row">@arableland.Id</th>
+                <td>@arableland.Name</td>
+                <td>@arableland.SizeInDecar</td>
+                <td><a asp-controller="ArableLands" asp-action="Edit" asp-route-id="@arableland.Id" class="btn btn-warning">Edit</a></td>
+                <td><a asp-controller="ArableLands" asp-action="Delete" asp-route-id="@arableland.Id" class="btn btn-danger" 
+                    onclick="return confirm('Are you sure you want to delete areable land : @arableland.Name')">Delete</a></td>
+            </tr>
+        </tbody>
+    }
+</table>
+<a asp-controller="ArableLands" asp-action="Add" class="btn btn-primary">Add Area</a>
+
