@@ -1,19 +1,34 @@
 ﻿@using Domain.Enum
+@using Application.Extensions
 @model EditArticleViewModel
 
+
+<h1 class="text-center"> Edit Article</h1>
 <form method="post">
-     <h1 class="text-center"> Edit Article</h1>
-      <div class="form-group">
-    <label asp-for="Name"></label>
-    <input asp-for="Name" class="form-control" >
-    <span asp-validation-for="Name" class="small text-danger"></span>
-  </div>
-<div class="form-group">
-    <label asp-for="ArticleType" class="col-md-2 control-label"></label>
     <div class="form-group">
-        <select asp-for="ArticleType" class="form-control" asp-items="@Html.GetEnumSelectList<ArticleType>()"></select>
-        <span asp-validation-for="ArticleType" class="small text-danger"/>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" >
+        <span asp-validation-for="Name" class="small text-danger"></span>
     </div>
-</div>
- <input class="btn btn-primary"  type="submit" value="Submit" />
+    <div class="form-group">
+        <label asp-for="ArticleType" class="col-md-2 control-label"></label>
+        <div class="form-group">
+            <label>Type</label>
+            <select asp-for="ArticleType" class="form-control">
+                @foreach (var articleType in EnumHelper.GetAllNamesAndValues<ArticleType>())
+                {
+                    if((int)Model.ArticleType == articleType.Key)
+                    {
+                        <option value="@articleType.Key" selected>@articleType.Value</option>
+                        continue;
+                    }
+
+                    <option value="@articleType.Key">@articleType.Value</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div>
+        <input class="btn btn-primary"  type="submit" value="Submit" />
+    </div>
 </form>

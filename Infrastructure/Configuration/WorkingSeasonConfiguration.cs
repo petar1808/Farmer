@@ -15,7 +15,7 @@ namespace Infrastructure.Configuration
     {
         public override void Configure(EntityTypeBuilder<WorkingSeason> builder)
         {
-            builder.Property(p => p.Name).HasMaxLength(NameLenght).IsRequired(); 
+            builder.Property(p => p.Name).HasMaxLength(MaxNameLenght).IsRequired(); 
             base.Configure(builder);
         }
     }

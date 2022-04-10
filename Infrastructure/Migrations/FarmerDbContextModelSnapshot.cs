@@ -111,6 +111,8 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ArableLandId");
 
+                    b.HasIndex("ArticleId");
+
                     b.HasIndex("WorkingSeasonId");
 
                     b.ToTable("Seedings");
@@ -142,32 +144,48 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
                 {
-                    b.HasOne("Domain.Models.Article", null)
+                    b.HasOne("Domain.Models.Article", "Article")
                         .WithMany()
                         .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Seeding", null)
+                    b.HasOne("Domain.Models.Seeding", "Seeding")
                         .WithMany()
                         .HasForeignKey("SeedingId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Seeding");
                 });
 
             modelBuilder.Entity("Domain.Models.Seeding", b =>
                 {
-                    b.HasOne("Domain.Models.ArableLand", null)
+                    b.HasOne("Domain.Models.ArableLand", "ArableLand")
                         .WithMany()
                         .HasForeignKey("ArableLandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.WorkingSeason", null)
+                    b.HasOne("Domain.Models.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.WorkingSeason", "WorkingSeason")
                         .WithMany()
                         .HasForeignKey("WorkingSeasonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ArableLand");
+
+                    b.Navigation("Article");
+
+                    b.Navigation("WorkingSeason");
                 });
 #pragma warning restore 612, 618
         }

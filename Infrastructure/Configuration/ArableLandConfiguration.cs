@@ -15,7 +15,7 @@ namespace Infrastructure.Configuration
     {
         public override void Configure(EntityTypeBuilder<ArableLand> builder)
         {        
-            builder.Property(p => p.Name).HasMaxLength(NameLenght).IsRequired();
+            builder.Property(p => p.Name).HasMaxLength(MaxNameLenght).IsRequired();
             builder.Property(p => p.SizeInDecar).IsRequired();
             base.Configure(builder);
         }

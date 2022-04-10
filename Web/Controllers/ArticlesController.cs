@@ -2,7 +2,7 @@
 using Domain.Models;
 using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Mvc;
-using Web.Models.Articles;
+using Web.ViewModels.Articles;
 
 namespace Web.Controllers
 {

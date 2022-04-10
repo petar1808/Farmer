@@ -15,7 +15,7 @@ namespace Domain.Models
             int articleId,
             int quantityOfGrainSowing,
             int quantityGrainHarvest)
-            :this(arableLandId,workingSeasonId,articleId)
+            : this(arableLandId, workingSeasonId, articleId)
         {
             QuantityGrainHarvest = quantityGrainHarvest;
             QuantityOfGrainSowing = quantityOfGrainSowing;
@@ -36,7 +36,7 @@ namespace Domain.Models
 
         public int ArableLandId { get;}
 
-        public ArableLand ArableLand { get;}
+        public ArableLand ArableLand { get; set; }
 
         public int WorkingSeasonId { get; }
 

@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Mvc;
-using Web.Models.WorkingSeasons;
+using Web.ViewModels.WorkingSeasons;
 
 namespace Web.Controllers
 {

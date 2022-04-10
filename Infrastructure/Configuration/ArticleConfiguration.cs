@@ -9,7 +9,7 @@ namespace Infrastructure.Configuration
     {
         public override void Configure(EntityTypeBuilder<Article> builder)
         {
-            builder.Property(p => p.Name).HasMaxLength(NameLenght).IsRequired();
+            builder.Property(p => p.Name).HasMaxLength(MaxNameLenght).IsRequired();
             builder.Property(p => p.ArticleType).IsRequired();
             base.Configure(builder);
         }

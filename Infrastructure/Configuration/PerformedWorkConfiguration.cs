@@ -15,13 +15,17 @@ namespace Infrastructure.Configuration
         public override void Configure(EntityTypeBuilder<PerformedWork> builder)
         {
             builder
-               .HasOne<Seeding>()
+               .HasOne(x => x.Seeding)
                .WithMany()
-               .HasForeignKey(p => p.SeedingId);
+               .HasForeignKey(p => p.SeedingId)
+               .OnDelete(DeleteBehavior.Restrict);
+
             builder
-               .HasOne<Article>()
+               .HasOne(x => x.Article)
                .WithMany()
-               .HasForeignKey(p => p.ArticleId);
+               .HasForeignKey(p => p.ArticleId)
+               .OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(p => p.SeedingId).IsRequired();
             builder.Property(p => p.WorkType).IsRequired();
             builder.Property(p => p.ArticleId).IsRequired();

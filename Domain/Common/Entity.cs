@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Common
+﻿namespace Domain.Common
 {
-    public abstract class Entity<TId> where TId : struct
+    public abstract class Entity<TId>
+        where TId : struct
     {
         protected Entity(TId id)
         {

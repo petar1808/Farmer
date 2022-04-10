@@ -29,6 +29,8 @@ namespace Domain.Models
 
         public DateTime? EndDate { get; private set; }
 
+        #region UpdateMethods
+
         public WorkingSeason UpdateName(string name)
         {
             this.Name = name;
@@ -43,8 +45,9 @@ namespace Domain.Models
 
         public WorkingSeason UpdateEndDate(DateTime? endDate)
         {
-            this.StartDate = endDate;
+            this.EndDate = endDate;
             return this;
         }
+        #endregion
     }
 }

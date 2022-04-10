@@ -15,13 +15,20 @@ namespace Infrastructure.Configuration
         public override void Configure(EntityTypeBuilder<Seeding> builder)
         {
             builder
-                .HasOne<ArableLand>()
+                .HasOne(x => x.ArableLand)
                 .WithMany()
                 .HasForeignKey(p => p.ArableLandId);
+
             builder
-               .HasOne<WorkingSeason>()
+               .HasOne(x => x.WorkingSeason)
                .WithMany()
                .HasForeignKey(p => p.WorkingSeasonId);
+
+            builder
+               .HasOne(x => x.Article)
+               .WithMany()
+               .HasForeignKey(p => p.ArticleId);
+
             builder.Property(p => p.ArableLandId).IsRequired();
             builder.Property(p => p.WorkingSeasonId).IsRequired();
             builder.Property(p => p.ArticleId).IsRequired();

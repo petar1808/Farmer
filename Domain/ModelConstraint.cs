@@ -10,11 +10,13 @@ namespace Domain
     {
         public static class CommonConstraints
         {
-            public const int NameLenght = 50;
-            public const int MinLenghtNameWorkingSeason = 9;
-            public const int MaxLenghtNameWorkingSeason = 9;
+            public const int MaxNameLenght = 50;
         }
 
-
+        public static class WorkingSeasonConstraints
+        {
+            public const int MinLenghtName = 9;
+            public const int MaxLenghtName = 9;
+        }
     }
 }
