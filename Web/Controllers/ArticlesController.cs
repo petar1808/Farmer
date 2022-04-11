@@ -1,4 +1,7 @@
-﻿using Domain.Enum;
+﻿using Application.Models.Articles;
+using Application.Services.Articles;
+using AutoMapper;
+using Domain.Enum;
 using Domain.Models;
 using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Mvc;
@@ -9,128 +12,68 @@ namespace Web.Controllers
     public class ArticlesController : Controller
     {
         private readonly FarmerDbContext dbContext;
+        private readonly IArticleService articleService;
+        private readonly IMapper mapper;
 
-        public ArticlesController(FarmerDbContext dbContext)
+        public ArticlesController(FarmerDbContext dbContext, IArticleService articleService, IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.articleService = articleService;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Add() => View();
 
         [HttpPost]
-        public IActionResult Add(AddArticleModel articleModel)
+        public async Task<IActionResult> Add(AddArticleModel articleModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(articleModel);
             }
 
-            var articleDate = new Article(articleModel.Name, articleModel.ArticleType);
-
-            dbContext.Add(articleDate);
-            dbContext.SaveChanges();
+            await articleService.Add(articleModel.Name, articleModel.ArticleType);
 
             return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            var articles = dbContext
-                .Articles
-                .Select(x => new ArticleListingViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ArticleType = x.ArticleType,
-                })
-                .ToList();
+            var articles = await articleService.GetAll();
 
-            return View(articles);
+            return View(mapper.Map<List<GetArticleViewModel>>(articles));
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var article = dbContext
-                .Articles
-                .Where(x => x.Id == id)
-                .FirstOrDefault();
+            var result = await articleService.Get(id);
 
-            if (article == null)
-            {
-                throw new Exception();
-            }
-
-            var editView = new EditArticleViewModel()
-            {
-                Id = article.Id,
-                Name = article.Name,
-                ArticleType = article.ArticleType
-            };
-
-            return View(editView);
-        }
-
-        public bool Edit(
-            int id,
-            string name,
-            ArticleType articleType)
-        {
-            var articleData = this.dbContext.Articles.FirstOrDefault(x => x.Id == id);
-
-            if (articleData == null)
-            {
-                return false;
-            }
-
-            articleData.UpdateName(name);
-            articleData.UpdateArticleType(articleType);
-
-            this.dbContext.Update(articleData);
-            this.dbContext.SaveChanges();
-
-            return true;
+            return View(mapper.Map<GetArticleViewModel>(result));
         }
 
         [HttpPost]
-        public IActionResult Edit(EditArticleViewModel editArticle, int id)
+        public async Task<IActionResult> Edit(GetArticleModel article)
         {
-            if (editArticle == null)
+            if (article == null)
             {
                 return BadRequest();
             }
 
-            var articleData = this.dbContext.Articles.FirstOrDefault(x => x.Id == id);
-
-            if (editArticle == null)
-            {
-                return NotFound();
-            }
-
-            var articleEdit = Edit(id, editArticle.Name, editArticle.ArticleType);
-
-            if (articleEdit == false)
-            {
-                return BadRequest();
-            }
+            await articleService.Edit(
+                article.Id,
+                article.Name,
+                article.ArticleType);
 
             return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var artclesData = dbContext.Articles.FirstOrDefault(x => x.Id == id);
-
-            if (artclesData == null)
-            {
-                return NotFound();
-            }
-
-            dbContext.Remove(artclesData);
-            dbContext.SaveChanges();
+            await articleService.Delete(id);
 
             return RedirectToAction(nameof(All));
         }

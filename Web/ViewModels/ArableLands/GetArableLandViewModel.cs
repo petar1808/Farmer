@@ -1,6 +1,7 @@
 ﻿using Application.Mappings;
 using Application.Models.ArableLands;
 using AutoMapper;
+using System.ComponentModel.DataAnnotations;
 
 namespace Web.ViewModels.ArableLands
 {
@@ -10,6 +11,7 @@ namespace Web.ViewModels.ArableLands
 
         public string Name { get; init; } = default!;
 
+        [Display(Name = "Size In Decar")]
         public int SizeInDecar { get; init; }
 
         //public virtual void Mapping(Profile mapper)

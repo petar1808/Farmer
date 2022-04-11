@@ -9,14 +9,14 @@ namespace Web.Controllers
     public class ArableLandsController : Controller
     {
         private readonly IArableLandService arableLandService;
-        private readonly IMapper _mapper;
+        private readonly IMapper mapper;
 
         public ArableLandsController(
             IArableLandService arableLandService, 
             IMapper mapper)
         {
             this.arableLandService = arableLandService;
-            this._mapper = mapper;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -30,7 +30,7 @@ namespace Web.Controllers
                 return View(arableLand);
             }
 
-            await this.arableLandService.Add(arableLand.Name, arableLand.SizeInDecar);
+            await arableLandService.Add(arableLand.Name, arableLand.SizeInDecar);
 
             return RedirectToAction(nameof(All));
         }
@@ -38,9 +38,9 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var arableLands = await this.arableLandService.GetAll();
+            var arableLands = await arableLandService.GetAll();
 
-            return View(_mapper.Map<List<GetArableLandViewModel>>(arableLands));
+            return View(mapper.Map<List<GetArableLandViewModel>>(arableLands));
         }
 
         [HttpPost]
@@ -51,7 +51,7 @@ namespace Web.Controllers
                 return BadRequest();
             }
 
-            await this.arableLandService.Edit(
+            await arableLandService.Edit(
                 arableLand.Id,
                 arableLand.Name,
                 arableLand.SizeInDecar);
@@ -62,15 +62,15 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var result = await this.arableLandService.Get(id);
+            var result = await arableLandService.Get(id);
 
-            return View(_mapper.Map<GetArableLandViewModel>(result));
+            return View(mapper.Map<GetArableLandViewModel>(result));
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await this.arableLandService.Delete(id);
+            await arableLandService.Delete(id);
 
             return RedirectToAction(nameof(All));
         }

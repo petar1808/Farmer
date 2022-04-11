@@ -1,6 +1,9 @@
-﻿namespace Web.ViewModels.WorkingSeasons
+﻿using Application.Mappings;
+using Application.Models.WorkingSeasons;
+
+namespace Web.ViewModels.WorkingSeasons
 {
-    public class WorkingSeasonListingViewModel
+    public class GetWorkingSeasonViewModel : IMapFrom<GetWorkingSeasonModel>
     {
         public int Id { get; init; }
 

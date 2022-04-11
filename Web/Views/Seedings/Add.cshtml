@@ -4,35 +4,35 @@
 
 <div class="row">
     <form method = "post">
-    <div class="form-group">
-        <label asp-for="ArableLandId"></label>
-        <select asp-for="ArableLandId" class="form-control">
-            <option value="">All</option>
-            @foreach (var arableLand in Model!.ArableLands)
-            {
-                <option value="@arableLand.Id">@arableLand.Name</option>
-            }
-        </select>
-        <span asp-validation-for="ArableLandId" class="small text-danger"></span>
-        <label asp-for="ArticleId"></label>
-        <select asp-for="ArticleId" class="form-control">
-            <option value="">All</option>
-            @foreach (var article in Model.Articles)
-            {
-                <option value="@article.Id">@article.Name</option>
-            }
-        </select>
-        <span asp-validation-for="ArticleId" class="small text-danger"></span>
-        <label asp-for="WorkingSeasonId"></label>
-        <select asp-for="WorkingSeasonId" class="form-control">
-            <option value="">All</option>
-            @foreach (var workingSeaoson in Model.WorkingSeaosons)
-            {
-                <option value="@workingSeaoson.Id">@workingSeaoson.Name</option>
-            }
-        </select>
-        <span asp-validation-for="WorkingSeasonId" class="small text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="ArableLandId"></label>
+            <select asp-for="ArableLandId" class="form-control">
+                <option value="">All</option>
+                @foreach (var arableLand in Model!.ArableLands)
+                {
+                    <option value="@arableLand.Id">@arableLand.Name</option>
+                }
+            </select>
+            <span asp-validation-for="ArableLandId" class="small text-danger"></span>
+            <label asp-for="ArticleId"></label>
+            <select asp-for="ArticleId" class="form-control">
+                <option value="">All</option>
+                @foreach (var article in Model.Articles)
+                {
+                    <option value="@article.Id">@article.Name</option>
+                }
+            </select>
+            <span asp-validation-for="ArticleId" class="small text-danger"></span>
+            <label asp-for="WorkingSeasonId"></label>
+            <select asp-for="WorkingSeasonId" class="form-control">
+                <option value="">All</option>
+                @foreach (var workingSeaoson in Model.WorkingSeaosons)
+                {
+                    <option value="@workingSeaoson.Id">@workingSeaoson.Name</option>
+                }
+            </select>
+            <span asp-validation-for="WorkingSeasonId" class="small text-danger"></span>
+        </div>
          <input class="btn btn-primary"  type="submit" value="Submit" />
     </form>
 </div>

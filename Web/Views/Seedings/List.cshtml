@@ -1,6 +1,8 @@
 ﻿@model SeedingSearchViewModel
 
-<div class="row">
+
+<div>
+    <div class="row">
     <form method="get">
          <div class="form-group col-md-4">
             <div class="form-group">
@@ -17,34 +19,36 @@
         </div>
           <input class="btn btn-primary"  type="submit" value="Submit" />
     </form>
+    </div>
+    <div> 
+        <table class="table">
+              <thead class="thead-light">
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Arable Land</th>
+                      <th scope="col">Article</th>
+                      <th scope="col">Size In Decar</th>
+                      <th scope="col">Season</th>
+                      <th scope="col">Start Date</th>
+                      <th scope="col">End Date</th>
+                    </tr>
+              </thead>
+                    @foreach(var seeding in Model.Seedings)
+                    {
+                        <tbody>   
+                            <tr>
+                              <th scope="row">@seeding.Id</th>
+                              <td>@seeding.AreableLandName</td>
+                              <td>@seeding.ArticleName</td>
+                              <td>@seeding.SizeInDecar</td>
+                              <td>@seeding.SeasonName</td>
+                              <td>@seeding.StartDate</td>
+                              <td>@seeding.EndDate</td>
+                            </tr>
+                        </tbody>
+                    }
+        </table>
+    <a asp-controller="Seedings" asp-action="Add" class="btn btn-primary">Add</a>
+    </div>
 </div>
 
-
- <table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">ArableLandName</th>
-      <th scope="col">ArticleName</th>
-      <th scope="col">SizeInDecar</th>
-      <th scope="col">SeasonName</th>
-      <th scope="col">StartDate</th>
-      <th scope="col">EndDate</th>
-    </tr>
-  </thead>
-@foreach(var seeding in Model.Seedings)
-{
-      <tbody>   
-    <tr>
-      <th scope="row">@seeding.Id</th>
-      <td>@seeding.AreableLandName</td>
-      <td>@seeding.ArticleName</td>
-      <td>@seeding.SizeInDecar</td>
-      <td>@seeding.SeasonName</td>
-      <td>@seeding.StartDate</td>
-      <td>@seeding.EndDate</td>
-    </tr>
-  </tbody>
-}
-</table>
-<a asp-controller="Seedings" asp-action="Add" class="btn btn-primary">Add</a>

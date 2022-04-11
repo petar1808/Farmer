@@ -1,0 +1,90 @@
+﻿using Application.Models.Articles;
+using AutoMapper;
+using Domain.Enum;
+using Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Services.Articles
+{
+    public class ArticleService : IArticleService
+    {
+        private readonly IFarmerDbContext farmerDbContext;
+        private readonly IMapper mapper;
+
+        public ArticleService(IFarmerDbContext farmerDbContext, IMapper mapper)
+        {
+            this.farmerDbContext = farmerDbContext;
+            this.mapper = mapper;
+        }
+
+        public async Task Add(string name, ArticleType articleType)
+        {
+            var article = new Article(name, articleType);
+
+            await farmerDbContext.AddAsync(article);
+            await farmerDbContext.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            var article = await farmerDbContext
+                .Articles
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (article == null)
+            {
+                throw new ApplicationException($"Article with Id: {id}, don't exist");
+            }
+
+            farmerDbContext.Articles.Remove(article);
+            await farmerDbContext.SaveChangesAsync();
+        }
+
+        public async Task Edit(int id, string name, ArticleType articleType)
+        {
+            var article = await farmerDbContext
+                .Articles
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (article == null)
+            {
+                throw new ApplicationException($"Article with Id: {id}, don't exist");
+            }
+
+            article
+                .UpdateName(name)
+                .UpdateArticleType(articleType);
+
+            farmerDbContext.Update(article);
+            await farmerDbContext.SaveChangesAsync();
+        }
+
+        public async Task<GetArticleModel> Get(int id)
+        {
+            var article = await farmerDbContext
+                .Articles
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (article == null)
+            {
+                throw new ApplicationException($"Article with Id: {id}, don't exist");
+            }
+
+            var result = mapper.Map<GetArticleModel>(article);
+            return result;
+        }
+
+        public async Task<List<GetArticleModel>> GetAll()
+        {
+            var article = await farmerDbContext.Articles.ToListAsync();
+
+            var result = mapper.Map<List<GetArticleModel>>(article);
+            return result;
+        }
+    }
+}

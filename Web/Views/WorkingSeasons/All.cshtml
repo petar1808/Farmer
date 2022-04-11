@@ -1,27 +1,34 @@
-﻿@model List<WorkingSeasonListingViewModel>
+﻿@model List<GetWorkingSeasonViewModel>
 
- <table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">StartDate</th>
-      <th scope="col">EndDate</th>
-    </tr>
-  </thead>
-@foreach(var workingSeason in Model)
-{
-      <tbody>
-    <tr>
-      <th scope="row">@workingSeason.Id</th>
-      <td>@workingSeason.Name</td>
-      <td>@workingSeason.StartDate</td>
-      <td>@workingSeason.EndDate</td>
-      <td><a asp-controller="WorkingSeasons" asp-action="Edit" asp-route-id="@workingSeason.Id" class="btn btn-warning">Edit</a></td>
-      <td><a asp-controller="WorkingSeasons" asp-action="Delete" asp-route-id="@workingSeason.Id" class="btn btn-danger" 
-                    onclick="return confirm('Are you sure you want to delete areable land : @workingSeason.Name')">Delete</a></td>
-    </tr>
-  </tbody>
+@{
+    ViewData["Title"] = "List Working Season";
 }
-</table>
+
+<h2 class="text-center">List Working Season</h2>
+<div>
+     <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">StartDate</th>
+              <th scope="col">EndDate</th>
+            </tr>
+          </thead>
+            @foreach(var workingSeason in Model)
+            {
+                  <tbody>
+                        <tr>
+                          <th scope="row">@workingSeason.Id</th>
+                          <td>@workingSeason.Name</td>
+                          <td>@workingSeason.StartDate</td>
+                          <td>@workingSeason.EndDate</td>
+                          <td><a asp-controller="WorkingSeasons" asp-action="Edit" asp-route-id="@workingSeason.Id" class="btn btn-warning">Edit</a></td>
+                          <td><a asp-controller="WorkingSeasons" asp-action="Delete" asp-route-id="@workingSeason.Id" class="btn btn-danger" 
+                                        onclick="return confirm('Are you sure you want to delete areable land : @workingSeason.Name')">Delete</a></td>
+                        </tr>
+              </tbody>
+            }
+    </table>
 <a asp-controller="WorkingSeasons" asp-action="Add" class="btn btn-primary">Add Working Season</a>
+</div>

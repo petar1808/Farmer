@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Domain.ModelConstraint.WorkingSeasonConstraints;
 
-namespace Web.ViewModels.WorkingSeasons
+namespace Application.Models.WorkingSeasons
 {
     public class WorkingSeasonBaseModel
     {

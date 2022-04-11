@@ -1,5 +1,7 @@
 ﻿using Application.Mappings;
 using Application.Services.ArableLands;
+using Application.Services.Articles;
+using Application.Services.WorikingSeasons;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -13,6 +15,8 @@ namespace Application
         {
             services.AddAutoMapper();
             services.AddTransient<IArableLandService, ArableLandService>();
+            services.AddTransient<IWorkingSeasonService, WorkingSeasonService>();
+            services.AddTransient<IArticleService, ArticleService>();
 
             return services;
         }

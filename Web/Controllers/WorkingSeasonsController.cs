@@ -1,4 +1,7 @@
-﻿using Domain.Models;
+﻿using Application.Models.WorkingSeasons;
+using Application.Services.WorikingSeasons;
+using AutoMapper;
+using Domain.Models;
 using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Mvc;
 using Web.ViewModels.WorkingSeasons;
@@ -7,135 +10,70 @@ namespace Web.Controllers
 {
     public class WorkingSeasonsController : Controller
     {
-        private readonly FarmerDbContext dbContext;
+        private readonly IWorkingSeasonService workingSeasonService;
+        private readonly IMapper mapper;
 
-        public WorkingSeasonsController(FarmerDbContext dbContext)
+        public WorkingSeasonsController(IMapper mapper, IWorkingSeasonService workingSeasonService)
         {
-            this.dbContext = dbContext;
+            this.mapper = mapper;
+            this.workingSeasonService = workingSeasonService;
         }
 
         [HttpGet]
         public IActionResult Add() => View();
 
         [HttpPost]
-        public IActionResult Add(AddWorkingSeasonModel workingSeason)
+        public async Task<IActionResult> Add(AddWorkingSeasonModel workingSeason)
         {
             if (!ModelState.IsValid)
             {
                 return View(workingSeason);
             }
 
-            var workingSeasonDate = new WorkingSeason(workingSeason.Name,
-                workingSeason.StartDate,
-                workingSeason.EndDate);
-
-            dbContext.Add(workingSeasonDate);
-            dbContext.SaveChanges();
+            await workingSeasonService.Add(workingSeason.Name, workingSeason.StartDate, workingSeason.EndDate);
 
             return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            var workingSeason = dbContext
-                .WorkingSeasons
-                .Select(a => new WorkingSeasonListingViewModel
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                    StartDate = a.StartDate,
-                    EndDate = a.EndDate
-                })
-                .ToList();
+            var workingSeason = await workingSeasonService.GetAll();
 
-            return View(workingSeason); 
+            var a = mapper.Map<List<GetWorkingSeasonViewModel>>(workingSeason);
+
+            return View(a); 
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var workingSeason = dbContext
-                .WorkingSeasons
-                .Where(x => x.Id == id)
-                .FirstOrDefault();
+            var workingSeason = await workingSeasonService.Get(id);
 
-            if (workingSeason == null)
-            {
-                throw new Exception();
-            }
-
-            var editView = new EditWorkingSeason()
-            {
-                Id = workingSeason.Id,
-                Name = workingSeason.Name,
-                StartDate = workingSeason.StartDate,
-                EndDate = workingSeason.EndDate
-            };
-
-            return View(editView);
-        }
-
-        public bool Edit(
-            int id,
-            string name,
-            DateTime? startdate,
-            DateTime? endDate)
-        {
-            var workingSeasonData = this.dbContext.WorkingSeasons.FirstOrDefault(x => x.Id == id);
-
-            if (workingSeasonData == null)
-            {
-                return false;
-            }
-
-            workingSeasonData.UpdateName(name);
-            workingSeasonData.UpdateSratDate(startdate);
-            workingSeasonData.UpdateEndDate(endDate);
-
-            this.dbContext.Update(workingSeasonData);
-            this.dbContext.SaveChanges();
-
-            return true;
+            return View(mapper.Map<GetWorkingSeasonViewModel>(workingSeason));
         }
 
         [HttpPost]
-        public IActionResult Edit(EditWorkingSeason workingSeason, int id)
+        public async Task<IActionResult> Edit(GetWorkingSeasonModel workingSeason)
         {
             if (workingSeason == null)
             {
                 return BadRequest();
             }
 
-            var workingSeasonDate = this.dbContext.WorkingSeasons.FirstOrDefault(x => x.Id == id);
-
-            if (workingSeason == null)
-            {
-                return NotFound();
-            }
-
-            var workingSeasonEdit = Edit(id, workingSeason.Name, workingSeason.StartDate, workingSeason.EndDate);
-
-            if (workingSeasonEdit == false)
-            {
-                return BadRequest();
-            }
+            await workingSeasonService.Edit(
+                workingSeason.Id,
+                workingSeason.Name,
+                workingSeason.StartDate,
+                workingSeason.EndDate);
 
             return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var workingSeasonData = dbContext.WorkingSeasons.FirstOrDefault(x => x.Id == id);
-
-            if (workingSeasonData == null)
-            {
-                return NotFound();
-            }
-
-            dbContext.Remove(workingSeasonData);
-            dbContext.SaveChanges();
+            await workingSeasonService.Delete(id);
 
             return RedirectToAction(nameof(All));
         }
