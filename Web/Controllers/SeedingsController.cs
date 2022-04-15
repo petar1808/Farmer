@@ -1,6 +1,12 @@
-﻿using Domain.Models;
+﻿using Application.Services.ArableLands;
+using Application.Services.Articles;
+using Application.Services.Seedings;
+using Application.Services.WorikingSeasons;
+using AutoMapper;
+using Domain.Models;
 using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Web.ViewModels.Seedings;
 
 namespace Web.Controllers
@@ -8,98 +14,98 @@ namespace Web.Controllers
     public class SeedingsController : Controller
     {
         private readonly FarmerDbContext dbContext;
+        private readonly ISeedingService seedingService;
+        private readonly IMapper mapper;
+        private readonly IArableLandService arableLandService;
+        private readonly IArticleService articleService;
 
-        public SeedingsController(FarmerDbContext dbContext)
+        public SeedingsController(
+            FarmerDbContext dbContext,
+            ISeedingService seedingService,
+            IMapper mapper,
+            IArableLandService arableLandService,
+            IArticleService articleService)
         {
             this.dbContext = dbContext;
+            this.seedingService = seedingService;
+            this.mapper = mapper;
+            this.arableLandService = arableLandService;
+            this.articleService = articleService;
         }
 
         [HttpGet]
-        public IActionResult List(string workingSeason)
+        public IActionResult List(int seasonId)
         {
-            var seedingQuery = this.dbContext.Seedings.AsQueryable();
+            var seeding = this.mapper.Map<List<SeedingsGetViewModel>>(seedingService.List(seasonId));
 
-            if (!string.IsNullOrWhiteSpace(workingSeason))
-            {
-                seedingQuery = seedingQuery.Where(x => x.WorkingSeason.Name == workingSeason);
-            }
-
-            var seedings = seedingQuery
-                .Select(x => new SeedingsListingViewModel
-                {
-                    Id = x.Id,
-                    AreableLandName = x.ArableLand.Name,
-                    ArticleName = x.Article.Name,
-                    SizeInDecar = x.ArableLand.SizeInDecar,
-                    SeasonName = x.WorkingSeason.Name,
-                    StartDate = x.WorkingSeason.StartDate,
-                    EndDate = x.WorkingSeason.EndDate
-                })
-                .ToList();
-
-            var seedingWorkingSeason = dbContext
-                .Seedings
-                .Select(x => x.WorkingSeason.Name)
-                .Distinct()
-                .ToList();
-
-            return View(new SeedingSearchViewModel
-            {
-                WorkingSeasons = seedingWorkingSeason,
-                Seedings = seedings,
-            });
+            return View(new SeedingSearchViewModel(seasonId, seeding));
         }
 
         [HttpGet]
-        public IActionResult Add() => View(new AddSeedingViewModel
+        public async Task<IActionResult> Add(int seasonId) => View(new AddSeedingViewModel
         {
-            ArableLands = this.GetArableLand(),
-            Articles = this.GetArticle(),
-            WorkingSeaosons = this.GetWorkingSeason()
+            ArableLands = await this.arableLandService.ArableLandsSelectionList(seasonId),
+            Articles = await this.articleService.SeedsArticlesSelectionList(),
+            WorkingSeasonId = seasonId
         });
 
-        [HttpPost]
-        public IActionResult Add(AddSeedingViewModel add)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int seasonId, int currentArableLandId, int seedingId, int articleId)
         {
-            var a = new Seeding(add.ArableLandId, add.WorkingSeasonId, add.ArticleId);
+            var result = new EditSeedingViewModel
+            {
+                Id = seedingId,
+                ArableLandId = currentArableLandId,
+                ArticleId = articleId,
+                ArableLands = await this.arableLandService
+                                .ArableLandsSelectionList(seasonId, currentArableLandId),
+                Articles = await this.articleService
+                                .SeedsArticlesSelectionList(),
+                WorkingSeasonId = seasonId,
+            };
 
-            dbContext.Add(a);
-            dbContext.SaveChanges();
-
-            return RedirectToAction(nameof(List));
+            return View(result);
         }
 
-        private IEnumerable<SelectedListArableLand> GetArableLand()
-            => this.dbContext
-            .ArableLands
-            .Select(x => new SelectedListArableLand
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditSeedingViewModel seeding)
+        {
+            if (seeding == null)
             {
-                Id = x.Id,
-                Name = x.Name,
-            })
-            .ToList();
+                return BadRequest();
+            }
+
+            await seedingService.Edit(
+                seeding.Id,
+                seeding.ArableLandId, 
+                seeding.ArticleId);
+
+            return RedirectToAction(nameof(List), new { seasonId = seeding.WorkingSeasonId });
+        }
 
 
-        private IEnumerable<SelectedListArticle> GetArticle()
-           => this.dbContext
-           .Articles
-           .Select(x => new SelectedListArticle
-           {
-               Id = x.Id,
-               Name = x.Name,
-           })
-           .ToList();
+        [HttpPost]
+        public async Task<IActionResult> Add(AddSeedingViewModel add)
+        {
+            if (add.ArableLandId == 0 || add.ArticleId == 0)
+            {
+                return BadRequest();
+            }
 
-        private IEnumerable<SelectedListWorkingSeaoson> GetWorkingSeason()
-            => this.dbContext
-              .WorkingSeasons
-              .Where(x => x.Id != 1)
-              .Select(x => new SelectedListWorkingSeaoson
-              {
-                  Id = x.Id,
-                  Name = x.Name,
-              })
-              .ToList();
+            await seedingService.Add(add.ArableLandId, add.WorkingSeasonId, add.ArticleId);
+
+            return RedirectToAction(nameof(List), new { seasonId = add.WorkingSeasonId });
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int seedingId, int seasonId)
+        {
+            await seedingService.Delete(seedingId);
+
+            return RedirectToAction(nameof(List), new { seasonId = seasonId });
+        }
+
 
     }
 }

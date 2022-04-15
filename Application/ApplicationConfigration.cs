@@ -1,6 +1,7 @@
 ﻿using Application.Mappings;
 using Application.Services.ArableLands;
 using Application.Services.Articles;
+using Application.Services.Seedings;
 using Application.Services.WorikingSeasons;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace Application
             services.AddTransient<IArableLandService, ArableLandService>();
             services.AddTransient<IWorkingSeasonService, WorkingSeasonService>();
             services.AddTransient<IArticleService, ArticleService>();
+            services.AddTransient<ISeedingService, SeedingService>();
 
             return services;
         }

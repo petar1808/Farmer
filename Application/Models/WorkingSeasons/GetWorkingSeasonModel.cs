@@ -1,17 +1,17 @@
 ﻿using Application.Mappings;
 using Domain.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Models.WorkingSeasons
 {
-    public class GetWorkingSeasonModel : WorkingSeasonBaseModel, IMapFrom<WorkingSeason>
+    public class GetWorkingSeasonModel : IMapFrom<WorkingSeason>
     {
-        [Required]
         public int Id { get; init; }
+
+        public string Name { get; init; } = default!;
+
+        public DateTime? StartDate { get; init; }
+
+        public DateTime? EndDate { get; init; }
     }
 }

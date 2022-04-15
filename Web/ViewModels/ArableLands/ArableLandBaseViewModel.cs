@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static Domain.ModelConstraint.CommonConstraints;
+using static Domain.ModelConstraint;
 
-namespace Application.Models.ArableLands
+namespace Web.ViewModels.ArableLands
 {
-    public class ArableLandBaseModel
+    public class ArableLandBaseViewModel
     {
         [Required]
-        [StringLength(MaxNameLenght)]
+        [StringLength(CommonConstraints.MaxNameLenght)]
         public string Name { get; init; } = default!;
 
         [Display(Name = "Size In Decar")]

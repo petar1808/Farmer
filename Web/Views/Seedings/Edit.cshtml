@@ -1,0 +1,53 @@
+﻿@model EditSeedingViewModel
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Добавяне на сеидба</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <form method="post">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input asp-for="Id" hidden="hidden" />
+                        <label asp-for="ArableLandId"></label>
+                        <select asp-for="ArableLandId" class="form-control">
+                            @foreach (var arableLand in Model!.ArableLands)
+                            {
+
+                                if (Model.ArableLandId == arableLand.Value)
+                                {
+                                    <option value="@arableLand.Value" selected>@arableLand.Name</option>
+                                    continue;
+                                }
+
+                                <option value="@arableLand.Value">@arableLand.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ArableLandId" class="small text-danger"></span>
+                        <label asp-for="ArticleId"></label>
+                        <select asp-for="ArticleId" class="form-control">
+                            @foreach (var article in Model.Articles)
+                            {
+                                <option value="@article.Value">@article.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ArticleId" class="small text-danger"></span>
+                        <input asp-for="WorkingSeasonId" hidden="hidden" />
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <input class="btn btn-primary" type="submit" value="Submit" />
+                    <button type="reset" class="btn btn-outline-secondary">Назад</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,10 +1,17 @@
-﻿namespace Web.ViewModels.Seedings
+﻿using Application.Mappings;
+using Application.Models.Seedings;
+
+namespace Web.ViewModels.Seedings
 {
-    public class SeedingsListingViewModel
+    public class SeedingsGetViewModel : IMapFrom<GetSeedingModel>
     {
         public int Id { get; init; }
 
+        public int ArableLandId { get; set; }
+
         public string AreableLandName { get; init; } = default!;
+
+        public int ArticleId { get; set; }
 
         public string ArticleName { get; init; } = default!;
 

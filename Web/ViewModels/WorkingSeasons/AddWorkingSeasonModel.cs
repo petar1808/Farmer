@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Domain.ModelConstraint.WorkingSeasonConstraints;
 
-namespace Application.Models.WorkingSeasons
+namespace Web.ViewModels.WorkingSeasons
 {
-    public class WorkingSeasonBaseModel
+    public class AddWorkingSeasonModel
     {
         [Required]
-        [StringLength(MaxLenghtName, MinimumLength = MinLenghtName)]
+        [StringLength(MinLenghtName,MinimumLength = MinLenghtName)]
         public string Name { get; init; } = default!;
 
         public DateTime? StartDate { get; init; }

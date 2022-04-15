@@ -1,4 +1,5 @@
 ﻿using Application.Models.ArableLands;
+using Application.Models.Common;
 
 namespace Application.Services.ArableLands
 {
@@ -13,5 +14,7 @@ namespace Application.Services.ArableLands
         Task<List<GetAreableLandModel>> GetAll();
 
         Task Delete(int id);
+
+        Task<List<SelectionListModel>> ArableLandsSelectionList(int seasionId, int? currentArableLandId = null);
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Web.ViewModels.Seedings
+﻿namespace Application.Models.Seedings
 {
-    public class SelectedListArticle
+    public class SelectedListArableLand
     {
         public int Id { get; init; }
 

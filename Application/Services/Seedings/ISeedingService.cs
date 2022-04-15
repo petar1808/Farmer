@@ -1,0 +1,22 @@
+﻿using Application.Models.Seedings;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Services.Seedings
+{
+    public interface ISeedingService
+    {
+        Task Add(int arableLandId, int workingSeasonId, int articleId);
+
+        List<GetSeedingModel> List(int seasionId);
+
+        Task Delete(int id);
+
+        Task Get(int seedingId);
+
+        Task Edit(int seedingId, int arableLandId, int articleId);
+    }
+}

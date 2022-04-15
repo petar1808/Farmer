@@ -34,20 +34,32 @@ namespace Domain.Models
             Article = default!;
         }
 
-        public int ArableLandId { get;}
+        public int ArableLandId { get; private set; }
 
         public ArableLand ArableLand { get; set; }
 
         public int WorkingSeasonId { get; }
 
-        public WorkingSeason WorkingSeason { get;}
+        public WorkingSeason WorkingSeason { get; }
 
-        public int ArticleId { get;}
+        public int ArticleId { get; private set; }
 
-        public Article Article { get;}
+        public Article Article { get; }
 
-        public int QuantityOfGrainSowing { get; } = default!;
+        public int QuantityOfGrainSowing { get;} = default!;
 
-        public int QuantityGrainHarvest { get; } = default!;
+        public int QuantityGrainHarvest { get;} = default!;
+
+        public Seeding UpdateArableLand(int arableLandId)
+        {
+            this.ArableLandId = arableLandId;
+            return this;
+        }
+
+        public Seeding UpdateArticle(int articleId)
+        {
+            this.ArticleId = articleId;
+            return this;
+        }
     }
 }

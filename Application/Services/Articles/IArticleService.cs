@@ -1,4 +1,5 @@
 ﻿using Application.Models.Articles;
+using Application.Models.Common;
 using Domain.Enum;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,7 @@ namespace Application.Services.Articles
         Task<List<GetArticleModel>> GetAll();
 
         Task Delete(int id);
+
+        Task<List<SelectionListModel>> SeedsArticlesSelectionList();
     }
 }

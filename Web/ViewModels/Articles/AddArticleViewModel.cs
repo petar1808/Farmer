@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using static Domain.ModelConstraint.CommonConstraints;
 
-namespace Application.Models.Articles
+namespace Web.ViewModels.Articles
 {
-    public class ArticleBaseModel
+    public class AddArticleViewModel
     {
         [Required]
         [StringLength(MaxNameLenght)]

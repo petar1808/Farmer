@@ -21,7 +21,7 @@
                      <option value="">All</option>
                      @foreach (var arableLand in Model!.ArableLands)
                      {
-                        <option value="@arableLand.Id">@arableLand.Name</option>
+                        <option value="@arableLand.Value">@arableLand.Name</option>
                      }
                   </select>
                   <span asp-validation-for="ArableLandId" class="small text-danger"></span>
@@ -30,19 +30,11 @@
                      <option value="">All</option>
                      @foreach (var article in Model.Articles)
                      {
-                        <option value="@article.Id">@article.Name</option>
+                        <option value="@article.Value">@article.Name</option>
                      }
                   </select>
                   <span asp-validation-for="ArticleId" class="small text-danger"></span>
-                  <label asp-for="WorkingSeasonId"></label>
-                  <select asp-for="WorkingSeasonId" class="form-control">
-                     <option value="">All</option>
-                     @foreach (var workingSeaoson in Model.WorkingSeaosons)
-                     {
-                        <option value="@workingSeaoson.Id">@workingSeaoson.Name</option>
-                     }
-                  </select>
-                  <span asp-validation-for="WorkingSeasonId" class="small text-danger"></span>
+                  <input asp-for="WorkingSeasonId" hidden="hidden"/>
                </div>
             </div>
             <div class="card-footer">

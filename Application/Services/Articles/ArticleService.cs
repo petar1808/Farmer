@@ -1,4 +1,5 @@
 ﻿using Application.Models.Articles;
+using Application.Models.Common;
 using AutoMapper;
 using Domain.Enum;
 using Domain.Models;
@@ -81,10 +82,20 @@ namespace Application.Services.Articles
 
         public async Task<List<GetArticleModel>> GetAll()
         {
-            var article = await farmerDbContext.Articles.ToListAsync();
+            var articles = await farmerDbContext.Articles.ToListAsync();
 
-            var result = mapper.Map<List<GetArticleModel>>(article);
+            var result = mapper.Map<List<GetArticleModel>>(articles);
             return result;
+        }
+
+        public async Task<List<SelectionListModel>> SeedsArticlesSelectionList()
+        {
+            var articles = await farmerDbContext.Articles
+                .Where(x => x.ArticleType == ArticleType.Seeds)
+                .Select(x => new SelectionListModel(x.Id, x.Name))
+                .ToListAsync();
+
+            return articles;
         }
     }
 }

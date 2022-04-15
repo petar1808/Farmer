@@ -2570,8 +2570,8 @@
 
 
   $__default["default"](document).on(EVENT_CLICK_DATA_API$1, SELECTOR_DATA_TOGGLE$1, function (event) {
-    var _this11 = this;
-
+      var _this11 = this;
+      debugger;
     var target;
     var selector = Util.getSelectorFromElement(this);
 

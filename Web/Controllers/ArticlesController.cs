@@ -26,7 +26,7 @@ namespace Web.Controllers
         public IActionResult Add() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddArticleModel articleModel)
+        public async Task<IActionResult> Add(AddArticleViewModel articleModel)
         {
             if (!ModelState.IsValid)
             {
@@ -51,11 +51,11 @@ namespace Web.Controllers
         {
             var result = await articleService.Get(id);
 
-            return View(mapper.Map<GetArticleViewModel>(result));
+            return View(mapper.Map<EditArticleViewModel>(result));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(GetArticleModel article)
+        public async Task<IActionResult> Edit(EditArticleViewModel article)
         {
             if (article == null)
             {

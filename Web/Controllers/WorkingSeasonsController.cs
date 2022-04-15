@@ -50,11 +50,11 @@ namespace Web.Controllers
         {
             var workingSeason = await workingSeasonService.Get(id);
 
-            return View(mapper.Map<GetWorkingSeasonViewModel>(workingSeason));
+            return View(mapper.Map<EditWorkingSeasonModel>(workingSeason));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(GetWorkingSeasonModel workingSeason)
+        public async Task<IActionResult> Edit(EditWorkingSeasonModel workingSeason)
         {
             if (workingSeason == null)
             {

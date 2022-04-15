@@ -29,6 +29,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Seedings}/{action=List}/{id?}");
+    pattern: "{controller=WorkingSeasons}/{action=All}/{id?}");
 
 app.Run();

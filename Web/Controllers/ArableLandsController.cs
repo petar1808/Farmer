@@ -1,5 +1,4 @@
-﻿using Application.Models.ArableLands;
-using Application.Services.ArableLands;
+﻿using Application.Services.ArableLands;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Web.ViewModels.ArableLands;
@@ -23,7 +22,7 @@ namespace Web.Controllers
         public IActionResult Add() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddArableLandModel arableLand)
+        public async Task<IActionResult> Add(AddArableLandViewModel arableLand)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +43,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(GetAreableLandModel arableLand)
+        public async Task<IActionResult> Edit(EditArableLandViewModel arableLand)
         {
             if (arableLand == null)
             {
@@ -64,7 +63,7 @@ namespace Web.Controllers
         {
             var result = await arableLandService.Get(id);
 
-            return View(mapper.Map<GetArableLandViewModel>(result));
+            return View(mapper.Map<EditArableLandViewModel>(result));
         }
 
         [HttpGet]

@@ -1,4 +1,5 @@
 ﻿using Application.Models.ArableLands;
+using Application.Models.Common;
 using AutoMapper;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ namespace Application.Services.ArableLands
         {
             var arableLand = new ArableLand(name,sizeInDecar);
 
-            await farmerDbContext.AddAsync(arableLand);
+            await farmerDbContext.ArableLands.AddAsync(arableLand);
             await farmerDbContext.SaveChangesAsync();
         }
 
@@ -79,6 +80,46 @@ namespace Application.Services.ArableLands
 
             farmerDbContext.Remove(arableLand);
             await farmerDbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<SelectionListModel>> ArableLandsSelectionList(
+            int seasionId, 
+            int? currentArableLandId = null)
+        {
+            // 2
+            var arableLands = await this.farmerDbContext
+                .ArableLands
+                .Select(x => new SelectionListModel(x.Id, x.Name))
+                .ToListAsync();
+
+            // 1
+            // 2
+            // 3
+
+            var existingArableLands = await this.farmerDbContext
+              .Seedings
+              .Where(x => x.WorkingSeasonId == seasionId)
+              .Select(x => x.ArableLandId)
+              .ToListAsync();
+
+            // 1
+            // 2
+
+            if (currentArableLandId != null)
+            {
+                // 1
+                existingArableLands = existingArableLands
+                    .Where(x => x != currentArableLandId)
+                    .ToList();
+            }
+
+            arableLands = arableLands
+                .Where(x => !existingArableLands.Contains(x.Value))
+                .ToList();
+
+
+
+            return arableLands;
         }
     }
 }
