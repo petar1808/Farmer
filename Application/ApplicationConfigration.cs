@@ -1,4 +1,5 @@
 ﻿using Application.Mappings;
+using Application.Services;
 using Application.Services.ArableLands;
 using Application.Services.Articles;
 using Application.Services.Seedings;
@@ -19,6 +20,7 @@ namespace Application
             services.AddTransient<IWorkingSeasonService, WorkingSeasonService>();
             services.AddTransient<IArticleService, ArticleService>();
             services.AddTransient<ISeedingService, SeedingService>();
+            services.AddSingleton<SidebarMenuCache>();
 
             return services;
         }

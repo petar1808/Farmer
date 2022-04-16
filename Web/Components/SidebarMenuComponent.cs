@@ -1,4 +1,5 @@
 ﻿using Application.Extensions;
+using Application.Services;
 using Application.Services.WorikingSeasons;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers;
@@ -14,9 +15,13 @@ namespace Web.Components
         private const string subMenuActiveAttribute = "active";
 
         private readonly IWorkingSeasonService workingSeasonService;
-        public SidebarMenuComponent(IWorkingSeasonService workingSeasonService)
+        private readonly SidebarMenuCache sidebarMenuCache;
+        public SidebarMenuComponent(
+            IWorkingSeasonService workingSeasonService,
+            SidebarMenuCache sidebarMenuCache)
         {
             this.workingSeasonService = workingSeasonService;
+            this.sidebarMenuCache = sidebarMenuCache;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
@@ -56,15 +61,27 @@ namespace Web.Components
                 }
             };
 
-            var seasons = await this.workingSeasonService.GetAll();
+            var seasons = new Dictionary<int, string>();
+
+            if (sidebarMenuCache.SidebarMenuItems.Any())
+            {
+                seasons = sidebarMenuCache.SidebarMenuItems;
+            }
+            else
+            {
+                seasons = await this.workingSeasonService.ListSidebarMenuItems();
+                sidebarMenuCache.AddSidebarMenuItems(seasons);
+            }
+
+            // await this.workingSeasonService.ListSidebarMenuItems();
 
             var seasonsSidebarElements = seasons.Select(x => new SidebarChildElentViewModel
             {
-                Title = x.Name,
+                Title = x.Value,
                 ControllerName = nameof(SeedingsController).RemoveControllerFromName(),
                 ActionName = nameof(SeedingsController.List),
-                Raute = x.Id,
-                Active = GetWorkingSeasonChildActiveValue(routeKey, x.Id)
+                Raute = x.Key,
+                Active = GetWorkingSeasonChildActiveValue(routeKey, x.Key)
             }).ToList();
 
             result.Add(new SidebarMenuViewModel

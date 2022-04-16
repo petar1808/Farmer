@@ -14,15 +14,19 @@ namespace Application.Services.WorikingSeasons
     {
         private readonly IFarmerDbContext farmerDbContext;
         private readonly IMapper mapper;
+        private readonly SidebarMenuCache sidebarMenuCache;
 
-        public WorkingSeasonService(IFarmerDbContext farmerDbContext, IMapper mapper)
+        public WorkingSeasonService(IFarmerDbContext farmerDbContext, IMapper mapper, SidebarMenuCache sidebarMenuCache)
         {
             this.farmerDbContext = farmerDbContext;
             this.mapper = mapper;
+            this.sidebarMenuCache = sidebarMenuCache;
         }
 
         public async Task Add(string name, DateTime? startDate, DateTime? endDate)
         {
+            sidebarMenuCache.Flush();
+
             var workingSeason = new WorkingSeason(name, startDate, endDate);
 
             await this.farmerDbContext.AddAsync(workingSeason);
@@ -46,6 +50,8 @@ namespace Application.Services.WorikingSeasons
 
         public async Task Edit(int id, string name, DateTime? startDate, DateTime? endDate)
         {
+            sidebarMenuCache.Flush();
+
             var workingSeason = farmerDbContext
                 .WorkingSeasons
                 .FirstOrDefault(x => x.Id == id);
