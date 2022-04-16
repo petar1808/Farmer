@@ -17,6 +17,8 @@ namespace Application.Services.WorikingSeasons
 
         Task<List<GetWorkingSeasonModel>> GetAll();
 
+        Task<Dictionary<int, string>> ListSidebarMenuItems();
+
         Task Delete(int id);
     }
 }

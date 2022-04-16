@@ -92,5 +92,10 @@ namespace Application.Services.WorikingSeasons
             var result = mapper.Map<List<GetWorkingSeasonModel>>(workingSeason);
             return result;
         }
+
+        public async Task<Dictionary<int, string>> ListSidebarMenuItems()
+            => await farmerDbContext
+                .WorkingSeasons
+                .ToDictionaryAsync(k => k.Id, v => v.Name);
     }
 }
