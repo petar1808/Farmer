@@ -2,8 +2,10 @@
 using Application.Services;
 using Application.Services.WorikingSeasons;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Web.Controllers;
 using Web.ViewModels.Components;
+using static Infrastructure.IdentityConstants;
 
 namespace Web.Components
 {
@@ -15,18 +17,32 @@ namespace Web.Components
         private const string subMenuActiveAttribute = "active";
 
         private readonly IWorkingSeasonService workingSeasonService;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly SidebarMenuCache sidebarMenuCache;
         public SidebarMenuComponent(
             IWorkingSeasonService workingSeasonService,
-            SidebarMenuCache sidebarMenuCache)
+            SidebarMenuCache sidebarMenuCache, 
+            IHttpContextAccessor httpContextAccessor)
         {
             this.workingSeasonService = workingSeasonService;
             this.sidebarMenuCache = sidebarMenuCache;
+            this.httpContextAccessor = httpContextAccessor;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var contoller = RouteData.Values["controller"]!.ToString();
             var routeKey = RouteData.Values["id"];
+
+            var userRole = this.httpContextAccessor!
+                .HttpContext!
+                .User
+                .Claims
+                .FirstOrDefault(x => x.Type == ClaimTypes.Role);
+
+            if (userRole == null)
+            {
+                return View(new List<SidebarMenuViewModel>());
+            }
 
             var result = new List<SidebarMenuViewModel>()
             {
@@ -90,6 +106,21 @@ namespace Web.Components
                 MenuOpen = contoller == nameof(SeedingsController).RemoveControllerFromName() ? menuOpenAttribute : "",
                 Childs = seasonsSidebarElements
             });
+
+            if (userRole.Value == IdentityRoles.UserRole)
+            {
+                result.Add(new SidebarMenuViewModel
+                {
+                    Title = "Администрация",
+                    Childs = new List<SidebarChildElentViewModel>()
+                    {
+                        new SidebarChildElentViewModel()
+                        {
+                            Title = "Потребители"
+                        }
+                    }
+                });
+            }
 
             return View(result);
         }

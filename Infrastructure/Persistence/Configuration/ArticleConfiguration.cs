@@ -3,7 +3,7 @@ using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Domain.ModelConstraint.CommonConstraints;
 
-namespace Infrastructure.Configuration
+namespace Infrastructure.Persistence.Configuration
 {
     internal class ArticleConfiguration : EntityConfiguration<Article, int>
     {

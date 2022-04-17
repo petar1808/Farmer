@@ -4,10 +4,12 @@ using Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Application.Models;
 
 namespace Infrastructure.DbContect
 {
-    public class FarmerDbContext : DbContext, IFarmerDbContext
+    public class FarmerDbContext : IdentityDbContext<User, Role, string>, IFarmerDbContext
     {
         public FarmerDbContext(DbContextOptions options)
             : base(options)
@@ -30,5 +32,9 @@ namespace Infrastructure.DbContect
         public DbSet<Seeding> Seedings { get; set; } = default!;
 
         public DbSet<WorkingSeason> WorkingSeasons { get; set; } = default!;
+
+        public override DbSet<User> Users { get; set; } = default!;
+
+        public override DbSet<Role> Roles { get; set; } = default!;
     }
 }

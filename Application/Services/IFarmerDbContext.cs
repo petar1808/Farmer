@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Application.Models;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -15,6 +16,10 @@ namespace Application.Services
         DbSet<Seeding> Seedings { get; } 
 
         DbSet<WorkingSeason> WorkingSeasons { get; set; }
+
+        DbSet<User> Users { get; set; }
+
+        DbSet<Role> Roles { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 

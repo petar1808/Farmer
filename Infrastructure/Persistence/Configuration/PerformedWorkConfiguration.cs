@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Configuration
+namespace Infrastructure.Persistence.Configuration
 {
     internal class PerformedWorkConfiguration : EntityConfiguration<PerformedWork, int>
     {

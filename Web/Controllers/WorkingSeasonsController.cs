@@ -3,8 +3,11 @@ using Application.Services.WorikingSeasons;
 using AutoMapper;
 using Domain.Models;
 using Infrastructure.DbContect;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.ViewModels.WorkingSeasons;
+using static Infrastructure.IdentityConstants.IdentityRoles;
 
 namespace Web.Controllers
 {
@@ -18,6 +21,7 @@ namespace Web.Controllers
             this.mapper = mapper;
             this.workingSeasonService = workingSeasonService;
         }
+
 
         [HttpGet]
         public IActionResult Add() => View();
@@ -36,6 +40,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = AdminRole)]
         public async Task<IActionResult> All()
         {
             var workingSeason = await workingSeasonService.GetAll();

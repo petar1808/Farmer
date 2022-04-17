@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Common;
 
-namespace Infrastructure.Configuration
+namespace Infrastructure.Persistence.Configuration
 {
     internal class WorkingSeasonConfiguration : EntityConfiguration<WorkingSeason, int>
     {
