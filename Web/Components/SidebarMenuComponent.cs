@@ -3,9 +3,11 @@ using Application.Services;
 using Application.Services.WorikingSeasons;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Web.Areas.Identity.Controllers;
 using Web.Controllers;
 using Web.ViewModels.Components;
 using static Infrastructure.IdentityConstants;
+using static Web.WebConstraints.Areas;
 
 namespace Web.Components
 {
@@ -89,7 +91,7 @@ namespace Web.Components
                 sidebarMenuCache.AddSidebarMenuItems(seasons);
             }
 
-            // await this.workingSeasonService.ListSidebarMenuItems();
+             await this.workingSeasonService.ListSidebarMenuItems();
 
             var seasonsSidebarElements = seasons.Select(x => new SidebarChildElentViewModel
             {
@@ -107,7 +109,7 @@ namespace Web.Components
                 Childs = seasonsSidebarElements
             });
 
-            if (userRole.Value == IdentityRoles.UserRole)
+            if (userRole.Value == IdentityRoles.AdminRole)
             {
                 result.Add(new SidebarMenuViewModel
                 {
@@ -116,10 +118,14 @@ namespace Web.Components
                     {
                         new SidebarChildElentViewModel()
                         {
-                            Title = "Потребители"
+                            Title = "Потребители",
+                            ControllerName = nameof(IdentityController).RemoveControllerFromName(),
+                            ActionName = nameof(IdentityController.ListUsers),
+                            Active = contoller == nameof(IdentityController).RemoveControllerFromName() ? subMenuActiveAttribute : "",
+                            Area = Identity
                         }
                     }
-                });
+                }) ;
             }
 
             return View(result);

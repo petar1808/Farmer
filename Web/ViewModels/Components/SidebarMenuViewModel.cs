@@ -22,5 +22,7 @@
         public string ActionName { get; set; } = default!;
 
         public string Active { get; set; } = "";
+
+        public string Area { get; set; } = "";
     }
 }

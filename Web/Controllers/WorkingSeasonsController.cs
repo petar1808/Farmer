@@ -11,6 +11,7 @@ using static Infrastructure.IdentityConstants.IdentityRoles;
 
 namespace Web.Controllers
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class WorkingSeasonsController : Controller
     {
         private readonly IWorkingSeasonService workingSeasonService;
@@ -40,7 +41,6 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = AdminRole)]
         public async Task<IActionResult> All()
         {
             var workingSeason = await workingSeasonService.GetAll();

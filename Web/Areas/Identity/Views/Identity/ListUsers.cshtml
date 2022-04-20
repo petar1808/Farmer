@@ -1,0 +1,31 @@
+﻿@using Web.Areas.Identity.ViewModels
+@model List<ListUserViewModel>
+
+@{
+    ViewData["Title"] = "List Arable Land";
+}
+
+ <h2 class="text-center"> List Arable Land</h2>
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Ид</th>
+            <th scope="col">Емайл</th>
+            <th scope="col">Роля</th>
+             <th scope="col">Активен</th>
+        </tr>
+    </thead>
+    @foreach (var user in Model!)
+    {
+        <tbody>
+            <tr>
+                <th scope="row">@user.Id</th>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@user.Active</td>
+                <td><a asp-controller="Identity" asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-warning">Edit</a></td>
+            </tr>
+        </tbody>
+    }
+</table>
+<a asp-area="Identity" asp-controller="Identity" asp-action="AddUser" class="btn btn-primary">Добавяне на потрбител</a>

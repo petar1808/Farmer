@@ -5,12 +5,15 @@ using Application.Services.WorikingSeasons;
 using AutoMapper;
 using Domain.Models;
 using Infrastructure.DbContect;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Web.ViewModels.Seedings;
 
 namespace Web.Controllers
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class SeedingsController : Controller
     {
         private readonly FarmerDbContext dbContext;

@@ -20,6 +20,7 @@ namespace Application
             services.AddTransient<IWorkingSeasonService, WorkingSeasonService>();
             services.AddTransient<IArticleService, ArticleService>();
             services.AddTransient<ISeedingService, SeedingService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddSingleton<SidebarMenuCache>();
 
             return services;

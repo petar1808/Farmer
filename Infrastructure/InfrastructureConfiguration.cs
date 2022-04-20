@@ -91,6 +91,8 @@ namespace Infrastructure
                 {
                     var user = new User(configuration.GetSection("DefaultUser:Email").Value);
 
+                    user.UpdateActive(true);
+
                     userManager.CreateAsync(user, configuration.GetSection("DefaultUser:Password").Value).GetAwaiter().GetResult();
 
                     userManager.AddToRoleAsync(user, IdentityRoles.AdminRole).GetAwaiter().GetResult();

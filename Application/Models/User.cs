@@ -15,8 +15,14 @@ namespace Application.Models
 
         }
 
-        public bool Active { get; set; }
+        public bool Active { get; private set; }
 
         public List<Role> UserRoles { get; set; } = new List<Role>();
+
+        public User UpdateActive(bool isActive)
+        {
+            this.Active = isActive;
+            return this;
+        }
     }
 }

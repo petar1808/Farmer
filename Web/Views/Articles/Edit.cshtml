@@ -21,7 +21,7 @@
             <select asp-for="ArticleType" class="form-control">
                 @foreach (var articleType in EnumHelper.GetAllNamesAndValues<ArticleType>())
                 {
-                    if((int)Model.ArticleType == articleType.Key)
+                    if((int)Model!.ArticleType == articleType.Key)
                     {
                         <option value="@articleType.Key" selected>@articleType.Value</option>
                         continue;

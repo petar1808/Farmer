@@ -1,4 +1,6 @@
-﻿using Application.Services;
+﻿using Application.Models;
+using Application.Services;
+using AutoMapper;
 using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -10,16 +12,28 @@ using Web.Areas.Identity.ViewModels;
 
 namespace Web.Areas.Identity.Controllers
 {
-    [Area("Identity")]
+    [Area(WebConstraints.Areas.Identity)]
     public class IdentityController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<User> userManager;
+        private readonly IEmailService emailService;
+        private readonly IFarmerDbContext farmerDbContext;
+        private readonly IUserService userService;
+        private readonly IMapper mapper;
         // user service
 
         public IdentityController(
-            UserManager<IdentityUser> userManager)
+            UserManager<User> userManager,
+            IEmailService emailService,
+            IFarmerDbContext farmerDbContext,
+            IUserService userService,
+            IMapper mapper)
         {
             this.userManager = userManager;
+            this.emailService = emailService;
+            this.farmerDbContext = farmerDbContext;
+            this.userService = userService;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -30,6 +44,12 @@ namespace Web.Areas.Identity.Controllers
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             var user = await userManager.FindByNameAsync(loginViewModel.Email);
+
+
+            //if (!user.Active)
+            //{
+            //    throw new ApplicationException($"User with Id: {user.UserName}, don't active");
+            //}
 
             if (user == null)
             {
@@ -57,19 +77,70 @@ namespace Web.Areas.Identity.Controllers
             return RedirectToAction("all", "workingSeasons", new { area = "" });
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> ListUsers()
-        //{
-        //   var listUser = await farmerDbContext
-        //        .Users
-        //        .Select(x => new ListUserViewModel
-        //        {
-        //            Email = x.UserName
-        //        })
-        //        .ToListAsync();
+        [HttpGet]
+        public async Task<IActionResult> ListUsers()
+        {
+            var users = await userService.ListUsers();
 
-        //    return View(listUser);
-        //}
+            //return View(users);
+
+            //var arableLands = await arableLandService.GetAll();
+
+            return View(mapper.Map<List<ListUserViewModel>>(users));
+
+
+        }
+
+        [HttpGet]
+        public IActionResult AddUser() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser(AddUserViewModel addUser)
+        {
+
+            var user = new User(addUser.Email);
+
+            var userResult = await userManager.CreateAsync(user, addUser.Password);
+
+            if (!userResult.Succeeded)
+            {
+                return BadRequest(userResult.Errors);
+            }
+
+            user.UpdateActive(true);
+
+            var userRoleResult = await userManager.AddToRoleAsync(user, "User");
+
+            if (!userRoleResult.Succeeded)
+            {
+                return BadRequest(userRoleResult.Errors);
+            }
+
+            await emailService.SendUserCreatedEmail(addUser.Email, addUser.Password);
+
+            return RedirectToAction(nameof(ListUsers));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var result = await userService.GetUser(id);
+
+            return View(mapper.Map<EditUserViewModel>(result));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel editUser)
+        {
+            if (editUser == null)
+            {
+                return BadRequest();
+            }
+
+            await userService.EditUser(editUser.Id, editUser.Active);
+
+            return RedirectToAction(nameof(ListUsers));
+        }
 
     }
 }

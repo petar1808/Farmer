@@ -19,25 +19,39 @@ namespace Infrastructure.Email
             this.emailSettings = options.Value;
         }
 
+        public async Task SendUserChangePassword(string userEmail, string password)
+        {
+            var subject = $"Вашата парола беше сменена";
+            var text = $"Вашият емайл е: {userEmail} - Вашата нова парола e: {password}";
 
-        // То userName, UserEmail, Password
-        public async Task SendUserCreatedEmail()
+            await SendUserEmail(userEmail, password, subject, text);
+        }
+
+        public async Task SendUserCreatedEmail(string userEmail, string password)
+        {
+            var subject = $"Вие бяхте успешно регистриран в Фермер";
+            var text = $"Вашият емайл е: {userEmail} - Вашата парола e: {password}";
+
+            await SendUserEmail(userEmail, password,subject, text);
+        }
+
+        private async Task SendUserEmail(string userEmail, string password, string subject , string text)
         {
             var message = new MimeMessage();
 
-            message.To.Add(new MailboxAddress("Petar", "beroicite@abv.bg"));
+            message.To.Add(new MailboxAddress(userEmail, userEmail));
 
             message.From.Add(new MailboxAddress(this.emailSettings.UserName, this.emailSettings.UserName));
 
             // 
-            message.Subject = "Nov";
+            message.Subject = subject;
 
             message.Body = new TextPart
             {
-                Text = "gotovo"
+                Text = text
             };
 
-            using(var emailClient = new SmtpClient())
+            using (var emailClient = new SmtpClient())
             {
                 await emailClient.ConnectAsync(emailSettings.Server, emailSettings.Port);
 

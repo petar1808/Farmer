@@ -4,11 +4,14 @@ using AutoMapper;
 using Domain.Enum;
 using Domain.Models;
 using Infrastructure.DbContect;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.ViewModels.Articles;
 
 namespace Web.Controllers
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class ArticlesController : Controller
     {
         private readonly FarmerDbContext dbContext;

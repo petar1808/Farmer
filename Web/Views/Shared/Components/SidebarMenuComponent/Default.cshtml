@@ -23,7 +23,7 @@
                         @foreach(var childItem in menuItem.Childs)
                         {
                             <li class="nav-item">
-                                <a asp-controller="@childItem.ControllerName" asp-action="@childItem.ActionName" asp-route-seasonId="@childItem.Raute" class="nav-link @childItem.Active">
+                                <a asp-area="@childItem.Area" asp-controller="@childItem.ControllerName" asp-action="@childItem.ActionName" asp-route-seasonId="@childItem.Raute" class="nav-link @childItem.Active">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>@childItem.Title</p>
                                 </a>

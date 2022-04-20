@@ -26,7 +26,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//app.SeedIdentityUsers(builder.Configuration);
+app.SeedIdentityUsers(builder.Configuration);
 
 app.UseAuthorization();
 app.UseAuthentication();
