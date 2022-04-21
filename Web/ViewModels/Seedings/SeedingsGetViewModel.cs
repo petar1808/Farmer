@@ -1,5 +1,6 @@
 ﻿using Application.Mappings;
 using Application.Models.Seedings;
+using System.ComponentModel.DataAnnotations;
 
 namespace Web.ViewModels.Seedings
 {

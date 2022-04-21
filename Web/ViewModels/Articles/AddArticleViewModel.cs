@@ -4,15 +4,7 @@ using static Domain.ModelConstraint.CommonConstraints;
 
 namespace Web.ViewModels.Articles
 {
-    public class AddArticleViewModel
+    public class AddArticleViewModel : ArticleBaseModel
     {
-        [Required]
-        [StringLength(MaxNameLenght)]
-        public string Name { get; init; } = default!;
-
-        [Required]
-        [Display(Name = "Article Type")]
-        [EnumDataType(typeof(ArticleType))]
-        public ArticleType ArticleType { get; init; }
     }
 }

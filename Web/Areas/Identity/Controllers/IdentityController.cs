@@ -20,7 +20,6 @@ namespace Web.Areas.Identity.Controllers
         private readonly IFarmerDbContext farmerDbContext;
         private readonly IUserService userService;
         private readonly IMapper mapper;
-        // user service
 
         public IdentityController(
             UserManager<User> userManager,
@@ -45,11 +44,10 @@ namespace Web.Areas.Identity.Controllers
         {
             var user = await userManager.FindByNameAsync(loginViewModel.Email);
 
-
-            //if (!user.Active)
-            //{
-            //    throw new ApplicationException($"User with Id: {user.UserName}, don't active");
-            //}
+            if (!user.Active)
+            {
+                throw new ApplicationException($"User with Id: {user.UserName}, don't active");
+            }
 
             if (user == null)
             {
@@ -82,13 +80,7 @@ namespace Web.Areas.Identity.Controllers
         {
             var users = await userService.ListUsers();
 
-            //return View(users);
-
-            //var arableLands = await arableLandService.GetAll();
-
             return View(mapper.Map<List<ListUserViewModel>>(users));
-
-
         }
 
         [HttpGet]

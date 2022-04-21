@@ -5,8 +5,8 @@
     <div class="col-md-12">
         <div class="card card-default">
             <div class="card-header">
-                <h3 class="card-title">Сеидба</h3>
-                <a asp-controller="Seedings" asp-action="Add" asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-primary">Add</a>
+                <h2 class="text-center"> Всички сеитби </h2>
+                
             </div>
             <div class="card-body">
                 <div class="dataTables_wrapper dt-bootstrap4">
@@ -14,13 +14,13 @@
                         <table class="table">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Arable Land</th>
-                                    <th scope="col">Article</th>
-                                    <th scope="col">Size In Decar</th>
-                                    <th scope="col">Season</th>
-                                    <th scope="col">Start Date</th>
-                                    <th scope="col">End Date</th>
+                                    <th scope="col">Ид</th>
+                                    <th scope="col">Земя</th>
+                                    <th scope="col">Артикул</th>
+                                    <th scope="col">Декари</th>
+                                    <th scope="col">Сезон</th>
+                                    <th scope="col">Начало на сезон</th>
+                                    <th scope="col">Край на сезон</th>
                                 </tr>
                             </thead>
                             @foreach (var seeding in Model.Seedings)
@@ -38,9 +38,9 @@
                                              asp-route-seedingId="@seeding.Id" 
                                              asp-route-currentArableLandId="@seeding.ArableLandId" 
                                              asp-route-articleId="@seeding.ArticleId"
-                                             asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-warning">Edit</a></td>
+                                             asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-warning">Редактирай</a></td>
 
-                                         <td><a asp-controller="Seedings" asp-action="Delete" asp-route-seedingId="@seeding.Id"  asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-warning">Delete</a></td>
+                                         <td><a asp-controller="Seedings" asp-action="Delete" asp-route-seedingId="@seeding.Id"  asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-warning">Изтрий</a></td>
                                     </tr>
                                 </tbody>
                             }
@@ -51,5 +51,6 @@
         </div>
     </div>
 </div>
+<a asp-controller="Seedings" asp-action="Add" asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-primary">Добавяне на сеитба</a>
 
 

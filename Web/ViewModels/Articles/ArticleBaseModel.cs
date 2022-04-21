@@ -8,10 +8,11 @@ namespace Web.ViewModels.Articles
     {
         [Required]
         [StringLength(MaxNameLenght)]
+        [Display(Name = "Име на артикул")]
         public string Name { get; init; } = default!;
 
         [Required]
-        [Display(Name = "Article Type")]
+        [Display(Name = "Тип на артикул")]
         [EnumDataType(typeof(ArticleType))]
         public ArticleType ArticleType { get; init; }
     }

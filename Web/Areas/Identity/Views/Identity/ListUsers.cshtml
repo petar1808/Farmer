@@ -2,10 +2,10 @@
 @model List<ListUserViewModel>
 
 @{
-    ViewData["Title"] = "List Arable Land";
+    ViewData["Title"] = "Всички потребители";
 }
 
- <h2 class="text-center"> List Arable Land</h2>
+ <h2 class="text-center"> Всички потребители</h2>
 <table class="table">
     <thead class="thead-light">
         <tr>
@@ -23,9 +23,9 @@
                 <td>@user.Email</td>
                 <td>@user.Role</td>
                 <td>@user.Active</td>
-                <td><a asp-controller="Identity" asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-warning">Edit</a></td>
+                <td><a asp-controller="Identity" asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-warning">Редактирай</a></td>
             </tr>
         </tbody>
     }
 </table>
-<a asp-area="Identity" asp-controller="Identity" asp-action="AddUser" class="btn btn-primary">Добавяне на потрбител</a>
+<a asp-area="Identity" asp-controller="Identity" asp-action="AddUser" class="btn btn-primary">Добавяне на потребител</a>

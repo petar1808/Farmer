@@ -6,17 +6,9 @@ using static Domain.ModelConstraint.CommonConstraints;
 
 namespace Web.ViewModels.Articles
 {
-    public class EditArticleViewModel : IMapFrom<GetArticleModel>
+    public class EditArticleViewModel : ArticleBaseModel, IMapFrom<GetArticleModel>
     {
+        [Display(Name = "Ид")]
         public int Id { get; init; }
-
-        [Required]
-        [StringLength(MaxNameLenght)]
-        public string Name { get; init; } = default!;
-
-        [Required]
-        [Display(Name = "Article Type")]
-        [EnumDataType(typeof(ArticleType))]
-        public ArticleType ArticleType { get; init; }
     }
 }

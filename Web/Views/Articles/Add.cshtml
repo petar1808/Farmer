@@ -3,10 +3,10 @@
 @model AddArticleViewModel
 
 @{
-    ViewData["Title"] = "Add Article";
+    ViewData["Title"] = "Добавяне на артикул";
 }
 
-<h2 class="text-center"> Add Article</h2>
+<h2 class="text-center"> Добавяне на артикул </h2>
 <form method="post">
     <div class="form-group">
         <label asp-for="Name"></label>
@@ -14,7 +14,7 @@
         <span asp-validation-for="Name" class="small text-danger"></span>
     </div>
       <div class="form-group">
-            <label>Type</label>
+            <label>Тип арткул</label>
             <select asp-for="ArticleType" class="form-control">
                 @foreach (var articleType in EnumHelper.GetAllNamesAndValues<ArticleType>())
                 {
@@ -22,5 +22,5 @@
                 }
             </select>
         </div>
-    <input class="btn btn-primary"  type="submit" value="Submit" />
+    <input class="btn btn-primary"  type="submit" value="Добави" />
 </form>

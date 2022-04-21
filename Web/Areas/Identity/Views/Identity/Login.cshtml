@@ -25,13 +25,14 @@
       <!-- /.login-logo -->
       <div class="card card-outline card-primary">
         <div class="card-header text-center">
-          <a class="h1"><b>Farmer</b></a>
+          <a class="h1"><b>Фермер</b></a>
         </div>
         <div class="card-body">
           <p class="login-box-msg">Влезте в профила си</p>
 
           <form method="post">
             <div class="form-group">
+                <label asp-for="Email"></label>
               <input asp-for="Email" type="email"  class="form-control" placeholder="Email">
               <div class="input-group-append">
                 <div class="input-group-text">
@@ -40,6 +41,7 @@
               </div>
             </div>
             <div class="form-group">
+                <label asp-for="Password"></label>
               <input asp-for="Password" type="password" class="form-control" placeholder="Password">
               <div class="input-group-append">
                 <div class="input-group-text">
