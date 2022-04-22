@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Domain.ModelConstraint.WorkingSeasonConstraints;
 
 namespace Domain.Models
 {
@@ -20,6 +21,7 @@ namespace Domain.Models
 
         public WorkingSeason(string name)
         {
+            Validate(name);
             Name = name;
         }
 
@@ -28,8 +30,6 @@ namespace Domain.Models
         public DateTime? StartDate { get; private set; }
 
         public DateTime? EndDate { get; private set; }
-
-        #region UpdateMethods
 
         public WorkingSeason UpdateName(string name)
         {
@@ -48,6 +48,18 @@ namespace Domain.Models
             this.EndDate = endDate;
             return this;
         }
-        #endregion
+
+        private void ValidateName(string name)
+            => Guard.Guard.ForStringMaxLengtAndMinLength(
+          name,
+          MaxLenghtName,
+          MinLenghtName,
+          nameof(this.Name));
+
+
+        private void Validate(string name)
+        {
+            ValidateName(name);
+        }
     }
 }

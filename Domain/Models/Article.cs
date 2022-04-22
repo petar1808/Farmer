@@ -1,10 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Domain.ModelConstraint.CommonConstraints;
 
 namespace Domain.Models
 {
@@ -12,6 +8,7 @@ namespace Domain.Models
     {
         public Article(string name, ArticleType articleType)
         {
+            Validate(name,articleType); 
             Name = name;
             ArticleType = articleType;
         }
@@ -22,14 +19,31 @@ namespace Domain.Models
 
         public Article UpdateName(string name)
         {
+            ValidateName(name);
             this.Name = name;
             return this;
         }
 
         public Article UpdateArticleType(ArticleType articleType)
         {
+            ValidateArticleType(articleType);
             this.ArticleType = articleType;
             return this;
+        }
+
+        private void ValidateName(string name)
+          => Guard.Guard.ForStringMaxLength(
+              name,
+              MaxNameLenght,
+              nameof(this.Name));
+
+        private void ValidateArticleType(ArticleType type)
+            => Guard.Guard.AgainstEmptyEnum(type, nameof(ArticleType));
+
+        private void Validate(string name, ArticleType type)
+        {
+            ValidateName(name);
+            ValidateArticleType(type);
         }
     }
 }

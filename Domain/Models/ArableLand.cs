@@ -8,6 +8,7 @@ namespace Domain.Models
     {
         public ArableLand(string name, int sizeInDecar)
         {
+            Validate(name, sizeInDecar);
             Name = name;
             SizeInDecar = sizeInDecar;
         }
@@ -18,22 +19,31 @@ namespace Domain.Models
 
         public ArableLand UpdateName(string name)
         {
+            ValidateName(name);
             this.Name = name;
             return this;
         }
 
         public ArableLand UpdateSizeInDecar(int size)
         {
+            ValidateArableLand(size);
             this.SizeInDecar = size;
             return this;
         }   
 
         private void ValidateName(string name)
+            => Guard.Guard.ForStringMaxLength(
+                name,
+                MaxNameLenght,
+                nameof(this.Name));
+
+        private void ValidateArableLand(int size)
+            => Guard.Guard.ForPositiveNumber(size, nameof(SizeInDecar));
+
+        private void Validate(string name, int size)
         {
-            if (name.Length > MaxNameLenght)
-            {
-                throw new DomainException(nameof(ArableLand));
-            }
+            ValidateName(name);
+            ValidateArableLand(size);
         }
     } 
 }
