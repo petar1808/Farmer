@@ -7,7 +7,7 @@ namespace Web.ViewModels.Articles
     public class ArticleBaseModel
     {
         [Required]
-        [StringLength(MaxNameLenght)]
+        [StringLength(MaxNameLenght,ErrorMessage = "Артикулът не може да бъде по-голям от {1} символа.")]
         [Display(Name = "Име на артикул")]
         public string Name { get; init; } = default!;
 

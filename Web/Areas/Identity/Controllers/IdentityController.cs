@@ -4,11 +4,13 @@ using AutoMapper;
 using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Web.Areas.Identity.ViewModels;
+using static Infrastructure.IdentityConstants.IdentityRoles;
 
 namespace Web.Areas.Identity.Controllers
 {
@@ -42,6 +44,7 @@ namespace Web.Areas.Identity.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
+
             var user = await userManager.FindByNameAsync(loginViewModel.Email);
 
             if (!user.Active)
@@ -76,6 +79,7 @@ namespace Web.Areas.Identity.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme,Roles = AdminRole)]
         public async Task<IActionResult> ListUsers()
         {
             var users = await userService.ListUsers();
@@ -87,9 +91,13 @@ namespace Web.Areas.Identity.Controllers
         public IActionResult AddUser() => View();
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = AdminRole)]
         public async Task<IActionResult> AddUser(AddUserViewModel addUser)
         {
-
+            if (!ModelState.IsValid)
+            {
+                return View(addUser);
+            }
             var user = new User(addUser.Email);
 
             var userResult = await userManager.CreateAsync(user, addUser.Password);
@@ -114,6 +122,7 @@ namespace Web.Areas.Identity.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = AdminRole)]
         public async Task<IActionResult> EditUser(string id)
         {
             var result = await userService.GetUser(id);
@@ -122,6 +131,7 @@ namespace Web.Areas.Identity.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = AdminRole)]
         public async Task<IActionResult> EditUser(EditUserViewModel editUser)
         {
             if (editUser == null)

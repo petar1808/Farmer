@@ -14,13 +14,11 @@ namespace Web.Controllers
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class ArticlesController : Controller
     {
-        private readonly FarmerDbContext dbContext;
         private readonly IArticleService articleService;
         private readonly IMapper mapper;
 
-        public ArticlesController(FarmerDbContext dbContext, IArticleService articleService, IMapper mapper)
+        public ArticlesController(IArticleService articleService, IMapper mapper)
         {
-            this.dbContext = dbContext;
             this.articleService = articleService;
             this.mapper = mapper;
         }
@@ -60,6 +58,11 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditArticleViewModel article)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(article);
+            }
+
             if (article == null)
             {
                 return BadRequest();

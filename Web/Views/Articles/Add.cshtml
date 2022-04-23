@@ -21,6 +21,8 @@
                     <option value="@articleType.Key">@articleType.Value</option>
                 }
             </select>
+            <span asp-validation-for="ArticleType" class="small text-danger"></span>
         </div>
     <input class="btn btn-primary"  type="submit" value="Добави" />
+     <a class="btn btn-primary" onclick="history.go(-1);">Назад</a><br />
 </form>

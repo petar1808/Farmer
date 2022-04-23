@@ -7,10 +7,11 @@
 <h2 class="text-center">Редактиране на сезон</h2>
 <div class="row">
     <div class="offset-md-2 col-md-8 col-sm-12">
-        <form method = "post">
+        <form method="post">
             <div class="form-group">
-              <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" >
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control">
+                 <span asp-validation-for="Name" class="small text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate"></label>
@@ -21,7 +22,8 @@
                 <input asp-for="EndDate" class="form-control">
             </div>
             <div>
-                <input class="btn btn-primary"  type="submit" value="Промени" />
+                <input class="btn btn-primary" type="submit" value="Промени" />
+                <a class="btn btn-primary" onclick="history.go(-1);">Назад</a><br />
             </div>
         </form>
     </div>

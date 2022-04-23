@@ -61,6 +61,11 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditWorkingSeasonModel workingSeason)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(workingSeason);
+            }
+
             if (workingSeason == null)
             {
                 return BadRequest();

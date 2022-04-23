@@ -21,12 +21,14 @@ namespace Web.Controllers
             this.mapper = mapper;
         }
 
+
+
         [HttpGet]
         public IActionResult Add() => View();
 
         [HttpPost]
         public async Task<IActionResult> Add(AddArableLandViewModel arableLand)
-        {
+        {          
             if (!ModelState.IsValid)
             {
                 return View(arableLand);
@@ -48,6 +50,11 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditArableLandViewModel arableLand)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(arableLand);
+            }
+
             if (arableLand == null)
             {
                 return BadRequest();
@@ -58,7 +65,8 @@ namespace Web.Controllers
                 arableLand.Name,
                 arableLand.SizeInDecar);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "ArableLands");
         }
 
         [HttpGet]
@@ -74,7 +82,8 @@ namespace Web.Controllers
         {
             await arableLandService.Delete(id);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "ArableLands");
         }
     }
 }

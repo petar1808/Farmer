@@ -5,6 +5,5 @@ namespace Web.ViewModels.ArableLands
 {
     public class AddArableLandViewModel : ArableLandBaseViewModel
     {
-
     }
 }

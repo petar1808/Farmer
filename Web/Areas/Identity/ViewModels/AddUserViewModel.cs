@@ -7,10 +7,12 @@ namespace Web.Areas.Identity.ViewModels
     {
         [Display(Name = "Имейл")]
         [Required]
+        [EmailAddress]
         public string Email { get; init; } = default!;
 
         [Display(Name = "Парола")]
         [Required]
+        
         public string Password { get; init; } = default!;
 
         [Required]

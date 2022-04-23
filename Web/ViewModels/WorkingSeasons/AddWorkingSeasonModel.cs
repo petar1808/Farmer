@@ -6,7 +6,7 @@ namespace Web.ViewModels.WorkingSeasons
     public class AddWorkingSeasonModel
     {
         [Required]
-        [StringLength(MinLenghtName,MinimumLength = MinLenghtName)]
+        [StringLength(MaxLenghtName, MinimumLength = MinLenghtName, ErrorMessage = "Сезона трябва да бъде {0} символа.")]
         [Display(Name = "Име на сезона")]
         public string Name { get; init; } = default!;
 

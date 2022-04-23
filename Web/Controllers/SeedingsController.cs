@@ -16,20 +16,17 @@ namespace Web.Controllers
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class SeedingsController : Controller
     {
-        private readonly FarmerDbContext dbContext;
         private readonly ISeedingService seedingService;
         private readonly IMapper mapper;
         private readonly IArableLandService arableLandService;
         private readonly IArticleService articleService;
 
         public SeedingsController(
-            FarmerDbContext dbContext,
             ISeedingService seedingService,
             IMapper mapper,
             IArableLandService arableLandService,
             IArticleService articleService)
         {
-            this.dbContext = dbContext;
             this.seedingService = seedingService;
             this.mapper = mapper;
             this.arableLandService = arableLandService;

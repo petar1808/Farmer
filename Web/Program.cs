@@ -1,6 +1,7 @@
 using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ app.SeedIdentityUsers(builder.Configuration);
 
 app.UseAuthorization();
 app.UseAuthentication();
+app.UseValidationExceptionHandler();
 
 
 app.MapControllerRoute(
