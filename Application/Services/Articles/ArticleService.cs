@@ -1,4 +1,5 @@
-﻿using Application.Models.Articles;
+﻿using Application.Exceptions;
+using Application.Models.Articles;
 using Application.Models.Common;
 using AutoMapper;
 using Domain.Enum;
@@ -39,7 +40,7 @@ namespace Application.Services.Articles
 
             if (article == null)
             {
-                throw new ApplicationException($"Article with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Article with Id: {id}, don't exist");
             }
 
             farmerDbContext.Articles.Remove(article);
@@ -54,7 +55,7 @@ namespace Application.Services.Articles
 
             if (article == null)
             {
-                throw new ApplicationException($"Article with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Article with Id: {id}, don't exist");
             }
 
             article
@@ -73,7 +74,7 @@ namespace Application.Services.Articles
 
             if (article == null)
             {
-                throw new ApplicationException($"Article with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Article with Id: {id}, don't exist");
             }
 
             var result = mapper.Map<GetArticleModel>(article);

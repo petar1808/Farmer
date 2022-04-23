@@ -1,4 +1,5 @@
-﻿using Application.Models.Seedings;
+﻿using Application.Exceptions;
+using Application.Models.Seedings;
 using AutoMapper;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,7 @@ namespace Application.Services.Seedings
 
             if (seeding == null)
             {
-                throw new ApplicationException($"Arable land with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Arable land with Id: {id}, don't exist");
             }
 
             farmerDbContext.Remove(seeding);
@@ -52,7 +53,7 @@ namespace Application.Services.Seedings
 
             if (seeding == null)
             {
-                throw new ApplicationException($"Seeding with Id: {seedingId}, don't exist");
+                throw new BadRequestExeption($"Seeding with Id: {seedingId}, don't exist");
             }
 
             seeding
@@ -71,7 +72,7 @@ namespace Application.Services.Seedings
 
             if (seeding == null)
             {
-                throw new ApplicationException($"Seeding with Id: {seedingId}, don't exist");
+                throw new BadRequestExeption($"Seeding with Id: {seedingId}, don't exist");
             }
         }
 

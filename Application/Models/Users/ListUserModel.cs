@@ -17,11 +17,5 @@ namespace Application.Models.Users
         public string Role { get; init; } = default!;
 
         public bool Active { get; init; } = default!;
-
-        //public virtual void Mapping(Profile mapper)
-        //  => mapper.CreateMap<User, ListUserModel>()
-        //      .ForMember(x => x.Email, cfg => cfg.MapFrom(c => c.UserName))
-        //      .ForMember(x => x.Role, cfg => cfg.MapFrom(c => c.UserRoles.First().Name))
-        //      .ForMember(x => x.Active, cfg => cfg.MapFrom(c => c.Active));
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Models.ArableLands;
+﻿using Application.Exceptions;
+using Application.Models.ArableLands;
 using Application.Models.Common;
 using AutoMapper;
 using Domain.Models;
@@ -32,7 +33,7 @@ namespace Application.Services.ArableLands
 
             if (arableLand == null)
             {
-                throw new ApplicationException($"Arable land with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Arable land with Id: {id}, don't exist");
             }
 
             arableLand
@@ -51,7 +52,7 @@ namespace Application.Services.ArableLands
 
             if (arableLand == null)
             {
-                throw new ApplicationException($"Arable land with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Arable land with Id: {id}, don't exist");
             }
 
             var result = mapper.Map<GetAreableLandModel>(arableLand);
@@ -75,7 +76,7 @@ namespace Application.Services.ArableLands
 
             if (arableLand == null)
             {
-                throw new ApplicationException($"Arable land with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Arable land with Id: {id}, don't exist");
             }
 
             farmerDbContext.Remove(arableLand);
@@ -86,15 +87,10 @@ namespace Application.Services.ArableLands
             int seasionId, 
             int? currentArableLandId = null)
         {
-            // 2
             var arableLands = await this.farmerDbContext
                 .ArableLands
                 .Select(x => new SelectionListModel(x.Id, x.Name))
                 .ToListAsync();
-
-            // 1
-            // 2
-            // 3
 
             var existingArableLands = await this.farmerDbContext
               .Seedings
@@ -102,12 +98,8 @@ namespace Application.Services.ArableLands
               .Select(x => x.ArableLandId)
               .ToListAsync();
 
-            // 1
-            // 2
-
             if (currentArableLandId != null)
             {
-                // 1
                 existingArableLands = existingArableLands
                     .Where(x => x != currentArableLandId)
                     .ToList();
@@ -116,8 +108,6 @@ namespace Application.Services.ArableLands
             arableLands = arableLands
                 .Where(x => !existingArableLands.Contains(x.Value))
                 .ToList();
-
-
 
             return arableLands;
         }

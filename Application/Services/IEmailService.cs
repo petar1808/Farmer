@@ -8,8 +8,6 @@ namespace Application.Services
 {
     public interface IEmailService
     {
-        //Task SendUserEmail(string userEmail, string password, string subject , string text );
-
         Task SendUserChangePassword(string userEmail, string password);
 
         Task SendUserCreatedEmail(string userEmail, string password);

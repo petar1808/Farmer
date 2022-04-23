@@ -13,10 +13,5 @@ namespace Application.Models.ArableLands
 
         [Display(Name = "Size In Decar")]
         public int SizeInDecar { get; init; }
-
-        // example
-        //public virtual void Mapping(Profile mapper)
-        //    => mapper.CreateMap<ArableLand, GetAreableLandModel>()
-        //        .ForMember(x => x.Id2, cfg => cfg.MapFrom(c => c.Id));
     }
 }

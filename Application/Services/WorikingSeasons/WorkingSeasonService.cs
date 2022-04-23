@@ -1,4 +1,5 @@
-﻿using Application.Models.WorkingSeasons;
+﻿using Application.Exceptions;
+using Application.Models.WorkingSeasons;
 using AutoMapper;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,7 @@ namespace Application.Services.WorikingSeasons
 
             if (workingSeason == null)
             {
-                throw new ApplicationException($"Working season with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Working season with Id: {id}, don't exist");
             }
 
             farmerDbContext.WorkingSeasons.Remove(workingSeason);
@@ -58,7 +59,7 @@ namespace Application.Services.WorikingSeasons
 
             if (workingSeason == null)
             {
-                throw new ApplicationException($"Working season with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Working season with Id: {id}, don't exist");
             }
 
             workingSeason
@@ -78,7 +79,7 @@ namespace Application.Services.WorikingSeasons
 
             if (workingSeason == null)
             {
-                throw new ApplicationException($"Working season with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Working season with Id: {id}, don't exist");
             }
 
             var result = mapper.Map<GetWorkingSeasonModel>(workingSeason);
