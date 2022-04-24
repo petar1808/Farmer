@@ -6,7 +6,7 @@
         <div class="card card-default">
             <div class="card-header">
                 <h2 class="text-center"> Всички сеитби </h2>
-                
+
             </div>
             <div class="card-body">
                 <div class="dataTables_wrapper dt-bootstrap4">
@@ -23,7 +23,7 @@
                                     <th scope="col">Край на сезон</th>
                                 </tr>
                             </thead>
-                            @foreach (var seeding in Model.Seedings)
+                            @foreach (var seeding in Model!.Seedings)
                             {
                                 <tbody>
                                     <tr>
@@ -34,13 +34,17 @@
                                         <td>@seeding.SeasonName</td>
                                         <td>@seeding.StartDate</td>
                                         <td>@seeding.EndDate</td>
-                                         <td><a asp-controller="Seedings" asp-action="Edit" 
-                                             asp-route-seedingId="@seeding.Id" 
-                                             asp-route-currentArableLandId="@seeding.ArableLandId" 
-                                             asp-route-articleId="@seeding.ArticleId"
-                                             asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-warning">Редактирай</a></td>
-
-                                         <td><a asp-controller="Seedings" asp-action="Delete" asp-route-seedingId="@seeding.Id"  asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-warning">Изтрий</a></td>
+                                        <td>
+                                            <a asp-controller="Seedings" asp-action="Edit"
+                                           asp-route-seedingId="@seeding.Id"
+                                           asp-route-currentArableLandId="@seeding.ArableLandId"
+                                           asp-route-articleId="@seeding.ArticleId"
+                                           asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-warning">Редактирай</a>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Seedings" asp-action="Delete" asp-route-seedingId="@seeding.Id" asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-danger"
+                                           onclick="return confirm('Сигурни ли сте че, искате да изтриете сеитба с име : @seeding.AreableLandName')">Изтрий</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             }

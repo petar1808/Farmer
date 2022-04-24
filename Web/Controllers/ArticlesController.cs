@@ -36,7 +36,8 @@ namespace Web.Controllers
 
             await articleService.Add(articleModel.Name, articleModel.ArticleType);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "Articles");
         }
 
         [HttpGet]
@@ -73,7 +74,8 @@ namespace Web.Controllers
                 article.Name,
                 article.ArticleType);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "Articles");
         }
 
         [HttpGet]
@@ -81,7 +83,8 @@ namespace Web.Controllers
         {
             await articleService.Delete(id);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "Articles");
         }
     }
 }

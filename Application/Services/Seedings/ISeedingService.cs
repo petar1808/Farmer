@@ -11,7 +11,7 @@ namespace Application.Services.Seedings
     {
         Task Add(int arableLandId, int workingSeasonId, int articleId);
 
-        List<GetSeedingModel> List(int seasionId);
+        Task<List<GetSeedingModel>> List(int seasionId);
 
         Task Delete(int id);
 

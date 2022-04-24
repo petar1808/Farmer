@@ -17,7 +17,7 @@ namespace Web.Controllers
         private readonly IWorkingSeasonService workingSeasonService;
         private readonly IMapper mapper;
 
-        public WorkingSeasonsController(IMapper mapper, IWorkingSeasonService workingSeasonService)
+        public WorkingSeasonsController(IWorkingSeasonService workingSeasonService, IMapper mapper)
         {
             this.mapper = mapper;
             this.workingSeasonService = workingSeasonService;
@@ -37,7 +37,8 @@ namespace Web.Controllers
 
             await workingSeasonService.Add(workingSeason.Name, workingSeason.StartDate, workingSeason.EndDate);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "WorkingSeasons");
         }
 
         [HttpGet]
@@ -45,9 +46,7 @@ namespace Web.Controllers
         {
             var workingSeason = await workingSeasonService.GetAll();
 
-            var a = mapper.Map<List<GetWorkingSeasonViewModel>>(workingSeason);
-
-            return View(a); 
+            return View(mapper.Map<List<GetWorkingSeasonViewModel>>(workingSeason)); 
         }
 
         [HttpGet]
@@ -77,7 +76,8 @@ namespace Web.Controllers
                 workingSeason.StartDate,
                 workingSeason.EndDate);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "WorkingSeasons");
         }
 
         [HttpGet]
@@ -85,7 +85,8 @@ namespace Web.Controllers
         {
             await workingSeasonService.Delete(id);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "WorkingSeasons");
         }
     }
 }

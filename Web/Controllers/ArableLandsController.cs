@@ -36,7 +36,8 @@ namespace Web.Controllers
 
             await arableLandService.Add(arableLand.Name, arableLand.SizeInDecar);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(actionName: nameof(All),
+                controllerName: "ArableLands");
         }
 
         [HttpGet]

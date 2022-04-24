@@ -18,7 +18,6 @@
                <div class="form-group">
                   <label asp-for="ArableLandId"></label>
                   <select asp-for="ArableLandId" class="form-control">
-                     <option value="">All</option>
                      @foreach (var arableLand in Model!.ArableLands)
                      {
                         <option value="@arableLand.Value">@arableLand.Name</option>
@@ -27,7 +26,6 @@
                   <span asp-validation-for="ArableLandId" class="small text-danger"></span>
                   <label asp-for="ArticleId"></label>
                   <select asp-for="ArticleId" class="form-control">
-                     <option value="">All</option>
                      @foreach (var article in Model.Articles)
                      {
                         <option value="@article.Value">@article.Name</option>

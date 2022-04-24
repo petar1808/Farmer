@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{96CCA8B3-81B6-44BC-8E25-F984496959A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{96CCA8B3-81B6-44BC-8E25-F984496959A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{16832FE6-8DCB-4163-9EA5-FDB9FA25F43D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{16832FE6-8DCB-4163-9EA5-FDB9FA25F43D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0E355B28-70A8-4F17-B0AE-B86435CBFEBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0E355B28-70A8-4F17-B0AE-B86435CBFEBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{2AAD4030-703C-438D-A341-ECE3417BD00D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{2AAD4030-703C-438D-A341-ECE3417BD00D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FarmerWeb.Test", "Farmer.Test\FarmerWeb.Test.csproj", "{37487A99-282F-498A-A943-D7899EAE90CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FarmerDomain.Test", "FarmerDomain.Test\FarmerDomain.Test.csproj", "{C385DADA-5766-4CFB-AB4E-F4810F370127}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{2AAD4030-703C-438D-A341-ECE3417BD00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AAD4030-703C-438D-A341-ECE3417BD00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AAD4030-703C-438D-A341-ECE3417BD00D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37487A99-282F-498A-A943-D7899EAE90CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37487A99-282F-498A-A943-D7899EAE90CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37487A99-282F-498A-A943-D7899EAE90CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37487A99-282F-498A-A943-D7899EAE90CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C385DADA-5766-4CFB-AB4E-F4810F370127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C385DADA-5766-4CFB-AB4E-F4810F370127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C385DADA-5766-4CFB-AB4E-F4810F370127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C385DADA-5766-4CFB-AB4E-F4810F370127}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

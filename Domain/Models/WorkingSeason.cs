@@ -33,6 +33,7 @@ namespace Domain.Models
 
         public WorkingSeason UpdateName(string name)
         {
+            ValidateName(name);
             this.Name = name;
             return this;
         }

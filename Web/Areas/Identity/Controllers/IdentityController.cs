@@ -88,6 +88,7 @@ namespace Web.Areas.Identity.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = AdminRole)]
         public IActionResult AddUser() => View();
 
         [HttpPost]

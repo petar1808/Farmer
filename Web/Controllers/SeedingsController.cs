@@ -34,9 +34,11 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult List(int seasonId)
+        public async Task<IActionResult> List(int seasonId)
         {
-            var seeding = this.mapper.Map<List<SeedingsGetViewModel>>(seedingService.List(seasonId));
+            var result = await seedingService.List(seasonId);
+
+            var seeding =  this.mapper.Map<List<SeedingsGetViewModel>>(result);
 
             return View(new SeedingSearchViewModel(seasonId, seeding));
         }

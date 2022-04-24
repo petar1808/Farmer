@@ -76,14 +76,23 @@ namespace Application.Services.Seedings
             }
         }
 
-        public List<GetSeedingModel> List(int seasionId)
+        public async Task<List<GetSeedingModel>> List(int seasionId)
         {
-            var seedings = this.farmerDbContext.Seedings
+            var workingSeason = await farmerDbContext
+                .WorkingSeasons
+                .FirstOrDefaultAsync(x => x.Id == seasionId);
+
+            if (workingSeason == null)
+            {
+                throw new BadRequestExeption($"WorkingSeason with Id: {seasionId}, don't exist");
+            }
+
+            var seedings = await this.farmerDbContext.Seedings
                 .Where(x => x.WorkingSeasonId == seasionId)
                 .Include(x => x.ArableLand)
                 .Include(x => x.Article)
                 .Include(x => x.WorkingSeason)
-                .ToList();
+                .ToListAsync();
 
             var seedingsMap = mapper.Map<List<GetSeedingModel>>(seedings);
             return seedingsMap;
