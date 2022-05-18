@@ -45,6 +45,11 @@
                                             <a asp-controller="Seedings" asp-action="Delete" asp-route-seedingId="@seeding.Id" asp-route-seasonId="@Model.WorkingSeasonId" class="btn btn-danger"
                                            onclick="return confirm('Сигурни ли сте че, искате да изтриете сеитба с име : @seeding.AreableLandName')">Изтрий</a>
                                         </td>
+                                         <td>
+                                            <a asp-controller="PerformedWork" asp-action="List"
+                                           asp-route-seedingId="@seeding.Id"
+                                           class="btn btn-warning">Работа</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             }

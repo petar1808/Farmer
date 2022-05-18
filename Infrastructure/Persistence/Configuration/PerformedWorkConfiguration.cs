@@ -28,7 +28,10 @@ namespace Infrastructure.Persistence.Configuration
 
             builder.Property(p => p.SeedingId).IsRequired();
             builder.Property(p => p.WorkType).IsRequired();
-            builder.Property(p => p.ArticleId).IsRequired();
+            builder.Property(p => p.ArticleId);
+            builder.Property(p => p.PerforemedWorkDate).IsRequired();
+            builder.Property(p => p.FuelUsed).IsRequired();
+            builder.Property(p => p.FuelSum).IsRequired();
             base.Configure(builder);
         }
     }

@@ -1,15 +1,14 @@
 ﻿using Application.Models;
 using Application.Services;
 using AutoMapper;
-using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Web.Areas.Identity.ViewModels;
+using Domain.Exceptions;
 using static Infrastructure.IdentityConstants.IdentityRoles;
 
 namespace Web.Areas.Identity.Controllers
@@ -40,7 +39,6 @@ namespace Web.Areas.Identity.Controllers
         [HttpGet]
         public IActionResult Login() => View();
 
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
@@ -49,7 +47,7 @@ namespace Web.Areas.Identity.Controllers
 
             if (!user.Active)
             {
-                throw new ApplicationException($"User with Id: {user.UserName}, don't active");
+                throw new ApplicationException($"User with email: {user.UserName}, don't active");
             }
 
             if (user == null)
@@ -105,7 +103,7 @@ namespace Web.Areas.Identity.Controllers
 
             if (!userResult.Succeeded)
             {
-                return BadRequest(userResult.Errors);
+                throw new DomainException($"User with email: {user.UserName}, already exists");
             }
 
             user.UpdateActive(true);

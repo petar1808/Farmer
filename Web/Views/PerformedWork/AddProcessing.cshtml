@@ -1,0 +1,43 @@
+﻿@using Application.Extensions
+@using Domain.Enum
+@using Web.ViewModels.PerformedWork
+@model AddProcessingViewModel
+
+@{
+    ViewData["Title"] = "Добавяне на обработка";
+}
+
+<h2 class="text-center"> Добавяне на обработка</h2>
+<div class="row">
+    <div class="offset-md-2 col-md-8 col-sm-12">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="PerformedWorkDate"></label>
+                <input asp-for="PerformedWorkDate" class="form-control">
+                <span asp-validation-for="PerformedWorkDate" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+            <label>Тип арткул</label>
+                <select asp-for="Type" class="form-control">
+                @foreach (var articleType in EnumHelper.GetAllNamesAndValues<WorkType>())
+                {
+                    <option value="@articleType.Key">@articleType.Value</option>
+                }
+            </select>
+            <span asp-validation-for="Type" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FuelUsed"></label>
+                <input asp-for="FuelUsed" class="form-control">
+                 <span asp-validation-for="FuelUsed" class="small text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="FuelSum"></label>
+                <input asp-for="FuelSum" class="form-control">
+                 <span asp-validation-for="FuelSum" class="small text-danger"></span>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Добави" />
+            <a class="btn btn-primary" onclick="history.go(-1);">Назад</a><br />
+        </form>
+    </div>
+</div>

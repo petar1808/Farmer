@@ -98,5 +98,15 @@ namespace Application.Services.Articles
 
             return articles;
         }
+
+        public async Task<List<SelectionListModel>> TreatmentArticlesSelectionList()
+        {
+            var articles = await farmerDbContext.Articles
+                .Where(x => x.ArticleType != ArticleType.Seeds)
+                .Select(x => new SelectionListModel(x.Id, x.Name))
+                .ToListAsync();
+
+            return articles;
+        }
     }
 }

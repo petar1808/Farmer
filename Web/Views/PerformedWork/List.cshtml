@@ -1,0 +1,43 @@
+﻿@using Web.ViewModels.PerformedWork
+@model ProcessingSearchViewModel
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-default">
+            <div class="card-header">
+                <h2 class="text-center"> Обработка </h2>
+
+            </div>
+            <div class="card-body">
+                <div class="dataTables_wrapper dt-bootstrap4">
+                    <div>
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Дата</th>
+                                    <th scope="col">Вид обработка</th>
+                                    <th scope="col">Гориво</th>
+                                    <th scope="col">Стойност</th>
+                                </tr>
+                            </thead>
+                            @foreach (var seeding in Model!.Processings)
+                            {
+                                <tbody>
+                                    <tr>
+                                        <td>@seeding.PerfomedWorkDate</td>
+                                        <td>@seeding.PerfomedWorkType</td>
+                                        <td>@seeding.FuelUsed</td>
+                                        <td>@seeding.FuelSum</td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a asp-controller="PerformedWork" asp-action="AddProcessing" asp-route-seedingId="@Model.SeedingId" class="btn btn-primary">Добавяне на обработка</a>
+<a asp-controller="PerformedWork" asp-action="AddTreatment" asp-route-seedingId="@Model.SeedingId" class="btn btn-primary">Добавяне на третиране</a>

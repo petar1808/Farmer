@@ -36,6 +36,8 @@ namespace Application.Services.WorikingSeasons
 
         public async Task Delete(int id)
         {
+            sidebarMenuCache.Flush();
+
             var workingSeason = await farmerDbContext
                 .WorkingSeasons
                 .FirstOrDefaultAsync(x => x.Id == id);

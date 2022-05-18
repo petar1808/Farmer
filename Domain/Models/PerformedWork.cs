@@ -13,20 +13,34 @@ namespace Domain.Models
         public PerformedWork(int seedingId,
             WorkType workType,
             int articleId,
+            DateTime performedWorkDate,
+            int fuelSum,
             int fuelUsed)
-            :this(seedingId,workType,articleId)
+            :this(seedingId, workType, performedWorkDate, fuelSum, fuelUsed)
         {
             FuelUsed = fuelUsed;
+            FuelSum = fuelSum;
+            ArticleId = articleId;
         }
 
         public PerformedWork(int seedingId,
             WorkType workType,
-            int articleId)
+            DateTime performedWorkDate,
+            int fuelSum,
+            int fuelUsed)
         {
             SeedingId = seedingId;
             WorkType = workType;
-            ArticleId = articleId;
+            PerforemedWorkDate = performedWorkDate;
+            FuelSum = fuelSum;
+            FuelUsed = fuelUsed;
 
+            Seeding = default!;
+            Article = default!;
+        }
+
+        private PerformedWork()
+        {
             Seeding = default!;
             Article = default!;
         }
@@ -36,11 +50,15 @@ namespace Domain.Models
         public Seeding Seeding { get;}
 
         public WorkType WorkType { get;}
-
-        public int ArticleId { get;}
+        
+        public int? ArticleId { get;}
 
         public Article Article { get;}
 
+        public DateTime PerforemedWorkDate { get; } = default!;
+
         public int FuelUsed { get; } = default!;
+
+        public int FuelSum { get; }
     }
 }

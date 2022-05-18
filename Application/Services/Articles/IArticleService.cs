@@ -22,5 +22,7 @@ namespace Application.Services.Articles
         Task Delete(int id);
 
         Task<List<SelectionListModel>> SeedsArticlesSelectionList();
+
+        Task<List<SelectionListModel>> TreatmentArticlesSelectionList();
     }
 }

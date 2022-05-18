@@ -1,6 +1,6 @@
 using Application;
 using Infrastructure;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +10,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
 
 var app = builder.Build();
 
