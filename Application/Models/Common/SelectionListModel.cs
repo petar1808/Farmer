@@ -10,7 +10,7 @@ namespace Application.Models.Common
             this.Value = value;
             this.Name = name;
         }
-        public int Value { get; }
-        public string Name { get; }
+        public int Value { get; set; }
+        public string Name { get; set; }
     }
 }

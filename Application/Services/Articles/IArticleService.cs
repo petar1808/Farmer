@@ -17,7 +17,7 @@ namespace Application.Services.Articles
 
         Task<GetArticleModel> Get(int id);
 
-        Task<List<GetArticleModel>> GetAll();
+        Task<List<ListArticleModel>> GetAll();
 
         Task Delete(int id);
 

@@ -64,16 +64,23 @@ namespace Application.Services.Seedings
             await farmerDbContext.SaveChangesAsync();
         }
 
-        public async Task Get(int seedingId)
+        public async Task<GetSeedingModel> Get(int seedingId)
         {
             var seeding = await farmerDbContext
                 .Seedings
+                .Include(x => x.ArableLand)
+                .Include(x => x.Article)
+                .Include(x => x.WorkingSeason)
                 .FirstOrDefaultAsync(x => x.Id == seedingId);
 
             if (seeding == null)
             {
                 throw new BadRequestExeption($"Seeding with Id: {seedingId}, don't exist");
             }
+
+            var result = mapper.Map<GetSeedingModel>(seeding);
+
+            return result;
         }
 
         public async Task<List<GetSeedingModel>> List(int seasionId)

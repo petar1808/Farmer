@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Controllers
+namespace Web.ControllersOld
 {
     public class ErrorController : Controller
     {
@@ -14,14 +14,14 @@ namespace Web.Controllers
             return View();
         }
 
-        public IActionResult NotFound()
-        {
-            return View();
-        }
+        //public IActionResult NotFound()
+        //{
+        //    return View();
+        //}
 
-        public IActionResult BadRequest()
-        {
-            return View();
-        }
+        //public IActionResult BadRequest()
+        //{
+        //    return View();
+        //}
     }
 }

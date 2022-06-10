@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Web.ViewModels.WorkingSeasons;
 using static Infrastructure.IdentityConstants.IdentityRoles;
 
-namespace Web.Controllers
+namespace Web.ControllersOld
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class WorkingSeasonsController : Controller

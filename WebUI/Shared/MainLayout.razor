@@ -1,0 +1,97 @@
+﻿@using WebUI.Models
+@using WebUI.Services
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components
+
+@inject IJSRuntime JSRuntime
+@inherits LayoutComponentBase
+@inject NavigationManager UriHelper
+@inject NavMenuService NavMenuService
+
+<RadzenDialog />
+<RadzenNotification />
+<RadzenTooltip />
+<RadzenContextMenu />
+
+
+
+<RadzenLayout>
+    <RadzenHeader>
+        <ChildContent>
+            <div class="row justify-content-start align-items-center">
+                <div class="col-5 d-flex align-items-center">
+                    <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
+                    </RadzenSidebarToggle>
+                    <RadzenLabel Text="Фермер">
+                    </RadzenLabel>
+                </div>
+            </div>
+        </ChildContent>
+    </RadzenHeader>
+    <RadzenBody @ref="@body0" @bind-Expanded="@bodyExpanded">
+        <ChildContent>
+            <RadzenContentContainer Name="main">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 pt-4 pb-5 px-3 px-lg-5">
+                            @Body
+                            <p class="mt-5 md-3 text-center">
+                                <RadzenLabel Text="Radzen Blazor Components, &copy; 2018-2022 Radzen."></RadzenLabel>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </RadzenContentContainer>
+        </ChildContent>
+    </RadzenBody>
+    <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" class="demos-sidebar">
+        <ChildContent>
+            <RadzenPanelMenu Match="NavLinkMatch.Prefix">
+
+                @foreach (var menuItem in menuItems)
+                {
+                    <NavigationItem @bind-Expanded=@menuItem.Expanded NavMenuItem=@menuItem>
+                        @if (menuItem.Children is not null)
+                        {
+                            @foreach (var child in menuItem.Children)
+                            {
+                                @if (child.Children is not null)
+                                {
+                                    <NavigationItem NavMenuItem="@child">
+                                    @foreach (var secondChild in child.Children)
+                                    {
+                                        <NavigationItem NavMenuItem=@secondChild />
+                                    }
+                                    </NavigationItem>
+                                }
+                                else
+                                {
+                                    <NavigationItem NavMenuItem=@child />
+                                }
+                            }
+                        }
+                    </NavigationItem>
+                }
+            </RadzenPanelMenu>
+        </ChildContent>
+    </RadzenSidebar>
+</RadzenLayout>
+
+
+
+@code{
+    bool sidebarExpanded = true;
+    bool bodyExpanded = false;
+
+    RadzenSidebar sidebar0;
+    RadzenBody body0;
+
+    IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
+
+    protected override void OnInitialized()
+    {
+        menuItems = NavMenuService.MenuItems;
+
+        Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+    }
+}

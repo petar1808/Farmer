@@ -4,7 +4,7 @@ using Infrastructure.DbContect;
 using Microsoft.AspNetCore.Mvc;
 using Web.ViewModels.PerformedWork;
 
-namespace Web.Controllers
+namespace Web.ControllersOld
 {
     public class PerformedWorkController : Controller
     {

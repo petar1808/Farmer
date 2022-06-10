@@ -15,7 +15,7 @@ namespace Application.Services.Seedings
 
         Task Delete(int id);
 
-        Task Get(int seedingId);
+        Task<GetSeedingModel> Get(int seedingId);
 
         Task Edit(int seedingId, int arableLandId, int articleId);
     }

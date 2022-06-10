@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Web.ViewModels.Seedings;
 
-namespace Web.Controllers
+namespace Web.ControllersOld
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class SeedingsController : Controller

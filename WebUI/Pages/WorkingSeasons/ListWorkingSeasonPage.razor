@@ -1,0 +1,22 @@
+﻿@page "/workingSeason/list"
+
+
+<h2 class="text-center"> Сезони </h2>
+
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add New Order" Click="@(() => AddWorkingSeason())" />
+<RadzenDataGrid Data="@WorkingSeasons" TItem="GetWorkingSeasonApiModel">
+    <Columns>
+        <RadzenDataGridColumn TItem="GetWorkingSeasonApiModel" Property="Id" Title="Ид" />
+        <RadzenDataGridColumn TItem="GetWorkingSeasonApiModel" Property="Name" Title="Име" />
+        <RadzenDataGridColumn TItem="GetWorkingSeasonApiModel" Property="StartDate" Title="Начало" />
+        <RadzenDataGridColumn TItem="GetWorkingSeasonApiModel" Property="EndDate" Title="Край" />
+        <RadzenDataGridColumn TItem="GetWorkingSeasonApiModel" Property="Id" Title="Order Details">
+            <Template Context="data">
+                @*<RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="add" Class="m-1" Click=@(() => AddArticle())/>*@
+                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Class="m-1" Click=@(() => EditWorkingSeason(data.Id)) />
+                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Class="m-1" Click=@(() => DeleteWorkingSeason(data.Id)) />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+

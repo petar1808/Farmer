@@ -5,12 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Models.Articles
 {
-    public class GetArticleModel : IMapFrom<Article>
+    public class GetArticleModel : ArticleBaseModel, IMapFrom<Article>
     {
         public int Id { get; init; }
-
-        public string Name { get; init; } = default!;
-
-        public ArticleType ArticleType { get; init; }
     }
 }

@@ -1,0 +1,46 @@
+﻿@page "/article/details/{ArticleId:int}"
+@page "/article/details"
+@using WebUI.ServicesModel.Article
+
+<div class="col-lg-6 offset-lg-3">
+    <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Submit=@OnSubmit>
+        <RadzenFieldset Text="Артикул">
+@*            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Ид" />
+                </div>
+                <div class="col">
+                    <RadzenNumeric  style="display: block" Name="Id" Disabled @bind-Value=@Article.Id Class="w-100" />
+                </div>
+            </div>*@
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Име" />
+                </div>
+                <div class="col">
+                    <RadzenTextBox style="display: block" Name="Name" @bind-Value=@Article.Name Class="w-100" />
+                    <RadzenLengthValidator Component="Name" Min="3" Text="First name should be at least 3 characters" Popup=@popup Style="position: absolute" />
+                    <RadzenLengthValidator Component="Name" Max="10" Text="First name should be at most 10 characters" Popup=@popup Style="position: absolute" />
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Тип" />
+                </div>
+                <div class="col">
+                    @*<RadzenDropDown @bind-Value=@compareOperator Data=@Enum.GetValues(typeof(CompareOperator)) Class="w-100" />*@
+                    <RadzenDropDown 
+                        AllowClear="true" 
+                        AllowFiltering="true" 
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+                        Data=@ArticleTypes 
+                        @bind-Value=@Article.ArticleType
+                        ValueProperty="Value" 
+                        TextProperty="Name" 
+                        Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                </div>
+            </div>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+</div>
