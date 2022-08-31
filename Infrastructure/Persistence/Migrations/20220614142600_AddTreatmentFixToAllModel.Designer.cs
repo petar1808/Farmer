@@ -4,16 +4,18 @@ using Infrastructure.DbContect;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(FarmerDbContext))]
-    partial class FarmerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220614142600_AddTreatmentFixToAllModel")]
+    partial class AddTreatmentFixToAllModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,6 +203,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("ArticleId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("GrainPricePerKilogram")
@@ -246,9 +249,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ArticlePrice")
-                        .HasColumnType("int");
-
                     b.Property<int>("ArticleQuantity")
                         .HasColumnType("int");
 
@@ -270,7 +270,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SeedingId");
 
-                    b.ToTable("Treatments");
+                    b.ToTable("Treatment");
                 });
 
             modelBuilder.Entity("Domain.Models.WorkingSeason", b =>
@@ -424,7 +424,9 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Models.Article", "Article")
                         .WithMany()
-                        .HasForeignKey("ArticleId");
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.WorkingSeason", "WorkingSeason")
                         .WithMany()

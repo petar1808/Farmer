@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
-    internal class PerformedWorkConfiguration : EntityConfiguration<PerformedWork, int>
+    internal class TreatmentConfiguration : EntityConfiguration<Treatment, int>
     {
-        public override void Configure(EntityTypeBuilder<PerformedWork> builder)
+        public override void Configure(EntityTypeBuilder<Treatment> builder)
         {
             builder
                .HasOne(x => x.Seeding)
@@ -20,11 +20,16 @@ namespace Infrastructure.Persistence.Configuration
                .HasForeignKey(p => p.SeedingId)
                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(p => p.SeedingId).IsRequired();
-            builder.Property(p => p.WorkType).IsRequired();
+            builder
+              .HasOne(x => x.Article)
+              .WithMany()
+              .HasForeignKey(p => p.ArticleId)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(p => p.ArticleQuantity).IsRequired();
             builder.Property(p => p.Date).IsRequired();
-            builder.Property(p => p.FuelPrice).IsRequired();
-            builder.Property(p => p.AmountOfFuel).IsRequired();
+            builder.Property(p => p.ТreatmentType).IsRequired();
+            builder.Property(p => p.ArticlePrice).IsRequired();
             base.Configure(builder);
         }
     }

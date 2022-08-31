@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,17 @@ namespace Domain.Enum
 {
     public enum WorkType
     {
-        Fertilization = 1,
-        Spraying = 2,
-        Cultivation = 3,
-        Rolling = 4,
-        Disking = 5,
-        Plowing = 6
+        [Description("Култивиране")]
+        Cultivation = 1,
+        [Description("Валиране")]
+        Rolling,
+        [Description("Дискуване")]
+        Disking,
+        [Description("Оране")]
+        Plowing,
+        [Description("Жътва")]
+        Harvest,
+        [Description("Сеитба")]
+        Sowing
     }
 }

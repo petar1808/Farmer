@@ -27,11 +27,11 @@ namespace Infrastructure.Persistence.Configuration
             builder
                .HasOne(x => x.Article)
                .WithMany()
-               .HasForeignKey(p => p.ArticleId);
+               .HasForeignKey(p => p.ArticleId)
+               .IsRequired(false);
 
             builder.Property(p => p.ArableLandId).IsRequired();
             builder.Property(p => p.WorkingSeasonId).IsRequired();
-            builder.Property(p => p.ArticleId).IsRequired();
             base.Configure(builder);
         }
     }
