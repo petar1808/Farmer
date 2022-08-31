@@ -17,6 +17,8 @@ namespace Application.Services
 
         DbSet<WorkingSeason> WorkingSeasons { get; set; }
 
+        DbSet<Treatment> Treatments { get; }
+
         DbSet<User> Users { get; set; }
 
         DbSet<Role> Roles { get; set; }

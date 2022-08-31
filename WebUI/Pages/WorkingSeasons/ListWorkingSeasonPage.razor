@@ -1,0 +1,10 @@
+﻿@page "/workingSeason/list"
+@using WebUI.Components.DataGrid
+
+
+<h2 class="text-center"> Сезони </h2>
+
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddWorkingSeason())" />
+
+<DynamicDataGrid TData="WorkingSeasonModel" Data="@DataGrid"></DynamicDataGrid>
+

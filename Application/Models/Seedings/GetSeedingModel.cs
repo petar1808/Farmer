@@ -1,36 +1,43 @@
 ﻿using Application.Mappings;
 using AutoMapper;
 using Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Application.Models.Seedings
 {
     public class GetSeedingModel : IMapFrom<Seeding>
     {
-        public int Id { get; init; }
-
-        public int ArableLandId { get; set; }
-
-        public string AreableLandName { get; init; } = default!;
+        public int? ArticleId { get; init; }
 
         public string ArticleName { get; init; } = default!;
 
-        public int ArticleId { get; set; }
+        public int SownSeedsInTotal { get; init; }
 
-        public int SizeInDecar { get; init; } = default!;
+        public int SeedPricePerKilogram { get; init; }
 
-        public string SeasonName { get; init; } = default!;
+        public int PriceOfSeedsInTotal { get; init; }
 
-        public DateTime? StartDate { get; init; }
+        public int HarvestedQuantityPerDecare { get; init; }
 
-        public DateTime? EndDate { get; init; }
+        public int TotalAmountInKilogram { get; init; }
+
+        public int GrainPricePerKilogram { get; init; }
+
+        public int PriceOfGrainTotal { get; init; }
+
+        public int Subsidies { get; init; }
+
+        public int Income { get; init; }
+
+        public int Profit { get; init; }
 
         public virtual void Mapping(Profile mapper)
-            => mapper.CreateMap<Seeding, GetSeedingModel>()
-                .ForMember(x => x.AreableLandName, cfg => cfg.MapFrom(c => c.ArableLand.Name))
+           => mapper.CreateMap<Seeding, GetSeedingModel>()
                 .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name))
-                .ForMember(x => x.SizeInDecar, cfg => cfg.MapFrom(c => c.ArableLand.SizeInDecar))
-                .ForMember(x => x.SeasonName, cfg => cfg.MapFrom(c => c.WorkingSeason.Name))
-                .ForMember(x => x.StartDate, cfg => cfg.MapFrom(c => c.WorkingSeason.StartDate))
-                .ForMember(x => x.EndDate, cfg => cfg.MapFrom(c => c.WorkingSeason.EndDate));
+                .ForMember(x => x.ArticleId, cfg => cfg.MapFrom(c => c.Article.Id));
     }
 }

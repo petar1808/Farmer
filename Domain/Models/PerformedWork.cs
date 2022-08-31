@@ -10,55 +10,56 @@ namespace Domain.Models
 {
     public class PerformedWork : Entity<int>
     {
-        public PerformedWork(int seedingId,
-            WorkType workType,
-            int articleId,
-            DateTime performedWorkDate,
-            int fuelSum,
-            int fuelUsed)
-            :this(seedingId, workType, performedWorkDate, fuelSum, fuelUsed)
-        {
-            FuelUsed = fuelUsed;
-            FuelSum = fuelSum;
-            ArticleId = articleId;
-        }
 
         public PerformedWork(int seedingId,
             WorkType workType,
-            DateTime performedWorkDate,
-            int fuelSum,
-            int fuelUsed)
+            DateTime date,
+            int fuelPrice,
+            int amountOfFuel)
         {
             SeedingId = seedingId;
             WorkType = workType;
-            PerforemedWorkDate = performedWorkDate;
-            FuelSum = fuelSum;
-            FuelUsed = fuelUsed;
+            Date = date;
+            FuelPrice = fuelPrice;
+            AmountOfFuel = amountOfFuel;
 
             Seeding = default!;
-            Article = default!;
-        }
-
-        private PerformedWork()
-        {
-            Seeding = default!;
-            Article = default!;
         }
 
         public int SeedingId { get;}
 
         public Seeding Seeding { get;}
 
-        public WorkType WorkType { get;}
-        
-        public int? ArticleId { get;}
+        public WorkType WorkType { get; private set; }
 
-        public Article Article { get;}
+        public DateTime Date { get; private set; }
 
-        public DateTime PerforemedWorkDate { get; } = default!;
+        public int AmountOfFuel { get; private set; } 
 
-        public int FuelUsed { get; } = default!;
+        public int FuelPrice { get; private set; }
 
-        public int FuelSum { get; }
+        public PerformedWork UpdateWorkType(WorkType workType)
+        {
+            this.WorkType = workType;
+            return this;
+        }
+
+        public PerformedWork UpdateDate(DateTime date)
+        {
+            this.Date = date;
+            return this;
+        }
+
+        public PerformedWork UpdateAmountOfFuel(int amountOfFuel)
+        {
+            this.AmountOfFuel = amountOfFuel;
+            return this;
+        }
+
+        public PerformedWork UpdateFuelPrice(int fuelPrice)
+        {
+            this.FuelPrice = fuelPrice;
+            return this;
+        }
     }
 }

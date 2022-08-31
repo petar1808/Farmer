@@ -81,11 +81,11 @@ namespace Application.Services.Articles
             return result;
         }
 
-        public async Task<List<GetArticleModel>> GetAll()
+        public async Task<List<ListArticleModel>> GetAll()
         {
             var articles = await farmerDbContext.Articles.ToListAsync();
 
-            var result = mapper.Map<List<GetArticleModel>>(articles);
+            var result = mapper.Map<List<ListArticleModel>>(articles);
             return result;
         }
 
@@ -108,5 +108,5 @@ namespace Application.Services.Articles
 
             return articles;
         }
-    }
+    }     
 }

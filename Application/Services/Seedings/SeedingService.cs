@@ -1,13 +1,10 @@
 ﻿using Application.Exceptions;
+using Application.Models.PerformedWorks;
 using Application.Models.Seedings;
+using Application.Models.Тreatments;
 using AutoMapper;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.Seedings
 {
@@ -22,80 +19,29 @@ namespace Application.Services.Seedings
             this.mapper = mapper;
         }
 
-        public async Task Add(int arableLandId, int workingSeasonId, int articleId)
+        public async Task AddSeeding(AddSeedingModel model)
         {
-            var seeding = new Seeding(arableLandId, workingSeasonId, articleId);
+            var seeding = new Seeding(model.ArableLandId, model.WorkingSeasonId);
 
-            await farmerDbContext.AddAsync(seeding);
+            await farmerDbContext.Seedings.AddAsync(seeding);
             await farmerDbContext.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
-        {
-            var seeding = await farmerDbContext
-                    .Seedings
-                    .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (seeding == null)
-            {
-                throw new BadRequestExeption($"Arable land with Id: {id}, don't exist");
-            }
-
-            farmerDbContext.Remove(seeding);
-            await farmerDbContext.SaveChangesAsync();
-        }
-
-        public async Task Edit(int seedingId, int arableLandId, int articleId)
-        {
-            var seeding = await farmerDbContext
-               .Seedings
-               .FirstOrDefaultAsync(x => x.Id == seedingId);
-
-            if (seeding == null)
-            {
-                throw new BadRequestExeption($"Seeding with Id: {seedingId}, don't exist");
-            }
-
-            seeding
-                .UpdateArableLand(arableLandId)
-                .UpdateArticle(articleId);
-
-            farmerDbContext.Update(seeding);
-            await farmerDbContext.SaveChangesAsync();
-        }
-
-        public async Task Get(int seedingId)
+        public async Task<GetSeedingModel> GetSeeding(int seasonId, int arableLandId)
         {
             var seeding = await farmerDbContext
                 .Seedings
-                .FirstOrDefaultAsync(x => x.Id == seedingId);
+                .Include(x => x.Article)
+                .FirstOrDefaultAsync(x => x.WorkingSeasonId == seasonId && x.ArableLandId == arableLandId);
 
             if (seeding == null)
             {
-                throw new BadRequestExeption($"Seeding with Id: {seedingId}, don't exist");
-            }
-        }
-
-        public async Task<List<GetSeedingModel>> List(int seasionId)
-        {
-            var workingSeason = await farmerDbContext
-                .WorkingSeasons
-                .FirstOrDefaultAsync(x => x.Id == seasionId);
-
-            if (workingSeason == null)
-            {
-                throw new BadRequestExeption($"WorkingSeason with Id: {seasionId}, don't exist");
+                throw new BadRequestExeption($"Seeding with Id: {seasonId}, don't exist");
             }
 
-            var seedings = await this.farmerDbContext.Seedings
-                .Where(x => x.WorkingSeasonId == seasionId)
-                .Include(x => x.ArableLand)
-                .Include(x => x.Article)
-                .Include(x => x.WorkingSeason)
-                .ToListAsync();
+            var result = mapper.Map<GetSeedingModel>(seeding);
 
-            var seedingsMap = mapper.Map<List<GetSeedingModel>>(seedings);
-            return seedingsMap;
+            return result;
         }
     }
 }

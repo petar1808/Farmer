@@ -1,4 +1,5 @@
 ﻿using Application.Exceptions;
+using Application.Models.Common;
 using Application.Models.WorkingSeasons;
 using AutoMapper;
 using Domain.Models;
@@ -100,5 +101,15 @@ namespace Application.Services.WorikingSeasons
             => await farmerDbContext
                 .WorkingSeasons
                 .ToDictionaryAsync(k => k.Id, v => v.Name);
+
+        public async Task<List<SelectionListModel>> SeasonsSelectionList()
+        {
+            var workingSeason = await farmerDbContext
+                .WorkingSeasons
+                .Select(x => new SelectionListModel(x.Id, x.Name))
+                .ToListAsync();
+
+            return workingSeason;
+        }
     }
 }

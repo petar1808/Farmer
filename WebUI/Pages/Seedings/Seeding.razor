@@ -1,0 +1,49 @@
+﻿@page "/seeding"
+@using Blazorise
+@using WebUI.Pages.Articles
+@using WebUI.Pages.PerformedWork
+@using WebUI.Pages.Treatment
+
+@*
+<div>
+    DropDown -> seasions
+</div>*@
+ 
+<Accordion>
+    <Collapse Visible="@collapse1Visible">
+        <CollapseHeader>
+            <Heading Size="HeadingSize.Is5">
+                <Button Clicked="@(()=>collapse1Visible = !collapse1Visible)">Сеидба</Button>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody>
+            <ListArticlePage></ListArticlePage>
+        </CollapseBody>
+    </Collapse>
+    <Collapse Visible="@collapse2Visible">
+        <CollapseHeader>
+            <Heading Size="HeadingSize.Is5">
+                <Button Clicked="@(()=>collapse2Visible = !collapse2Visible)">Обработки</Button>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody>
+            <ListPerformedWorkPage></ListPerformedWorkPage>
+        </CollapseBody>
+    </Collapse>
+    <Collapse Visible="@collapse3Visible">
+        <CollapseHeader>
+            <Heading Size="HeadingSize.Is5">
+                <Button Clicked="@(()=>collapse3Visible = !collapse3Visible)">Третиране</Button>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody>
+            <ListTreatmentPage></ListTreatmentPage>
+        </CollapseBody>
+    </Collapse>
+</Accordion>
+
+@code{
+    bool collapse1Visible = true;
+    bool collapse2Visible = false;
+    bool collapse3Visible = false;
+}

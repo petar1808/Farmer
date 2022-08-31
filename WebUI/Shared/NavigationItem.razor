@@ -1,0 +1,22 @@
+﻿@using WebUI.Models
+
+<RadzenPanelMenuItem @bind-Expanded=@Expanded Text="@NavMenuItem.Name" Path="@NavMenuItem.Path" Icon="@NavMenuItem.Icon">
+    <Template>
+        @NavMenuItem.Name
+    </Template>
+    <ChildContent>@ChildContent</ChildContent>
+</RadzenPanelMenuItem>
+
+@code {
+    [Parameter]
+    public NavMenuItem NavMenuItem { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public bool Expanded { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ExpandedChanged { get; set; }
+}

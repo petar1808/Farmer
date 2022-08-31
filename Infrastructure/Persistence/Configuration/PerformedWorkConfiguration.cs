@@ -20,18 +20,11 @@ namespace Infrastructure.Persistence.Configuration
                .HasForeignKey(p => p.SeedingId)
                .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-               .HasOne(x => x.Article)
-               .WithMany()
-               .HasForeignKey(p => p.ArticleId)
-               .OnDelete(DeleteBehavior.Restrict);
-
             builder.Property(p => p.SeedingId).IsRequired();
             builder.Property(p => p.WorkType).IsRequired();
-            builder.Property(p => p.ArticleId);
-            builder.Property(p => p.PerforemedWorkDate).IsRequired();
-            builder.Property(p => p.FuelUsed).IsRequired();
-            builder.Property(p => p.FuelSum).IsRequired();
+            builder.Property(p => p.Date).IsRequired();
+            builder.Property(p => p.FuelPrice).IsRequired();
+            builder.Property(p => p.AmountOfFuel).IsRequired();
             base.Configure(builder);
         }
     }

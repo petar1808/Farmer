@@ -1,0 +1,25 @@
+﻿<h3>Сигурен ли сте, че искате да изтриете записа</h3>
+
+<div style="text-align: right">
+    <RadzenButton Text="Изтриване" Click="@OnDelete" ButtonStyle="ButtonStyle.Danger"></RadzenButton>
+    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
+</div>
+
+@code {
+    [Parameter]
+    public DeleteModalModel ModelInput { get; set; } = default!;
+
+    [Inject]
+    public DialogService DialogService { get; set; } = default!;
+
+    public void OnDelete()
+    {
+        ModelInput.DeleteAction.Invoke(this.ModelInput.Id);
+        DialogService.Close();
+    }
+
+    public void OnClose()
+    {
+        DialogService.Close();
+    }
+}
