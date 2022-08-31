@@ -1,0 +1,76 @@
+﻿@page "/treatment/details/{TreatmentId:int}"
+@page "/treatment/details"
+
+@using WebUI.ServicesModel.Тreatment
+
+<div class="col-lg-6 offset-lg-3">
+    <RadzenTemplateForm TItem="ТreatmentDetailsModel" Data=@Тreatment Submit=@OnSubmit>
+        <RadzenFieldset Text="Третиране">
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Дата" />
+                </div>
+                <div class="col">
+                    <RadzenDatePicker DateFormat="d" style="display: block" Name="Date" @bind-Value=@Тreatment.Date Class="w-100" />
+                </div>
+            </div>
+             <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Тип" />
+                </div>
+                <div class="col">
+                    @*<RadzenDropDown @bind-Value=@compareOperator Data=@Enum.GetValues(typeof(CompareOperator)) Class="w-100" />*@
+                    <RadzenDropDown AllowClear="true"
+                                    AllowFiltering="true"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data=@TreatmentTypes
+                                    @bind-Value=@Тreatment.ТreatmentType
+                                    ValueProperty="Value"
+                                    TextProperty="Name"
+                                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Препарат" />
+                </div>
+                <div class="col">
+                    <RadzenNumeric style="display: block" Name="ArticleId" @bind-Value=@Тreatment.ArticleId Class="w-100" />
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Препарат на декар" />
+                </div>
+                <div class="col">
+                    <RadzenNumeric style="display: block" Name="ArticleQuantity" @bind-Value=@Тreatment.ArticleQuantity Class="w-100" />
+                </div>
+            </div>
+              <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Гориво" />
+                </div>
+                <div class="col">
+                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@Тreatment.AmountOfFuel Class="w-100" />
+                </div>
+            </div>
+              <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Цена на гориво" />
+                </div>
+                <div class="col">
+                    <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@Тreatment.FuelPrice Class="w-100" />
+                </div>
+            </div>
+              <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Цена на препарат" />
+                </div>
+                <div class="col">
+                    <RadzenNumeric style="display: block" Name="ArticlePrice" @bind-Value=@Тreatment.ArticlePrice Class="w-100" />
+                </div>
+            </div>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+</div>

@@ -16,7 +16,7 @@ namespace WebUI.Pages.WorkingSeasons
         [Parameter]
         public int WorkingSeasonId { get; set; }
 
-        public GetWorkingSeasonApiModel WorkingSeason { get; set; } = default!;
+        public WorkingSeasonModel WorkingSeason { get; set; } = default!;
 
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
@@ -31,7 +31,7 @@ namespace WebUI.Pages.WorkingSeasons
             if (WorkingSeasonId == 0) //new employee is being created
             {
                 //add some defaults
-                WorkingSeason = new GetWorkingSeasonApiModel();
+                WorkingSeason = new WorkingSeasonModel();
             }
             else
             {
@@ -58,7 +58,7 @@ namespace WebUI.Pages.WorkingSeasons
             ChangeName(WorkingSeason.StartDate, value);
         }
 
-        protected async Task OnSubmit(GetWorkingSeasonApiModel arableLand)
+        protected async Task OnSubmit(WorkingSeasonModel arableLand)
         {
             if (arableLand.Id == 0) //new
             {

@@ -1,21 +1,11 @@
 ﻿@page "/article/list"
 @using WebUI.ServicesModel.Article
+@using WebUI.Components.DataGrid
 
 <h2 class="text-center"> Aртикули </h2>
 
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add New Order" Click="@(() => AddArticle())"/>
-<RadzenDataGrid Data="@Articles" TItem="ListArticleModel">
-    <Columns>
-        <RadzenDataGridColumn TItem="ListArticleModel" Property="Id" Title="Ид" />
-        <RadzenDataGridColumn TItem="ListArticleModel" Property="Name" Title="Име" />
-        <RadzenDataGridColumn TItem="ListArticleModel" Property="ArticleType" Title="Тип" />
-        <RadzenDataGridColumn TItem="ListArticleModel" Property="Id" Title="Order Details">
-            <Template Context="data">
-@*                <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="add" Class="m-1" Click=@(() => AddArticle())/>*@
-                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Class="m-1" Click=@(() => EditArticle(data.Id))/>
-                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Class="m-1" Click=@(() => EditArticle(data.Id))/>
-            </Template>
-        </RadzenDataGridColumn> 
-    </Columns>
-</RadzenDataGrid>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArticle())"/>
+
+<DynamicDataGrid TData="ListArticleModel" Data="@DataGrid"></DynamicDataGrid>
+
 

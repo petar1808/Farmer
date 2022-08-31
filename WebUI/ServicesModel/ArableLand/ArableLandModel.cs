@@ -1,6 +1,8 @@
-﻿namespace WebUI.ServicesModel.ArableLand
+﻿using WebUI.Components.DataGrid;
+
+namespace WebUI.ServicesModel.ArableLand
 {
-    public class ArableLandModel
+    public class ArableLandModel : IDynamicDataGridModel
     {
         public int Id { get; set; }
 

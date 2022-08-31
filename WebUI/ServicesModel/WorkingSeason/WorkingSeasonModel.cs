@@ -1,6 +1,8 @@
-﻿namespace WebUI.ServicesModel.WorkingSeason
+﻿using WebUI.Components.DataGrid;
+
+namespace WebUI.ServicesModel.WorkingSeason
 {
-    public class GetWorkingSeasonApiModel
+    public class WorkingSeasonModel : IDynamicDataGridModel
     {
         public int Id { get; set; }
 

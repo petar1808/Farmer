@@ -1,21 +1,9 @@
 ﻿@page "/arableLand/list"
+@using WebUI.Components.DataGrid
 @using WebUI.ServicesModel.ArableLand
 
 <h2 class="text-center"> Земи </h2>
 
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add New Order" Click="@(() => AddArableLand())"/>
-<RadzenDataGrid Data="@ArableLands" TItem="ArableLandModel">
-    <Columns>
-        <RadzenDataGridColumn TItem="ArableLandModel" Property="Id" Title="Ид" />
-        <RadzenDataGridColumn TItem="ArableLandModel" Property="Name" Title="Име" />
-        <RadzenDataGridColumn TItem="ArableLandModel" Property="SizeInDecar" Title="Декари" />
-        <RadzenDataGridColumn TItem="ArableLandModel" Property="Id" Title="Order Details">
-            <Template Context="data">
-@*                <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="add" Class="m-1" Click=@(() => AddArticle())/>*@
-                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Class="m-1" Click=@(() => EditArableLand(data.Id))/>
-                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Class="m-1" Click=@(() => DeleteArableLand(data.Id))/>
-            </Template>
-        </RadzenDataGridColumn> 
-    </Columns>
-</RadzenDataGrid>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArableLand())"/>
 
+<DynamicDataGrid TData="ArableLandModel" Data="@DataGrid"></DynamicDataGrid>

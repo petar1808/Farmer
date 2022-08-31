@@ -4,13 +4,13 @@ namespace WebUI.Services.WorkingSeasons
 {
     public interface IWorkingSeasonService
     {
-        Task<List<GetWorkingSeasonApiModel>> List();
+        Task<List<WorkingSeasonModel>> List();
 
-        Task<GetWorkingSeasonApiModel> Get(int id);
+        Task<WorkingSeasonModel> Get(int id);
 
-        Task Update(GetWorkingSeasonApiModel arableLand);
+        Task Update(WorkingSeasonModel arableLand);
 
-        Task<bool> Add(GetWorkingSeasonApiModel arableLand);
+        Task<bool> Add(WorkingSeasonModel arableLand);
 
         Task Delete(int id);
     }

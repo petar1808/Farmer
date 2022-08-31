@@ -1,0 +1,9 @@
+﻿@page "/seedings/{seedingId:int}/treatment"
+@using WebUI.Components.DataGrid
+@using WebUI.ServicesModel.Тreatment
+
+<h2 class="text-center"> Третиране </h2>
+
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddTreatment())"/>
+
+<DynamicDataGrid TData="GetTreatmentModel" Data="@DataGrid"></DynamicDataGrid>

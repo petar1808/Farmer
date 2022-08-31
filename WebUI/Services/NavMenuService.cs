@@ -35,6 +35,12 @@ namespace WebUI.Services
                         Title = "How to get started with the Radzen Blazor components"
                     }
                 }
+            },
+            new NavMenuItem()
+            {
+                Name = "Жътва",
+                Icon = "&#xe664",
+                Path = "/seeding"
             }
         };
 

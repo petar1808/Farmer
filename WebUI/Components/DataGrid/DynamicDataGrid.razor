@@ -1,0 +1,39 @@
+﻿@typeparam TData where TData : IDynamicDataGridModel
+
+<RadzenDataGrid 
+    Data="@Data.Data" 
+    TItem="TData"
+    AllowSorting="@Data.AllowSorting"
+    AllowFiltering="@Data.AllowFiltering"
+    AllowPaging="@Data.AllowPaging"
+    PageSize="@Data.PageSize">
+    <Columns>
+        @foreach (var column in Data.Columns)
+        {
+            <RadzenDataGridColumn TItem="TData" Property="@column.PropertyName" Title="@column.DisplayName" />
+        }
+        @if (Data.EditAction != null || Data.DeleteAction != null)
+        {         
+
+            <RadzenDataGridColumn TItem="TData" Title="Действие">
+                <Template Context="data">
+                    @if(Data.EditAction != null)
+                    {
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Class="m-1" Click=@(() => Data.EditAction(data.Id)) />
+                    }
+                    @if(Data.DeleteAction != null)
+                    {
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Class="m-1" Click=@(() => Data.DeleteAction(data.Id)) />
+                    }
+                    
+                </Template>
+            </RadzenDataGridColumn>
+        }
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+
+    [Parameter]
+    public DynamicDataGridModel<TData> Data { get; set; } = default!;
+}

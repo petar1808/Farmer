@@ -13,24 +13,24 @@ namespace WebUI.Services.WorkingSeasons
             _httpClient = httpClient;
         }
 
-        public async Task<GetWorkingSeasonApiModel> Get(int id)
+        public async Task<WorkingSeasonModel> Get(int id)
         {
-            var result = await JsonSerializer.DeserializeAsync<GetWorkingSeasonApiModel>
+            var result = await JsonSerializer.DeserializeAsync<WorkingSeasonModel>
                 (await _httpClient.GetStreamAsync($"api/workingSeasons/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
 
-        public async Task<List<GetWorkingSeasonApiModel>> List()
+        public async Task<List<WorkingSeasonModel>> List()
         {
 
-            var result = await JsonSerializer.DeserializeAsync<List<GetWorkingSeasonApiModel>>
+            var result = await JsonSerializer.DeserializeAsync<List<WorkingSeasonModel>>
                 (await _httpClient.GetStreamAsync($"api/workingSeasons"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
 
-        public async Task<bool> Add(GetWorkingSeasonApiModel workingSeason)
+        public async Task<bool> Add(WorkingSeasonModel workingSeason)
         {
             var workingSeasonsJson =
                 new StringContent(JsonSerializer.Serialize(workingSeason), Encoding.UTF8, "application/json");
@@ -40,7 +40,7 @@ namespace WebUI.Services.WorkingSeasons
             return response.IsSuccessStatusCode;
         }
 
-        public async Task Update(GetWorkingSeasonApiModel workingSeason)
+        public async Task Update(WorkingSeasonModel workingSeason)
         {
             var workingSeasonsJson =
                 new StringContent(JsonSerializer.Serialize(workingSeason), Encoding.UTF8, "application/json");

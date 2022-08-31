@@ -1,0 +1,51 @@
+﻿@page "/performedWork/details/{PerformedWorkId:int}"
+@page "/performedWork/details"
+@using WebUI.ServicesModel.PerformedWork
+
+<div class="col-lg-6 offset-lg-3">
+    <RadzenTemplateForm TItem="PerformedWorkDatailsModel" Data=@PerformedWork Submit=@OnSubmit>
+        <RadzenFieldset Text="Работа">
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Дата" />
+                </div>
+                <div class="col">
+                    <RadzenDatePicker DateFormat="d" style="display: block" Name="Date" @bind-Value=@PerformedWork.Date Class="w-100" />
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Гориво" />
+                </div>
+                <div class="col">
+                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Цена" />
+                </div>
+                <div class="col">
+                    <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <RadzenLabel Text="Тип" />
+                </div>
+                <div class="col">
+                    @*<RadzenDropDown @bind-Value=@compareOperator Data=@Enum.GetValues(typeof(CompareOperator)) Class="w-100" />*@
+                    <RadzenDropDown AllowClear="true"
+                                    AllowFiltering="true"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data=@WorkTypes
+                                    @bind-Value=@PerformedWork.WorkType
+                                    ValueProperty="Value"
+                                    TextProperty="Name"
+                                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                </div>
+            </div>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+</div>
