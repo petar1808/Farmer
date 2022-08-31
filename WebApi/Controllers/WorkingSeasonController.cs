@@ -1,4 +1,5 @@
-﻿using Application.Models.WorkingSeasons;
+﻿using Application.Models.Common;
+using Application.Models.WorkingSeasons;
 using Application.Services.WorikingSeasons;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,6 +61,13 @@ namespace WebApi.Controllers
             await workingSeasonService.Delete(id);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("allSeasons")]
+        public async Task<List<SelectionListModel>> GetAllSeasons()
+        {
+            return await workingSeasonService.SeasonsSelectionList();
         }
     }
 }

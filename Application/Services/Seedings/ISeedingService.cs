@@ -1,22 +1,13 @@
-﻿using Application.Models.Seedings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Models.PerformedWorks;
+using Application.Models.Seedings;
+using Application.Models.Тreatments;
 
 namespace Application.Services.Seedings
 {
     public interface ISeedingService
     {
-        Task Add(int arableLandId, int workingSeasonId, int articleId);
+        Task<GetSeedingModel> GetSeeding(int seasonId, int arableLandId);
 
-        Task<List<GetSeedingModel>> List(int seasionId);
-
-        Task Delete(int id);
-
-        Task<GetSeedingModel> Get(int seedingId);
-
-        Task Edit(int seedingId, int arableLandId, int articleId);
+        Task AddSeeding(AddSeedingModel seedingModel);
     }
 }

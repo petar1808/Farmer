@@ -42,8 +42,6 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-       
-
         [HttpPut]
         public async Task<IActionResult> Edit(EditArableLandModel arableLand)
         {

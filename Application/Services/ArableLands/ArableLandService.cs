@@ -84,8 +84,7 @@ namespace Application.Services.ArableLands
         }
 
         public async Task<List<SelectionListModel>> ArableLandsSelectionList(
-            int seasionId, 
-            int? currentArableLandId = null)
+            int seasionId)
         {
             var arableLands = await this.farmerDbContext
                 .ArableLands
@@ -97,13 +96,6 @@ namespace Application.Services.ArableLands
               .Where(x => x.WorkingSeasonId == seasionId)
               .Select(x => x.ArableLandId)
               .ToListAsync();
-
-            if (currentArableLandId != null)
-            {
-                existingArableLands = existingArableLands
-                    .Where(x => x != currentArableLandId)
-                    .ToList();
-            }
 
             arableLands = arableLands
                 .Where(x => !existingArableLands.Contains(x.Value))

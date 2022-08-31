@@ -1,4 +1,5 @@
-﻿using Application.Models.WorkingSeasons;
+﻿using Application.Models.Common;
+using Application.Models.WorkingSeasons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,7 @@ namespace Application.Services.WorikingSeasons
         Task<Dictionary<int, string>> ListSidebarMenuItems();
 
         Task Delete(int id);
+
+        Task<List<SelectionListModel>> SeasonsSelectionList();
     }
 }

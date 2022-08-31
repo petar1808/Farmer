@@ -15,6 +15,6 @@ namespace Application.Services.ArableLands
 
         Task Delete(int id);
 
-        Task<List<SelectionListModel>> ArableLandsSelectionList(int seasionId, int? currentArableLandId = null);
+        Task<List<SelectionListModel>> ArableLandsSelectionList(int seasionId);
     }
 }
