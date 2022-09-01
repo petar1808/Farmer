@@ -31,9 +31,9 @@ builder.Services.AddSingleton<NavMenuService>();
 
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-var apiUrl = "https://localhost:5001/";
+//var apiUrl = "https://localhost:5001/";
 
-//var apiUrl = "https://farmerapi-dev.azurewebsites.net/";
+var apiUrl = "https://farmerapi-dev.azurewebsites.net/";
 
 builder.Services.AddHttpClient<IArticleService, ArticleService>(client => client.BaseAddress = new Uri(apiUrl));
 builder.Services.AddHttpClient<IArableLandService, ArableLandService>(client => client.BaseAddress = new Uri(apiUrl));

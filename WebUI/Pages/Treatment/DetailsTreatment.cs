@@ -6,7 +6,7 @@ using WebUI.ServicesModel.Тreatment;
 
 namespace WebUI.Pages.Treatment
 {
-    public partial class DetailsTreatmentPage
+    public partial class DetailsTreatment
     {
         private string StatusClass = default!;
         private string Message = default!;

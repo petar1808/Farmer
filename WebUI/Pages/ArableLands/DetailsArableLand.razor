@@ -1,18 +1,8 @@
-﻿@page "/arableLand/details/{ArableLandId:int}"
-@page "/arableLand/details"
-@using WebUI.ServicesModel.ArableLand
+﻿@using WebUI.ServicesModel.ArableLand
 
 <div class="col-lg-6 offset-lg-3">
     <RadzenTemplateForm TItem="ArableLandModel" Data=@ArableLands Submit=@OnSubmit>
         <RadzenFieldset Text="Земя">
-            <div class="row mb-5">
-                <div class="col-md-4">
-                    <RadzenLabel Text="Ид" />
-                </div>
-                <div class="col">
-                    <RadzenNumeric  style="display: block" Name="Id" Disabled @bind-Value=@ArableLands.Id Class="w-100" />
-                </div>
-            </div>
             <div class="row mb-5">
                 <div class="col-md-4">
                     <RadzenLabel Text="Име" />
@@ -31,7 +21,7 @@
                     <RadzenNumeric style="display: block" Name="SizeInDecar" @bind-Value=@ArableLands.SizeInDecar Class="w-100" />
                 </div>
             </div>
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
         </RadzenFieldset>
     </RadzenTemplateForm>
 </div>

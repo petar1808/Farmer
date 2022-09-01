@@ -42,7 +42,7 @@ namespace WebUI.Pages.ArableLands
 
         public async Task EditArableLand(int arableLandId)
         {
-            await DialogService.OpenAsync<DetailsArableLandPage>($"Земя {arableLandId}",
+            await DialogService.OpenAsync<DetailsArableLand>($"Земя {arableLandId}",
               new Dictionary<string, object>() { { "ArableLandId", arableLandId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 
@@ -52,7 +52,7 @@ namespace WebUI.Pages.ArableLands
 
         public async Task AddArableLand()
         {
-            await DialogService.OpenAsync<DetailsArableLandPage>($"Земя",
+            await DialogService.OpenAsync<DetailsArableLand>($"Земя",
               options: new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await ArableLandService.List());

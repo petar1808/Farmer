@@ -1,22 +1,24 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
-using WebUI.Services.ArableLand;
-using WebUI.ServicesModel.ArableLand;
+using Radzen.Blazor;
+using WebUI.Services;
+using WebUI.ServicesModel.Article;
+using WebUI.ServicesModel.Common;
 
-namespace WebUI.Pages.ArableLands
+namespace WebUI.Pages.Articles
 {
-    public partial class DetailsArableLandPage
+    public partial class DetailsArticle
     {
         private string StatusClass = default!;
         private string Message = default!;
 
         [Inject]
-        public IArableLandService ArableLandService { get; set; } = default!;
+        public IArticleService ArticleService { get; set; } = default!;
 
         [Parameter]
-        public int ArableLandId { get; set; }
+        public int ArticleId { get; set; }
 
-        public ArableLandModel ArableLands { get; set; } = default!;
+        public ArticleDetailsModel Article { get; set; } = default!;
 
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
@@ -24,32 +26,44 @@ namespace WebUI.Pages.ArableLands
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
+
+        public List<SelectionListModel> ArticleTypes { get; set; } = new List<SelectionListModel>();
+
         bool popup;
 
         protected async override Task OnInitializedAsync()
         {
-            if (ArableLandId == 0) //new employee is being created
+
+            ArticleTypes = await ArticleService.GetArticlesType();
+
+            if (ArticleId == 0) //new employee is being created
             {
                 //add some defaults
-                ArableLands = new ArableLandModel();
+                Article = new ArticleDetailsModel();
             }
             else
             {
-                ArableLands = await ArableLandService.Get(ArableLandId);
+                Article = await ArticleService.Get(ArticleId);
             }
         }
 
-
-        protected async Task OnSubmit(ArableLandModel arableLand)
+        public void OnDropDownChange(object value)
         {
-            if (arableLand.Id == 0) //new
+            Article.ArticleType = (int)value;
+        }
+
+
+        protected async Task OnSubmit(ArticleDetailsModel article)
+        {
+            if (article.Id == 0) //new
             {
-                var addIsSuccess = await ArableLandService.Add(ArableLands);
+                var addIsSuccess = await ArticleService.Add(Article);
+               
                 if (addIsSuccess)
                 {
                     StatusClass = "alert-success";
                     Message = "New employee added successfully.";
-
+                    
                 }
                 else
                 {
@@ -59,16 +73,21 @@ namespace WebUI.Pages.ArableLands
             }
             else
             {
-                await ArableLandService.Update(ArableLands);
+                await ArticleService.Update(Article);
                 StatusClass = "alert-success";
                 Message = "Employee updated successfully.";
             }
             DialogService.Close(false);
         }
 
+        void OnDropDownChange(object value, string name)
+        {
+            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+        }
+
         protected async Task DeleteEmployee()
         {
-            await ArableLandService.Delete(ArableLands.Id);
+            await ArticleService.Delete(Article.Id);
 
             StatusClass = "alert-success";
             Message = "Deleted successfully";

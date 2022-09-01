@@ -42,7 +42,7 @@ namespace WebUI.Pages.Articles
 
         public async Task AddArticle()
         {
-            await DialogService.OpenAsync<DetailsArticlePage>($"Артикул",
+            await DialogService.OpenAsync<DetailsArticle>($"Артикул",
               options: new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await ArticleService.List());
@@ -50,7 +50,7 @@ namespace WebUI.Pages.Articles
         }
         public async Task EditArticle(int articleId)
         {
-            await DialogService.OpenAsync<DetailsArticlePage>($"Артикул {articleId}",
+            await DialogService.OpenAsync<DetailsArticle>($"Артикул {articleId}",
               new Dictionary<string, object>() { { "ArticleId", articleId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 

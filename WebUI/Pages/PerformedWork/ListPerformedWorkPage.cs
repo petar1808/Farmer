@@ -44,7 +44,7 @@ namespace WebUI.Pages.PerformedWork
 
         public async Task AddPerformedWork()
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkPage>($"Работа",
+            await DialogService.OpenAsync<DetailsPerformedWork>($"Работа",
               options: new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await PerformedWorkService.List(2));
@@ -52,7 +52,7 @@ namespace WebUI.Pages.PerformedWork
         }
         public async Task EditPerformedWork(int performedWorkId)
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkPage>($"Работа {performedWorkId}",
+            await DialogService.OpenAsync<DetailsPerformedWork>($"Работа {performedWorkId}",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 

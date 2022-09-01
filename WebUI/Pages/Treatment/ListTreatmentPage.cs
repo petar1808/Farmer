@@ -47,7 +47,7 @@ namespace WebUI.Pages.Treatment
 
         public async Task AddTreatment()
         {
-            await DialogService.OpenAsync<DetailsTreatmentPage>($"Третиране",
+            await DialogService.OpenAsync<DetailsTreatment>($"Третиране",
               options: new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await TreatmentService.List(2));
@@ -55,7 +55,7 @@ namespace WebUI.Pages.Treatment
         }
         public async Task EditTreatment(int treatmentId)
         {
-            await DialogService.OpenAsync<DetailsTreatmentPage>($"Третиране {treatmentId}",
+            await DialogService.OpenAsync<DetailsTreatment>($"Третиране {treatmentId}",
               new Dictionary<string, object>() { { "TreatmentId", treatmentId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 

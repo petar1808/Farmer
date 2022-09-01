@@ -15,7 +15,7 @@
         @if (Data.EditAction != null || Data.DeleteAction != null)
         {         
 
-            <RadzenDataGridColumn TItem="TData" Title="Действие">
+            <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="TData" Title="Действие">
                 <Template Context="data">
                     @if(Data.EditAction != null)
                     {

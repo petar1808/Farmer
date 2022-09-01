@@ -1,6 +1,4 @@
-﻿@page "/performedWork/details/{PerformedWorkId:int}"
-@page "/performedWork/details"
-@using WebUI.ServicesModel.PerformedWork
+﻿@using WebUI.ServicesModel.PerformedWork
 
 <div class="col-lg-6 offset-lg-3">
     <RadzenTemplateForm TItem="PerformedWorkDatailsModel" Data=@PerformedWork Submit=@OnSubmit>
@@ -45,7 +43,7 @@
                                     Change=@(args => OnDropDownChange(args)) Class="w-100" />
                 </div>
             </div>
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
         </RadzenFieldset>
     </RadzenTemplateForm>
 </div>

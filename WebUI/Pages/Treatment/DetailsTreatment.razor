@@ -1,7 +1,4 @@
-﻿@page "/treatment/details/{TreatmentId:int}"
-@page "/treatment/details"
-
-@using WebUI.ServicesModel.Тreatment
+﻿@using WebUI.ServicesModel.Тreatment
 
 <div class="col-lg-6 offset-lg-3">
     <RadzenTemplateForm TItem="ТreatmentDetailsModel" Data=@Тreatment Submit=@OnSubmit>
@@ -70,7 +67,7 @@
                     <RadzenNumeric style="display: block" Name="ArticlePrice" @bind-Value=@Тreatment.ArticlePrice Class="w-100" />
                 </div>
             </div>
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
         </RadzenFieldset>
     </RadzenTemplateForm>
 </div>

@@ -1,18 +1,8 @@
-﻿@page "/workingSeason/details/{WorkingSeasonId:int}"
-@page "/workingSeason/details"
-@using WebUI.ServicesModel.WorkingSeason
+﻿@using WebUI.ServicesModel.WorkingSeason
 
 <div class="col-lg-10 offset-lg-1 col-md-8 offset-md-2">
     <RadzenTemplateForm TItem="WorkingSeasonModel" Data=@WorkingSeason Submit=@OnSubmit>
         <RadzenFieldset Text="Земя">
-            <div class="row mb-5">
-                <div class="col-md-4">
-                    <RadzenLabel Text="Ид" />
-                </div>
-                <div class="col">
-                    <RadzenNumeric  style="display: block" Name="Id" Disabled @bind-Value=@WorkingSeason.Id Class="w-100" />
-                </div>
-            </div>
             <div class="row mb-5">
                 <div class="col-md-4">
                     <RadzenLabel Text="Име" />
@@ -41,7 +31,7 @@
                     Change=@(args => OnDateToChange(args))/>
                 </div>
             </div>
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
         </RadzenFieldset>
     </RadzenTemplateForm>
 </div>

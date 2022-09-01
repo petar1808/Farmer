@@ -1,24 +1,23 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
-using Radzen.Blazor;
-using WebUI.Services;
-using WebUI.ServicesModel.Article;
+using WebUI.Services.PerformedWork;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.PerformedWork;
 
-namespace WebUI.Pages.Articles
+namespace WebUI.Pages.PerformedWork
 {
-    public partial class DetailsArticlePage
+    public partial class DetailsPerformedWork
     {
         private string StatusClass = default!;
         private string Message = default!;
 
         [Inject]
-        public IArticleService ArticleService { get; set; } = default!;
+        public IPerformedWorkService PerformedWorkService { get; set; } = default!;
 
         [Parameter]
-        public int ArticleId { get; set; }
+        public int PerformedWorkId { get; set; }
 
-        public ArticleDetailsModel Article { get; set; } = default!;
+        public PerformedWorkDatailsModel PerformedWork { get; set; } = default!;
 
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
@@ -27,43 +26,42 @@ namespace WebUI.Pages.Articles
         public DialogService DialogService { get; set; } = default!;
 
 
-        public List<SelectionListModel> ArticleTypes { get; set; } = new List<SelectionListModel>();
+        public List<SelectionListModel> WorkTypes { get; set; } = new List<SelectionListModel>();
 
         bool popup;
 
         protected async override Task OnInitializedAsync()
         {
 
-            ArticleTypes = await ArticleService.GetArticlesType();
+            WorkTypes = await PerformedWorkService.GetWorkTypes();
 
-            if (ArticleId == 0) //new employee is being created
+            if (PerformedWorkId == 0) //??
             {
-                //add some defaults
-                Article = new ArticleDetailsModel();
+                PerformedWork = new PerformedWorkDatailsModel();
             }
             else
             {
-                Article = await ArticleService.Get(ArticleId);
+                PerformedWork = await PerformedWorkService.Get(PerformedWorkId);
             }
         }
 
         public void OnDropDownChange(object value)
         {
-            Article.ArticleType = (int)value;
+            PerformedWork.WorkType = (int)value;
         }
 
 
-        protected async Task OnSubmit(ArticleDetailsModel article)
+        protected async Task OnSubmit(PerformedWorkDatailsModel performedWork/*, int seedingId*/)
         {
-            if (article.Id == 0) //new
+            if (performedWork.Id == 0)
             {
-                var addIsSuccess = await ArticleService.Add(Article);
-               
+                var addIsSuccess = await PerformedWorkService.Add(PerformedWork, 2);
+
                 if (addIsSuccess)
                 {
                     StatusClass = "alert-success";
                     Message = "New employee added successfully.";
-                    
+
                 }
                 else
                 {
@@ -73,7 +71,7 @@ namespace WebUI.Pages.Articles
             }
             else
             {
-                await ArticleService.Update(Article);
+                await PerformedWorkService.Update(PerformedWork);
                 StatusClass = "alert-success";
                 Message = "Employee updated successfully.";
             }
@@ -87,7 +85,7 @@ namespace WebUI.Pages.Articles
 
         protected async Task DeleteEmployee()
         {
-            await ArticleService.Delete(Article.Id);
+            await PerformedWorkService.Delete(PerformedWork.Id);
 
             StatusClass = "alert-success";
             Message = "Deleted successfully";

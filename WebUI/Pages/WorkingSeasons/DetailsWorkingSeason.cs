@@ -5,7 +5,7 @@ using WebUI.ServicesModel.WorkingSeason;
 
 namespace WebUI.Pages.WorkingSeasons
 {
-    public partial class DetailsWorkingSeasonPage
+    public partial class DetailsWorkingSeason
     {
         private string StatusClass = default!;
         private string Message = default!;
