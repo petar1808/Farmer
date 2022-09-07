@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Persistence.Migrations
 {
-    public partial class AddTreatmentFixToAllModel : Migration
+    public partial class AddTreatmentAndExtendSeeding : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,66 +13,73 @@ namespace Infrastructure.Persistence.Migrations
                 name: "FK_PerformedWorks_Articles_ArticleId",
                 table: "PerformedWorks");
 
+            migrationBuilder.DropForeignKey(
+                name: "FK_Seedings_Articles_ArticleId",
+                table: "Seedings");
+
             migrationBuilder.DropIndex(
                 name: "IX_PerformedWorks_ArticleId",
                 table: "PerformedWorks");
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.RenameColumn(
                 name: "ArticleId",
-                table: "PerformedWorks");
-
-            migrationBuilder.RenameColumn(
-                name: "PerforemedWorkDate",
-                table: "PerformedWorks",
-                newName: "Date");
-
-            migrationBuilder.RenameColumn(
-                name: "FuelUsed",
                 table: "PerformedWorks",
                 newName: "FuelPrice");
 
-            migrationBuilder.RenameColumn(
-                name: "FuelSum",
-                table: "PerformedWorks",
-                newName: "AmountOfFuel");
+            migrationBuilder.AlterColumn<int>(
+                name: "ArticleId",
+                table: "Seedings",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
 
             migrationBuilder.AddColumn<int>(
                 name: "GrainPricePerKilogram",
                 table: "Seedings",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "HarvestedQuantityPerDecare",
                 table: "Seedings",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "QuantityOfSeedsPerDecare",
                 table: "Seedings",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "SeedPricePerKilogram",
                 table: "Seedings",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "Subsidies",
                 table: "Seedings",
                 type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "AmountOfFuel",
+                table: "PerformedWorks",
+                type: "int",
                 nullable: false,
                 defaultValue: 0);
 
+            migrationBuilder.AddColumn<DateTime>(
+                name: "Date",
+                table: "PerformedWorks",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
             migrationBuilder.CreateTable(
-                name: "Treatment",
+                name: "Treatments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -83,19 +90,20 @@ namespace Infrastructure.Persistence.Migrations
                     FuelPrice = table.Column<int>(type: "int", nullable: true),
                     ArticleId = table.Column<int>(type: "int", nullable: false),
                     ArticleQuantity = table.Column<int>(type: "int", nullable: false),
+                    ArticlePrice = table.Column<int>(type: "int", nullable: false),
                     SeedingId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Treatment", x => x.Id);
+                    table.PrimaryKey("PK_Treatments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Treatment_Articles_ArticleId",
+                        name: "FK_Treatments_Articles_ArticleId",
                         column: x => x.ArticleId,
                         principalTable: "Articles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Treatment_Seedings_SeedingId",
+                        name: "FK_Treatments_Seedings_SeedingId",
                         column: x => x.SeedingId,
                         principalTable: "Seedings",
                         principalColumn: "Id",
@@ -103,20 +111,31 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Treatment_ArticleId",
-                table: "Treatment",
+                name: "IX_Treatments_ArticleId",
+                table: "Treatments",
                 column: "ArticleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Treatment_SeedingId",
-                table: "Treatment",
+                name: "IX_Treatments_SeedingId",
+                table: "Treatments",
                 column: "SeedingId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Seedings_Articles_ArticleId",
+                table: "Seedings",
+                column: "ArticleId",
+                principalTable: "Articles",
+                principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Seedings_Articles_ArticleId",
+                table: "Seedings");
+
             migrationBuilder.DropTable(
-                name: "Treatment");
+                name: "Treatments");
 
             migrationBuilder.DropColumn(
                 name: "GrainPricePerKilogram",
@@ -138,26 +157,28 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Subsidies",
                 table: "Seedings");
 
+            migrationBuilder.DropColumn(
+                name: "AmountOfFuel",
+                table: "PerformedWorks");
+
+            migrationBuilder.DropColumn(
+                name: "Date",
+                table: "PerformedWorks");
+
             migrationBuilder.RenameColumn(
                 name: "FuelPrice",
                 table: "PerformedWorks",
-                newName: "FuelUsed");
+                newName: "ArticleId");
 
-            migrationBuilder.RenameColumn(
-                name: "Date",
-                table: "PerformedWorks",
-                newName: "PerforemedWorkDate");
-
-            migrationBuilder.RenameColumn(
-                name: "AmountOfFuel",
-                table: "PerformedWorks",
-                newName: "FuelSum");
-
-            migrationBuilder.AddColumn<int>(
+            migrationBuilder.AlterColumn<int>(
                 name: "ArticleId",
-                table: "PerformedWorks",
+                table: "Seedings",
                 type: "int",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PerformedWorks_ArticleId",
@@ -171,6 +192,14 @@ namespace Infrastructure.Persistence.Migrations
                 principalTable: "Articles",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Seedings_Articles_ArticleId",
+                table: "Seedings",
+                column: "ArticleId",
+                principalTable: "Articles",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
     }
 }

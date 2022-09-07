@@ -17,6 +17,8 @@ namespace Domain.Models
 
         public int SizeInDecar { get; private set; }
 
+        public List<Seeding> Seedings { get; } = default!;
+
         public ArableLand UpdateName(string name)
         {
             ValidateName(name);

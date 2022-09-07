@@ -51,15 +51,15 @@ namespace Domain.Models
 
         public Article Article { get; set; }
 
-        public int QuantityOfSeedsPerDecare { get; private set; } = default!;
+        public int? QuantityOfSeedsPerDecare { get; private set; } = default!;
 
-        public int SeedPricePerKilogram { get; private set; } = default!;
+        public int? SeedPricePerKilogram { get; private set; } = default!;
 
-        public int GrainPricePerKilogram { get; private set; }
+        public int? GrainPricePerKilogram { get; private set; }
 
-        public int HarvestedQuantityPerDecare { get; private set; }
+        public int? HarvestedQuantityPerDecare { get; private set; }
 
-        public int Subsidies { get; private set; }
+        public int? Subsidies { get; private set; }
 
         public Seeding UpdateArableLand(int arableLandId)
         {

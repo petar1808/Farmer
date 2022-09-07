@@ -17,7 +17,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -203,19 +203,19 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GrainPricePerKilogram")
+                    b.Property<int?>("GrainPricePerKilogram")
                         .HasColumnType("int");
 
-                    b.Property<int>("HarvestedQuantityPerDecare")
+                    b.Property<int?>("HarvestedQuantityPerDecare")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuantityOfSeedsPerDecare")
+                    b.Property<int?>("QuantityOfSeedsPerDecare")
                         .HasColumnType("int");
 
-                    b.Property<int>("SeedPricePerKilogram")
+                    b.Property<int?>("SeedPricePerKilogram")
                         .HasColumnType("int");
 
-                    b.Property<int>("Subsidies")
+                    b.Property<int?>("Subsidies")
                         .HasColumnType("int");
 
                     b.Property<int>("WorkingSeasonId")
@@ -417,7 +417,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Models.Seeding", b =>
                 {
                     b.HasOne("Domain.Models.ArableLand", "ArableLand")
-                        .WithMany()
+                        .WithMany("Seedings")
                         .HasForeignKey("ArableLandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -507,6 +507,11 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Models.ArableLand", b =>
+                {
+                    b.Navigation("Seedings");
                 });
 #pragma warning restore 612, 618
         }

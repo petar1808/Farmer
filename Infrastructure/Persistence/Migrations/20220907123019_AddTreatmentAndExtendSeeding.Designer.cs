@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(FarmerDbContext))]
-    [Migration("20220515122601_AddPerformedWorkUpdate")]
-    partial class AddPerformedWorkUpdate
+    [Migration("20220907123019_AddTreatmentAndExtendSeeding")]
+    partial class AddTreatmentAndExtendSeeding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -169,17 +169,14 @@ namespace Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ArticleId")
+                    b.Property<int>("AmountOfFuel")
                         .HasColumnType("int");
 
-                    b.Property<int>("FuelSum")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FuelUsed")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PerforemedWorkDate")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("FuelPrice")
+                        .HasColumnType("int");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("int");
@@ -188,8 +185,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
 
                     b.HasIndex("SeedingId");
 
@@ -207,7 +202,22 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("ArableLandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ArticleId")
+                    b.Property<int?>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("GrainPricePerKilogram")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("HarvestedQuantityPerDecare")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuantityOfSeedsPerDecare")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SeedPricePerKilogram")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Subsidies")
                         .HasColumnType("int");
 
                     b.Property<int>("WorkingSeasonId")
@@ -222,6 +232,47 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("WorkingSeasonId");
 
                     b.ToTable("Seedings");
+                });
+
+            modelBuilder.Entity("Domain.Models.Treatment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AmountOfFuel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArticlePrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArticleQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("FuelPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeedingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ТreatmentType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("SeedingId");
+
+                    b.ToTable("Treatments");
                 });
 
             modelBuilder.Entity("Domain.Models.WorkingSeason", b =>
@@ -356,18 +407,11 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
                 {
-                    b.HasOne("Domain.Models.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Domain.Models.Seeding", "Seeding")
                         .WithMany()
                         .HasForeignKey("SeedingId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Article");
 
                     b.Navigation("Seeding");
                 });
@@ -375,16 +419,14 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Models.Seeding", b =>
                 {
                     b.HasOne("Domain.Models.ArableLand", "ArableLand")
-                        .WithMany()
+                        .WithMany("Seedings")
                         .HasForeignKey("ArableLandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Article", "Article")
                         .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ArticleId");
 
                     b.HasOne("Domain.Models.WorkingSeason", "WorkingSeason")
                         .WithMany()
@@ -397,6 +439,25 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("WorkingSeason");
+                });
+
+            modelBuilder.Entity("Domain.Models.Treatment", b =>
+                {
+                    b.HasOne("Domain.Models.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Seeding", "Seeding")
+                        .WithMany()
+                        .HasForeignKey("SeedingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Seeding");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -448,6 +509,11 @@ namespace Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Models.ArableLand", b =>
+                {
+                    b.Navigation("Seedings");
                 });
 #pragma warning restore 612, 618
         }

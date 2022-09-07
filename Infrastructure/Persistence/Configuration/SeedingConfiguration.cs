@@ -16,7 +16,7 @@ namespace Infrastructure.Persistence.Configuration
         {
             builder
                 .HasOne(x => x.ArableLand)
-                .WithMany()
+                .WithMany(x => x.Seedings)
                 .HasForeignKey(p => p.ArableLandId);
 
             builder
@@ -32,6 +32,8 @@ namespace Infrastructure.Persistence.Configuration
 
             builder.Property(p => p.ArableLandId).IsRequired();
             builder.Property(p => p.WorkingSeasonId).IsRequired();
+            builder.Property(p => p.ArticleId);
+
             base.Configure(builder);
         }
     }
