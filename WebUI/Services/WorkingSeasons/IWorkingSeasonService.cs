@@ -1,4 +1,5 @@
-﻿using WebUI.ServicesModel.WorkingSeason;
+﻿using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.WorkingSeason;
 
 namespace WebUI.Services.WorkingSeasons
 {
@@ -13,5 +14,7 @@ namespace WebUI.Services.WorkingSeasons
         Task<bool> Add(WorkingSeasonModel arableLand);
 
         Task Delete(int id);
+
+        Task<List<SelectionListModel>> GetAllSeasons();
     }
 }

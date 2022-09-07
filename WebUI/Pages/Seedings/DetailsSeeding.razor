@@ -1,0 +1,21 @@
+﻿@using WebUI.ServicesModel.Seeding
+
+
+
+<RadzenCard Class="w-75 mb-5 mx-auto" Style="display: flex; align-items: center;">
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <RadzenLabel Text="Земя" />
+        </div>
+        <div class="col">
+            <RadzenDropDown 
+                            Data=@ArableLands
+                            @bind-Value=@SelectedArableLandId
+                            ValueProperty="Value"
+                            TextProperty="Name"
+                            Class="w-100" />
+        </div>
+    </div>
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => OnSubmit())" />
+</RadzenCard>
+

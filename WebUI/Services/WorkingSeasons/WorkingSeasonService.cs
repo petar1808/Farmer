@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.WorkingSeason;
 
 namespace WebUI.Services.WorkingSeasons
@@ -51,6 +52,14 @@ namespace WebUI.Services.WorkingSeasons
         public async Task Delete(int id)
         {
             await _httpClient.DeleteAsync($"api/workingSeasons/{id}");
+        }
+
+        public async Task<List<SelectionListModel>> GetAllSeasons()
+        {
+            var result = await JsonSerializer.DeserializeAsync<List<SelectionListModel>>
+               (await _httpClient.GetStreamAsync($"api/workingSeasons/allSeasons"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+            return result!;
         }
     }
 }

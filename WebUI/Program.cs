@@ -11,6 +11,7 @@ using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using WebUI.Services.PerformedWork;
 using WebUI.Services.Treatment;
+using WebUI.Services.Seeding;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -29,6 +30,8 @@ builder.Services
 
 builder.Services.AddSingleton<NavMenuService>();
 
+builder.Services.AddSingleton<SelectedWorkingSeasonService>();
+
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 //var apiUrl = "https://localhost:5001/";
@@ -40,5 +43,6 @@ builder.Services.AddHttpClient<IArableLandService, ArableLandService>(client => 
 builder.Services.AddHttpClient<IWorkingSeasonService, WorkingSeasonService>(client => client.BaseAddress = new Uri(apiUrl));
 builder.Services.AddHttpClient<IPerformedWorkService, PerformedWorkService>(client => client.BaseAddress = new Uri(apiUrl));
 builder.Services.AddHttpClient<ITreatmentService, TreatmentService>(client => client.BaseAddress = new Uri(apiUrl));
+builder.Services.AddHttpClient<ISeedingService, SeedingService>(client => client.BaseAddress = new Uri(apiUrl));
 
 await builder.Build().RunAsync();

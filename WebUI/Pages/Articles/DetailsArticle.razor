@@ -1,18 +1,8 @@
-﻿@page "/article/details/{ArticleId:int}"
-@page "/article/details"
-@using WebUI.ServicesModel.Article
+﻿@using WebUI.ServicesModel.Article
 
 <div class="col-lg-6 offset-lg-3">
     <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Submit=@OnSubmit>
         <RadzenFieldset Text="Артикул">
-@*            <div class="row mb-5">
-                <div class="col-md-4">
-                    <RadzenLabel Text="Ид" />
-                </div>
-                <div class="col">
-                    <RadzenNumeric  style="display: block" Name="Id" Disabled @bind-Value=@Article.Id Class="w-100" />
-                </div>
-            </div>*@
             <div class="row mb-5">
                 <div class="col-md-4">
                     <RadzenLabel Text="Име" />

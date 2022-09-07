@@ -4,12 +4,25 @@
 @using WebUI.Pages.PerformedWork
 @using WebUI.Pages.Treatment
 
+
+<RadzenCard Class="w-75 mb-5 mx-auto" Style="display: flex; align-items: center;">
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArableLand())" />
+    <RadzenDropDown Data=@WorkingSeasons
+                    TValue="int"
+                    TextProperty="Name"
+                    ValueProperty="Value"
+                    @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
+                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+</RadzenCard>
+
+
+
 @*
 <div>
     DropDown -> seasions
 </div>*@
- 
-<Accordion>
+
+@*<Accordion>
     <Collapse Visible="@collapse1Visible">
         <CollapseHeader>
             <Heading Size="HeadingSize.Is5">
@@ -40,9 +53,9 @@
             <ListTreatmentPage></ListTreatmentPage>
         </CollapseBody>
     </Collapse>
-</Accordion>
+</Accordion>*@
 
-@code{
+@code {
     bool collapse1Visible = true;
     bool collapse2Visible = false;
     bool collapse3Visible = false;
