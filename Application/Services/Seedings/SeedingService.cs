@@ -43,5 +43,16 @@ namespace Application.Services.Seedings
 
             return result;
         }
+
+        public async Task<List<SownArableLandModel>> SownArableLands(int seasonId)
+        {
+            var arableLands = await this.farmerDbContext
+                .Seedings
+                .Where(x => x.WorkingSeasonId == seasonId)
+                .Select(x => new SownArableLandModel(x.Id, x.ArableLand.Name))
+                .ToListAsync();
+
+            return arableLands;
+        }
     }
 }

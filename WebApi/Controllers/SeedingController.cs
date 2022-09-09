@@ -51,6 +51,15 @@ namespace WebApi.Controllers
             return seeding;
         }
 
+        [HttpGet]
+        [Route("{seasonId:int}")]
+        public async Task<ActionResult<List<SownArableLandModel>>> GetSownArableLand(int seasonId)
+        {
+            var seeding = await seedingService.SownArableLands(seasonId);
+
+            return seeding;
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddSeading(AddSeedingModel seedingModel)
         {

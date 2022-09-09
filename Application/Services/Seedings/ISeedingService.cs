@@ -9,5 +9,7 @@ namespace Application.Services.Seedings
         Task<GetSeedingModel> GetSeeding(int seasonId, int arableLandId);
 
         Task AddSeeding(AddSeedingModel seedingModel);
+
+        Task<List<SownArableLandModel>> SownArableLands(int seasonId);
     }
 }
