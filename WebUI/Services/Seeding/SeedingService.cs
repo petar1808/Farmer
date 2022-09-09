@@ -30,5 +30,21 @@ namespace WebUI.Services.Seeding
 
             return result!;
         }
+
+        public async Task<GetSeedingModel> GetSeeding(int seasonId, int arableLandId)
+        {
+            var result = await JsonSerializer.DeserializeAsync<GetSeedingModel>
+                  (await _httpClient.GetStreamAsync($"api/seedings/{seasonId}/{arableLandId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+            return result!;
+        }
+
+        public async Task<List<SownArableLandModel>> GetSownArableLands(int seasonId)
+        {
+            var result = await JsonSerializer.DeserializeAsync<List<SownArableLandModel>>
+                 (await _httpClient.GetStreamAsync($"api/seedings/{seasonId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+            return result!;
+        }
     }
 }

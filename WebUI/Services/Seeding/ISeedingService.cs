@@ -8,5 +8,9 @@ namespace WebUI.Services.Seeding
         Task<List<SelectionListModel>> GetAvailableArableLandSeeds(int seasonId);
 
         Task<bool> AddArableLand(AddSeedingModel seedingModel);
+
+        Task<List<SownArableLandModel>> GetSownArableLands(int seasonId);
+
+        Task<GetSeedingModel> GetSeeding(int seasonId, int arableLandId);
     }
 }

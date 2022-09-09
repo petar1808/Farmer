@@ -6,7 +6,7 @@ using WebUI.ServicesModel.PerformedWork;
 
 namespace WebUI.Pages.PerformedWork
 {
-    public partial class DetailsPerformedWork
+    public partial class DetailsPerformedWorkDialog
     {
         private string StatusClass = default!;
         private string Message = default!;

@@ -5,16 +5,38 @@
 @using WebUI.Pages.Treatment
 
 
-<RadzenCard Class="w-75 mb-5 mx-auto" Style="display: flex; align-items: center;">
-    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArableLand())" />
-    <RadzenDropDown Data=@WorkingSeasons
+<RadzenCard Style="display: flex; align-items: center; margin-bottom: 20px">
+    <div class="row px-3">
+        <div class="col-6">
+            <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArableLand())" />
+        </div>
+        <div class="col-6 float-right" >
+            <RadzenDropDown Data=@WorkingSeasons
                     TValue="int"
                     TextProperty="Name"
                     ValueProperty="Value"
                     @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
                     Change=@(args => OnDropDownChange(args)) Class="w-100" />
+        </div>
+    </div>
+    
+    
 </RadzenCard>
 
+
+ <RadzenTabs Change=@OnChange TabPosition="@Radzen.TabPosition.Top" RenderMode="TabRenderMode.Client">
+     <Tabs>
+        @foreach (var sownArableLand in SownArableLands)
+        {
+            <RadzenTabsItem Text="@sownArableLand.ArableLandName"  >
+                <Accordion>
+
+                </Accordion>
+            </RadzenTabsItem>
+        }
+          
+     </Tabs>
+ </RadzenTabs>
 
 
 @*

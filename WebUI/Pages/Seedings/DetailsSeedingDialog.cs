@@ -7,7 +7,7 @@ using WebUI.ServicesModel.Seeding;
 
 namespace WebUI.Pages.Seedings
 {
-    public partial class DetailsSeeding
+    public partial class DetailsSeedingDialog
     {
         [Inject]
         public ISeedingService SeedingService { get; set; } = default!;

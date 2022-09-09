@@ -7,7 +7,7 @@ using WebUI.ServicesModel.PerformedWork;
 
 namespace WebUI.Pages.PerformedWork
 {
-    public partial class ListPerformedWorkPage
+    public partial class ListPerformedWorkDialog
     {
         [Inject]
         public IPerformedWorkService PerformedWorkService { get; set; } = default!;
@@ -44,7 +44,7 @@ namespace WebUI.Pages.PerformedWork
 
         public async Task AddPerformedWork()
         {
-            await DialogService.OpenAsync<DetailsPerformedWork>($"Работа",
+            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Работа",
               options: new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await PerformedWorkService.List(2));
@@ -52,7 +52,7 @@ namespace WebUI.Pages.PerformedWork
         }
         public async Task EditPerformedWork(int performedWorkId)
         {
-            await DialogService.OpenAsync<DetailsPerformedWork>($"Работа {performedWorkId}",
+            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Работа {performedWorkId}",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 
