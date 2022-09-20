@@ -15,29 +15,27 @@ namespace Application.Models.Seedings
 
         public string ArticleName { get; init; } = default!;
 
-        public int SownSeedsInTotal { get; init; }
+        public int SeedsQuantityPerDecare { get; private set; } 
 
-        public int SeedPricePerKilogram { get; init; }
+        public decimal SeedsPricePerKilogram { get; private set; } 
 
-        public int PriceOfSeedsInTotal { get; init; }
+        public int HarvestedQuantityPerDecare { get; private set; }
 
-        public int HarvestedQuantityPerDecare { get; init; }
+        public decimal HarvestedGrainSellingPricePerKilogram { get; private set; }
 
-        public int TotalAmountInKilogram { get; init; }
+        public decimal SubsidiesIncome { get; private set; }
 
-        public int GrainPricePerKilogram { get; init; }
+        public decimal IncomeFromHarvestedGrains { get; private set; }
 
-        public int PriceOfGrainTotal { get; init; }
+        public decimal Expenses { get; private set; }
 
-        public int Subsidies { get; init; }
-
-        public int Income { get; init; }
-
-        public int Profit { get; init; }
+        public decimal Profit => (IncomeFromHarvestedGrains + SubsidiesIncome) - Expenses;
 
         public virtual void Mapping(Profile mapper)
            => mapper.CreateMap<Seeding, GetSeedingModel>()
                 .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name))
-                .ForMember(x => x.ArticleId, cfg => cfg.MapFrom(c => c.Article.Id));
+                .ForMember(x => x.ArticleId, cfg => cfg.MapFrom(c => c.Article.Id))
+                .ForMember(x => x.IncomeFromHarvestedGrains, cfg => cfg.MapFrom(c => c.HarvestedQuantityPerDecare * c.HarvestedGrainSellingPricePerKilogram))
+                .ForMember(x => x.Expenses, cfg => cfg.MapFrom(c => c.SeedsQuantityPerDecare * c.SeedsPricePerKilogram));
     }
 }

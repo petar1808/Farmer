@@ -14,45 +14,45 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/seedings")]
+    [Route("api/seeding")]
     public class SeedingController : ControllerBase
     {
         private readonly ISeedingService seedingService;
         private readonly IArableLandService arableLandService;
-        private readonly IТreatmentService тreatmentService;
+        private readonly IТreatmentService treatmentService;
         private readonly IPerformedWorkService performedWorkService;
 
         public SeedingController(
             ISeedingService seedingService,
             IArableLandService arableLandService,
-            IТreatmentService тreatmentService,
+            IТreatmentService treatmentService,
             IPerformedWorkService performedWorkService)
         {
             this.seedingService = seedingService;
             this.arableLandService = arableLandService;
-            this.тreatmentService = тreatmentService;
+            this.treatmentService = treatmentService;
             this.performedWorkService = performedWorkService;
         }
 
         #region Seeding
         [HttpGet]
-        [Route("{seasonId:int}/arableLand")]
-        public async Task<ActionResult<List<SelectionListModel>>> GetAvailableArableLandSeeds(int seasonId)
+        [Route("availableArableLands/{seasonId:int}")]
+        public async Task<ActionResult<List<SelectionListModel>>> GetAvailableArableLands(int seasonId)
         {
             return await arableLandService.ArableLandsSelectionList(seasonId);
         }
 
         [HttpGet]
-        [Route("{seasonId:int}/{arableLandId:int}")]
-        public async Task<ActionResult<GetSeedingModel>> GetSeeding(int seasonId, int arableLandId)
+        [Route("{seedingId:int}")]
+        public async Task<ActionResult<GetSeedingModel>> GetSeedingSummary(int seedingId)
         {
-            var seeding = await seedingService.GetSeeding(seasonId, arableLandId);
+            var seeding = await seedingService.GetSeedingSummary(seedingId);
 
             return seeding;
         }
 
         [HttpGet]
-        [Route("{seasonId:int}")]
+        [Route("sownArableLand/{seasonId:int}")]
         public async Task<ActionResult<List<SownArableLandModel>>> GetSownArableLand(int seasonId)
         {
             var seeding = await seedingService.SownArableLands(seasonId);
@@ -70,11 +70,30 @@ namespace WebApi.Controllers
         #endregion
 
         #region PergormedWork
-        [HttpPost]
+        [HttpGet]
         [Route("{seedingId:int}/performedWork")]
-        public async Task<ActionResult> AddPerformedWork([FromBody] AddPerformedWorkModel performedWorkModel, int seedingId)
+        public async Task<ActionResult<List<ListPerformedWorkModel>>> ListPerformedWork(int seedingId)
         {
-            await performedWorkService.Add(seedingId,
+            var performedWork = await performedWorkService.List(seedingId);
+
+            return performedWork;
+        }
+
+        [HttpGet]
+        [Route("performedWork/{performedWorkId:int}")]
+        public async Task<ActionResult<GetPerformedWorkModel>> GetPerformedWork(int performedWorkId)
+        {
+            var performedWork = await performedWorkService.Get(performedWorkId);
+
+            return performedWork;
+        }
+
+
+        [HttpPost]
+        [Route("performedWork")]
+        public async Task<ActionResult> AddPerformedWork([FromBody] AddPerformedWorkModel performedWorkModel)
+        {
+            await performedWorkService.Add(performedWorkModel.SeedingId,
                 performedWorkModel.WorkType,
                 performedWorkModel.Date,
                 performedWorkModel.FuelPrice,
@@ -93,30 +112,12 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("{id:int}/performedWork")]
-        public async Task<ActionResult> DeletePerformedWork(int id)
+        [Route("performedWork/{performedWorkId:int}")]
+        public async Task<ActionResult> DeletePerformedWork(int performedWorkId)
         {
-            await performedWorkService.Delete(id);
+            await performedWorkService.Delete(performedWorkId);
 
             return Ok();
-        }
-
-        [HttpGet]
-        [Route("{seedingId:int}/performedWork")]
-        public async Task<ActionResult<List<ListPerformedWorkModel>>> ListPerformedWork(int seedingId)
-        {
-            var performedWork = await performedWorkService.List(seedingId);
-
-            return performedWork;
-        }
-
-        [HttpGet]
-        [Route("{id:int}/getPerformedWork")]
-        public async Task<ActionResult<GetPerformedWorkModel>> GetPerformedWork(int id)
-        {
-            var performedWork = await performedWorkService.Get(id);
-
-            return performedWork;
         }
 
         [HttpGet]
@@ -127,14 +128,13 @@ namespace WebApi.Controllers
         }
         #endregion
 
-
         #region Treatment
 
         [HttpGet]
         [Route("{seedingId:int}/treatment")]
         public async Task<ActionResult<List<ListТreatmentModel>>> ListТreatment(int seedingId)
         {
-            var treatment = await тreatmentService.List(seedingId);
+            var treatment = await treatmentService.List(seedingId);
 
             return treatment;
         }
@@ -143,7 +143,7 @@ namespace WebApi.Controllers
         [Route("{id:int}/getTreatment")]
         public async Task<ActionResult<GetTreatmentModel>> GetТreatment(int id)
         {
-            var treatment = await тreatmentService.Get(id);
+            var treatment = await treatmentService.Get(id);
 
             return treatment;
         }
@@ -152,7 +152,7 @@ namespace WebApi.Controllers
         [Route("{seedingId:int}/treatment")]
         public async Task<ActionResult> AddТreatment([FromBody] AddТreatmentModel treatmentModel,int seedingId)
         {
-            await тreatmentService.Add(treatmentModel.Date,
+            await treatmentService.Add(treatmentModel.Date,
                 treatmentModel.ТreatmentType,
                 treatmentModel.AmountOfFuel,
                 treatmentModel.FuelPrice,
@@ -168,7 +168,7 @@ namespace WebApi.Controllers
         [Route("treatment")]
         public async Task<ActionResult> EditТreatment(EditТreatmentModel тreatmentModel)
         {
-            await тreatmentService.Edit(тreatmentModel);
+            await treatmentService.Edit(тreatmentModel);
 
             return Ok();
         }
@@ -177,7 +177,7 @@ namespace WebApi.Controllers
         [Route("{id:int}/treatment")]
         public async Task<ActionResult> DeleteТreatment(int id)
         {
-            await тreatmentService.Delete(id);
+            await treatmentService.Delete(id);
 
             return Ok();
         }

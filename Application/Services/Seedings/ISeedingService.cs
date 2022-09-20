@@ -6,7 +6,7 @@ namespace Application.Services.Seedings
 {
     public interface ISeedingService
     {
-        Task<GetSeedingModel> GetSeeding(int seasonId, int arableLandId);
+        Task<GetSeedingModel> GetSeedingSummary(int seedingId);
 
         Task AddSeeding(AddSeedingModel seedingModel);
 

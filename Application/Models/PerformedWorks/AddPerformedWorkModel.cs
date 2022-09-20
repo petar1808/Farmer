@@ -9,6 +9,8 @@ namespace Application.Models.PerformedWorks
 {
     public class AddPerformedWorkModel
     {
+        public int SeedingId { get; set; }
+
         public WorkType WorkType { get; init; }
 
         public DateTime Date { get; init; }

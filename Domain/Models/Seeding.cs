@@ -13,19 +13,19 @@ namespace Domain.Models
         public Seeding(int arableLandId,
             int workingSeasonId,
             int? articleId,
-            int quantityOfSeedsPerDecare,
-            int seedPricePerKilogram,
-            int grainPricePerKilogram,
+            int seedsQuantityPerDecare,
+            decimal seedsPricePerKilogram,
             int harvestedQuantityPerDecare,
-            int subsidies)
+            decimal harvestedGrainSellingPricePerKilogram,
+            int subsidiesIncome)
             : this(arableLandId, workingSeasonId)
         {
             ArticleId = articleId;
-            SeedPricePerKilogram = seedPricePerKilogram;
-            QuantityOfSeedsPerDecare = quantityOfSeedsPerDecare;
-            GrainPricePerKilogram = grainPricePerKilogram;
+            SeedsQuantityPerDecare = seedsQuantityPerDecare;
+            SeedsPricePerKilogram = seedsPricePerKilogram;
             HarvestedQuantityPerDecare = harvestedQuantityPerDecare;
-            Subsidies = subsidies;
+            HarvestedGrainSellingPricePerKilogram = harvestedGrainSellingPricePerKilogram;
+            SubsidiesIncome = subsidiesIncome;
         }
 
         public Seeding(int arableLandId,
@@ -39,61 +39,43 @@ namespace Domain.Models
             Article = default!;
         }
 
-        public int ArableLandId { get; private set; }
+        public int ArableLandId { get;}
 
-        public ArableLand ArableLand { get; set; }
+        public ArableLand ArableLand { get;  }
 
-        public int WorkingSeasonId { get; private set; }
+        public int WorkingSeasonId { get;  }
 
         public WorkingSeason WorkingSeason { get; }
 
         public int? ArticleId { get; private set; }
 
-        public Article Article { get; set; }
+        public Article Article { get; private set; }
 
-        public int? QuantityOfSeedsPerDecare { get; private set; } = default!;
+        public int SeedsQuantityPerDecare { get; private set; } = default!;
 
-        public int? SeedPricePerKilogram { get; private set; } = default!;
+        public decimal SeedsPricePerKilogram { get; private set; } = default!;
 
-        public int? GrainPricePerKilogram { get; private set; }
+        public int HarvestedQuantityPerDecare { get; private set; }
 
-        public int? HarvestedQuantityPerDecare { get; private set; }
+        public decimal HarvestedGrainSellingPricePerKilogram { get; private set; }
 
-        public int? Subsidies { get; private set; }
+        public decimal SubsidiesIncome { get; private set; }
 
-        public Seeding UpdateArableLand(int arableLandId)
-        {
-            this.ArableLandId = arableLandId;
-            return this;
-        }
-
-        public Seeding UpdateArticle(int articleId)
+        public Seeding UpdateArticle(int? articleId)
         {
             this.ArticleId = articleId;
             return this;
         }
 
-        public Seeding UpdateWorkingSeason(int workingSeasonId)
+        public Seeding UpdateSeedsQuantityPerDecare(int seedsQuantityPerDecare)
         {
-            this.WorkingSeasonId = workingSeasonId;
+            this.SeedsQuantityPerDecare = seedsQuantityPerDecare;
             return this;
         }
 
-        public Seeding UpdateQuantityOfSeedsPerDecare(int quantityOfSeedsPerDecare)
+        public Seeding UpdateSeedsPricePerKilogram(decimal seedsPricePerKilogram)
         {
-            this.QuantityOfSeedsPerDecare = quantityOfSeedsPerDecare;
-            return this;
-        }
-
-        public Seeding UpdateSeedPricePerKilogram(int seedPricePerKilogram)
-        {
-            this.SeedPricePerKilogram = seedPricePerKilogram;
-            return this;
-        }
-
-        public Seeding UpdateGrainPricePerKilogram(int grainPricePerKilogram)
-        {
-            this.GrainPricePerKilogram = grainPricePerKilogram;
+            this.SeedsPricePerKilogram = seedsPricePerKilogram;
             return this;
         }
 
@@ -103,9 +85,15 @@ namespace Domain.Models
             return this;
         }
 
-        public Seeding UpdateSubsidies(int subsidies)
+        public Seeding UpdateHarvestedGrainSellingPricePerKilogram(decimal harvestedGrainSellingPricePerKilogram)
         {
-            this.Subsidies = subsidies;
+            this.HarvestedGrainSellingPricePerKilogram = harvestedGrainSellingPricePerKilogram;
+            return this;
+        }
+
+        public Seeding UpdateSubsidies(decimal subsidiesIncome)
+        {
+            this.SubsidiesIncome = subsidiesIncome;
             return this;
         }
     }
