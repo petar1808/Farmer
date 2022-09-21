@@ -43,15 +43,6 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("{seedingId:int}")]
-        public async Task<ActionResult<GetSeedingModel>> GetSeedingSummary(int seedingId)
-        {
-            var seeding = await seedingService.GetSeedingSummary(seedingId);
-
-            return seeding;
-        }
-
-        [HttpGet]
         [Route("sownArableLand/{seasonId:int}")]
         public async Task<ActionResult<List<SownArableLandModel>>> GetSownArableLand(int seasonId)
         {
@@ -64,6 +55,24 @@ namespace WebApi.Controllers
         public async Task<ActionResult> AddSeading(AddSeedingModel seedingModel)
         {
             await seedingService.AddSeeding(seedingModel);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("summary/{seedingId:int}")]
+        public async Task<ActionResult<GetSeedingSummaryModel>> GetSeedingSummary(int seedingId)
+        {
+            var seeding = await seedingService.GetSeedingSummary(seedingId);
+
+            return seeding;
+        }
+
+        [HttpPut]
+        [Route("summary/{seedingId:int}")]
+        public async Task<ActionResult> UpdateSeedingSummary(UpdateSeedingSummaryModel updateSeedingModel, int seedingId)
+        {
+            await seedingService.UpdateSeedingSummary(updateSeedingModel, seedingId);
 
             return Ok();
         }
@@ -140,10 +149,10 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}/getTreatment")]
-        public async Task<ActionResult<GetTreatmentModel>> GetТreatment(int id)
+        [Route("treatment/{treatmentId:int}")]
+        public async Task<ActionResult<GetTreatmentModel>> GetТreatment(int treatmentId)
         {
-            var treatment = await treatmentService.Get(id);
+            var treatment = await treatmentService.Get(treatmentId);
 
             return treatment;
         }

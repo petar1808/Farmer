@@ -27,14 +27,14 @@ namespace Application.Services.Seedings
             await farmerDbContext.SaveChangesAsync();
         }
 
-        public async Task<GetSeedingModel> GetSeedingSummary(int seedingId)
+        public async Task<GetSeedingSummaryModel> GetSeedingSummary(int seedingId)
         {
             var seeding = await farmerDbContext
                 .Seedings
                 .Include(x => x.Article)
                 .FirstOrDefaultAsync(x => x.Id == seedingId);
 
-            var result = mapper.Map<GetSeedingModel>(seeding);
+            var result = mapper.Map<GetSeedingSummaryModel>(seeding);
 
             return result;
         }
@@ -48,6 +48,28 @@ namespace Application.Services.Seedings
                 .ToListAsync();
 
             return arableLands;
+        }
+
+        public async Task UpdateSeedingSummary(UpdateSeedingSummaryModel updateModel, int seedingId)
+        {
+            var seeding = await farmerDbContext.
+                Seedings
+                .FirstOrDefaultAsync(x => x.Id == seedingId);
+
+            if (seeding == null)
+            {
+                throw new BadRequestExeption($"Seeding with Id: {seedingId}, don't exist");
+            }
+
+            seeding.UpdateArticle(updateModel.ArticleId)
+                   .UpdateSeedsQuantityPerDecare(updateModel.SeedsQuantityPerDecare)
+                   .UpdateSeedsPricePerKilogram(updateModel.SeedsPricePerKilogram)
+                   .UpdateHarvestedQuantityPerDecare(updateModel.HarvestedQuantityPerDecare)
+                   .UpdateHarvestedGrainSellingPricePerKilogram(updateModel.HarvestedGrainSellingPricePerKilogram)
+                   .UpdateSubsidies(updateModel.SubsidiesIncome);
+
+            farmerDbContext.Update(seeding);
+            await farmerDbContext.SaveChangesAsync();
         }
     }
 }

@@ -9,25 +9,6 @@ namespace Domain.Models
 {
     public class Seeding : Entity<int>
     {
-
-        public Seeding(int arableLandId,
-            int workingSeasonId,
-            int? articleId,
-            int seedsQuantityPerDecare,
-            decimal seedsPricePerKilogram,
-            int harvestedQuantityPerDecare,
-            decimal harvestedGrainSellingPricePerKilogram,
-            int subsidiesIncome)
-            : this(arableLandId, workingSeasonId)
-        {
-            ArticleId = articleId;
-            SeedsQuantityPerDecare = seedsQuantityPerDecare;
-            SeedsPricePerKilogram = seedsPricePerKilogram;
-            HarvestedQuantityPerDecare = harvestedQuantityPerDecare;
-            HarvestedGrainSellingPricePerKilogram = harvestedGrainSellingPricePerKilogram;
-            SubsidiesIncome = subsidiesIncome;
-        }
-
         public Seeding(int arableLandId,
              int workingSeasonId)
         {
