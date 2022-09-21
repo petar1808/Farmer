@@ -3,6 +3,7 @@
 @using WebUI.Pages.Articles
 @using WebUI.Pages.PerformedWork
 @using WebUI.Pages.Treatment
+@using WebUI.Pages.Seedings
 
 
 <RadzenCard Style="display: flex; align-items: center; margin-bottom: 20px">
@@ -10,75 +11,51 @@
         <div class="col-6">
             <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArableLand())" />
         </div>
-        <div class="col-6 float-right" >
+        <div class="col-6 float-right">
             <RadzenDropDown Data=@WorkingSeasons
-                    TValue="int"
-                    TextProperty="Name"
-                    ValueProperty="Value"
-                    @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
-                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                            TValue="int"
+                            TextProperty="Name"
+                            ValueProperty="Value"
+                            @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
+                            Change=@(args => OnDropDownChange(args)) Class="w-100" />
         </div>
     </div>
-    
-    
+
+
 </RadzenCard>
 
 
- <RadzenTabs Change=@OnChange TabPosition="@Radzen.TabPosition.Top" RenderMode="TabRenderMode.Client">
-     <Tabs>
+<RadzenTabs Change=@OnChange TabPosition="@Radzen.TabPosition.Top" RenderMode="TabRenderMode.Client">
+    <Tabs>
         @foreach (var sownArableLand in SownArableLands)
         {
-            <RadzenTabsItem Text="@sownArableLand.ArableLandName"  >
+            <RadzenTabsItem Text="@sownArableLand.ArableLandName">
                 <Accordion>
-
+                    <Collapse Visible="@(CollapseSeedingSummary)">
+                        <CollapseHeader>
+                            <Heading Size="HeadingSize.Is5">
+                                <Button Clicked="@(()=>CollapseSeedingSummary = !CollapseSeedingSummary)">Сеидба</Button>
+                            </Heading>
+                        </CollapseHeader>
+                        <CollapseBody>
+                            <SeedingSummary SeedingId="@sownArableLand.SeedingId" IsModal="false"></SeedingSummary>
+                        </CollapseBody>
+                    </Collapse>
+                </Accordion>
+                   <Accordion>
+                    <Collapse Visible="@CollapsePerformedWork">
+                        <CollapseHeader>
+                            <Heading Size="HeadingSize.Is5">
+                                <Button Clicked="@(()=>CollapsePerformedWork = !CollapsePerformedWork)">Обрабодки</Button>
+                            </Heading>
+                        </CollapseHeader>
+                        <CollapseBody>
+                            <ListPerformedWorkDialog SeedingId="@sownArableLand.SeedingId"></ListPerformedWorkDialog>
+                        </CollapseBody>
+                    </Collapse>
                 </Accordion>
             </RadzenTabsItem>
         }
-          
-     </Tabs>
- </RadzenTabs>
 
-
-@*
-<div>
-    DropDown -> seasions
-</div>*@
-
-@*<Accordion>
-    <Collapse Visible="@collapse1Visible">
-        <CollapseHeader>
-            <Heading Size="HeadingSize.Is5">
-                <Button Clicked="@(()=>collapse1Visible = !collapse1Visible)">Сеидба</Button>
-            </Heading>
-        </CollapseHeader>
-        <CollapseBody>
-            <ListArticlePage></ListArticlePage>
-        </CollapseBody>
-    </Collapse>
-    <Collapse Visible="@collapse2Visible">
-        <CollapseHeader>
-            <Heading Size="HeadingSize.Is5">
-                <Button Clicked="@(()=>collapse2Visible = !collapse2Visible)">Обработки</Button>
-            </Heading>
-        </CollapseHeader>
-        <CollapseBody>
-            <ListPerformedWorkPage></ListPerformedWorkPage>
-        </CollapseBody>
-    </Collapse>
-    <Collapse Visible="@collapse3Visible">
-        <CollapseHeader>
-            <Heading Size="HeadingSize.Is5">
-                <Button Clicked="@(()=>collapse3Visible = !collapse3Visible)">Третиране</Button>
-            </Heading>
-        </CollapseHeader>
-        <CollapseBody>
-            <ListTreatmentPage></ListTreatmentPage>
-        </CollapseBody>
-    </Collapse>
-</Accordion>*@
-
-@code {
-    bool collapse1Visible = true;
-    bool collapse2Visible = false;
-    bool collapse3Visible = false;
-}
+    </Tabs>
+</RadzenTabs>

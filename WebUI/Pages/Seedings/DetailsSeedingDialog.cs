@@ -29,7 +29,7 @@ namespace WebUI.Pages.Seedings
 
         protected async Task OnSubmit()
         {
-            var response = await SeedingService.AddArableLand(new AddSeedingModel()
+            var response = await SeedingService.AddSeeding(new AddSeedingModel()
             {
                 ArableLandId = SelectedArableLandId,
                 WorkingSeasonId = SelectedWorkingSeasonService.SelectedWorkingSeasonId

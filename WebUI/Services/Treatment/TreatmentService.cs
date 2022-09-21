@@ -17,20 +17,20 @@ namespace WebUI.Services.Treatment
             var treatmentJson =
                 new StringContent(JsonSerializer.Serialize(тreatment), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync($"api/seedings/{seedingId}/treatment", treatmentJson);
+            var response = await _httpClient.PostAsync($"api/seeding/{seedingId}/treatment", treatmentJson);
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task Delete(int id)
         {
-            await _httpClient.DeleteAsync($"api/seedings/{id}/treatment");
+            await _httpClient.DeleteAsync($"api/seeding/{id}/treatment");
         }
 
         public async Task<ТreatmentDetailsModel> Get(int id)
         {
             var result = await JsonSerializer.DeserializeAsync<ТreatmentDetailsModel>
-                (await _httpClient.GetStreamAsync($"api/seedings/{id}/getTreatment"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"api/seeding/{id}/getTreatment"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
@@ -38,7 +38,7 @@ namespace WebUI.Services.Treatment
         public async Task<List<SelectionListModel>> GetTreatmentTypes()
         {
             var result = await JsonSerializer.DeserializeAsync<List<SelectionListModel>>
-             (await _httpClient.GetStreamAsync($"api/seedings/treatmentType"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+             (await _httpClient.GetStreamAsync($"api/assets/treatmentType"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
@@ -46,7 +46,7 @@ namespace WebUI.Services.Treatment
         public async Task<List<GetTreatmentModel>> List(int seedingId)
         {
             var result = await JsonSerializer.DeserializeAsync<List<GetTreatmentModel>>
-               (await _httpClient.GetStreamAsync($"api/seedings/{seedingId}/treatment"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+               (await _httpClient.GetStreamAsync($"api/seeding/{seedingId}/treatment"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
@@ -56,7 +56,7 @@ namespace WebUI.Services.Treatment
             var treatmentJson =
                 new StringContent(JsonSerializer.Serialize(editModel), Encoding.UTF8, "application/json");
 
-            await _httpClient.PutAsync("api/seedings/treatment", treatmentJson);
+            await _httpClient.PutAsync("api/seeding/treatment", treatmentJson);
         }
     }
 }

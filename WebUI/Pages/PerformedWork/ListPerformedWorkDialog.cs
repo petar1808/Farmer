@@ -12,6 +12,9 @@ namespace WebUI.Pages.PerformedWork
         [Inject]
         public IPerformedWorkService PerformedWorkService { get; set; } = default!;
 
+        [Parameter]
+        public int SeedingId { get; set; }
+
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
@@ -28,7 +31,7 @@ namespace WebUI.Pages.PerformedWork
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPrice), "Цена"),
             };
             DataGrid = new DynamicDataGridModel<GetPerformedWorkModel>(
-                    await PerformedWorkService.List(2),//?
+                    await PerformedWorkService.List(SeedingId),
                     columns)
                 .WithEdit(async (x) => await EditPerformedWork(x))
                 .WithDelete(async (x) => await DeletePerformedWork(x))
@@ -47,7 +50,7 @@ namespace WebUI.Pages.PerformedWork
             await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Работа",
               options: new DialogOptions() { Width = "700px", Height = "570px" });
 
-            DataGrid.UpdateData(await PerformedWorkService.List(2));
+            DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
             this.StateHasChanged();
         }
         public async Task EditPerformedWork(int performedWorkId)
@@ -56,7 +59,7 @@ namespace WebUI.Pages.PerformedWork
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 
-            DataGrid.UpdateData(await PerformedWorkService.List(2));
+            DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
             this.StateHasChanged();
         }
 
@@ -70,7 +73,7 @@ namespace WebUI.Pages.PerformedWork
                     { "ModelInput", deleteModel }
               },
               options: new DialogOptions() { Width = "500px", Height = "160px" });
-            DataGrid.UpdateData(await PerformedWorkService.List(2));
+            DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
             this.StateHasChanged();
         }
     }

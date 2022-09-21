@@ -13,7 +13,7 @@ namespace WebUI.Services.PerformedWork
 
         Task Delete(int id);
 
-        Task<bool> Add(PerformedWorkDatailsModel performedWork, int seedingId);
+        Task<bool> Add(PerformedWorkDatailsModel performedWork);
 
         Task<List<SelectionListModel>> GetWorkTypes();
     }

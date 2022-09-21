@@ -15,6 +15,9 @@ namespace WebUI.Pages.PerformedWork
         public IPerformedWorkService PerformedWorkService { get; set; } = default!;
 
         [Parameter]
+        public int SeedingId { get; set; }
+
+        [Parameter]
         public int PerformedWorkId { get; set; }
 
         public PerformedWorkDatailsModel PerformedWork { get; set; } = default!;
@@ -28,14 +31,13 @@ namespace WebUI.Pages.PerformedWork
 
         public List<SelectionListModel> WorkTypes { get; set; } = new List<SelectionListModel>();
 
-        bool popup;
 
         protected async override Task OnInitializedAsync()
         {
 
             WorkTypes = await PerformedWorkService.GetWorkTypes();
 
-            if (PerformedWorkId == 0) //??
+            if (PerformedWorkId == 0)
             {
                 PerformedWork = new PerformedWorkDatailsModel();
             }
@@ -51,11 +53,11 @@ namespace WebUI.Pages.PerformedWork
         }
 
 
-        protected async Task OnSubmit(PerformedWorkDatailsModel performedWork/*, int seedingId*/)
+        protected async Task OnSubmit(PerformedWorkDatailsModel performedWork)
         {
             if (performedWork.Id == 0)
             {
-                var addIsSuccess = await PerformedWorkService.Add(PerformedWork, 2);
+                var addIsSuccess = await PerformedWorkService.Add(PerformedWork);
 
                 if (addIsSuccess)
                 {

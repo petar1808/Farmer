@@ -57,7 +57,7 @@ namespace WebUI.Services.WorkingSeasons
         public async Task<List<SelectionListModel>> GetAllSeasons()
         {
             var result = await JsonSerializer.DeserializeAsync<List<SelectionListModel>>
-               (await _httpClient.GetStreamAsync($"api/workingSeasons/allSeasons"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+               (await _httpClient.GetStreamAsync($"api/assets/seasons"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }

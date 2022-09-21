@@ -28,6 +28,10 @@ namespace WebUI.Pages.Seedings
 
         int selectedSeedingId = 0;
 
+        public bool CollapseSeedingSummary { get; set; } = true;
+        public bool CollapsePerformedWork { get; set; }
+        public bool CollapseTreatment { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             WorkingSeasons = await WorkingSeasonService.GetAllSeasons();
@@ -43,9 +47,8 @@ namespace WebUI.Pages.Seedings
             {
                 selectedSeedingId = SownArableLands[0].SeedingId;
             }
-        }
 
-        
+        }
 
         void OnChange(int index)
         {
@@ -65,7 +68,10 @@ namespace WebUI.Pages.Seedings
         public async Task OnDropDownChange(object value)
         {
             SelectedWorkingSeasonService.ChangeSelectedWorkingSeason((int)value);
+
             SownArableLands = await SeedingService.GetSownArableLands((int)value);
+
+            this.StateHasChanged();
         }
     }
 }

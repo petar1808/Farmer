@@ -15,6 +15,8 @@ namespace WebUI.Services
 
         Task<List<SelectionListModel>> GetArticlesType();
 
+        Task<List<SelectionListModel>> GetSeeds();
+
         Task Delete(int id);
     }
 }

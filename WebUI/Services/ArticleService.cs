@@ -25,7 +25,7 @@ namespace WebUI.Services
         public async Task<List<SelectionListModel>> GetArticlesType()
         {
             var result = await JsonSerializer.DeserializeAsync<List<SelectionListModel>>
-                (await _httpClient.GetStreamAsync($"api/articles/articleTypes"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"api/assets/articleTypes"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
@@ -59,6 +59,14 @@ namespace WebUI.Services
         public async Task Delete(int id)
         {
             await _httpClient.DeleteAsync($"api/Articles/{id}");
+        }
+
+        public async Task<List<SelectionListModel>> GetSeeds()
+        {
+            var result = await JsonSerializer.DeserializeAsync<List<SelectionListModel>>
+                (await _httpClient.GetStreamAsync($"api/assets/seeds"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+            return result!;
         }
     }
 }

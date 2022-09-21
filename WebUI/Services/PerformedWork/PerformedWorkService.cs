@@ -13,25 +13,25 @@ namespace WebUI.Services.PerformedWork
             _httpClient = httpClient;
         }
 
-        public async Task<bool> Add(PerformedWorkDatailsModel performedWork, int seedingId)
+        public async Task<bool> Add(PerformedWorkDatailsModel performedWork)
         {
             var performedWorkJson =
                 new StringContent(JsonSerializer.Serialize(performedWork), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync($"api/seedings/{seedingId}/performedWork", performedWorkJson);
+            var response = await _httpClient.PostAsync($"api/seeding/performedWork", performedWorkJson);
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task Delete(int id)
         {
-            await _httpClient.DeleteAsync($"api/seedings/{id}/performedWork");
+            await _httpClient.DeleteAsync($"api/seeding/performedWork/{id}");
         }
 
         public async Task<List<GetPerformedWorkModel>> List(int seedingId)
         {
             var result = await JsonSerializer.DeserializeAsync<List<GetPerformedWorkModel>>
-                (await _httpClient.GetStreamAsync($"api/seedings/{seedingId}/performedWork"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"api/seeding/{seedingId}/performedWork"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
              return result!;
         }
@@ -39,7 +39,7 @@ namespace WebUI.Services.PerformedWork
         public async Task<List<SelectionListModel>> GetWorkTypes()
         {
             var result = await JsonSerializer.DeserializeAsync<List<SelectionListModel>>
-              (await _httpClient.GetStreamAsync($"api/seedings/workTypes"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+              (await _httpClient.GetStreamAsync($"api/assets/workTypes"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
@@ -49,13 +49,13 @@ namespace WebUI.Services.PerformedWork
             var performedWorkJson =
                 new StringContent(JsonSerializer.Serialize(editModel), Encoding.UTF8, "application/json");
 
-            await _httpClient.PutAsync("api/seedings/performedWork", performedWorkJson);
+            await _httpClient.PutAsync("api/seeding/performedWork", performedWorkJson);
         }
 
         public async Task<PerformedWorkDatailsModel> Get(int id)
         {
             var result = await JsonSerializer.DeserializeAsync<PerformedWorkDatailsModel>
-                 (await _httpClient.GetStreamAsync($"api/seedings/{id}/getPerformedWork"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                 (await _httpClient.GetStreamAsync($"api/seeding/performedWork/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
