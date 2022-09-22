@@ -5,7 +5,7 @@ using WebUI.Components.DeleteModal;
 using WebUI.Services.PerformedWork;
 using WebUI.ServicesModel.PerformedWork;
 
-namespace WebUI.Pages.PerformedWork
+namespace WebUI.Pages.Seedings
 {
     public partial class ListPerformedWorkDialog
     {

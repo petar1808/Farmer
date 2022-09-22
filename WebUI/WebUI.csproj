@@ -15,4 +15,9 @@
     <PackageReference Include="Radzen.Blazor" Version="3.18.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\PerformedWork\" />
+    <Folder Include="Pages\Treatment\" />
+  </ItemGroup>
+
 </Project>

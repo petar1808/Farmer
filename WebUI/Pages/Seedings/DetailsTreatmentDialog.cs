@@ -4,9 +4,9 @@ using WebUI.Services.Treatment;
 using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.Тreatment;
 
-namespace WebUI.Pages.Treatment
+namespace WebUI.Pages.Seedings
 {
-    public partial class DetailsTreatment
+    public partial class DetailsTreatmentDialog
     {
         private string StatusClass = default!;
         private string Message = default!;

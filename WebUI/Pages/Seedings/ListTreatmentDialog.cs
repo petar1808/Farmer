@@ -5,9 +5,9 @@ using WebUI.Components.DeleteModal;
 using WebUI.Services.Treatment;
 using WebUI.ServicesModel.Тreatment;
 
-namespace WebUI.Pages.Treatment
+namespace WebUI.Pages.Seedings
 {
-    public partial class ListTreatmentPage
+    public partial class ListTreatmentDialog
     {
         [Inject]
         public ITreatmentService TreatmentService { get; set; } = default!;
@@ -47,7 +47,7 @@ namespace WebUI.Pages.Treatment
 
         public async Task AddTreatment()
         {
-            await DialogService.OpenAsync<DetailsTreatment>($"Третиране",
+            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Третиране",
               options: new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await TreatmentService.List(2));
@@ -55,7 +55,7 @@ namespace WebUI.Pages.Treatment
         }
         public async Task EditTreatment(int treatmentId)
         {
-            await DialogService.OpenAsync<DetailsTreatment>($"Третиране {treatmentId}",
+            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Третиране {treatmentId}",
               new Dictionary<string, object>() { { "TreatmentId", treatmentId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 
