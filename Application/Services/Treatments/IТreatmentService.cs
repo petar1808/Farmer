@@ -14,7 +14,7 @@ namespace Application.Services.Treatments
 
         Task Delete(int id);
 
-        Task Add(DateTime date, ТreatmentType treatmentType, int? amountOfFuel, int? fuelPrice, int articleId, int articleQuantity, int seedingId, int articlePrice);
+        Task Add(AddТreatmentModel treatmentModel, int seedingId);
 
         Task<List<ListТreatmentModel>> List(int seedingId);
 

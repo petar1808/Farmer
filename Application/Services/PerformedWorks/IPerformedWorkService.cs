@@ -18,6 +18,6 @@ namespace Application.Services.PerformedWorks
 
         Task Delete(int id);
 
-        Task Add(int seedingId, WorkType workType, DateTime date, int fuelPrice, int amountOfFuel);
+        Task Add(AddPerformedWorkModel performedWorkModel, int seedingId);
     }
 }

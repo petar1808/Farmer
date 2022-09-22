@@ -99,14 +99,10 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
-        [Route("performedWork")]
-        public async Task<ActionResult> AddPerformedWork([FromBody] AddPerformedWorkModel performedWorkModel)
+        [Route("{seedingId:int}/performedWork")]
+        public async Task<ActionResult> AddPerformedWork([FromBody] AddPerformedWorkModel performedWorkModel, int seedingId)
         {
-            await performedWorkService.Add(performedWorkModel.SeedingId,
-                performedWorkModel.WorkType,
-                performedWorkModel.Date,
-                performedWorkModel.FuelPrice,
-                performedWorkModel.AmountOfFuel);
+            await performedWorkService.Add(performedWorkModel,seedingId);
 
             return Ok();
         }
@@ -161,14 +157,7 @@ namespace WebApi.Controllers
         [Route("{seedingId:int}/treatment")]
         public async Task<ActionResult> AddТreatment([FromBody] AddТreatmentModel treatmentModel,int seedingId)
         {
-            await treatmentService.Add(treatmentModel.Date,
-                treatmentModel.ТreatmentType,
-                treatmentModel.AmountOfFuel,
-                treatmentModel.FuelPrice,
-                treatmentModel.ArticleId,
-                treatmentModel.ArticleQuantity,
-                seedingId,
-                treatmentModel.ArticlePrice);
+            await treatmentService.Add(treatmentModel, seedingId);
 
             return Ok();
         }

@@ -38,13 +38,13 @@ namespace Application.Services.PerformedWorks
             await farmerDbContext.SaveChangesAsync();
         }
 
-        public async Task Add(int seedingId, WorkType workType, DateTime date, int fuelPrice, int amountOfFuel)
+        public async Task Add(AddPerformedWorkModel performedWorkModel, int seedingId)
         {
             var performedWork = new PerformedWork(seedingId,
-                workType,
-                date,
-                fuelPrice,
-                amountOfFuel);
+                performedWorkModel.WorkType,
+                performedWorkModel.Date,
+                performedWorkModel.FuelPrice,
+                performedWorkModel.AmountOfFuel);
 
             await farmerDbContext.PerformedWorks.AddAsync(performedWork);
             await farmerDbContext.SaveChangesAsync();

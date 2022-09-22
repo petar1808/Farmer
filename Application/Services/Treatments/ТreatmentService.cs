@@ -40,23 +40,16 @@ namespace Application.Services.Treatments
             return result;
         }
 
-        public async Task Add(DateTime date,
-            ТreatmentType treatmentType,
-            int? amountOfFuel,
-            int? fuelPrice,
-            int articleId,
-            int articleQuantity,
-            int seedingId,
-            int articlePrice)
+        public async Task Add(AddТreatmentModel treatmentModel, int seedingId)
         {
-            var treatment = new Treatment(date,
-                treatmentType,
-                amountOfFuel,
-                fuelPrice,
-                articleId,
-                articleQuantity,
+            var treatment = new Treatment(treatmentModel.Date,
+                treatmentModel.ТreatmentType,
+                treatmentModel.AmountOfFuel,
+                treatmentModel.FuelPrice,
+                treatmentModel.ArticleId,
+                treatmentModel.ArticleQuantity,
                 seedingId,
-                articlePrice);
+                treatmentModel.ArticlePrice);
 
             await farmerDbContext.Treatments.AddAsync(treatment);
             await farmerDbContext.SaveChangesAsync();
