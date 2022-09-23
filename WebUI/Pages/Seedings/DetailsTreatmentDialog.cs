@@ -17,6 +17,9 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public int TreatmentId { get; set; }
 
+        [Parameter]
+        public int SeedingId { get; set; }
+
         public ТreatmentDetailsModel Тreatment { get; set; } = default!;
 
         [Inject]
@@ -51,11 +54,11 @@ namespace WebUI.Pages.Seedings
         }
 
 
-        protected async Task OnSubmit(ТreatmentDetailsModel тreatment/*, int seedingId*/)
+        protected async Task OnSubmit(ТreatmentDetailsModel тreatment)
         {
             if (тreatment.Id == 0)
             {
-                var addIsSuccess = await TreatmentService.Add(тreatment, 2);
+                var addIsSuccess = await TreatmentService.Add(тreatment, SeedingId);
 
                 if (addIsSuccess)
                 {
@@ -76,19 +79,6 @@ namespace WebUI.Pages.Seedings
                 Message = "Employee updated successfully.";
             }
             DialogService.Close(false);
-        }
-
-        void OnDropDownChange(object value, string name)
-        {
-            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
-        }
-
-        protected async Task DeleteEmployee()
-        {
-            await TreatmentService.Delete(Тreatment.Id);
-
-            StatusClass = "alert-success";
-            Message = "Deleted successfully";
         }
     }
 }

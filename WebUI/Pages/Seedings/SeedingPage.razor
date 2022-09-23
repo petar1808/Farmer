@@ -40,7 +40,7 @@
                         </CollapseBody>
                     </Collapse>
                 </Accordion>
-                   <Accordion>
+                <Accordion>
                     <Collapse Visible="@CollapsePerformedWork">
                         <CollapseHeader>
                             <Heading Size="HeadingSize.Is5">
@@ -49,6 +49,18 @@
                         </CollapseHeader>
                         <CollapseBody>
                             <ListPerformedWorkDialog SeedingId="@sownArableLand.SeedingId"></ListPerformedWorkDialog>
+                        </CollapseBody>
+                    </Collapse>
+                </Accordion>
+                <Accordion>
+                    <Collapse Visible="@CollapsePerformedWork">
+                        <CollapseHeader>
+                            <Heading Size="HeadingSize.Is5">
+                                <Button Clicked="@(()=>CollapsePerformedWork = !CollapsePerformedWork)">Третиране</Button>
+                            </Heading>
+                        </CollapseHeader>
+                        <CollapseBody>
+                            <ListTreatmentDialog SeedingId="@sownArableLand.SeedingId"></ListTreatmentDialog>
                         </CollapseBody>
                     </Collapse>
                 </Accordion>

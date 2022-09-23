@@ -12,18 +12,21 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public ITreatmentService TreatmentService { get; set; } = default!;
 
+        [Parameter]
+        public int SeedingId { get; set; }
+
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
         public DynamicDataGridModel<GetTreatmentModel> DataGrid { get; set; } = default!;
 
-        protected override async Task OnInitializedAsync()
+        protected async override Task OnParametersSetAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Date), "Дата"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ТreatmentType), "Третиране"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TypeTreatment), "Третиране"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleId), "Препарат"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Препарат на декар"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Гориво"),
@@ -31,7 +34,7 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена на препарат"),
             };
             DataGrid = new DynamicDataGridModel<GetTreatmentModel>(
-                    await TreatmentService.List(2),//?
+                    await TreatmentService.List(SeedingId),
                     columns)
                 .WithEdit(async (x) => await EditTreatment(x))
                 .WithDelete(async (x) => await DeleteTreatment(x))
@@ -48,18 +51,19 @@ namespace WebUI.Pages.Seedings
         public async Task AddTreatment()
         {
             await DialogService.OpenAsync<DetailsTreatmentDialog>($"Третиране",
+                new Dictionary<string, object>() { { "SeedingId", SeedingId } },
               options: new DialogOptions() { Width = "700px", Height = "570px" });
 
-            DataGrid.UpdateData(await TreatmentService.List(2));
+            DataGrid.UpdateData(await TreatmentService.List(SeedingId));
             this.StateHasChanged();
         }
         public async Task EditTreatment(int treatmentId)
         {
-            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Третиране {treatmentId}",
+            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Третиране",
               new Dictionary<string, object>() { { "TreatmentId", treatmentId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 
-            DataGrid.UpdateData(await TreatmentService.List(2));
+            DataGrid.UpdateData(await TreatmentService.List(SeedingId));
             this.StateHasChanged();
         }
 
@@ -73,7 +77,7 @@ namespace WebUI.Pages.Seedings
                     { "ModelInput", deleteModel }
               },
               options: new DialogOptions() { Width = "500px", Height = "160px" });
-            DataGrid.UpdateData(await TreatmentService.List(2));
+            DataGrid.UpdateData(await TreatmentService.List(SeedingId));
             this.StateHasChanged();
         }
     }

@@ -65,7 +65,6 @@ namespace WebUI.Pages.Seedings
             this.StateHasChanged();
         }
 
-
         public async Task DeletePerformedWork(int performedWorkId)
         {
             var deleteModel = new DeleteModalModel(performedWorkId, async (id) => await DeletePerformedWorkAction(id));

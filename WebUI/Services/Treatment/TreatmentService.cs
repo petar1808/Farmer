@@ -12,10 +12,10 @@ namespace WebUI.Services.Treatment
         {
             _httpClient = httpClient;
         }
-        public async Task<bool> Add(ТreatmentDetailsModel тreatment, int seedingId)
+        public async Task<bool> Add(ТreatmentDetailsModel treatment, int seedingId)
         {
             var treatmentJson =
-                new StringContent(JsonSerializer.Serialize(тreatment), Encoding.UTF8, "application/json");
+                new StringContent(JsonSerializer.Serialize(treatment), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync($"api/seeding/{seedingId}/treatment", treatmentJson);
 
@@ -24,13 +24,13 @@ namespace WebUI.Services.Treatment
 
         public async Task Delete(int id)
         {
-            await _httpClient.DeleteAsync($"api/seeding/{id}/treatment");
+            await _httpClient.DeleteAsync($"api/seeding/treatment/{id}");
         }
 
         public async Task<ТreatmentDetailsModel> Get(int id)
         {
             var result = await JsonSerializer.DeserializeAsync<ТreatmentDetailsModel>
-                (await _httpClient.GetStreamAsync($"api/seeding/{id}/getTreatment"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"api/seeding/treatment/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             return result!;
         }
