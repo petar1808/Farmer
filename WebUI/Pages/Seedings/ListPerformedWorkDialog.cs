@@ -20,7 +20,8 @@ namespace WebUI.Pages.Seedings
 
         public DynamicDataGridModel<GetPerformedWorkModel> DataGrid { get; set; } = default!;
 
-        protected override async Task OnInitializedAsync()
+
+        protected async override Task OnParametersSetAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
@@ -48,7 +49,8 @@ namespace WebUI.Pages.Seedings
         public async Task AddPerformedWork()
         {
             await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Работа",
-              options: new DialogOptions() { Width = "700px", Height = "570px" });
+                new Dictionary<string, object>() { { "SeedingId", SeedingId } },
+                new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
             this.StateHasChanged();

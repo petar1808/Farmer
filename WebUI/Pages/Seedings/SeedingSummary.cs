@@ -38,12 +38,6 @@ namespace WebUI.Pages.Seedings
                 AllArticleOfTypeSeeds = await ArticleService.GetSeeds();
             }
         }
-
-        //protected async override Task OnInitializedAsync()
-        //{
-
-        //}
-
         public void OnDropDownChange(object value)
         {
             GetSeedingModel.ArticleId = (int)value;
@@ -52,7 +46,7 @@ namespace WebUI.Pages.Seedings
 
         public async Task OnEdit()
         {
-            await DialogService.OpenAsync<SeedingSummary>($"Артикул",
+            await DialogService.OpenAsync<SeedingSummary>($"Сеитба",
                 new Dictionary<string, object>() { 
                     { "SeedingId", SeedingId },
                     { "IsModal", true}

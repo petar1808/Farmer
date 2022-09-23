@@ -31,7 +31,6 @@ namespace WebUI.Pages.Seedings
 
         public List<SelectionListModel> WorkTypes { get; set; } = new List<SelectionListModel>();
 
-
         protected async override Task OnInitializedAsync()
         {
 
@@ -52,12 +51,11 @@ namespace WebUI.Pages.Seedings
             PerformedWork.WorkType = (int)value;
         }
 
-
         protected async Task OnSubmit(PerformedWorkDatailsModel performedWork)
         {
             if (performedWork.Id == 0)
             {
-                var addIsSuccess = await PerformedWorkService.Add(PerformedWork);
+                var addIsSuccess = await PerformedWorkService.Add(PerformedWork,SeedingId);
 
                 if (addIsSuccess)
                 {
@@ -78,19 +76,6 @@ namespace WebUI.Pages.Seedings
                 Message = "Employee updated successfully.";
             }
             DialogService.Close(false);
-        }
-
-        void OnDropDownChange(object value, string name)
-        {
-            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
-        }
-
-        protected async Task DeleteEmployee()
-        {
-            await PerformedWorkService.Delete(PerformedWork.Id);
-
-            StatusClass = "alert-success";
-            Message = "Deleted successfully";
         }
     }
 }

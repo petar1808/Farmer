@@ -13,12 +13,12 @@ namespace WebUI.Services.PerformedWork
             _httpClient = httpClient;
         }
 
-        public async Task<bool> Add(PerformedWorkDatailsModel performedWork)
+        public async Task<bool> Add(PerformedWorkDatailsModel performedWork, int seedingId)
         {
             var performedWorkJson =
                 new StringContent(JsonSerializer.Serialize(performedWork), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync($"api/seeding/performedWork", performedWorkJson);
+            var response = await _httpClient.PostAsync($"api/seeding/{seedingId}/performedWork", performedWorkJson);
 
             return response.IsSuccessStatusCode;
         }
