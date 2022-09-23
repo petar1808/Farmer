@@ -35,6 +35,14 @@ namespace WebApi.Controllers
         }
 
         #region Seeding
+        [HttpPost]
+        public async Task<ActionResult> AddSeading(AddSeedingModel seedingModel)
+        {
+            await seedingService.AddSeeding(seedingModel);
+
+            return Ok();
+        }
+
         [HttpGet]
         [Route("availableArableLands/{seasonId:int}")]
         public async Task<ActionResult<List<SelectionListModel>>> GetAvailableArableLands(int seasonId)
@@ -49,14 +57,6 @@ namespace WebApi.Controllers
             var seeding = await seedingService.SownArableLands(seasonId);
 
             return seeding;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> AddSeading(AddSeedingModel seedingModel)
-        {
-            await seedingService.AddSeeding(seedingModel);
-
-            return Ok();
         }
 
         [HttpGet]
@@ -79,6 +79,15 @@ namespace WebApi.Controllers
         #endregion
 
         #region PergormedWork
+        [HttpPost]
+        [Route("{seedingId:int}/performedWork")]
+        public async Task<ActionResult> AddPerformedWork([FromBody] AddPerformedWorkModel performedWorkModel, int seedingId)
+        {
+            await performedWorkService.Add(performedWorkModel, seedingId);
+
+            return Ok();
+        }
+
         [HttpGet]
         [Route("{seedingId:int}/performedWork")]
         public async Task<ActionResult<List<ListPerformedWorkModel>>> ListPerformedWork(int seedingId)
@@ -95,16 +104,6 @@ namespace WebApi.Controllers
             var performedWork = await performedWorkService.Get(performedWorkId);
 
             return performedWork;
-        }
-
-
-        [HttpPost]
-        [Route("{seedingId:int}/performedWork")]
-        public async Task<ActionResult> AddPerformedWork([FromBody] AddPerformedWorkModel performedWorkModel, int seedingId)
-        {
-            await performedWorkService.Add(performedWorkModel,seedingId);
-
-            return Ok();
         }
 
         [HttpPut]
@@ -124,16 +123,17 @@ namespace WebApi.Controllers
 
             return Ok();
         }
-
-        [HttpGet]
-        [Route("workTypes")]
-        public ActionResult<List<SelectionListModel>> GetWorkTypes()
-        {
-            return EnumHelper.GetAllNamesAndValues<WorkType>().Select(x => new SelectionListModel(x.Key, x.Value)).ToList();
-        }
         #endregion
 
         #region Treatment
+        [HttpPost]
+        [Route("{seedingId:int}/treatment")]
+        public async Task<ActionResult> AddТreatment([FromBody] AddТreatmentModel treatmentModel, int seedingId)
+        {
+            await treatmentService.Add(treatmentModel, seedingId);
+
+            return Ok();
+        }
 
         [HttpGet]
         [Route("{seedingId:int}/treatment")]
@@ -153,38 +153,22 @@ namespace WebApi.Controllers
             return treatment;
         }
 
-        [HttpPost]
-        [Route("{seedingId:int}/treatment")]
-        public async Task<ActionResult> AddТreatment([FromBody] AddТreatmentModel treatmentModel,int seedingId)
-        {
-            await treatmentService.Add(treatmentModel, seedingId);
-
-            return Ok();
-        }
-
         [HttpPut]
         [Route("treatment")]
-        public async Task<ActionResult> EditТreatment(EditТreatmentModel тreatmentModel)
+        public async Task<ActionResult> EditТreatment(EditТreatmentModel treatmentModel)
         {
-            await treatmentService.Edit(тreatmentModel);
+            await treatmentService.Edit(treatmentModel);
 
             return Ok();
         }
 
         [HttpDelete]
-        [Route("{id:int}/treatment")]
+        [Route("treatment/{id:int}")]
         public async Task<ActionResult> DeleteТreatment(int id)
         {
             await treatmentService.Delete(id);
 
             return Ok();
-        }
-
-        [HttpGet]
-        [Route("treatmentType")]
-        public ActionResult<List<SelectionListModel>> GetTreatmentTypes()
-        {
-            return EnumHelper.GetAllNamesAndValues<ТreatmentType>().Select(x => new SelectionListModel(x.Key, x.Value)).ToList();
         }
         #endregion
     }

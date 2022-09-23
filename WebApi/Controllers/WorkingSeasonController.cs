@@ -16,6 +16,13 @@ namespace WebApi.Controllers
             this.workingSeasonService = workingSeasonService;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] AddWorkingSeasonModel workingSeasonModel)
+        {
+            await workingSeasonService.Add(workingSeasonModel);
+
+            return Ok();
+        }
 
         [HttpGet]
         [Route("{id:int}")]
@@ -29,27 +36,15 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetWorkingSeasonModel>>> List()
         {
-            var workingSeasons = await workingSeasonService.GetAll();
+            var workingSeasons = await workingSeasonService.List();
 
             return workingSeasons;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddWorkingSeasonModel workingSeason)
-        {
-            await workingSeasonService.Add(workingSeason.Name, workingSeason.StartDate, workingSeason.EndDate);
-
-            return Ok();
-        }
-
         [HttpPut]
-        public async Task<IActionResult> Edit(EditWorkingSeasonModel workingSeason)
+        public async Task<IActionResult> Edit(EditWorkingSeasonModel workingSeasonModel)
         {
-            await workingSeasonService.Edit(
-                workingSeason.Id,
-                workingSeason.Name,
-                workingSeason.StartDate,
-                workingSeason.EndDate);
+            await workingSeasonService.Edit(workingSeasonModel);
 
             return Ok();
         }
@@ -61,13 +56,6 @@ namespace WebApi.Controllers
             await workingSeasonService.Delete(id);
 
             return Ok();
-        }
-
-        [HttpGet]
-        [Route("allSeasons")]
-        public async Task<List<SelectionListModel>> GetAllSeasons()
-        {
-            return await workingSeasonService.SeasonsSelectionList();
         }
     }
 }

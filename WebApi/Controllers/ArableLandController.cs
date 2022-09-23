@@ -10,12 +10,18 @@ namespace WebApi.Controllers
     {
         private readonly IArableLandService arableLandService;
 
-        public ArableLandController( IArableLandService arableLandService)
+        public ArableLandController(IArableLandService arableLandService)
         {
             this.arableLandService = arableLandService;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] AddArableLandModel arableLandModel)
+        {
+            await arableLandService.Add(arableLandModel);
 
+            return Ok();
+        }
 
         [HttpGet]
         [Route("{id:int}")]
@@ -29,26 +35,15 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetAreableLandModel>>> List()
         {
-            var arableLands = await arableLandService.GetAll();
+            var arableLands = await arableLandService.List();
 
             return arableLands;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Add([FromBody] AddArableLandModel arableLandModel)
-        {
-            await arableLandService.Add(arableLandModel.Name, arableLandModel.SizeInDecar);
-
-            return Ok();
-        }
-
         [HttpPut]
-        public async Task<IActionResult> Edit(EditArableLandModel arableLand)
+        public async Task<IActionResult> Edit(EditArableLandModel arableLandModel)
         {
-            await arableLandService.Edit(
-                arableLand.Id,
-                arableLand.Name,
-                arableLand.SizeInDecar);
+            await arableLandService.Edit(arableLandModel);
 
             return Ok();
         }

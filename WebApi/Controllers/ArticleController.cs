@@ -13,6 +13,14 @@ namespace WebApi.Controllers
     {
         private readonly IArticleService articleService;
 
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] AddArticleModel articleModel)
+        {
+            await articleService.Add(articleModel);
+
+            return Ok();
+        }
+
         public ArticleController(IArticleService articleService)
         {
             this.articleService = articleService;
@@ -30,25 +38,13 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ListArticleModel>>> List()
         {
-            return await articleService.GetAll();
-        }
-
-
-        [HttpPost]
-        public async Task<ActionResult> Add([FromBody] AddArticleModel articleModel)
-        {
-            await articleService.Add(articleModel.Name, (ArticleType)articleModel.ArticleType);
-
-            return Ok();
+            return await articleService.List();
         }
 
         [HttpPut]
-        public async Task<ActionResult> Edit(EditArticleModel article)
+        public async Task<ActionResult> Edit(EditArticleModel articleModel)
         {
-            await articleService.Edit(
-                article.Id,
-                article.Name,
-                (ArticleType)article.ArticleType);
+            await articleService.Edit(articleModel);
 
             return Ok();
         }
@@ -60,20 +56,6 @@ namespace WebApi.Controllers
             await articleService.Delete(id);
 
             return Ok();
-        }
-
-        [HttpGet]
-        [Route("articleTypes")]
-        public ActionResult<List<SelectionListModel>> GetArticleTypes()
-        {
-           return EnumHelper.GetAllNamesAndValues<ArticleType>().Select(x => new SelectionListModel(x.Key,x.Value)).ToList();
-        }
-
-        [HttpGet]
-        [Route("seeds")]
-        public async Task<ActionResult<List<SelectionListModel>>> GetSeeds()
-        {
-            return await articleService.SeedsArticlesSelectionList();
         }
     }
 }
