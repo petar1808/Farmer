@@ -17,28 +17,28 @@ namespace Application.Services.ArableLands
             this.mapper = mapper;
         }
 
-        public async Task Add(string name, int sizeInDecar)
+        public async Task Add(AddArableLandModel arableLandModel)
         {
-            var arableLand = new ArableLand(name,sizeInDecar);
+            var arableLand = new ArableLand(arableLandModel.Name, arableLandModel.SizeInDecar);
 
             await farmerDbContext.ArableLands.AddAsync(arableLand);
             await farmerDbContext.SaveChangesAsync();
         }
 
-        public async Task Edit(int id, string name, int sizeInDecar)
+        public async Task Edit(EditArableLandModel arableLandModel)
         {
             var arableLand = await farmerDbContext
                 .ArableLands
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == arableLandModel.Id);
 
             if (arableLand == null)
             {
-                throw new BadRequestExeption($"Arable land with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Arable land with Id: {arableLandModel.Id}, don't exist");
             }
 
             arableLand
-                .UpdateName(name)
-                .UpdateSizeInDecar(sizeInDecar);
+                .UpdateName(arableLandModel.Name)
+                .UpdateSizeInDecar(arableLandModel.SizeInDecar);
 
             farmerDbContext.Update(arableLand);
             await farmerDbContext.SaveChangesAsync();
@@ -59,7 +59,7 @@ namespace Application.Services.ArableLands
             return result;
         }
 
-        public async Task<List<GetAreableLandModel>> GetAll()
+        public async Task<List<GetAreableLandModel>> List()
         {
             var arableLands = await farmerDbContext.ArableLands.ToListAsync();
 

@@ -10,15 +10,13 @@ namespace Application.Services.WorikingSeasons
 {
     public interface IWorkingSeasonService
     {
-        Task Add(string name, DateTime? startDate, DateTime? endDate);
+        Task Add(AddWorkingSeasonModel workingSeasonModel);
 
-        Task Edit(int id, string name, DateTime? startDate, DateTime? endDate);
+        Task Edit(EditWorkingSeasonModel workingSeasonModel);
 
         Task<GetWorkingSeasonModel> Get(int id);
 
-        Task<List<GetWorkingSeasonModel>> GetAll();
-
-        Task<Dictionary<int, string>> ListSidebarMenuItems();
+        Task<List<GetWorkingSeasonModel>> List();
 
         Task Delete(int id);
 

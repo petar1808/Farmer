@@ -11,13 +11,13 @@ namespace Application.Services.Articles
 {
     public interface IArticleService
     {
-        Task Add(string name, ArticleType articleType);
+        Task Add(AddArticleModel articleModel);
 
-        Task Edit(int id, string name, ArticleType articleType);
+        Task Edit(EditArticleModel articleModel);
 
         Task<GetArticleModel> Get(int id);
 
-        Task<List<ListArticleModel>> GetAll();
+        Task<List<ListArticleModel>> List();
 
         Task Delete(int id);
 

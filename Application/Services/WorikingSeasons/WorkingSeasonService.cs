@@ -25,11 +25,12 @@ namespace Application.Services.WorikingSeasons
             this.sidebarMenuCache = sidebarMenuCache;
         }
 
-        public async Task Add(string name, DateTime? startDate, DateTime? endDate)
+        public async Task Add(AddWorkingSeasonModel workingSeasonModel)
         {
-            sidebarMenuCache.Flush();
-
-            var workingSeason = new WorkingSeason(name, startDate, endDate);
+            var workingSeason = new WorkingSeason(
+                workingSeasonModel.Name,
+                workingSeasonModel.StartDate,
+                workingSeasonModel.EndDate);
 
             await this.farmerDbContext.AddAsync(workingSeason);
             await this.farmerDbContext.SaveChangesAsync();
@@ -37,8 +38,6 @@ namespace Application.Services.WorikingSeasons
 
         public async Task Delete(int id)
         {
-            sidebarMenuCache.Flush();
-
             var workingSeason = await farmerDbContext
                 .WorkingSeasons
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -52,23 +51,23 @@ namespace Application.Services.WorikingSeasons
             await farmerDbContext.SaveChangesAsync();
         }
 
-        public async Task Edit(int id, string name, DateTime? startDate, DateTime? endDate)
+        public async Task Edit(EditWorkingSeasonModel workingSeasonModel)
         {
             sidebarMenuCache.Flush();
 
             var workingSeason = farmerDbContext
                 .WorkingSeasons
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefault(x => x.Id == workingSeasonModel.Id);
 
             if (workingSeason == null)
             {
-                throw new BadRequestExeption($"Working season with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Working season with Id: {workingSeasonModel.Id}, don't exist");
             }
 
             workingSeason
-                .UpdateName(name)
-                .UpdateSratDate(startDate)
-                .UpdateEndDate(endDate);
+                .UpdateName(workingSeasonModel.Name)
+                .UpdateSratDate(workingSeasonModel.StartDate)
+                .UpdateEndDate(workingSeasonModel.EndDate);
 
             this.farmerDbContext.Update(workingSeason);
             await farmerDbContext.SaveChangesAsync();
@@ -89,18 +88,13 @@ namespace Application.Services.WorikingSeasons
             return result;
         }
 
-        public async Task<List<GetWorkingSeasonModel>> GetAll()
+        public async Task<List<GetWorkingSeasonModel>> List()
         {
             var workingSeason = await farmerDbContext.WorkingSeasons.ToListAsync();
 
             var result = mapper.Map<List<GetWorkingSeasonModel>>(workingSeason);
             return result;
         }
-
-        public async Task<Dictionary<int, string>> ListSidebarMenuItems()
-            => await farmerDbContext
-                .WorkingSeasons
-                .ToDictionaryAsync(k => k.Id, v => v.Name);
 
         public async Task<List<SelectionListModel>> SeasonsSelectionList()
         {

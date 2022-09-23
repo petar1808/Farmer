@@ -70,25 +70,25 @@ namespace Application.Services.Treatments
             await farmerDbContext.SaveChangesAsync();
         }
 
-        public async Task Edit(EditТreatmentModel editModel)
+        public async Task Edit(EditТreatmentModel treatmentModel)
         {
             var treatment = await farmerDbContext
               .Treatments
-              .FirstOrDefaultAsync(x => x.Id == editModel.Id);
+              .FirstOrDefaultAsync(x => x.Id == treatmentModel.Id);
 
             if (treatment == null)
             {
-                throw new BadRequestExeption($"Treatment with Id: {editModel.Id}, don't exist");
+                throw new BadRequestExeption($"Treatment with Id: {treatmentModel.Id}, don't exist");
             }
 
             treatment
-                .UpdateDate(editModel.Date)
-                .UpdateТreatmentType(editModel.ТreatmentType)
-                .UpdateAmountOfFuel(editModel.AmountOfFuel)
-                .UpdateFuelPrice(editModel.FuelPrice)
-                .UpdateArticle(editModel.ArticleId)
-                .UpdateArticleQuantity(editModel.ArticleQuantity)
-                .UpdateArticlePrice(editModel.ArticlePrice);
+                .UpdateDate(treatmentModel.Date)
+                .UpdateТreatmentType(treatmentModel.ТreatmentType)
+                .UpdateAmountOfFuel(treatmentModel.AmountOfFuel)
+                .UpdateFuelPrice(treatmentModel.FuelPrice)
+                .UpdateArticle(treatmentModel.ArticleId)
+                .UpdateArticleQuantity(treatmentModel.ArticleQuantity)
+                .UpdateArticlePrice(treatmentModel.ArticlePrice);
 
             farmerDbContext.Update(treatment);
             await farmerDbContext.SaveChangesAsync();

@@ -10,7 +10,7 @@ namespace Application.Services.Treatments
 {
     public interface IТreatmentService
     {
-        Task Edit(EditТreatmentModel editModel);
+        Task Edit(EditТreatmentModel treatmentModel);
 
         Task Delete(int id);
 

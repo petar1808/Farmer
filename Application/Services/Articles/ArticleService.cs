@@ -24,9 +24,9 @@ namespace Application.Services.Articles
             this.mapper = mapper;
         }
 
-        public async Task Add(string name, ArticleType articleType)
+        public async Task Add(AddArticleModel articleModel)
         {
-            var article = new Article(name, articleType);
+            var article = new Article(articleModel.Name, articleModel.ArticleType);
 
             await farmerDbContext.AddAsync(article);
             await farmerDbContext.SaveChangesAsync();
@@ -47,20 +47,20 @@ namespace Application.Services.Articles
             await farmerDbContext.SaveChangesAsync();
         }
 
-        public async Task Edit(int id, string name, ArticleType articleType)
+        public async Task Edit(EditArticleModel articleModel)
         {
             var article = await farmerDbContext
                 .Articles
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == articleModel.Id);
 
             if (article == null)
             {
-                throw new BadRequestExeption($"Article with Id: {id}, don't exist");
+                throw new BadRequestExeption($"Article with Id: {articleModel.Id}, don't exist");
             }
 
             article
-                .UpdateName(name)
-                .UpdateArticleType(articleType);
+                .UpdateName(articleModel.Name)
+                .UpdateArticleType(articleModel.ArticleType);
 
             farmerDbContext.Update(article);
             await farmerDbContext.SaveChangesAsync();
@@ -81,7 +81,7 @@ namespace Application.Services.Articles
             return result;
         }
 
-        public async Task<List<ListArticleModel>> GetAll()
+        public async Task<List<ListArticleModel>> List()
         {
             var articles = await farmerDbContext.Articles.ToListAsync();
 

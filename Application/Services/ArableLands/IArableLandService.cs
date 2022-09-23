@@ -5,13 +5,13 @@ namespace Application.Services.ArableLands
 {
     public interface IArableLandService
     {
-        Task Add(string name, int sizeInDecar);
+        Task Add(AddArableLandModel arableLandModel);
 
-        Task Edit(int id, string name, int sizeInDecar);
+        Task Edit(EditArableLandModel arableLandModel);
 
         Task<GetAreableLandModel> Get(int id);
 
-        Task<List<GetAreableLandModel>> GetAll();
+        Task<List<GetAreableLandModel>> List();
 
         Task Delete(int id);
 
