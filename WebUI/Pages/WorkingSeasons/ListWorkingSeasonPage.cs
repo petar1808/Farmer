@@ -51,14 +51,13 @@ namespace WebUI.Pages.WorkingSeasons
         }
         public async Task EditWorkingSeason(int workingSeasonId)
         {
-            await DialogService.OpenAsync<DetailsWorkingSeason>($"Артикул {workingSeasonId}",
+            await DialogService.OpenAsync<DetailsWorkingSeason>($"Сезон",
               new Dictionary<string, object>() { { "WorkingSeasonId", workingSeasonId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await WorkingSeasonService.List());
             this.StateHasChanged();
         }
-
 
         public async Task DeleteWorkingSeason(int workingSeasonId)
         {

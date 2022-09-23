@@ -15,12 +15,12 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public SelectedWorkingSeasonService SelectedWorkingSeasonService { get; set; } = default!;
 
+        [Inject]
+        public DialogService DialogService { get; set; } = default!;
+
         public List<SelectionListModel> ArableLands { get; set; } = new List<SelectionListModel>();
 
         public int SelectedArableLandId { get; set; }
-
-        [Inject]
-        public DialogService DialogService { get; set; } = default!;
 
         protected async override Task OnInitializedAsync()
         {
@@ -37,6 +37,5 @@ namespace WebUI.Pages.Seedings
 
             DialogService.Close(response);
         }
-
     }
 }

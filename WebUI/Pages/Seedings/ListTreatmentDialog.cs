@@ -12,11 +12,11 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public ITreatmentService TreatmentService { get; set; } = default!;
 
-        [Parameter]
-        public int SeedingId { get; set; }
-
         [Inject]
         public DialogService DialogService { get; set; } = default!;
+
+        [Parameter]
+        public int SeedingId { get; set; }
 
         public DynamicDataGridModel<GetTreatmentModel> DataGrid { get; set; } = default!;
 
@@ -57,6 +57,7 @@ namespace WebUI.Pages.Seedings
             DataGrid.UpdateData(await TreatmentService.List(SeedingId));
             this.StateHasChanged();
         }
+
         public async Task EditTreatment(int treatmentId)
         {
             await DialogService.OpenAsync<DetailsTreatmentDialog>($"Третиране",
@@ -66,7 +67,6 @@ namespace WebUI.Pages.Seedings
             DataGrid.UpdateData(await TreatmentService.List(SeedingId));
             this.StateHasChanged();
         }
-
 
         public async Task DeleteTreatment(int treatmentId)
         {

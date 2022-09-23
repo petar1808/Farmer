@@ -2,7 +2,7 @@
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Components.DeleteModal;
-using WebUI.Services;
+using WebUI.Services.Article;
 using WebUI.ServicesModel.Article;
 
 namespace WebUI.Pages.Articles
@@ -50,14 +50,13 @@ namespace WebUI.Pages.Articles
         }
         public async Task EditArticle(int articleId)
         {
-            await DialogService.OpenAsync<DetailsArticle>($"Артикул {articleId}",
+            await DialogService.OpenAsync<DetailsArticle>($"Артикул",
               new Dictionary<string, object>() { { "ArticleId", articleId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 
             DataGrid.UpdateData(await ArticleService.List());
             this.StateHasChanged();
         }
-
 
         public async Task DeleteArticle(int articleId)
         {

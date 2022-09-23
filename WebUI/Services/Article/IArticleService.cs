@@ -1,7 +1,7 @@
 ﻿using WebUI.ServicesModel.Article;
 using WebUI.ServicesModel.Common;
 
-namespace WebUI.Services
+namespace WebUI.Services.Article
 {
     public interface IArticleService
     {

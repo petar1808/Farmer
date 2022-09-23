@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
-using WebUI.Services;
+using WebUI.Services.Article;
 using WebUI.Services.Seeding;
 using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.Seeding;
@@ -9,12 +9,6 @@ namespace WebUI.Pages.Seedings
 {
     public partial class SeedingSummary
     {
-        [Parameter]
-        public int SeedingId { get; set; }
-
-        [Parameter]
-        public bool IsModal { get; set; }
-
         [Inject]
         public ISeedingService SeedingService { get; set; } = default!;
 
@@ -24,10 +18,15 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
+        [Parameter]
+        public int SeedingId { get; set; }
+
+        [Parameter]
+        public bool IsModal { get; set; }
+
         public GetSeedingSummaryModel GetSeedingModel { get; set; } = default!;
 
         public List<SelectionListModel> AllArticleOfTypeSeeds { get; set; } = new List<SelectionListModel>();
-
 
         protected async override Task OnParametersSetAsync()
         {
@@ -42,7 +41,6 @@ namespace WebUI.Pages.Seedings
         {
             GetSeedingModel.ArticleId = (int)value;
         }
-
 
         public async Task OnEdit()
         {

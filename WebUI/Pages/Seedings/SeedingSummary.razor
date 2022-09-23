@@ -8,12 +8,11 @@
                 <div>
                     @if (IsModal)
                     {
-                        <RadzenDropDown 
-                            Data=@AllArticleOfTypeSeeds 
-                            @bind-Value=@GetSeedingModel.ArticleId
-                            ValueProperty="Value" 
-                            TextProperty="Name" 
-                            Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                        <RadzenDropDown Data=@AllArticleOfTypeSeeds
+                                    @bind-Value=@GetSeedingModel.ArticleId
+                                    ValueProperty="Value"
+                                    TextProperty="Name"
+                                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
                     }
                     else
                     {
@@ -57,7 +56,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div  class="col-md-12">
+            <div class="col-md-12">
                 <RadzenLabel Text="Общо приходи от зърно" />
                 <div>
                     <RadzenTextBox Disabled="true" Value="@GetSeedingModel.IncomeFromHarvestedGrains.ToString()" style="width: 100%;" Name="IncomeFromHarvestedGrains" />
@@ -88,7 +87,5 @@
                 <RadzenButton Click="@OnEdit" Text="Редактирай"></RadzenButton>
             }
         </div>
-        
     </div>
-
 </RadzenTemplateForm>

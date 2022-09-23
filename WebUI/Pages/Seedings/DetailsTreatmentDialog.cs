@@ -14,6 +14,9 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public ITreatmentService TreatmentService { get; set; } = default!;
 
+        [Inject]
+        public DialogService DialogService { get; set; } = default!;
+
         [Parameter]
         public int TreatmentId { get; set; }
 
@@ -22,20 +25,10 @@ namespace WebUI.Pages.Seedings
 
         public ТreatmentDetailsModel Тreatment { get; set; } = default!;
 
-        [Inject]
-        public NavigationManager NavigationManager { get; set; } = default!;
-
-        [Inject]
-        public DialogService DialogService { get; set; } = default!;
-
-
         public List<SelectionListModel> TreatmentTypes { get; set; } = new List<SelectionListModel>();
 
-        bool popup;
-
         protected async override Task OnInitializedAsync()
-        {
-
+        { 
             TreatmentTypes = await TreatmentService.GetTreatmentTypes();
 
             if (TreatmentId == 0) 
@@ -53,30 +46,28 @@ namespace WebUI.Pages.Seedings
             Тreatment.ТreatmentType = (int)value;
         }
 
-
-        protected async Task OnSubmit(ТreatmentDetailsModel тreatment)
+        protected async Task OnSubmit(ТreatmentDetailsModel treatment)
         {
-            if (тreatment.Id == 0)
+            if (treatment.Id == 0)
             {
-                var addIsSuccess = await TreatmentService.Add(тreatment, SeedingId);
+                var addIsSuccess = await TreatmentService.Add(treatment, SeedingId);
 
                 if (addIsSuccess)
                 {
                     StatusClass = "alert-success";
-                    Message = "New employee added successfully.";
-
+                    Message = "New Treatment added successfully.";
                 }
                 else
                 {
                     StatusClass = "alert-danger";
-                    Message = "Something went wrong adding the new employee. Please try again.";
+                    Message = "Something went wrong adding the new Treatment. Please try again.";
                 }
             }
             else
             {
                 await TreatmentService.Update(Тreatment);
                 StatusClass = "alert-success";
-                Message = "Employee updated successfully.";
+                Message = "Treatment updated successfully.";
             }
             DialogService.Close(false);
         }

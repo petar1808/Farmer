@@ -58,7 +58,6 @@ namespace WebUI.Pages.ArableLands
             DataGrid.UpdateData(await ArableLandService.List());
         }
 
-
         public async Task DeleteArableLand(int arableLandId)
         {
             var deleteModel = new DeleteModalModel(arableLandId, async (id) => await DeleteArableLandAction(id));

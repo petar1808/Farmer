@@ -14,6 +14,9 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public IPerformedWorkService PerformedWorkService { get; set; } = default!;
 
+        [Inject]
+        public DialogService DialogService { get; set; } = default!;
+
         [Parameter]
         public int SeedingId { get; set; }
 
@@ -22,18 +25,10 @@ namespace WebUI.Pages.Seedings
 
         public PerformedWorkDatailsModel PerformedWork { get; set; } = default!;
 
-        [Inject]
-        public NavigationManager NavigationManager { get; set; } = default!;
-
-        [Inject]
-        public DialogService DialogService { get; set; } = default!;
-
-
         public List<SelectionListModel> WorkTypes { get; set; } = new List<SelectionListModel>();
 
         protected async override Task OnInitializedAsync()
         {
-
             WorkTypes = await PerformedWorkService.GetWorkTypes();
 
             if (PerformedWorkId == 0)
@@ -60,20 +55,19 @@ namespace WebUI.Pages.Seedings
                 if (addIsSuccess)
                 {
                     StatusClass = "alert-success";
-                    Message = "New employee added successfully.";
-
+                    Message = "New PerformedWork added successfully.";
                 }
                 else
                 {
                     StatusClass = "alert-danger";
-                    Message = "Something went wrong adding the new employee. Please try again.";
+                    Message = "Something went wrong adding the new PerformedWork. Please try again.";
                 }
             }
             else
             {
                 await PerformedWorkService.Update(PerformedWork);
                 StatusClass = "alert-success";
-                Message = "Employee updated successfully.";
+                Message = "PerformedWork updated successfully.";
             }
             DialogService.Close(false);
         }

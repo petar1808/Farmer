@@ -38,16 +38,17 @@ namespace WebUI.Pages.Seedings
 
             if (SelectedWorkingSeasonService.IsDefaultValue())
             {
-                SelectedWorkingSeasonService.ChangeSelectedWorkingSeason(WorkingSeasons.OrderByDescending(x => x.Value).First()?.Value ?? 0);
+                SelectedWorkingSeasonService
+                    .ChangeSelectedWorkingSeason(WorkingSeasons.OrderByDescending(x => x.Value).First()?.Value ?? 0);
             }
 
-            SownArableLands = await SeedingService.GetSownArableLands(SelectedWorkingSeasonService.SelectedWorkingSeasonId);
+            SownArableLands = await SeedingService
+                .GetSownArableLands(SelectedWorkingSeasonService.SelectedWorkingSeasonId);
 
             if (SownArableLands.Any())
             {
                 selectedSeedingId = SownArableLands[0].SeedingId;
             }
-
         }
 
         void OnChange(int index)
@@ -60,7 +61,8 @@ namespace WebUI.Pages.Seedings
             var response = await DialogService.OpenAsync<DetailsSeedingDialog>($"Земя",
               options: new DialogOptions() { Width = "750px", Height = "470px" });
 
-            SownArableLands = await SeedingService.GetSownArableLands(SelectedWorkingSeasonService.SelectedWorkingSeasonId);
+            SownArableLands = await SeedingService
+                .GetSownArableLands(SelectedWorkingSeasonService.SelectedWorkingSeasonId);
 
             this.StateHasChanged();
         }

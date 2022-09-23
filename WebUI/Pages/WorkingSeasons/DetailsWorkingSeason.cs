@@ -13,24 +13,18 @@ namespace WebUI.Pages.WorkingSeasons
         [Inject]
         public IWorkingSeasonService WorkingSeasonService { get; set; } = default!;
 
+        [Inject]
+        public DialogService DialogService { get; set; } = default!;
+
         [Parameter]
         public int WorkingSeasonId { get; set; }
 
         public WorkingSeasonModel WorkingSeason { get; set; } = default!;
 
-        [Inject]
-        public NavigationManager NavigationManager { get; set; } = default!;
-
-        [Inject]
-        public DialogService DialogService { get; set; } = default!;
-
-        bool popup;
-
         protected async override Task OnInitializedAsync()
         {
-            if (WorkingSeasonId == 0) //new employee is being created
+            if (WorkingSeasonId == 0)
             {
-                //add some defaults
                 WorkingSeason = new WorkingSeasonModel();
             }
             else
@@ -39,14 +33,12 @@ namespace WebUI.Pages.WorkingSeasons
             }
         }
 
-
         private void ChangeName(DateTime? startDate, DateTime? endDate)
         {
             string start = startDate == null ? "" : startDate.Value.ToString("yyyy");
             string end = endDate == null ? "" : endDate.Value.ToString("yyyy");
             WorkingSeason.Name = $"{start}/{end}";
         }
-
 
         protected void OnDateFromChange(DateTime? value)
         {
@@ -58,38 +50,29 @@ namespace WebUI.Pages.WorkingSeasons
             ChangeName(WorkingSeason.StartDate, value);
         }
 
-        protected async Task OnSubmit(WorkingSeasonModel arableLand)
+        protected async Task OnSubmit(WorkingSeasonModel workingSeason)
         {
-            if (arableLand.Id == 0) //new
+            if (workingSeason.Id == 0)
             {
                 var addIsSuccess = await WorkingSeasonService.Add(WorkingSeason);
                 if (addIsSuccess)
                 {
                     StatusClass = "alert-success";
-                    Message = "New employee added successfully.";
-
+                    Message = "New WorkingSeason added successfully.";
                 }
                 else
                 {
                     StatusClass = "alert-danger";
-                    Message = "Something went wrong adding the new employee. Please try again.";
+                    Message = "Something went wrong adding the new WorkingSeason. Please try again.";
                 }
             }
             else
             {
                 await WorkingSeasonService.Update(WorkingSeason);
                 StatusClass = "alert-success";
-                Message = "Employee updated successfully.";
+                Message = "WorkingSeason updated successfully.";
             }
             DialogService.Close(false);
-        }
-
-        protected async Task DeleteEmployee()
-        {
-            await WorkingSeasonService.Delete(WorkingSeason.Id);
-
-            StatusClass = "alert-success";
-            Message = "Deleted successfully";
         }
     }
 }

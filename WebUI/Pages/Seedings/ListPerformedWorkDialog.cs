@@ -12,14 +12,13 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public IPerformedWorkService PerformedWorkService { get; set; } = default!;
 
-        [Parameter]
-        public int SeedingId { get; set; }
-
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
-        public DynamicDataGridModel<GetPerformedWorkModel> DataGrid { get; set; } = default!;
+        [Parameter]
+        public int SeedingId { get; set; }
 
+        public DynamicDataGridModel<GetPerformedWorkModel> DataGrid { get; set; } = default!;
 
         protected async override Task OnParametersSetAsync()
         {
@@ -57,7 +56,7 @@ namespace WebUI.Pages.Seedings
         }
         public async Task EditPerformedWork(int performedWorkId)
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Работа {performedWorkId}",
+            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Работа",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
               new DialogOptions() { Width = "700px", Height = "570px" });
 
