@@ -1,33 +1,41 @@
 ﻿@using WebUI.ServicesModel.Article
 
-<div class="col-lg-6 offset-lg-3">
-    <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Submit=@OnSubmit>
-        <RadzenFieldset Text="Артикул">
-            <div class="row mb-5">
-                <div class="col-md-4">
-                    <RadzenLabel Text="Име" />
-                </div>
-                <div class="col">
-                    <RadzenTextBox style="display: block" Name="Name" @bind-Value=@Article.Name Class="w-100" />
-                </div>
+<RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Submit=@OnSubmit>
+    <RadzenFieldset>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <RadzenLabel Text="Име" />
             </div>
-            <div class="row mb-5">
-                <div class="col-md-4">
-                    <RadzenLabel Text="Тип" />
-                </div>
-                <div class="col">
-                    <RadzenDropDown 
-                        AllowClear="true" 
-                        AllowFiltering="true" 
-                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
-                        Data=@ArticleTypes 
-                        @bind-Value=@Article.ArticleType
-                        ValueProperty="Value" 
-                        TextProperty="Name" 
-                        Change=@(args => OnDropDownChange(args)) Class="w-100" />
-                </div>
+            <div class="col-md-6">
+                <RadzenTextBox style="display: block" Name="Name" @bind-Value=@Article.Name Class="w-100" />
             </div>
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-        </RadzenFieldset>
-    </RadzenTemplateForm>
-</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <RadzenLabel Text="Тип" />
+            </div>
+            <div class="col-md-6">
+                <RadzenDropDown AllowClear="true"
+                                AllowFiltering="true"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                Data=@ArticleTypes
+                                @bind-Value=@Article.ArticleType
+                                ValueProperty="Value"
+                                TextProperty="Name"
+                                Change=@(args => OnDropDownChange(args)) Class="w-100" />
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-md-2">
+                @if (IsModal)
+                {
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+                }
+                else
+                {
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
+                }
+            </div>
+        </div>
+    </RadzenFieldset>
+</RadzenTemplateForm>

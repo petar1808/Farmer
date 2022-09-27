@@ -42,17 +42,17 @@ namespace WebUI.Pages.Articles
 
         public async Task AddArticle()
         {
-            await DialogService.OpenAsync<DetailsArticle>($"Артикул",
-              options: new DialogOptions() { Width = "700px", Height = "570px" });
+            await DialogService.OpenAsync<DetailsArticle>($"Добавяне на Артикул",
+              options: new DialogOptions() { Width = "600px", Height = "285px" });
 
             DataGrid.UpdateData(await ArticleService.List());
             this.StateHasChanged();
         }
         public async Task EditArticle(int articleId)
         {
-            await DialogService.OpenAsync<DetailsArticle>($"Артикул",
+            await DialogService.OpenAsync<DetailsArticle>($"Редактиране на Артикул",
               new Dictionary<string, object>() { { "ArticleId", articleId } },
-              new DialogOptions() { Width = "700px", Height = "570px" });
+              new DialogOptions() { Width = "600px", Height = "285px" });
 
             DataGrid.UpdateData(await ArticleService.List());
             this.StateHasChanged();
@@ -61,7 +61,7 @@ namespace WebUI.Pages.Articles
         public async Task DeleteArticle(int articleId)
         {
             var deleteModel = new DeleteModalModel(articleId, async (id) => await DeleteArticleAction(id));
-            await DialogService.OpenAsync<DeleteModal>($"Артикул",
+            await DialogService.OpenAsync<DeleteModal>($"Изтриване на Артикул",
               new Dictionary<string, object>()
               {
                     { "ModelInput", deleteModel }

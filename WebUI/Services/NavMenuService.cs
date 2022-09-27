@@ -22,14 +22,14 @@ namespace WebUI.Services
                     },
                     new NavMenuItem()
                     {
-                        Name = "Земя",
+                        Name = "Земи",
                         Path = "/arableLand/list",
                         Icon = "&#xe871",
                         Title = "How to get started with the Radzen Blazor components"
                     },
                     new NavMenuItem()
                     {
-                        Name = "Сезон",
+                        Name = "Сезони",
                         Path = "/workingSeason/list",
                         Icon = "&#xe871",
                         Title = "How to get started with the Radzen Blazor components"

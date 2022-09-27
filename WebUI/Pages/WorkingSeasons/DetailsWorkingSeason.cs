@@ -19,12 +19,16 @@ namespace WebUI.Pages.WorkingSeasons
         [Parameter]
         public int WorkingSeasonId { get; set; }
 
+        [Parameter]
+        public bool IsModal { get; set; }
+
         public WorkingSeasonModel WorkingSeason { get; set; } = default!;
 
         protected async override Task OnInitializedAsync()
         {
             if (WorkingSeasonId == 0)
             {
+                IsModal = true;
                 WorkingSeason = new WorkingSeasonModel();
             }
             else

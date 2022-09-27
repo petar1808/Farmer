@@ -12,6 +12,7 @@ using Blazorise.Icons.FontAwesome;
 using WebUI.Services.PerformedWork;
 using WebUI.Services.Treatment;
 using WebUI.Services.Seeding;
+using WebUI.Services.Article;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

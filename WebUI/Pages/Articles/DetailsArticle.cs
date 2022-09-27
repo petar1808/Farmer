@@ -18,6 +18,9 @@ namespace WebUI.Pages.Articles
         [Parameter]
         public int ArticleId { get; set; }
 
+        [Parameter]
+        public bool IsModal { get; set; }
+
         public ArticleDetailsModel Article { get; set; } = default!;
 
         [Inject]
@@ -32,6 +35,7 @@ namespace WebUI.Pages.Articles
 
             if (ArticleId == 0)
             {
+                IsModal = true;
                 Article = new ArticleDetailsModel();
             }
             else
