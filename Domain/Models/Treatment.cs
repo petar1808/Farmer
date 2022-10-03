@@ -11,28 +11,28 @@ namespace Domain.Models
     public class Treatment : Entity<int>
     {
         public Treatment(DateTime date,
-            ТreatmentType тreatmentType, 
+            ТreatmentType treatmentType, 
             int? amountOfFuel,
             int? fuelPrice,
             int articleId,
             int articleQuantity,
             int seedingId,
             int articlePrice)
-            :this(date, тreatmentType, articleId, articleQuantity, seedingId,articlePrice)
+            :this(date, treatmentType, articleId, articleQuantity, seedingId,articlePrice)
         {
             AmountOfFuel = amountOfFuel;
             FuelPrice = fuelPrice;
         }
 
         public Treatment(DateTime date,
-            ТreatmentType тreatmentType,
+            ТreatmentType treatmentType,
             int articleId,
             int articleQuantity,
             int seedingId,
             int articlePrice)
         {
             Date = date;
-            ТreatmentType = тreatmentType;
+            TreatmentType = treatmentType;
             ArticleId = articleId;
             ArticleQuantity = articleQuantity;
             SeedingId = seedingId;
@@ -41,7 +41,7 @@ namespace Domain.Models
 
         public DateTime Date { get; private set; }
 
-        public ТreatmentType ТreatmentType { get; private set; }
+        public ТreatmentType TreatmentType { get; private set; }
 
         public int? AmountOfFuel { get; private set; }
 
@@ -62,7 +62,7 @@ namespace Domain.Models
 
         public Treatment UpdateТreatmentType(ТreatmentType treatmentType)
         {
-            this.ТreatmentType = treatmentType;
+            this.TreatmentType = treatmentType;
             return this;
         }
 

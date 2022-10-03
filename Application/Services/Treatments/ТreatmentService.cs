@@ -83,7 +83,7 @@ namespace Application.Services.Treatments
 
             treatment
                 .UpdateDate(treatmentModel.Date)
-                .UpdateТreatmentType(treatmentModel.ТreatmentType)
+                .UpdateТreatmentType(treatmentModel.TreatmentType)
                 .UpdateAmountOfFuel(treatmentModel.AmountOfFuel)
                 .UpdateFuelPrice(treatmentModel.FuelPrice)
                 .UpdateArticle(treatmentModel.ArticleId)

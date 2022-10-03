@@ -15,7 +15,7 @@ namespace Application.Models.Тreatments
 
         public DateTime Date { get; init; }
 
-        public ТreatmentType ТreatmentType { get; init; } = default!;
+        public ТreatmentType TreatmentType { get; init; } = default!;
 
         public int? AmountOfFuel { get; init; }
 

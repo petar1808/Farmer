@@ -13,7 +13,7 @@ namespace Application.Models.Тreatments
 
         public DateTime Date { get; init; }
 
-        public ТreatmentType ТreatmentType { get; init; }
+        public ТreatmentType TreatmentType { get; init; }
 
         public int? AmountOfFuel { get; init; }
 

@@ -28,7 +28,7 @@ namespace Infrastructure.Persistence.Configuration
 
             builder.Property(p => p.ArticleQuantity).IsRequired();
             builder.Property(p => p.Date).IsRequired();
-            builder.Property(p => p.ТreatmentType).IsRequired();
+            builder.Property(p => p.TreatmentType).IsRequired();
             builder.Property(p => p.ArticlePrice).IsRequired();
             base.Configure(builder);
         }

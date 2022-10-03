@@ -17,7 +17,7 @@ namespace Application.Models.Тreatments
 
         public DateTime Date { get; init; }
 
-        public string ТreatmentType { get; init; } = default!;
+        public string TreatmentType { get; init; } = default!;
 
         public int? AmountOfFuel { get; init; }
 
@@ -31,6 +31,6 @@ namespace Application.Models.Тreatments
 
         public virtual void Mapping(Profile mapper)
         => mapper.CreateMap<Treatment, ListТreatmentModel>()
-            .ForMember(x => x.ТreatmentType, cfg => cfg.MapFrom(c => c.ТreatmentType.GetEnumDisplayName()));
+            .ForMember(x => x.TreatmentType, cfg => cfg.MapFrom(c => c.TreatmentType.GetEnumDisplayName()));
     }
 }
