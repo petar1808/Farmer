@@ -4,6 +4,6 @@ namespace WebUI.ServicesModel.Тreatment
 {
     public class GetTreatmentModel : ТreatmentBaseModel, IDynamicDataGridModel
     {
-        public string TypeTreatment { get; set; } = default!;
+        public string TreatmentType { get; set; } = default!;
     }
 }

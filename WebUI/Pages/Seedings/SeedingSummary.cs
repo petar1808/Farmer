@@ -44,12 +44,12 @@ namespace WebUI.Pages.Seedings
 
         public async Task OnEdit()
         {
-            await DialogService.OpenAsync<SeedingSummary>($"Сеитба",
+            await DialogService.OpenAsync<SeedingSummary>($"Добавяне на Сеитба",
                 new Dictionary<string, object>() { 
                     { "SeedingId", SeedingId },
                     { "IsModal", true}
                 },
-                options: new DialogOptions() { Width = "700px", Height = "570px" });
+                options: new DialogOptions() { Width = "900px", Height = "370px" });
 
             GetSeedingModel = await SeedingService.GetSeedingSummary(SeedingId);
 

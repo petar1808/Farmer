@@ -2,6 +2,6 @@
 {
     public class ТreatmentDetailsModel : ТreatmentBaseModel
     {
-        public int ТreatmentType { get; set; }
+        public int TreatmentType { get; set; }
     }
 }

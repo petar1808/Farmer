@@ -23,6 +23,9 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public int PerformedWorkId { get; set; }
 
+        [Parameter]
+        public bool IsModal { get; set; }
+
         public PerformedWorkDatailsModel PerformedWork { get; set; } = default!;
 
         public List<SelectionListModel> WorkTypes { get; set; } = new List<SelectionListModel>();
@@ -33,6 +36,7 @@ namespace WebUI.Pages.Seedings
 
             if (PerformedWorkId == 0)
             {
+                IsModal = true;
                 PerformedWork = new PerformedWorkDatailsModel();
             }
             else

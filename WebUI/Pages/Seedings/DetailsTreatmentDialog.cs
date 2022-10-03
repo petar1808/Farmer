@@ -23,6 +23,9 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public int SeedingId { get; set; }
 
+        [Parameter]
+        public bool IsModal { get; set; }
+
         public ТreatmentDetailsModel Тreatment { get; set; } = default!;
 
         public List<SelectionListModel> TreatmentTypes { get; set; } = new List<SelectionListModel>();
@@ -33,6 +36,7 @@ namespace WebUI.Pages.Seedings
 
             if (TreatmentId == 0) 
             {
+                IsModal = true;
                 Тreatment = new ТreatmentDetailsModel();
             }
             else
@@ -43,7 +47,7 @@ namespace WebUI.Pages.Seedings
 
         public void OnDropDownChange(object value)
         {
-            Тreatment.ТreatmentType = (int)value;
+            Тreatment.TreatmentType = (int)value;
         }
 
         protected async Task OnSubmit(ТreatmentDetailsModel treatment)

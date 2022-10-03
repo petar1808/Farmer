@@ -47,18 +47,18 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddPerformedWork()
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Работа",
+            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Добавяне на Обработка",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
-                new DialogOptions() { Width = "700px", Height = "570px" });
+                new DialogOptions() { Width = "600px", Height = "390px" });
 
             DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
             this.StateHasChanged();
         }
         public async Task EditPerformedWork(int performedWorkId)
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Работа",
+            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Редактиране на Обработка",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
-              new DialogOptions() { Width = "700px", Height = "570px" });
+              new DialogOptions() { Width = "600px", Height = "390px" });
 
             DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
             this.StateHasChanged();

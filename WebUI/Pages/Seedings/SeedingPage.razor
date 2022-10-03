@@ -3,19 +3,32 @@
 @using WebUI.Pages.Articles
 @using WebUI.Pages.Seedings
 
+<style>
+    .col{
+         text-align:right;
+    }
+</style>
 
-<RadzenCard Style="display: flex; align-items: center; margin-bottom: 20px">
-    <div class="row px-3">
-        <div class="col-6">
-            <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArableLand())" />
+
+<RadzenCard Style="display: flex; margin-bottom: 20px">
+    <div class="row">
+        <div class="col-md-6">
+            <RadzenButton Icon="add_circle_outline" style="margin-bottom: 5px" Text="Добави" Click="@(() => AddArableLand())" />
         </div>
-        <div class="col-6 float-right">
-            <RadzenDropDown Data=@WorkingSeasons
-                            TValue="int"
-                            TextProperty="Name"
-                            ValueProperty="Value"
-                            @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
-                            Change=@(args => OnDropDownChange(args)) Class="w-100" />
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col">
+                    <RadzenLabel Text="Избери сезон:" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDropDown Data=@WorkingSeasons
+                                    TValue="int"
+                                    TextProperty="Name"
+                                    ValueProperty="Value"
+                                    @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
+                                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                </div>
+            </div>
         </div>
     </div>
 </RadzenCard>

@@ -58,8 +58,8 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddArableLand()
         {
-            var response = await DialogService.OpenAsync<DetailsSeedingDialog>($"Земя",
-              options: new DialogOptions() { Width = "750px", Height = "470px" });
+            var response = await DialogService.OpenAsync<DetailsSeedingDialog>($"Добавяне на Земя",
+              options: new DialogOptions() { Width = "500px", Height = "220px" });
 
             SownArableLands = await SeedingService
                 .GetSownArableLands(SelectedWorkingSeasonService.SelectedWorkingSeasonId);
