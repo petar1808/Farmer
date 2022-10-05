@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Enum
+namespace Application.Services.Identity
 {
-    public enum UserRoles
+    public interface IIdentityService
     {
-        Admin = 1,
-        User = 2,
-}
+    }
 }

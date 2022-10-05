@@ -16,13 +16,11 @@ namespace Application.Services.WorikingSeasons
     {
         private readonly IFarmerDbContext farmerDbContext;
         private readonly IMapper mapper;
-        private readonly SidebarMenuCache sidebarMenuCache;
 
-        public WorkingSeasonService(IFarmerDbContext farmerDbContext, IMapper mapper, SidebarMenuCache sidebarMenuCache)
+        public WorkingSeasonService(IFarmerDbContext farmerDbContext, IMapper mapper)
         {
             this.farmerDbContext = farmerDbContext;
             this.mapper = mapper;
-            this.sidebarMenuCache = sidebarMenuCache;
         }
 
         public async Task Add(AddWorkingSeasonModel workingSeasonModel)
@@ -53,8 +51,6 @@ namespace Application.Services.WorikingSeasons
 
         public async Task Edit(EditWorkingSeasonModel workingSeasonModel)
         {
-            sidebarMenuCache.Flush();
-
             var workingSeason = farmerDbContext
                 .WorkingSeasons
                 .FirstOrDefault(x => x.Id == workingSeasonModel.Id);

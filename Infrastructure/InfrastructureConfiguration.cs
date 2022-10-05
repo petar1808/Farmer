@@ -89,7 +89,7 @@ namespace Infrastructure
 
                 if (!userManager.Users.Any())
                 {
-                    var user = new User(configuration.GetSection("DefaultUser:Email").Value);
+                    var user = new User(configuration.GetSection("DefaultUser:Email").Value,"Admin","Admin");
 
                     user.UpdateActive(true);
 

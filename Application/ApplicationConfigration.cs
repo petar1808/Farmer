@@ -2,6 +2,7 @@
 using Application.Services;
 using Application.Services.ArableLands;
 using Application.Services.Articles;
+using Application.Services.Identity;
 using Application.Services.PerformedWorks;
 using Application.Services.Seedings;
 using Application.Services.Treatments;
@@ -24,9 +25,7 @@ namespace Application
             services.AddTransient<ISeedingService, SeedingService>();
             services.AddTransient<IPerformedWorkService, PerformedWorkService>();
             services.AddTransient<IТreatmentService, ТreatmentService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddSingleton<SidebarMenuCache>();
-
+            services.AddTransient<IIdentityService, IdentityService>();
             return services;
         }
 
