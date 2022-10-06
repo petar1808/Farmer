@@ -12,6 +12,10 @@ namespace WebApi.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService articleService;
+        public ArticleController(IArticleService articleService)
+        {
+            this.articleService = articleService;
+        }
 
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] AddArticleModel articleModel)
@@ -19,12 +23,7 @@ namespace WebApi.Controllers
             await articleService.Add(articleModel);
 
             return Ok();
-        }
-
-        public ArticleController(IArticleService articleService)
-        {
-            this.articleService = articleService;
-        }
+        } 
 
         [HttpGet]
         [Route("{id:int}")]

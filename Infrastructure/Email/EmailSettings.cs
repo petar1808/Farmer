@@ -17,7 +17,5 @@ namespace Infrastructure.Email
         public string Password { get; set; } = default!;
 
         public string Sender { get; set; } = default!;
-
-        public string ServerName { get; set; } = default!;
     }
 }

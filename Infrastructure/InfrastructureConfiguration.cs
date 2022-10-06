@@ -1,14 +1,17 @@
-﻿using Infrastructure.DbContect;
+﻿using Application.Models;
+using Application.Services;
+using Infrastructure.DbContect;
+using Infrastructure.Email;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Application.Services;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using static Infrastructure.IdentityConstants;
-using Infrastructure.Email;
-using Application.Models;
 
 namespace Infrastructure
 {
@@ -19,7 +22,7 @@ namespace Infrastructure
             IConfiguration configuration)
         {
             services.AddDataBase(configuration);
-            services.AddIdentitys();
+            services.AddIdentity(configuration);
             services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
             services.AddTransient<IEmailService, EmailService>();
             return services;
@@ -40,26 +43,52 @@ namespace Infrastructure
             return services;
         }
 
-        private static IServiceCollection AddIdentitys(this IServiceCollection services)
+        private static IServiceCollection AddIdentity(
+            this IServiceCollection services,
+            IConfiguration configuration)
         {
-            services.AddIdentityCore<User>()
-                    .AddRoles<Role>()
-                    .AddEntityFrameworkStores<FarmerDbContext>();
+            services
+                .AddIdentity<User, Role>(options =>
+                {
+                    options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+                    options.SignIn.RequireConfirmedAccount = true;
+                })
+                .AddEntityFrameworkStores<FarmerDbContext>()
+                .AddDefaultTokenProviders();
+
+            var secret = configuration
+                .GetSection("ApplicationSettings:Secret").Value;
+
+            var key = Encoding.ASCII.GetBytes(secret);
 
             services
-                .AddHttpContextAccessor()
-                .AddAuthentication(options =>
+                .AddAuthentication(authentication =>
                 {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                .AddJwtBearer(bearer =>
                 {
-                    options.SlidingExpiration = true;
-                    options.LoginPath = "/identity/Identity/Login";
-                    options.AccessDeniedPath = "/error/forbidden";
+                    bearer.RequireHttpsMetadata = false;
+                    bearer.SaveToken = true;
+                    bearer.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                    bearer.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("Access-Token-Expired", "true");
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
             return services;

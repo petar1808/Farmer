@@ -7,60 +7,71 @@ using MailKit.Net.Smtp;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Services;
+using Microsoft.Extensions.Logging;
+using MimeKit.Text;
 
 namespace Infrastructure.Email
 {
     public class EmailService : IEmailService
     {
-        private readonly EmailSettings emailSettings;
-
-        public EmailService(IOptions<EmailSettings> options)
+        private readonly EmailSettings _smtpSettings;
+        private readonly ILogger<EmailService> _logger;
+        private const string newLine = "<br>";
+        public EmailService(IOptions<EmailSettings> _smtpSettings, ILogger<EmailService> logger)
         {
-            this.emailSettings = options.Value;
+            this._smtpSettings = _smtpSettings.Value;
+            this._logger = logger;
         }
 
-        public async Task SendUserChangePassword(string userEmail, string password)
+        private async Task<bool> SendAsync(MailboxAddress receiver, string subject, string body)
         {
-            var subject = $"Вашата парола беше сменена";
-            var text = $"Вашият емайл е: {userEmail} - Вашата нова парола e: {password}";
-
-            await SendUserEmail(userEmail, password, subject, text);
-        }
-
-        public async Task SendUserCreatedEmail(string userEmail, string password)
-        {
-            var subject = $"Вие бяхте успешно регистриран в Фермер";
-            var text = $"Вашият емайл е: {userEmail} - Вашата парола e: {password}";
-
-            await SendUserEmail(userEmail, password,subject, text);
-        }
-
-        private async Task SendUserEmail(string userEmail, string password, string subject , string text)
-        {
-            var message = new MimeMessage();
-
-            message.To.Add(new MailboxAddress(userEmail, userEmail));
-
-            message.From.Add(new MailboxAddress(this.emailSettings.UserName, this.emailSettings.UserName));
-
-            // 
-            message.Subject = subject;
-
-            message.Body = new TextPart
+            try
             {
-                Text = text
-            };
+                var message = new MimeMessage();
 
-            using (var emailClient = new SmtpClient())
-            {
-                await emailClient.ConnectAsync(emailSettings.Server, emailSettings.Port);
+                message.To.Add(receiver);
 
-                await emailClient.AuthenticateAsync(emailSettings.UserName, emailSettings.Password);
+                message.From.Add(
+                    new MailboxAddress(
+                        this._smtpSettings.Server,
+                        this._smtpSettings.UserName));
 
-                await emailClient.SendAsync(message);
+                message.Subject = subject;
 
-                await emailClient.DisconnectAsync(true);
+                message.Body = new TextPart(TextFormat.Html)
+                {
+                    Text = body
+                };
+
+                using (var emailClient = new SmtpClient())
+                {
+                    await emailClient.ConnectAsync(this._smtpSettings.Server, this._smtpSettings.Port);
+
+                    await emailClient.AuthenticateAsync(this._smtpSettings.UserName, this._smtpSettings.Password);
+
+                    await emailClient.SendAsync(message);
+
+                    await emailClient.DisconnectAsync(true);
+                }
+
+                return true;
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(default(EventId), ex, ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> SendUserCreatedEmail(string userName, string userEmail, string url)
+        {
+            // url = FE Url(http//:farmer/confirEmail?token?asdadadq)
+            // url- за сега ще е просто токена
+            string body = $"Здравейте, <b>{userName}</b>," + newLine +
+                          newLine +
+                          $"Вие бяхте добавен(а) в платформата на <b>Фермер</b>. За да активирате своя акаунт, моля, натиснете <a href='{url}'>тук.</a>" + newLine ;
+
+            return await this.SendAsync(new MailboxAddress(userName, userEmail), "Регистрация в Фермер", body);
         }
     }
 }
