@@ -73,5 +73,15 @@ namespace Infrastructure.Email
 
             return await this.SendAsync(new MailboxAddress(userName, userEmail), "Регистрация в Фермер", body);
         }
+
+        public async Task SendResetPasswordEmail(string userName, string userEmail, string url)
+        {
+            string body = $"Здравейте <b>{userName}</b>," + newLine +
+                          newLine +
+                          $"Забравили сте Вашата парола за платформата на <b>Фермер</b>? " + newLine +
+                          $"За да смените паролата си, моля, натиснете <a href='{url}'>тук.</a>" + newLine;
+
+            await this.SendAsync(new MailboxAddress(userName, userEmail), "Смяна на парола в Фермер", body);
+        }
     }
 }

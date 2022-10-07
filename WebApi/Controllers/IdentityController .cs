@@ -18,9 +18,37 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [Route("createUser")]
         public async Task<ActionResult> CreateUser([FromBody]CreateUserModel createUserModel)
         {
             await identityService.CreateUser(createUserModel);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("createUserPassword")]
+        public async Task<ActionResult> CreateUserPassword([FromBody] CreateUserPasswordModel createUserPasswordModel)
+        {
+            await identityService.CreateUserPassword(createUserPasswordModel);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("changePassword")]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
+        {
+            await identityService.ChangePassword(changePasswordModel);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("forgotPassword")]
+        public async Task<ActionResult> ForgotPassword(string email, string changePasswordUrl)
+        {
+            await identityService.ForgotPassword(email, changePasswordUrl);
 
             return Ok();
         }

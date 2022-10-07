@@ -10,5 +10,11 @@ namespace Application.Services.Identity
     public interface IIdentityService
     {
         Task CreateUser(CreateUserModel createUserModel);
+
+        Task CreateUserPassword(CreateUserPasswordModel createUserPasswordModel);
+
+        Task ChangePassword(ChangePasswordModel changePasswordModel);
+
+        Task ForgotPassword(string email, string changePasswordUrl);
     }
 }

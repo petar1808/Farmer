@@ -9,6 +9,7 @@ namespace Application.Models
         {
             FirstName = firstName;
             LastName = lastName;
+            Email = userName;
         }
 
         private User() : base()
