@@ -1,7 +1,10 @@
 ﻿using Application.Models;
+using Application.Models.Common;
 using Application.Services;
+using Application.Services.Identity;
 using Infrastructure.DbContect;
 using Infrastructure.Email;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -24,7 +27,10 @@ namespace Infrastructure
             services.AddDataBase(configuration);
             services.AddIdentity(configuration);
             services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
+            services.Configure<ApplicationSettings>(configuration.GetSection(nameof(ApplicationSettings)));
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IJwtTokenGenerator, JwtTokenGeneratorService>();
             return services;
         }
 

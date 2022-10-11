@@ -52,5 +52,23 @@ namespace WebApi.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("resetPassword")]
+        public async Task<ActionResult> ResetPassword(string email, string newPassword, string token)
+        {
+            await identityService.ResetPassword(email, newPassword, token);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult<LoginOutputModel>> Login(LoginInputModel loginInputModel)
+        {
+            var result = await identityService.Login(loginInputModel);
+
+            return result;
+        }
     }
 }

@@ -16,5 +16,9 @@ namespace Application.Services.Identity
         Task ChangePassword(ChangePasswordModel changePasswordModel);
 
         Task ForgotPassword(string email, string changePasswordUrl);
+
+        Task ResetPassword(string email, string newPassword, string token);
+
+        Task<LoginOutputModel> Login(LoginInputModel loginInputModel);
     }
 }

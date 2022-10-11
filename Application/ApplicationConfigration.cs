@@ -25,7 +25,6 @@ namespace Application
             services.AddTransient<ISeedingService, SeedingService>();
             services.AddTransient<IPerformedWorkService, PerformedWorkService>();
             services.AddTransient<IТreatmentService, ТreatmentService>();
-            services.AddTransient<IIdentityService, IdentityService>();
             return services;
         }
 
