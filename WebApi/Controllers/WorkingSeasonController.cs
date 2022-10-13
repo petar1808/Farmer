@@ -1,12 +1,15 @@
 ﻿using Application.Models.Common;
 using Application.Models.WorkingSeasons;
 using Application.Services.WorikingSeasons;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Extensions;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/workingSeasons")]
+    [Authorize]
     public class WorkingSeasonController : ControllerBase
     {
         private readonly IWorkingSeasonService workingSeasonService;
@@ -19,43 +22,43 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddWorkingSeasonModel workingSeasonModel)
         {
-            await workingSeasonService.Add(workingSeasonModel);
-
-            return Ok();
+            return await workingSeasonService
+                .Add(workingSeasonModel)
+                .ToActionResult();
         }
 
         [HttpGet]
         [Route("{id:int}")]
         public async Task<ActionResult<GetWorkingSeasonModel>> Get(int id)
         {
-            var workingSeason = await workingSeasonService.Get(id);
-
-            return workingSeason;
+            return await workingSeasonService
+                .Get(id)
+                .ToActionResult();
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GetWorkingSeasonModel>>> List()
         {
-            var workingSeasons = await workingSeasonService.List();
-
-            return workingSeasons;
+            return await workingSeasonService
+                .List()
+                .ToActionResult();
         }
 
         [HttpPut]
         public async Task<IActionResult> Edit(EditWorkingSeasonModel workingSeasonModel)
         {
-            await workingSeasonService.Edit(workingSeasonModel);
-
-            return Ok();
+            return await workingSeasonService
+                .Edit(workingSeasonModel)
+                .ToActionResult();
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await workingSeasonService.Delete(id);
-
-            return Ok();
+            return await workingSeasonService
+                .Delete(id)
+                .ToActionResult();
         }
     }
 }

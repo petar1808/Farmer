@@ -3,12 +3,15 @@ using Application.Models.Articles;
 using Application.Models.Common;
 using Application.Services.Articles;
 using Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Extensions;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/articles")]
+    [Authorize]
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService articleService;
@@ -19,42 +22,44 @@ namespace WebApi.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] AddArticleModel articleModel)
-        {
-            await articleService.Add(articleModel);
-
-            return Ok();
+        {  
+            return await articleService
+                .Add(articleModel)
+                .ToActionResult();
         } 
 
         [HttpGet]
         [Route("{id:int}")]
         public async Task<ActionResult<GetArticleModel>> Get(int id)
         {
-            var article = await articleService.Get(id);
-
-            return article;
+            return await articleService
+                .Get(id)
+                .ToActionResult();
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ListArticleModel>>> List()
         {
-            return await articleService.List();
+            return await articleService
+                .List()
+                .ToActionResult();
         }
 
         [HttpPut]
         public async Task<ActionResult> Edit(EditArticleModel articleModel)
         {
-            await articleService.Edit(articleModel);
-
-            return Ok();
+            return await articleService
+                .Edit(articleModel)
+                .ToActionResult();
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await articleService.Delete(id);
-
-            return Ok();
+            return await articleService
+                .Delete(id)
+                .ToActionResult();
         }
     }
 }

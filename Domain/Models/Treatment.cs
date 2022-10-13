@@ -31,6 +31,7 @@ namespace Domain.Models
             int seedingId,
             int articlePrice)
         {
+            ValidateТreatmentType(treatmentType);
             Date = date;
             TreatmentType = treatmentType;
             ArticleId = articleId;
@@ -59,9 +60,10 @@ namespace Domain.Models
 
         public Seeding Seeding { get; } = default!;
 
-
+        #region UpdateMethods
         public Treatment UpdateТreatmentType(ТreatmentType treatmentType)
         {
+            ValidateТreatmentType(treatmentType);
             this.TreatmentType = treatmentType;
             return this;
         }
@@ -100,6 +102,15 @@ namespace Domain.Models
         {
             this.ArticlePrice = articlePrice;
             return this;
+        }
+        #endregion
+
+        private void ValidateТreatmentType(ТreatmentType type)
+            => Guard.Guard.ForValidEnum<ТreatmentType>((int)type, nameof(ТreatmentType));
+
+        private void Validate(ТreatmentType type)
+        {
+            ValidateТreatmentType(type);
         }
     }
 }

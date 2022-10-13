@@ -38,7 +38,7 @@ namespace Domain.Models
               nameof(this.Name));
 
         private void ValidateArticleType(ArticleType type)
-            => Guard.Guard.AgainstEmptyEnum(type, nameof(ArticleType));
+            => Guard.Guard.ForValidEnum<ArticleType>((int)type, nameof(ArticleType));
 
         private void Validate(string name, ArticleType type)
         {

@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Enum;
+using Domain.Models;
 using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Domain.ModelConstraint.CommonConstraints;

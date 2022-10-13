@@ -1,4 +1,5 @@
-﻿using Application.Models.Common;
+﻿using Application.Models;
+using Application.Models.Common;
 using Application.Models.WorkingSeasons;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,16 @@ namespace Application.Services.WorikingSeasons
 {
     public interface IWorkingSeasonService
     {
-        Task Add(AddWorkingSeasonModel workingSeasonModel);
+        Task<Result> Add(AddWorkingSeasonModel workingSeasonModel);
 
-        Task Edit(EditWorkingSeasonModel workingSeasonModel);
+        Task<Result> Edit(EditWorkingSeasonModel workingSeasonModel);
 
-        Task<GetWorkingSeasonModel> Get(int id);
+        Task<Result<GetWorkingSeasonModel>> Get(int id);
 
-        Task<List<GetWorkingSeasonModel>> List();
+        Task<Result<List<GetWorkingSeasonModel>>> List();
 
-        Task Delete(int id);
+        Task<Result> Delete(int id);
 
-        Task<List<SelectionListModel>> SeasonsSelectionList();
+        Task<Result<List<SelectionListModel>>> SeasonsSelectionList();
     }
 }

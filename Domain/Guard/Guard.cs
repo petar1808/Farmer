@@ -1,10 +1,5 @@
-﻿using Domain.Enum;
-using Domain.Exceptions;
+﻿using Domain.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Guard
 {
@@ -20,9 +15,9 @@ namespace Domain.Guard
             throw new DomainException($"{name} cannot be null or empty.");
         }
 
-        public static void AgainstEmptyEnum(ArticleType value, string name = "Value")
+        public static void ForValidEnum<EType>(int value, string name = "Value") where EType : System.Enum
         {
-            if (value != 0)
+            if (System.Enum.IsDefined(typeof(EType), value))
             {
                 return;
             }

@@ -1,14 +1,9 @@
-﻿using Application.Exceptions;
+﻿using Application.Models;
 using Application.Models.Common;
 using Application.Models.WorkingSeasons;
 using AutoMapper;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.WorikingSeasons
 {
@@ -23,7 +18,7 @@ namespace Application.Services.WorikingSeasons
             this.mapper = mapper;
         }
 
-        public async Task Add(AddWorkingSeasonModel workingSeasonModel)
+        public async Task<Result> Add(AddWorkingSeasonModel workingSeasonModel)
         {
             var workingSeason = new WorkingSeason(
                 workingSeasonModel.Name,
@@ -32,9 +27,11 @@ namespace Application.Services.WorikingSeasons
 
             await this.farmerDbContext.AddAsync(workingSeason);
             await this.farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Delete(int id)
+        public async Task<Result> Delete(int id)
         {
             var workingSeason = await farmerDbContext
                 .WorkingSeasons
@@ -42,14 +39,16 @@ namespace Application.Services.WorikingSeasons
 
             if (workingSeason == null)
             {
-                throw new BadRequestExeption($"Working season with Id: {id}, don't exist");
+                return $"Сезон с Ид: {id} не съществува!";
             }
 
             farmerDbContext.WorkingSeasons.Remove(workingSeason);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Edit(EditWorkingSeasonModel workingSeasonModel)
+        public async Task<Result> Edit(EditWorkingSeasonModel workingSeasonModel)
         {
             var workingSeason = farmerDbContext
                 .WorkingSeasons
@@ -57,7 +56,7 @@ namespace Application.Services.WorikingSeasons
 
             if (workingSeason == null)
             {
-                throw new BadRequestExeption($"Working season with Id: {workingSeasonModel.Id}, don't exist");
+                return $"Сезон с Ид: {workingSeasonModel.Id} не съществува!";
             }
 
             workingSeason
@@ -67,9 +66,11 @@ namespace Application.Services.WorikingSeasons
 
             this.farmerDbContext.Update(workingSeason);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task<GetWorkingSeasonModel> Get(int id)
+        public async Task<Result<GetWorkingSeasonModel>> Get(int id)
         {
             var workingSeason = await farmerDbContext
                 .WorkingSeasons
@@ -77,14 +78,14 @@ namespace Application.Services.WorikingSeasons
 
             if (workingSeason == null)
             {
-                throw new BadRequestExeption($"Working season with Id: {id}, don't exist");
+                return $"Сезон с Ид: {id} не съществува!";
             }
 
             var result = mapper.Map<GetWorkingSeasonModel>(workingSeason);
             return result;
         }
 
-        public async Task<List<GetWorkingSeasonModel>> List()
+        public async Task<Result<List<GetWorkingSeasonModel>>> List()
         {
             var workingSeason = await farmerDbContext.WorkingSeasons.ToListAsync();
 
@@ -92,7 +93,7 @@ namespace Application.Services.WorikingSeasons
             return result;
         }
 
-        public async Task<List<SelectionListModel>> SeasonsSelectionList()
+        public async Task<Result<List<SelectionListModel>>> SeasonsSelectionList()
         {
             var workingSeason = await farmerDbContext
                 .WorkingSeasons

@@ -5,13 +5,16 @@ using Application.Services.PerformedWorks;
 using Application.Services.Treatments;
 using Application.Services.WorikingSeasons;
 using Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Extensions;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/assets")]
-    public class AssetsController
+    [Authorize]
+    public class AssetsController : ControllerBase
     {
         private readonly IArticleService articleService;
         private readonly IWorkingSeasonService workingSeasonService;
@@ -35,14 +38,18 @@ namespace WebApi.Controllers
         [Route("seeds")]
         public async Task<ActionResult<List<SelectionListModel>>> GetSeeds()
         {
-            return await articleService.SeedsArticlesSelectionList();
+            return await articleService
+                .SeedsArticlesSelectionList()
+                .ToActionResult();
         }
 
         [HttpGet]
         [Route("seasons")]
-        public async Task<List<SelectionListModel>> GetAllSeasons()
+        public async Task<ActionResult<List<SelectionListModel>>> GetAllSeasons()
         {
-            return await workingSeasonService.SeasonsSelectionList();
+            return await workingSeasonService
+                .SeasonsSelectionList()
+                .ToActionResult();
         }
 
         [HttpGet]

@@ -1,11 +1,14 @@
 ﻿using Application.Models.Users;
 using Application.Services.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Extensions;
 
 namespace WebApi.Controllers
 {
-    
+
+ 
     [ApiController]
     [Route("api/identity")]
     public class IdentityController : ControllerBase
@@ -17,58 +20,65 @@ namespace WebApi.Controllers
             this.identityService = identityService;
         }
 
+
         [HttpPost]
         [Route("createUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> CreateUser([FromBody]CreateUserModel createUserModel)
         {
-            await identityService.CreateUser(createUserModel);
-
-            return Ok();
+            return await identityService
+                .CreateUser(createUserModel)
+                .ToActionResult();
         }
 
         [HttpPost]
         [Route("createUserPassword")]
+        [AllowAnonymous]
         public async Task<ActionResult> CreateUserPassword([FromBody] CreateUserPasswordModel createUserPasswordModel)
         {
-            await identityService.CreateUserPassword(createUserPasswordModel);
-
-            return Ok();
+            return await identityService
+                .CreateUserPassword(createUserPasswordModel)
+                .ToActionResult();
         }
 
         [HttpPost]
         [Route("changePassword")]
+        [Authorize]
         public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
         {
-            await identityService.ChangePassword(changePasswordModel);
-
-            return Ok();
+            return await identityService
+                .ChangePassword(changePasswordModel)
+                .ToActionResult();
         }
 
         [HttpPost]
         [Route("forgotPassword")]
-        public async Task<ActionResult> ForgotPassword(string email, string changePasswordUrl)
+        [AllowAnonymous]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
         {
-            await identityService.ForgotPassword(email, changePasswordUrl);
-
-            return Ok();
+            return await identityService
+                .ForgotPassword(forgotPasswordModel)
+                .ToActionResult();
         }
 
         [HttpPost]
         [Route("resetPassword")]
-        public async Task<ActionResult> ResetPassword(string email, string newPassword, string token)
+        [AllowAnonymous]
+        public async Task<ActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
         {
-            await identityService.ResetPassword(email, newPassword, token);
-
-            return Ok();
+            return await identityService
+                .ResetPassword(resetPasswordModel)
+                .ToActionResult();
         }
 
         [HttpPost]
         [Route("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<LoginOutputModel>> Login(LoginInputModel loginInputModel)
         {
-            var result = await identityService.Login(loginInputModel);
-
-            return result;
+            return await identityService
+                .Login(loginInputModel)
+                .ToActionResult();
         }
     }
 }

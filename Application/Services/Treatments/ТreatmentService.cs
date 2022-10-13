@@ -1,14 +1,8 @@
-﻿using Application.Exceptions;
+﻿using Application.Models;
 using Application.Models.Тreatments;
 using AutoMapper;
-using Domain.Enum;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.Treatments
 {
@@ -22,26 +16,49 @@ namespace Application.Services.Treatments
             this.farmerDbContext = farmerDbContext;
             this.mapper = mapper;
         }
-        public async Task<List<ListТreatmentModel>> List(int seedingId)
+
+        public async Task<Result<List<ListТreatmentModel>>> List(int seedingId)
         {
+            var seeding = await farmerDbContext
+                .Seedings
+                .AnyAsync(x => x.Id == seedingId);
+
+            if (!seeding)
+            {
+                return $"Сеитба с Ид: {seedingId} не съществува!";
+            }
+
             var treatment = await farmerDbContext
                 .Treatments
                 .Include(x => x.Article)
                 .Where(x => x.SeedingId == seedingId)
                 .ToListAsync();
 
-            if (treatment == null)
-            {
-                throw new BadRequestExeption($"Treatment with Id: {seedingId}, don't exist");
-            }
-
             var result = mapper.Map<List<ListТreatmentModel>>(treatment);
 
             return result;
         }
 
-        public async Task Add(AddТreatmentModel treatmentModel, int seedingId)
+        public async Task<Result> Add(AddТreatmentModel treatmentModel, int seedingId)
         {
+            var seeding = await farmerDbContext
+               .Seedings
+               .AnyAsync(x => x.Id == seedingId);
+
+            if (!seeding)
+            {
+                return $"Сеитба с Ид: {seedingId} не съществува!";
+            }
+
+            var article = await farmerDbContext
+                .Articles
+                .AnyAsync(x => x.Id == treatmentModel.ArticleId);
+
+            if (!article)
+            {
+                return $"Артикул с Ид: {treatmentModel.ArticleId} не съществува!";
+            }
+
             var treatment = new Treatment(treatmentModel.Date,
                 treatmentModel.ТreatmentType,
                 treatmentModel.AmountOfFuel,
@@ -53,9 +70,11 @@ namespace Application.Services.Treatments
 
             await farmerDbContext.Treatments.AddAsync(treatment);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Delete(int id)
+        public async Task<Result> Delete(int id)
         {
             var treatment = await farmerDbContext
                 .Treatments
@@ -63,22 +82,33 @@ namespace Application.Services.Treatments
 
             if (treatment == null)
             {
-                throw new BadRequestExeption($"Treatment with Id: {id}, don't exist");
+                return $"Третиране с Ид: {id} не съществува!";
             }
 
             farmerDbContext.Remove(treatment);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Edit(EditТreatmentModel treatmentModel)
+        public async Task<Result> Edit(EditТreatmentModel treatmentModel)
         {
+            var article = await farmerDbContext
+                .Articles
+                .AnyAsync(x => x.Id == treatmentModel.ArticleId);
+
+            if (!article)
+            {
+                return $"Артикул с Ид: {treatmentModel.ArticleId} не съществува!";
+            }
+
             var treatment = await farmerDbContext
               .Treatments
               .FirstOrDefaultAsync(x => x.Id == treatmentModel.Id);
 
             if (treatment == null)
             {
-                throw new BadRequestExeption($"Treatment with Id: {treatmentModel.Id}, don't exist");
+                return $"Третиране с Ид: {treatmentModel.Id} не съществува!";
             }
 
             treatment
@@ -92,9 +122,11 @@ namespace Application.Services.Treatments
 
             farmerDbContext.Update(treatment);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task<GetTreatmentModel> Get(int id)
+        public async Task<Result<GetTreatmentModel>> Get(int id)
         {
             var treatment = await farmerDbContext
                 .Treatments
@@ -103,7 +135,7 @@ namespace Application.Services.Treatments
 
             if (treatment == null)
             {
-                throw new BadRequestExeption($"Treatment with Id: {id}, don't exist");
+                return $"Третиране с Ид: {id} не съществува!";
             }
 
             var result = mapper.Map<GetTreatmentModel>(treatment);

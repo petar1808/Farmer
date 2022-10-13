@@ -1,4 +1,5 @@
-﻿using Application.Models.Тreatments;
+﻿using Application.Models;
+using Application.Models.Тreatments;
 using Domain.Enum;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,14 @@ namespace Application.Services.Treatments
 {
     public interface IТreatmentService
     {
-        Task Edit(EditТreatmentModel treatmentModel);
+        Task<Result> Edit(EditТreatmentModel treatmentModel);
 
-        Task Delete(int id);
+        Task<Result> Delete(int id);
 
-        Task Add(AddТreatmentModel treatmentModel, int seedingId);
+        Task<Result> Add(AddТreatmentModel treatmentModel, int seedingId);
 
-        Task<List<ListТreatmentModel>> List(int seedingId);
+        Task<Result<List<ListТreatmentModel>>> List(int seedingId);
 
-        Task<GetTreatmentModel> Get(int id);
+        Task<Result<GetTreatmentModel>> Get(int id);
     }
 }

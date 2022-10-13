@@ -1,4 +1,5 @@
-﻿using Application.Models.Users;
+﻿using Application.Models;
+using Application.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,16 @@ namespace Application.Services.Identity
 {
     public interface IIdentityService
     {
-        Task CreateUser(CreateUserModel createUserModel);
+        Task<Result> CreateUser(CreateUserModel createUserModel);
 
-        Task CreateUserPassword(CreateUserPasswordModel createUserPasswordModel);
+        Task<Result> CreateUserPassword(CreateUserPasswordModel createUserPasswordModel);
 
-        Task ChangePassword(ChangePasswordModel changePasswordModel);
+        Task<Result> ChangePassword(ChangePasswordModel changePasswordModel);
 
-        Task ForgotPassword(string email, string changePasswordUrl);
+        Task<Result> ForgotPassword(ForgotPasswordModel forgotPasswordModel);
 
-        Task ResetPassword(string email, string newPassword, string token);
+        Task<Result> ResetPassword(ResetPasswordModel resetPasswordModel);
 
-        Task<LoginOutputModel> Login(LoginInputModel loginInputModel);
+        Task<Result<LoginOutputModel>> Login(LoginInputModel loginInputModel);
     }
 }

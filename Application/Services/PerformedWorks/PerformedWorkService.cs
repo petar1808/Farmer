@@ -1,14 +1,8 @@
-﻿using Application.Exceptions;
+﻿using Application.Models;
 using Application.Models.PerformedWorks;
 using AutoMapper;
-using Domain.Enum;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.PerformedWorks
 {
@@ -23,7 +17,7 @@ namespace Application.Services.PerformedWorks
             this.mapper = mapper;
         }
 
-        public async Task Delete(int id)
+        public async Task<Result> Delete(int id)
         {
             var performedWork = await farmerDbContext
                 .PerformedWorks
@@ -31,15 +25,26 @@ namespace Application.Services.PerformedWorks
 
             if (performedWork == null)
             {
-                throw new BadRequestExeption($"Performed work with Id: {id}, don't exist");
+                return $"Обработка с Ид: {id} не съществува!";
             }
 
             farmerDbContext.Remove(performedWork);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Add(AddPerformedWorkModel performedWorkModel, int seedingId)
+        public async Task<Result> Add(AddPerformedWorkModel performedWorkModel, int seedingId)
         {
+            var seeding = await farmerDbContext
+                .Seedings
+                .AnyAsync(x => x.Id == seedingId);
+
+            if (!seeding)
+            {
+                return $"Сеитба с Ид: {seedingId} не съществува!";
+            }
+
             var performedWork = new PerformedWork(seedingId,
                 performedWorkModel.WorkType,
                 performedWorkModel.Date,
@@ -48,9 +53,11 @@ namespace Application.Services.PerformedWorks
 
             await farmerDbContext.PerformedWorks.AddAsync(performedWork);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Edit(EditPerformedWorkModel editModel)
+        public async Task<Result> Edit(EditPerformedWorkModel editModel)
         {
             var performedWork = await farmerDbContext
                 .PerformedWorks
@@ -58,7 +65,7 @@ namespace Application.Services.PerformedWorks
 
             if (performedWork == null)
             {
-                throw new BadRequestExeption($"Performed work with Id: {editModel.Id}, don't exist");
+                return $"Обработка с Ид: {editModel.Id} не съществува!";
             }
 
             performedWork
@@ -69,26 +76,32 @@ namespace Application.Services.PerformedWorks
 
             farmerDbContext.Update(performedWork);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task<List<ListPerformedWorkModel>> List(int seedingId)
+        public async Task<Result<List<ListPerformedWorkModel>>> List(int seedingId)
         {
+            var seeding = await farmerDbContext
+                .Seedings
+                .AnyAsync(x => x.Id == seedingId);
+
+            if (!seeding)
+            {
+                return $"Сеитба с Ид: {seedingId} не съществува!";
+            }
+
             var performedWork = await farmerDbContext
                 .PerformedWorks
                 .Where(x => x.SeedingId == seedingId)
                 .ToListAsync();
-
-            if (performedWork == null)
-            {
-                throw new BadRequestExeption($"Performed work with Id: {seedingId}, don't exist");
-            }
 
             var result = mapper.Map<List<ListPerformedWorkModel>>(performedWork);
 
             return result;
         }
 
-        public async Task<GetPerformedWorkModel> Get(int id)
+        public async Task<Result<GetPerformedWorkModel>> Get(int id)
         {
             var performedWork = await farmerDbContext
                 .PerformedWorks
@@ -96,7 +109,7 @@ namespace Application.Services.PerformedWorks
 
             if (performedWork == null)
             {
-                throw new BadRequestExeption($"Performed work with Id: {id}, don't exist");
+                return $"Обработка с Ид: {id} не съществува!";
             }
 
             var result = mapper.Map<GetPerformedWorkModel>(performedWork);

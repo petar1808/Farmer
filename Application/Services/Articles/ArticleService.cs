@@ -1,15 +1,10 @@
-﻿using Application.Exceptions;
+﻿using Application.Models;
 using Application.Models.Articles;
 using Application.Models.Common;
 using AutoMapper;
 using Domain.Enum;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.Articles
 {
@@ -24,15 +19,17 @@ namespace Application.Services.Articles
             this.mapper = mapper;
         }
 
-        public async Task Add(AddArticleModel articleModel)
+        public async Task<Result> Add(AddArticleModel articleModel)
         {
             var article = new Article(articleModel.Name, articleModel.ArticleType);
 
             await farmerDbContext.AddAsync(article);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Delete(int id)
+        public async Task<Result> Delete(int id)
         {
             var article = await farmerDbContext
                 .Articles
@@ -40,14 +37,16 @@ namespace Application.Services.Articles
 
             if (article == null)
             {
-                throw new BadRequestExeption($"Article with Id: {id}, don't exist");
+                return $"Артикул с Ид: {id} не съществува!";
             }
 
             farmerDbContext.Articles.Remove(article);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Edit(EditArticleModel articleModel)
+        public async Task<Result> Edit(EditArticleModel articleModel)
         {
             var article = await farmerDbContext
                 .Articles
@@ -55,7 +54,7 @@ namespace Application.Services.Articles
 
             if (article == null)
             {
-                throw new BadRequestExeption($"Article with Id: {articleModel.Id}, don't exist");
+                return $"Артикул с Ид: {articleModel.Id} не съществува!";
             }
 
             article
@@ -64,9 +63,11 @@ namespace Application.Services.Articles
 
             farmerDbContext.Update(article);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task<GetArticleModel> Get(int id)
+        public async Task<Result<GetArticleModel>> Get(int id)
         {
             var article = await farmerDbContext
                 .Articles
@@ -74,14 +75,14 @@ namespace Application.Services.Articles
 
             if (article == null)
             {
-                throw new BadRequestExeption($"Article with Id: {id}, don't exist");
+                return $"Артикул с Ид: {id} не съществува!";
             }
 
             var result = mapper.Map<GetArticleModel>(article);
             return result;
         }
 
-        public async Task<List<ListArticleModel>> List()
+        public async Task<Result<List<ListArticleModel>>> List()
         {
             var articles = await farmerDbContext.Articles.ToListAsync();
 
@@ -89,7 +90,7 @@ namespace Application.Services.Articles
             return result;
         }
 
-        public async Task<List<SelectionListModel>> SeedsArticlesSelectionList()
+        public async Task<Result<List<SelectionListModel>>> SeedsArticlesSelectionList()
         {
             var articles = await farmerDbContext.Articles
                 .Where(x => x.ArticleType == ArticleType.Seeds)
@@ -99,7 +100,7 @@ namespace Application.Services.Articles
             return articles;
         }
 
-        public async Task<List<SelectionListModel>> TreatmentArticlesSelectionList()
+        public async Task<Result<List<SelectionListModel>>> TreatmentArticlesSelectionList()
         {
             var articles = await farmerDbContext.Articles
                 .Where(x => x.ArticleType != ArticleType.Seeds)

@@ -1,4 +1,4 @@
-﻿using Application.Exceptions;
+﻿using Application.Models;
 using Application.Models.ArableLands;
 using Application.Models.Common;
 using AutoMapper;
@@ -17,15 +17,17 @@ namespace Application.Services.ArableLands
             this.mapper = mapper;
         }
 
-        public async Task Add(AddArableLandModel arableLandModel)
+        public async Task<Result> Add(AddArableLandModel arableLandModel)
         {
             var arableLand = new ArableLand(arableLandModel.Name, arableLandModel.SizeInDecar);
 
             await farmerDbContext.ArableLands.AddAsync(arableLand);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task Edit(EditArableLandModel arableLandModel)
+        public async Task<Result> Edit(EditArableLandModel arableLandModel)
         {
             var arableLand = await farmerDbContext
                 .ArableLands
@@ -33,7 +35,7 @@ namespace Application.Services.ArableLands
 
             if (arableLand == null)
             {
-                throw new BadRequestExeption($"Arable land with Id: {arableLandModel.Id}, don't exist");
+                return $"Земя с Ид: {arableLandModel.Id} не съществува!";
             }
 
             arableLand
@@ -42,9 +44,11 @@ namespace Application.Services.ArableLands
 
             farmerDbContext.Update(arableLand);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task<GetAreableLandModel> Get(int id)
+        public async Task<Result<GetAreableLandModel>> Get(int id)
         {
             var arableLand = await farmerDbContext
                 .ArableLands
@@ -52,14 +56,14 @@ namespace Application.Services.ArableLands
 
             if (arableLand == null)
             {
-                throw new BadRequestExeption($"Arable land with Id: {id}, don't exist");
+                return $"Земя с Ид: {id} не съществува!";
             }
 
             var result = mapper.Map<GetAreableLandModel>(arableLand);
             return result;
         }
 
-        public async Task<List<GetAreableLandModel>> List()
+        public async Task<Result<List<GetAreableLandModel>>> List()
         {
             var arableLands = await farmerDbContext.ArableLands.ToListAsync();
 
@@ -68,24 +72,34 @@ namespace Application.Services.ArableLands
             return result;
         }
 
-        public async Task Delete(int id)
+        public async Task<Result> Delete(int id)
         {
             var arableLand = await farmerDbContext
-                    .ArableLands
-                    .FirstOrDefaultAsync(x => x.Id == id);
+                .ArableLands
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (arableLand == null)
             {
-                throw new BadRequestExeption($"Arable land with Id: {id}, don't exist");
+                return $"Земя с Ид: {id} не съществува!";
             }
 
             farmerDbContext.Remove(arableLand);
             await farmerDbContext.SaveChangesAsync();
+
+            return Result.Success;
         }
 
-        public async Task<List<SelectionListModel>> ArableLandsSelectionList(
-            int seasionId)
+        public async Task<Result<List<SelectionListModel>>> ArableLandsSelectionList(int seasonId)
         {
+            var workingseason = await this.farmerDbContext
+                .WorkingSeasons
+                .AnyAsync(x => x.Id == seasonId);
+
+            if (!workingseason)
+            {
+                return $"Сезон с Ид: {seasonId} не съществува!";
+            }
+
             var arableLands = await this.farmerDbContext
                 .ArableLands
                 .Select(x => new SelectionListModel(x.Id, x.Name))
@@ -93,7 +107,7 @@ namespace Application.Services.ArableLands
 
             var existingArableLands = await this.farmerDbContext
               .Seedings
-              .Where(x => x.WorkingSeasonId == seasionId)
+              .Where(x => x.WorkingSeasonId == seasonId)
               .Select(x => x.ArableLandId)
               .ToListAsync();
 

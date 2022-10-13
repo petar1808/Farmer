@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,15 +30,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-app.UseRouting();
-
-app.SeedIdentityUsers(builder.Configuration);
-
-app.UseCors(MyAllowSpecificOrigins);
-
-app.UseAuthorization();
-
-app.MapControllers();
+app.UseHttpsRedirection()
+    .UseRouting()
+    .SeedIdentityUsers(builder.Configuration)
+    .UseCors(MyAllowSpecificOrigins)
+    .UseAuthentication()
+    .UseAuthorization()
+    .UseMiddleware<ValidationExceptionHandlerMiddleware>()
+    .UseEndpoints(endpoints => endpoints.MapControllers());
 
 app.Run();

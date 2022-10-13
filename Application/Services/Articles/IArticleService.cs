@@ -1,4 +1,5 @@
-﻿using Application.Models.Articles;
+﻿using Application.Models;
+using Application.Models.Articles;
 using Application.Models.Common;
 using Domain.Enum;
 using System;
@@ -11,18 +12,18 @@ namespace Application.Services.Articles
 {
     public interface IArticleService
     {
-        Task Add(AddArticleModel articleModel);
+        Task<Result> Add(AddArticleModel articleModel);
 
-        Task Edit(EditArticleModel articleModel);
+        Task<Result> Edit(EditArticleModel articleModel);
 
-        Task<GetArticleModel> Get(int id);
+        Task<Result<GetArticleModel>> Get(int id);
 
-        Task<List<ListArticleModel>> List();
+        Task<Result<List<ListArticleModel>>> List();
 
-        Task Delete(int id);
+        Task<Result> Delete(int id);
 
-        Task<List<SelectionListModel>> SeedsArticlesSelectionList();
+        Task<Result<List<SelectionListModel>>> SeedsArticlesSelectionList();
 
-        Task<List<SelectionListModel>> TreatmentArticlesSelectionList();
+        Task<Result<List<SelectionListModel>>> TreatmentArticlesSelectionList();
     }
 }

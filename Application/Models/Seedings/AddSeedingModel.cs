@@ -12,8 +12,10 @@ namespace Application.Models.Seedings
 {
     public class AddSeedingModel
     {
+        [Required]
         public int ArableLandId { get; init; }
 
+        [Required]
         public int WorkingSeasonId { get; init; }
     }
 }

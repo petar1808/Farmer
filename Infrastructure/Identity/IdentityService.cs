@@ -1,20 +1,12 @@
-﻿using Application.Exceptions;
-using Application.Models;
+﻿using Application.Models;
 using Application.Models.Users;
 using Application.Services;
 using Application.Services.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using static Application.Models.IdentityConstants;
 
-
-// Премести го в инфраструтурата, виж как е емаил; В папка Identity
 namespace Infrastructure.Identity
 {
     public class IdentityService : IIdentityService
@@ -31,7 +23,7 @@ namespace Infrastructure.Identity
             _jwtTokenGenerator = jwtTokenGenerator;
         }
 
-        public async Task CreateUser(CreateUserModel createUserModel)
+        public async Task<Result> CreateUser(CreateUserModel createUserModel)
         {
             var user = new User(createUserModel.UserEmail, createUserModel.FirstName, createUserModel.LastName);
             var role = IdentityRoles.UserRole;
@@ -39,12 +31,17 @@ namespace Infrastructure.Identity
             var identityResult = await this._userManager.CreateAsync(user);
             if (!identityResult.Succeeded)
             {
-                throw new BadRequestExeption($"Not successful");
+                if (identityResult.Errors.Any(x => x.Code == "DuplicateUserName"))
+                {
+                    return "Имейлът вече съществува!";
+                }
             }
 
             var roleResult = await this._userManager.AddToRoleAsync(user, role);
             if (!roleResult.Succeeded)
-                throw new BadRequestExeption($"Not successful");
+            {
+                return "Грешка при задаването на роля!";
+            }
 
             var token = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -53,20 +50,24 @@ namespace Infrastructure.Identity
             var sendEmailResult = await this._emailService.SendUserCreatedEmail(
                 createUserModel.FirstName + " " + createUserModel.LastName,
                 createUserModel.UserEmail,
-                $"{createUserModel.ActivateUserUrl}?email={createUserModel.UserEmail}&token={token}");
+                $"{createUserModel.ActivateUserUrl}?email={createUserModel.UserEmail}&token={encoded}");
 
             if (!sendEmailResult)
             {
-                throw new BadRequestExeption($"Not successful");
+                return "Имейлът не беше изпратен успешно!";
             }
+
+            return Result.Success;
         }
 
-        public async Task CreateUserPassword(CreateUserPasswordModel createUserPasswordModel)
+        public async Task<Result> CreateUserPassword(CreateUserPasswordModel createUserPasswordModel)
         {
             var user = await this._userManager.FindByNameAsync(createUserPasswordModel.Email);
 
             if (user == null)
-                throw new BadRequestExeption($"Not successful");
+            {
+                return "Невалидни идентификационни данни!";
+            }    
 
             var activateEmailResult = await this._userManager
                 .ConfirmEmailAsync(
@@ -74,7 +75,9 @@ namespace Infrastructure.Identity
                     createUserPasswordModel.Token);
 
             if (!activateEmailResult.Succeeded)
-                throw new BadRequestExeption($"Not successful");
+            {
+                return "Невалиден или изтекъл токен!";
+            }
 
             var addPasswordResult = await this._userManager
                 .AddPasswordAsync(
@@ -82,39 +85,51 @@ namespace Infrastructure.Identity
                     createUserPasswordModel.Password);
 
             if (!addPasswordResult.Succeeded)
-                throw new BadRequestExeption($"Not successful");
+            {
+                return "Невалидни идентификационни данни!";
+            }
+
+            return Result.Success;
         }
 
-        public async Task<LoginOutputModel> Login(LoginInputModel loginInputModel)
+        public async Task<Result<LoginOutputModel>> Login(LoginInputModel loginInputModel)
         {
             var user = await this._userManager
                 .Users
                 .FirstOrDefaultAsync(x => x.UserName == loginInputModel.Email);
 
             if (user == null)
-                throw new BadRequestExeption($"Not successful");
+            {
+                return "Грешна парола или имейл!";
+            }
 
             var passwordValid = await this._userManager.CheckPasswordAsync(user, loginInputModel.Password);
 
             if (!passwordValid)
-                throw new BadRequestExeption($"Not successful");
+            {
+                return "Грешна парола или имейл!";
+            }
 
             var roles = await this._userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault();
 
             if (role == null)
-                throw new BadRequestExeption($"Not successful");
+            {
+                return "Потребителят не е присвоен на никаква роля";
+            }
 
             var token = this._jwtTokenGenerator.GenerateToken(user, role);
             return new LoginOutputModel(token, role);
         }
 
-        public async Task ChangePassword(ChangePasswordModel changePasswordModel)
+        public async Task<Result> ChangePassword(ChangePasswordModel changePasswordModel)
         {
             var user = await this._userManager.FindByNameAsync(changePasswordModel.Email);
 
             if (user == null)
-                throw new BadRequestExeption($"Not successful");
+            {
+                return "Невалидни идентификационни данни!";
+            }
 
             var changePasswordResult = await this._userManager.ChangePasswordAsync(
                 user,
@@ -124,19 +139,21 @@ namespace Infrastructure.Identity
 
             if (!changePasswordResult.Succeeded)
             {
-                throw new BadRequestExeption($"Not successful");
+                return "Невалидна парола";
             }
+
+            return Result.Success;
         }
 
-        public async Task ForgotPassword(string email, string changePasswordUrl)
+        public async Task<Result> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
         {
             var user = await this._userManager
                 .Users
-                .FirstOrDefaultAsync(x => x.UserName == email);
+                .FirstOrDefaultAsync(x => x.UserName == forgotPasswordModel.Email);
 
             if (user == null)
             {
-                throw new BadRequestExeption($"Not successful");
+                return Result.Success;
             }
 
             var token = await this._userManager.GeneratePasswordResetTokenAsync(user);
@@ -145,22 +162,26 @@ namespace Infrastructure.Identity
             await this._emailService.SendResetPasswordEmail(
                 user.FirstName + " " + user.LastName,
                 user.UserName,
-                $"{changePasswordUrl}?email={user.UserName}&token={encoded}");
+                $"{forgotPasswordModel.ChangePasswordUrl}?email={user.UserName}&token={encoded}");
+
+            return Result.Success;
         }
 
-        public async Task ResetPassword(string email, string newPassword, string token)
+        public async Task<Result> ResetPassword(ResetPasswordModel resetPasswordModel)
         {
-            var user = await this._userManager.FindByNameAsync(email);
+            var user = await this._userManager.FindByNameAsync(resetPasswordModel.Email);
             if (user == null)
             {
-                throw new BadRequestExeption($"Not successful");
+                return Result.Success;
             }
 
-            var resetPasswordResult = await this._userManager.ResetPasswordAsync(user, token, newPassword);
+            var resetPasswordResult = await this._userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.NewPassword);
             if (!resetPasswordResult.Succeeded)
             {
-                throw new BadRequestExeption($"Not successful");
+                return "Невалидни идентификационни данни!";
             }
+            
+            return Result.Success;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Domain.Models
             int fuelPrice,
             int amountOfFuel)
         {
+            Validate(workType);
             SeedingId = seedingId;
             WorkType = workType;
             Date = date;
@@ -40,6 +41,7 @@ namespace Domain.Models
 
         public PerformedWork UpdateWorkType(WorkType workType)
         {
+            ValidateWorkType(workType);
             this.WorkType = workType;
             return this;
         }
@@ -60,6 +62,14 @@ namespace Domain.Models
         {
             this.FuelPrice = fuelPrice;
             return this;
+        }
+
+        private void ValidateWorkType(WorkType type)
+            => Guard.Guard.ForValidEnum<WorkType>((int)type, nameof(WorkType));
+
+        private void Validate(WorkType type)
+        {
+            ValidateWorkType(type);
         }
     }
 }
