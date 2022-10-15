@@ -80,5 +80,14 @@ namespace WebApi.Controllers
                 .Login(loginInputModel)
                 .ToActionResult();
         }
+
+        [HttpGet]
+        [Route("listUser")]
+        public async Task<ActionResult<List<ListUserModel>>> ListUser()
+        {
+            return await identityService
+                .ListUser()
+                .ToActionResult();
+        }
     }
 }

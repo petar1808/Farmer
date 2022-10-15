@@ -7,7 +7,6 @@ namespace WebUI.Services.Article
 {
     public class ArticleService : IArticleService
     {
-
         private readonly HttpClient _httpClient;
         public ArticleService(HttpClient httpClient)
         {

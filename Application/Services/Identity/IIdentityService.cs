@@ -21,5 +21,7 @@ namespace Application.Services.Identity
         Task<Result> ResetPassword(ResetPasswordModel resetPasswordModel);
 
         Task<Result<LoginOutputModel>> Login(LoginInputModel loginInputModel);
+
+        Task<Result<List<ListUserModel>>> ListUser();
     }
 }

@@ -41,6 +41,12 @@ namespace WebUI.Services
                 Name = "Жътва",
                 Icon = "&#xe664",
                 Path = "/seeding"
+            },
+            new NavMenuItem()
+            {
+                Name = "Потребители",
+                Icon = "&#xe664",
+                Path = "/listUser"
             }
         };
 

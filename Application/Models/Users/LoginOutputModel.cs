@@ -8,14 +8,11 @@ namespace Application.Models.Users
 {
     public class LoginOutputModel
     {
-        public LoginOutputModel(string token, string role)
+        public LoginOutputModel(string token)
         {
             Token = token;
-            Role = role;
         }
 
         public string Token { get; set; } = default!;
-
-        public string Role { get; set; } = default!;
     }
 }

@@ -13,6 +13,7 @@ using WebUI.Services.PerformedWork;
 using WebUI.Services.Treatment;
 using WebUI.Services.Seeding;
 using WebUI.Services.Article;
+using WebUI.Services.Identity;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -35,9 +36,9 @@ builder.Services.AddSingleton<SelectedWorkingSeasonService>();
 
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-//var apiUrl = "https://localhost:5001/";
+var apiUrl = "https://localhost:5001/";
 
-var apiUrl = "https://farmerapi-dev.azurewebsites.net/";
+//var apiUrl = "https://farmerapi-dev.azurewebsites.net/";
 
 builder.Services.AddHttpClient<IArticleService, ArticleService>(client => client.BaseAddress = new Uri(apiUrl));
 builder.Services.AddHttpClient<IArableLandService, ArableLandService>(client => client.BaseAddress = new Uri(apiUrl));
@@ -45,5 +46,6 @@ builder.Services.AddHttpClient<IWorkingSeasonService, WorkingSeasonService>(clie
 builder.Services.AddHttpClient<IPerformedWorkService, PerformedWorkService>(client => client.BaseAddress = new Uri(apiUrl));
 builder.Services.AddHttpClient<ITreatmentService, TreatmentService>(client => client.BaseAddress = new Uri(apiUrl));
 builder.Services.AddHttpClient<ISeedingService, SeedingService>(client => client.BaseAddress = new Uri(apiUrl));
+builder.Services.AddHttpClient<IIdentityService, IdentityService>(client => client.BaseAddress = new Uri(apiUrl));
 
 await builder.Build().RunAsync();

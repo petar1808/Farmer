@@ -2,6 +2,7 @@
 using Application.Models.Users;
 using Application.Services;
 using Application.Services.Identity;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Web;
@@ -14,13 +15,16 @@ namespace Infrastructure.Identity
         private readonly UserManager<User> _userManager;
         private readonly IEmailService _emailService;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly IMapper mapper;
         public IdentityService(UserManager<User> userManager,
             IEmailService emailService,
-            IJwtTokenGenerator jwtTokenGenerator)
+            IJwtTokenGenerator jwtTokenGenerator,
+            IMapper mapper)
         {
             _userManager = userManager;
             _emailService = emailService;
             _jwtTokenGenerator = jwtTokenGenerator;
+            this.mapper = mapper;
         }
 
         public async Task<Result> CreateUser(CreateUserModel createUserModel)
@@ -119,7 +123,7 @@ namespace Infrastructure.Identity
             }
 
             var token = this._jwtTokenGenerator.GenerateToken(user, role);
-            return new LoginOutputModel(token, role);
+            return new LoginOutputModel(token);
         }
 
         public async Task<Result> ChangePassword(ChangePasswordModel changePasswordModel)
@@ -182,6 +186,23 @@ namespace Infrastructure.Identity
             }
             
             return Result.Success;
+        }
+
+        public async Task<Result<List<ListUserModel>>> ListUser()
+        {
+            var users = await _userManager
+                .Users
+                .Where(x => x.UserRoles.Any(x => x.Name != "Admin"))
+                .ToListAsync();
+
+            if (users == null)
+            {
+                return "";
+            }
+
+            var result = mapper.Map<List<ListUserModel>>(users);
+
+            return result;
         }
     }
 }
