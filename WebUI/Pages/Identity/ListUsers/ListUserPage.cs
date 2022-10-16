@@ -4,7 +4,7 @@ using WebUI.Components.DataGrid;
 using WebUI.Services.Identity;
 using WebUI.ServicesModel.Identity;
 
-namespace WebUI.Pages.Identity
+namespace WebUI.Pages.Identity.ListUsers
 {
     public partial class ListUserPage
     {

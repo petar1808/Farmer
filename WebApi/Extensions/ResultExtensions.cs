@@ -13,8 +13,9 @@ namespace WebApi.Extensions
             {
                 return new BadRequestObjectResult(new { errors = result.Errors });
             }
+            
 
-            return new OkResult();
+            return new OkObjectResult(result.Succeeded);
         }
 
         public static async Task<ActionResult<TData>> ToActionResult<TData>(this Task<Result<TData>> resultTask)

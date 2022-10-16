@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Models
+﻿namespace WebUI
 {
     public static class IdentityConstants
     {
@@ -13,6 +7,5 @@ namespace Application.Models
             public const string AdminRole = "Admin";
             public const string UserRole = "User";
         }
-
     }
 }

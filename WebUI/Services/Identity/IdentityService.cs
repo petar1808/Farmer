@@ -5,18 +5,39 @@ namespace WebUI.Services.Identity
 {
     public class IdentityService : IIdentityService
     {
-        private readonly HttpClient _httpClient;
-        public IdentityService(HttpClient httpClient)
+
+        private readonly IHttpService httpService;
+        public IdentityService(IHttpService httpService)
         {
-            _httpClient = httpClient;
+            this.httpService = httpService;
         }
 
         public async Task<List<ListUserModel>> ListUser()
         {
-            var result = await JsonSerializer.DeserializeAsync<List<ListUserModel>>
-                (await _httpClient.GetStreamAsync($"api/identity/listUser"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-            return result!;
+            return await httpService
+                .GetAsync<List<ListUserModel>>($"api/identity/listUser");
         }
+
+        public async Task<string> Login(string email, string password)
+        {
+            var model = new LoginInputModel { Email = email, Password = password };
+
+            var result =  await httpService
+                .PostAsync<IdentityResult>($"api/identity/login", model);
+
+            return result.Token;
+        }
+    }
+
+    public class IdentityResult
+    {
+        public string Token { get; set; }
+    }
+
+    public class LoginInputModel
+    {
+        public string Email { get; set; } = default!;
+
+        public string Password { get; set; } = default!;
     }
 }

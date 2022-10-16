@@ -10,9 +10,9 @@ namespace WebUI.Services.Treatment
 
         Task<ТreatmentDetailsModel> Get(int id);
 
-        Task Update(ТreatmentDetailsModel editModel);
+        Task<bool> Update(ТreatmentDetailsModel editModel);
 
-        Task Delete(int id);
+        Task<bool> Delete(int id);
 
         Task<bool> Add(ТreatmentDetailsModel treatment, int seedingId);
 

@@ -50,6 +50,10 @@ namespace WebUI.Services
             }
         };
 
-        public IEnumerable<NavMenuItem> MenuItems => menuItems;
+        public IEnumerable<NavMenuItem> GetMenuItems(bool isAdminRole)
+        {
+            //To do: if isAdmin add the admin menu
+            return menuItems;
+        }
     }
 }

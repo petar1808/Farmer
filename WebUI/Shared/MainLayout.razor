@@ -7,6 +7,8 @@
 @inherits LayoutComponentBase
 @inject NavigationManager UriHelper
 @inject NavMenuService NavMenuService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager UriHelper
 
 <RadzenDialog />
 <RadzenNotification />
@@ -24,6 +26,12 @@
                     </RadzenSidebarToggle>
                     <RadzenLabel Text="Фермер">
                     </RadzenLabel>
+                </div>
+            </div>
+            <div class="col-7 d-flex align-items-center justify-content-end">
+                <div class="d-none d-md-inline-flex align-items-center">
+                    <a href="@($"{UriHelper.BaseUri}changepassword")" title="Ако сте забравили паролата си" class="mx-2 mx-lg-3">Смяна на парола</a>
+                    <a onclick="" class="text-nowrap mx-2 mx-lg-3">Излез</a>
                 </div>
             </div>
         </ChildContent>
@@ -88,10 +96,16 @@
 
     IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        menuItems = NavMenuService.MenuItems;
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        menuItems = NavMenuService.GetMenuItems(authState?.User?.IsInRole("Admin") ?? false);
 
         Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
     }
+
+    // To do: Add method for Logout
+    // Remove jwtToken from local storage : inject ILocalStorageService
+    // redirect to login
 }

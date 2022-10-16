@@ -9,9 +9,9 @@ namespace WebUI.Services.PerformedWork
 
         Task<PerformedWorkDatailsModel> Get(int id);
 
-        Task Update(PerformedWorkDatailsModel editModel);
+        Task<bool> Update(PerformedWorkDatailsModel editModel);
 
-        Task Delete(int id);
+        Task<bool> Delete(int id);
 
         Task<bool> Add(PerformedWorkDatailsModel performedWork, int seedingId);
 

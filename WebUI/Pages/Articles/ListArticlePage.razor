@@ -4,7 +4,15 @@
 
 <h2 class="text-center"> Aртикули </h2>
 
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArticle())"/>
+@if (DataGrid == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArticle())"/>  
+}
+
 
 <DynamicDataGrid TData="ListArticleModel" Data="@DataGrid"></DynamicDataGrid>
 

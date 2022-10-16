@@ -9,7 +9,7 @@ namespace WebUI.Services.Article
 
         Task<ArticleDetailsModel> Get(int id);
 
-        Task Update(ArticleDetailsModel article);
+        Task<bool> Update(ArticleDetailsModel article);
 
         Task<bool> Add(ArticleDetailsModel article);
 
@@ -17,6 +17,6 @@ namespace WebUI.Services.Article
 
         Task<List<SelectionListModel>> GetSeeds();
 
-        Task Delete(int id);
+        Task<bool> Delete(int id);
     }
 }

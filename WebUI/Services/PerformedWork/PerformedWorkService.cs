@@ -7,57 +7,46 @@ namespace WebUI.Services.PerformedWork
 {
     public class PerformedWorkService : IPerformedWorkService
     {
-        private readonly HttpClient _httpClient;
-        public PerformedWorkService(HttpClient httpClient)
+        private readonly IHttpService _httpService;
+        public PerformedWorkService(IHttpService httpService)
         {
-            _httpClient = httpClient;
+            _httpService = httpService;
         }
 
         public async Task<bool> Add(PerformedWorkDatailsModel performedWork, int seedingId)
         {
-            var performedWorkJson =
-                new StringContent(JsonSerializer.Serialize(performedWork), Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync($"api/seeding/{seedingId}/performedWork", performedWorkJson);
-
-            return response.IsSuccessStatusCode;
+            return await _httpService
+                .PostAsync<bool>($"api/seeding/{seedingId}/performedWork", performedWork);
         }
 
-        public async Task Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            await _httpClient.DeleteAsync($"api/seeding/performedWork/{id}");
+            return await _httpService
+                .DeleteAsync<bool>($"api/seeding/performedWork/{id}");
         }
 
         public async Task<List<GetPerformedWorkModel>> List(int seedingId)
         {
-            var result = await JsonSerializer.DeserializeAsync<List<GetPerformedWorkModel>>
-                (await _httpClient.GetStreamAsync($"api/seeding/{seedingId}/performedWork"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-             return result!;
+            return await _httpService
+                .GetAsync<List<GetPerformedWorkModel>>($"api/seeding/{seedingId}/performedWork");
         }
 
         public async Task<List<SelectionListModel>> GetWorkTypes()
         {
-            var result = await JsonSerializer.DeserializeAsync<List<SelectionListModel>>
-              (await _httpClient.GetStreamAsync($"api/assets/workTypes"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-            return result!;
+            return await _httpService
+                .GetAsync<List<SelectionListModel>>($"api/assets/workTypes");
         }
 
-        public async Task Update(PerformedWorkDatailsModel editModel)
+        public async Task<bool> Update(PerformedWorkDatailsModel editModel)
         {
-            var performedWorkJson =
-                new StringContent(JsonSerializer.Serialize(editModel), Encoding.UTF8, "application/json");
-
-            await _httpClient.PutAsync("api/seeding/performedWork", performedWorkJson);
+            return await _httpService
+                .PutAsync<bool>("api/seeding/performedWork", editModel);
         }
 
         public async Task<PerformedWorkDatailsModel> Get(int id)
         {
-            var result = await JsonSerializer.DeserializeAsync<PerformedWorkDatailsModel>
-                 (await _httpClient.GetStreamAsync($"api/seeding/performedWork/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-            return result!;
+            return await _httpService
+                .GetAsync<PerformedWorkDatailsModel>($"api/seeding/performedWork/{id}");
         }
     }
 }

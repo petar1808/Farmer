@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using static Application.Models.IdentityConstants;
+using static Application.IdentityConstants;
 
 namespace Infrastructure
 {

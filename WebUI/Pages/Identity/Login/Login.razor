@@ -1,0 +1,30 @@
+﻿@page "/login"
+@using Radzen.Blazor
+@using WebUI.Services.Identity
+@layout EmptyLayout
+
+<RadzenTemplateForm TItem="LoginInputModel" Data=@LoginInput Submit=@OnLogin>
+    <RadzenFieldset>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <RadzenLabel Text="Имейл" />
+            </div>
+            <div class="col-md-6">
+                <RadzenTextBox style="display: block" Name="Name" @bind-Value=@LoginInput.Email Class="w-100" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <RadzenLabel Text="Парола" />
+            </div>
+            <div class="col-md-6">
+                <RadzenTextBox style="display: block" Name="SizeInDecar" @bind-Value=@LoginInput.Password Class="w-100" />
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-md-2">
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+            </div>
+        </div>
+    </RadzenFieldset>
+</RadzenTemplateForm>

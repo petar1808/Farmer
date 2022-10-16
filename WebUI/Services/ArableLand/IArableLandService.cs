@@ -8,10 +8,10 @@ namespace WebUI.Services.ArableLand
 
         Task<ArableLandModel> Get(int id);
 
-        Task Update(ArableLandModel arableLand);
+        Task<bool> Update(ArableLandModel arableLand);
 
         Task<bool> Add(ArableLandModel arableLand);
 
-        Task Delete(int id);
+        Task<bool> Delete(int id);
     }
 }

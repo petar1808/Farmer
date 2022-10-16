@@ -6,7 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Web;
-using static Application.Models.IdentityConstants;
+using static Application.IdentityConstants;
 
 namespace Infrastructure.Identity
 {

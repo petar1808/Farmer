@@ -6,51 +6,40 @@ namespace WebUI.Services.ArableLand
 {
     public class ArableLandService : IArableLandService
     {
-
-        private readonly HttpClient _httpClient;
-        public ArableLandService(HttpClient httpClient)
+        private readonly IHttpService _httpService;
+        public ArableLandService(IHttpService httpService)
         {
-            _httpClient = httpClient;
+            _httpService = httpService;
         }
 
         public async Task<ArableLandModel> Get(int id)
         {
-            var result = await JsonSerializer.DeserializeAsync<ArableLandModel>
-                (await _httpClient.GetStreamAsync($"api/arableLands/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-            return result!;
+            return await _httpService
+                .GetAsync<ArableLandModel>($"api/arableLands/{id}");
         }
 
         public async Task<List<ArableLandModel>> List()
         {
-
-            var result = await JsonSerializer.DeserializeAsync<List<ArableLandModel>>
-                (await _httpClient.GetStreamAsync($"api/arableLands"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-            return result!;
+            return await _httpService
+                .GetAsync<List<ArableLandModel>>($"api/arableLands");
         }
 
         public async Task<bool> Add(ArableLandModel arableLand)
         {
-            var arableLandJson =
-                new StringContent(JsonSerializer.Serialize(arableLand), Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync("api/arableLands", arableLandJson);
-
-            return response.IsSuccessStatusCode;
+            return await _httpService
+                .PostAsync<bool>("api/arableLands", arableLand);
         }
 
-        public async Task Update(ArableLandModel arableLand)
+        public async Task<bool> Update(ArableLandModel arableLand)
         {
-            var arableLandJson =
-                new StringContent(JsonSerializer.Serialize(arableLand), Encoding.UTF8, "application/json");
-
-            await _httpClient.PutAsync("api/arableLands", arableLandJson);
+            return await _httpService
+                .PutAsync<bool>("api/arableLands", arableLand);
         }
 
-        public async Task Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            await _httpClient.DeleteAsync($"api/arableLands/{id}");
+            return await _httpService
+                .DeleteAsync<bool>($"api/arableLands/{id}");
         }
     }
 }

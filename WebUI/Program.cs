@@ -13,6 +13,8 @@ using WebUI.Services.PerformedWork;
 using WebUI.Services.Treatment;
 using WebUI.Services.Seeding;
 using WebUI.Services.Article;
+using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.LocalStorage;
 using WebUI.Services.Identity;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -33,6 +35,9 @@ builder.Services
 builder.Services.AddSingleton<NavMenuService>();
 
 builder.Services.AddSingleton<SelectedWorkingSeasonService>();
+builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationService>();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddBlazoredLocalStorage();
 
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
@@ -40,12 +45,22 @@ var apiUrl = "https://localhost:5001/";
 
 //var apiUrl = "https://farmerapi-dev.azurewebsites.net/";
 
-builder.Services.AddHttpClient<IArticleService, ArticleService>(client => client.BaseAddress = new Uri(apiUrl));
-builder.Services.AddHttpClient<IArableLandService, ArableLandService>(client => client.BaseAddress = new Uri(apiUrl));
-builder.Services.AddHttpClient<IWorkingSeasonService, WorkingSeasonService>(client => client.BaseAddress = new Uri(apiUrl));
-builder.Services.AddHttpClient<IPerformedWorkService, PerformedWorkService>(client => client.BaseAddress = new Uri(apiUrl));
-builder.Services.AddHttpClient<ITreatmentService, TreatmentService>(client => client.BaseAddress = new Uri(apiUrl));
-builder.Services.AddHttpClient<ISeedingService, SeedingService>(client => client.BaseAddress = new Uri(apiUrl));
-builder.Services.AddHttpClient<IIdentityService, IdentityService>(client => client.BaseAddress = new Uri(apiUrl));
+builder.Services.AddScoped(sp =>
+    new HttpClient
+    {
+        BaseAddress = new Uri(apiUrl)
+    });
+
+
+builder.Services.AddScoped<IHttpService, HttpService>();
+
+builder.Services.AddTransient<IArticleService, ArticleService>();
+builder.Services.AddTransient<IArableLandService, ArableLandService>();
+builder.Services.AddTransient<IWorkingSeasonService, WorkingSeasonService>();
+builder.Services.AddTransient<IPerformedWorkService, PerformedWorkService>();
+builder.Services.AddTransient<ITreatmentService, TreatmentService>();
+builder.Services.AddTransient<ISeedingService, SeedingService>();
+builder.Services.AddTransient<IIdentityService, IdentityService>();
+
 
 await builder.Build().RunAsync();

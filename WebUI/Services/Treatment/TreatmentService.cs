@@ -7,56 +7,45 @@ namespace WebUI.Services.Treatment
 {
     public class TreatmentService : ITreatmentService
     {
-        private readonly HttpClient _httpClient;
-        public TreatmentService(HttpClient httpClient)
+        private readonly IHttpService _httpService;
+        public TreatmentService(IHttpService httpService)
         {
-            _httpClient = httpClient;
+            _httpService = httpService;
         }
         public async Task<bool> Add(ТreatmentDetailsModel treatment, int seedingId)
         {
-            var treatmentJson =
-                new StringContent(JsonSerializer.Serialize(treatment), Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync($"api/seeding/{seedingId}/treatment", treatmentJson);
-
-            return response.IsSuccessStatusCode;
+            return await _httpService
+                .PostAsync<bool>($"api/seeding/{seedingId}/performedWork", treatment);
         }
 
-        public async Task Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            await _httpClient.DeleteAsync($"api/seeding/treatment/{id}");
+           return await _httpService
+                .DeleteAsync <bool>($"api/seeding/treatment/{id}");
         }
 
         public async Task<ТreatmentDetailsModel> Get(int id)
         {
-            var result = await JsonSerializer.DeserializeAsync<ТreatmentDetailsModel>
-                (await _httpClient.GetStreamAsync($"api/seeding/treatment/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-            return result!;
+            return await _httpService
+                .GetAsync<ТreatmentDetailsModel>($"api/seeding/treatment/{id}");
         }
 
         public async Task<List<SelectionListModel>> GetTreatmentTypes()
         {
-            var result = await JsonSerializer.DeserializeAsync<List<SelectionListModel>>
-             (await _httpClient.GetStreamAsync($"api/assets/treatmentType"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-            return result!;
+            return await _httpService
+                .GetAsync<List<SelectionListModel>>($"api/assets/treatmentType");
         }
 
         public async Task<List<GetTreatmentModel>> List(int seedingId)
         {
-            var result = await JsonSerializer.DeserializeAsync<List<GetTreatmentModel>>
-               (await _httpClient.GetStreamAsync($"api/seeding/{seedingId}/treatment"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-            return result!;
+            return await _httpService
+                .GetAsync<List<GetTreatmentModel>>($"api/seeding/{seedingId}/treatment");
         }
 
-        public async Task Update(ТreatmentDetailsModel editModel)
+        public async Task<bool> Update(ТreatmentDetailsModel editModel)
         {
-            var treatmentJson =
-                new StringContent(JsonSerializer.Serialize(editModel), Encoding.UTF8, "application/json");
-
-            await _httpClient.PutAsync("api/seeding/treatment", treatmentJson);
+            return await _httpService
+                .PutAsync<bool>("api/seeding/treatment", editModel);
         }
     }
 }
