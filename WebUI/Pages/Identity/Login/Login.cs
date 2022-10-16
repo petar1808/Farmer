@@ -8,6 +8,9 @@ namespace WebUI.Pages.Identity.Login
 {
     public partial class Login
     {
+
+        bool showValidationMessage;
+
         [Inject]
         public ILocalStorageService LocalStorage { get; set; } = default!;
 
@@ -22,15 +25,19 @@ namespace WebUI.Pages.Identity.Login
 
         public LoginInputModel LoginInput { get; set; } = new LoginInputModel();
 
-        public async Task OnLogin(LoginInputModel loginInput)
+        public async Task OnLogin(LoginArgs args)
         {
-            //var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJlcm9pY2l0ZUBhYnYuYmciLCJuYW1lIjoiUGV0YXIgSXZhbm92Iiwicm9sZSI6IlVzZXIiLCJuYmYiOjE2NjU2ODU0MTUsImV4cCI6MTY2NTc3MTgxNCwiaWF0IjoxNjY1Njg1NDE1fQ.v9panCbZj9_BDUCchUXUMPdCadYuFgZFjvTcqjAY3Jg";
-
-            var token = await this.IdentityService.Login(loginInput.Email, loginInput.Password);
+            var token = await this.IdentityService.Login(args.Username, args.Password);
 
             await LocalStorage.SetItemAsync("token", token);
             await AuthenticationStateProvider.GetAuthenticationStateAsync();
             NavigationManager.NavigateTo(NavigationManager.BaseUri);
+        }
+
+
+        public void  OnResetPassword(string email)
+        {
+            
         }
     }
 }

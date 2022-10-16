@@ -3,28 +3,45 @@
 @using WebUI.Services.Identity
 @layout EmptyLayout
 
-<RadzenTemplateForm TItem="LoginInputModel" Data=@LoginInput Submit=@OnLogin>
-    <RadzenFieldset>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Имейл" />
-            </div>
-            <div class="col-md-6">
-                <RadzenTextBox style="display: block" Name="Name" @bind-Value=@LoginInput.Email Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Парола" />
-            </div>
-            <div class="col-md-6">
-                <RadzenTextBox style="display: block" Name="SizeInDecar" @bind-Value=@LoginInput.Password Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-1">
-            <div class="col-md-2">
-                <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-            </div>
-        </div>
-    </RadzenFieldset>
-</RadzenTemplateForm>
+
+<div class="col-lg-6 offset-lg-3 d-flex p-3">
+    <RadzenCard class="d-flex m-5 p-0 rz-border-radius-4 rz-shadow-10" Style="width: 100%; flex-direction: column; overflow: hidden; align-items: stretch;">
+        <RadzenCard Class="rz-shadow-0 rz-border-radius-0 rz-background-color-info p-5" style="text-align: center;">
+            <RadzenText TextStyle="TextStyle.DisplayH3" TagName="TagName.H2" Class="rz-color-white mb-0">Login</RadzenText>
+        </RadzenCard>
+        <RadzenCard Class="rz-shadow-0 p-5">
+            <RadzenTemplateForm Data=@LoginInput>
+                <RadzenLogin 
+                    AllowRegister="false" 
+                    AllowResetPassword="true" 
+                    ResetPassword="(args => OnResetPassword(args))" 
+                    Login=@(args => OnLogin(args)) />
+@*                <RadzenFieldset>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <RadzenLabel Text="Имейл" />
+                        </div>
+                        <div class="col-md-6">
+                            <RadzenTextBox style="display: block" Name="Email" @bind-Value=@LoginInput.Email Class="w-100" />
+                             <RadzenEmailValidator Component="Email" Text="Provide a valid email address" Popup=@showValidationMessage Style="position: absolute" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <RadzenLabel Text="Парола" />
+                        </div>
+                        <div class="col-md-6">
+                            <RadzenTextBox style="display: block" Name="SizeInDecar" @bind-Value=@LoginInput.Password Class="w-100" />
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-2">
+                            <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+                        </div>
+                    </div>
+                    <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="mb-4"></RadzenText>
+                </RadzenFieldset>*@
+            </RadzenTemplateForm>
+        </RadzenCard>
+    </RadzenCard>
+</div>

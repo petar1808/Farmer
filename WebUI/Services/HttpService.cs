@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
@@ -11,13 +12,16 @@ namespace WebUI.Services
     public class HttpService : IHttpService
     {
         private readonly HttpClient _httpClient;
-        private NavigationManager _navigationManager;
+        private readonly NavigationManager _navigationManager;
+        private readonly IJSRuntime JSRuntime;
         public HttpService(
-            HttpClient httpClient, 
-            NavigationManager navigationManager)
+            HttpClient httpClient,
+            NavigationManager navigationManager,
+            IJSRuntime jSRuntime)
         {
             this._httpClient = httpClient;
             _navigationManager = navigationManager;
+            JSRuntime = jSRuntime;
         }
 
         public async Task<T> GetAsync<T>(string uri)
@@ -50,11 +54,10 @@ namespace WebUI.Services
 
         private async Task<T> SendAsync<T>(HttpRequestMessage request)
         {
-            //var test2 = request.Headers.Select(x => x.Value.FirstOrDefault());
-
-            //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer",
-            //    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJlcm9pY2l0ZUBhYnYuYmciLCJuYW1lIjoiUGV0YXIgSXZhbm92Iiwicm9sZSI6IlVzZXIiLCJuYmYiOjE2NjU2ODU0MTUsImV4cCI6MTY2NTc3MTgxNCwiaWF0IjoxNjY1Njg1NDE1fQ.v9panCbZj9_BDUCchUXUMPdCadYuFgZFjvTcqjAY3Jg"
-            //    );
+            var jsonOptions = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            };
 
             using (var response = await _httpClient.SendAsync(request))
             {
@@ -63,14 +66,15 @@ namespace WebUI.Services
                     _navigationManager.NavigateTo("login");
                 }
 
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    await this.JSRuntime.InvokeAsync<object>("alert", errorMessage);
+                }
+
                 // To do: add other cases 404, 403
 
                 var content = await response.Content.ReadAsStringAsync();
-
-                var jsonOptions = new JsonSerializerOptions()
-                {
-                    PropertyNameCaseInsensitive = true
-                };
 
                 return JsonSerializer.Deserialize<T>(content, jsonOptions)!;
             }
