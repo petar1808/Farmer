@@ -29,7 +29,7 @@ namespace WebUI.Pages.Identity.Login
         {
             var token = await this.IdentityService.Login(args.Username, args.Password);
 
-            await LocalStorage.SetItemAsync("token", token);
+            await LocalStorage.SetItemAsStringAsync("token", token);
             await AuthenticationStateProvider.GetAuthenticationStateAsync();
             NavigationManager.NavigateTo(NavigationManager.BaseUri);
         }

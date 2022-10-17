@@ -31,5 +31,13 @@ namespace WebUI.Pages.Identity.ListUsers
                 .WithPaging()
                 .WithSorting();
         }
+
+        public async Task CreateUser()
+        {
+            await DialogService.OpenAsync<CreateUser>($"Добавяне на Потребител",
+              options: new DialogOptions() { Width = "600px", Height = "275px" });
+
+            DataGrid.UpdateData(await IdentityService.ListUser());
+        }
     }
 }

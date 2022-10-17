@@ -7,5 +7,9 @@ namespace WebUI.Services.Identity
         Task<List<ListUserModel>> ListUser();
 
         Task<string> Login(string email, string password);
+
+        Task<bool> CreateUser(CreateUserModel createUserModel);
+
+        Task<bool> CreateUserPassword(CreateUserPasswordModel createUserPasswordModel);
     }
 }

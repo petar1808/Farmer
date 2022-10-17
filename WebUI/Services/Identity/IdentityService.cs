@@ -5,11 +5,22 @@ namespace WebUI.Services.Identity
 {
     public class IdentityService : IIdentityService
     {
-
         private readonly IHttpService httpService;
         public IdentityService(IHttpService httpService)
         {
             this.httpService = httpService;
+        }
+
+        public async Task<bool> CreateUser(CreateUserModel createUserModel)
+        {
+           return await httpService
+                .PostAsync<bool>($"api/identity/createUser", createUserModel);
+        }
+
+        public async Task<bool> CreateUserPassword(CreateUserPasswordModel createUserPasswordModel)
+        {
+            return await httpService
+                .PostAsync<bool>($"api/identity/createUserPassword", createUserPasswordModel);
         }
 
         public async Task<List<ListUserModel>> ListUser()

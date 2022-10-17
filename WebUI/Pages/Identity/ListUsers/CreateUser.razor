@@ -1,0 +1,36 @@
+﻿@using WebUI.ServicesModel.Identity
+
+
+<RadzenTemplateForm TItem="CreateUserModel" Data=@CreateUserModel Submit=@OnSubmit>
+    <RadzenFieldset>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <RadzenLabel Text="Имейл" />
+            </div>
+            <div class="col-md-6">
+                <RadzenTextBox style="display: block" Name="UserEmail" @bind-Value=@CreateUserModel.UserEmail Class="w-100" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <RadzenLabel Text="Име" />
+            </div>
+            <div class="col-md-6">
+                <RadzenTextBox style="display: block" Name="FirstName" @bind-Value=@CreateUserModel.FirstName Class="w-100" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <RadzenLabel Text="Фамилия" />
+            </div>
+            <div class="col-md-6">
+                <RadzenTextBox style="display: block" Name="LastName" @bind-Value=@CreateUserModel.LastName Class="w-100" />
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-md-2">
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+            </div>
+        </div>
+    </RadzenFieldset>
+</RadzenTemplateForm>
