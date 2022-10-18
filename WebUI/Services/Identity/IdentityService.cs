@@ -23,6 +23,12 @@ namespace WebUI.Services.Identity
                 .PostAsync<bool>($"api/identity/createUserPassword", createUserPasswordModel);
         }
 
+        public async Task<bool> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
+        {
+            return await httpService
+                .PostAsync<bool>($"api/identity/forgotPassword", forgotPasswordModel);
+        }
+
         public async Task<List<ListUserModel>> ListUser()
         {
             return await httpService
@@ -37,6 +43,12 @@ namespace WebUI.Services.Identity
                 .PostAsync<IdentityResult>($"api/identity/login", model);
 
             return result.Token;
+        }
+
+        public async Task<bool> ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            return await httpService
+                .PostAsync<bool>($"api/identity/resetPassword", resetPasswordModel);
         }
     }
 

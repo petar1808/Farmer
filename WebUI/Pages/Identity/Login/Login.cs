@@ -34,10 +34,9 @@ namespace WebUI.Pages.Identity.Login
             NavigationManager.NavigateTo(NavigationManager.BaseUri);
         }
 
-
-        public void  OnResetPassword(string email)
+        public void OnResetPassword()
         {
-            
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}/forgotPassword");
         }
     }
 }

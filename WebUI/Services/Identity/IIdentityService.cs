@@ -11,5 +11,9 @@ namespace WebUI.Services.Identity
         Task<bool> CreateUser(CreateUserModel createUserModel);
 
         Task<bool> CreateUserPassword(CreateUserPasswordModel createUserPasswordModel);
+
+        Task<bool> ForgotPassword(ForgotPasswordModel forgotPasswordModel);
+
+        Task<bool> ResetPassword(ResetPasswordModel resetPasswordModel);
     }
 }

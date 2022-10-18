@@ -14,33 +14,8 @@
                 <RadzenLogin 
                     AllowRegister="false" 
                     AllowResetPassword="true" 
-                    ResetPassword="(args => OnResetPassword(args))" 
+                    ResetPassword="(args => OnResetPassword())" 
                     Login=@(args => OnLogin(args)) />
-@*                <RadzenFieldset>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <RadzenLabel Text="Имейл" />
-                        </div>
-                        <div class="col-md-6">
-                            <RadzenTextBox style="display: block" Name="Email" @bind-Value=@LoginInput.Email Class="w-100" />
-                             <RadzenEmailValidator Component="Email" Text="Provide a valid email address" Popup=@showValidationMessage Style="position: absolute" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <RadzenLabel Text="Парола" />
-                        </div>
-                        <div class="col-md-6">
-                            <RadzenTextBox style="display: block" Name="SizeInDecar" @bind-Value=@LoginInput.Password Class="w-100" />
-                        </div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-md-2">
-                            <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                        </div>
-                    </div>
-                    <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="mb-4"></RadzenText>
-                </RadzenFieldset>*@
             </RadzenTemplateForm>
         </RadzenCard>
     </RadzenCard>
