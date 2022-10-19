@@ -10,6 +10,7 @@
 @inject NavMenuService NavMenuService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager UriHelper
+@inject ILocalStorageService LocalStorageService;
 
 <RadzenDialog />
 <RadzenNotification />
@@ -32,7 +33,7 @@
             <div class="col-7 d-flex align-items-center justify-content-end">
                 <div class="d-none d-md-inline-flex align-items-center">
                     <a href="@($"{UriHelper.BaseUri}/changePassword")" title="Ако сте забравили паролата си" class="mx-2 mx-lg-3">Смяна на парола</a>
-                    <a onclick="" class="text-nowrap mx-2 mx-lg-3">Излез</a>
+                    <button onclick="@(() => Logout())" class="btn btn-default btn-sm">Излез</button>
                 </div>
             </div>
         </ChildContent>
@@ -67,10 +68,10 @@
                                 @if (child.Children is not null)
                                 {
                                     <NavigationItem NavMenuItem="@child">
-                                    @foreach (var secondChild in child.Children)
-                                    {
-                                        <NavigationItem NavMenuItem=@secondChild />
-                                    }
+                                        @foreach (var secondChild in child.Children)
+                                        {
+                                            <NavigationItem NavMenuItem=@secondChild />
+                                        }
                                     </NavigationItem>
                                 }
                                 else
@@ -88,14 +89,14 @@
 
 
 
-@code{
-    bool sidebarExpanded = true;
-    bool bodyExpanded = false;
+@code {
+        bool sidebarExpanded = true;
+        bool bodyExpanded = false;
 
-    RadzenSidebar? sidebar0 = default!;
-    RadzenBody? body0 = default!;
+        RadzenSidebar? sidebar0 = default!;
+        RadzenBody? body0 = default!;
 
-    IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
+        IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -106,7 +107,10 @@
         Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
     }
 
-    // To do: Add method for Logout
-    // Remove jwtToken from local storage : inject ILocalStorageService
-    // redirect to login
+    public async Task Logout()
+    {
+        await LocalStorageService.RemoveItemAsync("token");
+
+        UriHelper.NavigateTo($"{UriHelper.BaseUri}/login");
+    }
 }
