@@ -1,7 +1,9 @@
 ﻿
 
+using Blazorise;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Radzen;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
@@ -14,14 +16,18 @@ namespace WebUI.Services
         private readonly HttpClient _httpClient;
         private readonly NavigationManager _navigationManager;
         private readonly IJSRuntime JSRuntime;
+        private readonly NotificationService notificationService;
+
         public HttpService(
             HttpClient httpClient,
             NavigationManager navigationManager,
-            IJSRuntime jSRuntime)
+            IJSRuntime jSRuntime,
+            NotificationService notificationService)
         {
             this._httpClient = httpClient;
             _navigationManager = navigationManager;
             JSRuntime = jSRuntime;
+            this.notificationService = notificationService;
         }
 
         public async Task<T> GetAsync<T>(string uri)
@@ -68,13 +74,25 @@ namespace WebUI.Services
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var errorMessage = await response.Content.ReadAsStringAsync();
-                    await this.JSRuntime.InvokeAsync<object>("alert", errorMessage);
+                    var errorcontent = await response.Content.ReadAsStringAsync();
+                    
+                    notificationService.Notify(new NotificationMessage { 
+                        Severity = NotificationSeverity.Error, 
+                        Summary = "Грешка", 
+                        Detail = errorcontent, 
+                        Duration = 10000 
+                    });
+
                 }
 
                 // To do: add other cases 404, 403
 
                 var content = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return (T)Activator.CreateInstance(typeof(T))!;
+                }
 
                 return JsonSerializer.Deserialize<T>(content, jsonOptions)!;
             }

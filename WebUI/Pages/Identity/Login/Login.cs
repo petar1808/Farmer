@@ -29,9 +29,12 @@ namespace WebUI.Pages.Identity.Login
         {
             var token = await this.IdentityService.Login(args.Username, args.Password);
 
-            await LocalStorage.SetItemAsStringAsync("token", token);
-            await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            NavigationManager.NavigateTo(NavigationManager.BaseUri);
+            if (token != null)
+            {
+                await LocalStorage.SetItemAsStringAsync("token", token);
+                await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                NavigationManager.NavigateTo(NavigationManager.BaseUri);
+            }
         }
 
         public void OnResetPassword()

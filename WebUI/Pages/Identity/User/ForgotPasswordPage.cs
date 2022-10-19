@@ -15,11 +15,20 @@ namespace WebUI.Pages.Identity.User
 
         public ForgotPasswordModel ForgotPasswordModel { get; set; } = new ForgotPasswordModel();
 
+        public bool ShowMessage { get; set; }
+
+        protected override void OnInitialized()
+        {
+            ShowMessage = false;
+        }
+
         protected async Task OnSubmit(ForgotPasswordModel forgotPasswordModel)
         {
             forgotPasswordModel.ChangePasswordUrl = $"{NavigationManager.BaseUri}/resetPassword";
 
             await IdentityService.ForgotPassword(forgotPasswordModel);
+
+            ShowMessage = true;
         }
     }
 }

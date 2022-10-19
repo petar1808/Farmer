@@ -1,4 +1,5 @@
-﻿@using WebUI.Models
+﻿@using System.Security.Claims
+@using WebUI.Models
 @using WebUI.Services
 @using Radzen.Blazor
 @using Microsoft.AspNetCore.Components
@@ -30,7 +31,7 @@
             </div>
             <div class="col-7 d-flex align-items-center justify-content-end">
                 <div class="d-none d-md-inline-flex align-items-center">
-                    <a href="@($"{UriHelper.BaseUri}changepassword")" title="Ако сте забравили паролата си" class="mx-2 mx-lg-3">Смяна на парола</a>
+                    <a href="@($"{UriHelper.BaseUri}/changePassword")" title="Ако сте забравили паролата си" class="mx-2 mx-lg-3">Смяна на парола</a>
                     <a onclick="" class="text-nowrap mx-2 mx-lg-3">Излез</a>
                 </div>
             </div>
@@ -91,8 +92,8 @@
     bool sidebarExpanded = true;
     bool bodyExpanded = false;
 
-    RadzenSidebar sidebar0 = default!;
-    RadzenBody body0 = default!;
+    RadzenSidebar? sidebar0 = default!;
+    RadzenBody? body0 = default!;
 
     IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
 

@@ -11,6 +11,12 @@ namespace WebUI.Services.Identity
             this.httpService = httpService;
         }
 
+        public async Task<bool> ChangePassword(ChangePasswordModel changePasswordModel)
+        {
+            return await httpService
+               .PostAsync<bool>($"api/identity/changePassword", changePasswordModel);
+        }
+
         public async Task<bool> CreateUser(CreateUserModel createUserModel)
         {
            return await httpService
@@ -35,14 +41,14 @@ namespace WebUI.Services.Identity
                 .GetAsync<List<ListUserModel>>($"api/identity/listUser");
         }
 
-        public async Task<string> Login(string email, string password)
+        public async Task<string?> Login(string email, string password)
         {
             var model = new LoginInputModel { Email = email, Password = password };
 
             var result =  await httpService
                 .PostAsync<IdentityResult>($"api/identity/login", model);
 
-            return result.Token;
+            return result?.Token ?? null;
         }
 
         public async Task<bool> ResetPassword(ResetPasswordModel resetPasswordModel)
@@ -54,7 +60,7 @@ namespace WebUI.Services.Identity
 
     public class IdentityResult
     {
-        public string Token { get; set; }
+        public string? Token { get; set; }
     }
 
     public class LoginInputModel
