@@ -1,9 +1,14 @@
-﻿using WebUI.Models;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using WebUI.Models;
 
 namespace WebUI.Services
 {
     public class NavMenuService
     {
+        [Inject]
+        public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
         NavMenuItem[] menuItems = new[]
         {
             new NavMenuItem()
@@ -50,10 +55,14 @@ namespace WebUI.Services
             }
         };
 
-        public IEnumerable<NavMenuItem> GetMenuItems(bool isAdminRole)
+        public IEnumerable<NavMenuItem> GetMenuItems(string role)
         {
+            if (role.ToLower() == "admin")
+            {
+                return menuItems;
+            }  
             //To do: if isAdmin add the admin menu
-            return menuItems;
+            return menuItems.Where(x => x.Name != "Потребители");
         }
     }
 }

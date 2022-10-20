@@ -65,36 +65,67 @@ namespace WebUI.Services
                 PropertyNameCaseInsensitive = true
             };
 
-            using (var response = await _httpClient.SendAsync(request))
+            try
             {
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                using (var response = await _httpClient.SendAsync(request))
                 {
-                    _navigationManager.NavigateTo("login");
-                }
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        _navigationManager.NavigateTo("login");
+                    }
 
-                if (response.StatusCode == HttpStatusCode.BadRequest)
+                    if (response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        var errorcontent = await response.Content.ReadAsStringAsync();
+
+                        notificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = "Валидационна грешка",
+                            Detail = errorcontent,
+                            Duration = 10000
+                        });
+
+                    }
+
+                    if ((int)response.StatusCode >= 500)
+                    {
+                        notificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = "Грешка",
+                            Detail = "Грешка в сървъра",
+                            Duration = 10000
+                        });
+                    }
+
+                    if (response.StatusCode == HttpStatusCode.Forbidden)
+                    {
+                        _navigationManager.NavigateTo($"{_navigationManager.BaseUri}forbidden");
+                    }
+                    // To do: add other cases 404, 403
+                    // 
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return (T)Activator.CreateInstance(typeof(T))!;
+                    }
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    return JsonSerializer.Deserialize<T>(content, jsonOptions)!;
+                }
+            }
+            catch (Exception ex)
+            {
+                notificationService.Notify(new NotificationMessage
                 {
-                    var errorcontent = await response.Content.ReadAsStringAsync();
-                    
-                    notificationService.Notify(new NotificationMessage { 
-                        Severity = NotificationSeverity.Error, 
-                        Summary = "Грешка", 
-                        Detail = errorcontent, 
-                        Duration = 10000 
-                    });
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Грешка",
+                    Detail = ex.Message, // If production "Неуспешно свързване към сървъра"
+                    Duration = 10000
+                });
 
-                }
-
-                // To do: add other cases 404, 403
-
-                var content = await response.Content.ReadAsStringAsync();
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return (T)Activator.CreateInstance(typeof(T))!;
-                }
-
-                return JsonSerializer.Deserialize<T>(content, jsonOptions)!;
+                return (T)Activator.CreateInstance(typeof(T))!;
             }
         }
     }

@@ -90,27 +90,32 @@
 
 
 @code {
-        bool sidebarExpanded = true;
-        bool bodyExpanded = false;
+    bool sidebarExpanded = true;
+    bool bodyExpanded = false;
 
-        RadzenSidebar? sidebar0 = default!;
-        RadzenBody? body0 = default!;
+    RadzenSidebar? sidebar0 = default!;
+    RadzenBody? body0 = default!;
 
-        IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
+    IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-        menuItems = NavMenuService.GetMenuItems(authState?.User?.IsInRole("Admin") ?? false);
+        var role = authState.User.Claims.FirstOrDefault(c => c.Type.ToLower() == "role")!.Value;
 
-        Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        if (role is not null)
+        {
+            menuItems = NavMenuService.GetMenuItems(role);
+
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        }
     }
 
     public async Task Logout()
     {
         await LocalStorageService.RemoveItemAsync("token");
 
-        UriHelper.NavigateTo($"{UriHelper.BaseUri}/login");
+        UriHelper.NavigateTo($"{UriHelper.BaseUri}login");
     }
 }
