@@ -17,5 +17,7 @@ namespace WebUI.Services.Treatment
         Task<bool> Add(ТreatmentDetailsModel treatment, int seedingId);
 
         Task<List<SelectionListModel>> GetTreatmentTypes();
+
+        Task<List<SelectionListModel>> GetTreatmentArticles();
     }
 }

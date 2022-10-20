@@ -27,7 +27,7 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Date), "Дата"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Третиране"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleId), "Препарат"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Препарат"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Препарат на декар"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Гориво"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво"),

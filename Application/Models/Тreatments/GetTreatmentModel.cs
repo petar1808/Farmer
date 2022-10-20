@@ -1,4 +1,5 @@
 ﻿using Application.Mappings;
+using AutoMapper;
 using Domain.Enum;
 using Domain.Models;
 using System;
@@ -23,8 +24,14 @@ namespace Application.Models.Тreatments
 
         public int ArticleId { get; init; }
 
+        public string ArticleName { get; set; } = default!;
+
         public int ArticleQuantity { get; init; }
 
         public int ArticlePrice { get; init; }
+
+        public virtual void Mapping(Profile mapper)
+          => mapper.CreateMap<Treatment, GetTreatmentModel>()
+               .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name));
     }
 }

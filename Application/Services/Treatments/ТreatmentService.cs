@@ -60,7 +60,7 @@ namespace Application.Services.Treatments
             }
 
             var treatment = new Treatment(treatmentModel.Date,
-                treatmentModel.ТreatmentType,
+                treatmentModel.TreatmentType,
                 treatmentModel.AmountOfFuel,
                 treatmentModel.FuelPrice,
                 treatmentModel.ArticleId,

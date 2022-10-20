@@ -16,7 +16,7 @@ namespace Application.Models.Тreatments
 
         [Required]
         [EnumDataType(typeof(ТreatmentType))]
-        public ТreatmentType ТreatmentType { get; init; }
+        public ТreatmentType TreatmentType { get; init; }
 
         public int? AmountOfFuel { get; init; }
 

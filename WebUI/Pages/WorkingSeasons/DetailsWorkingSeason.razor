@@ -27,7 +27,7 @@
             <div class="col-md-6">
                 <RadzenDatePicker DateFormat="d" style="display: block"
                                   Name="EndDate" @bind-Value=@WorkingSeason.EndDate Class="w-100"
-                                  Change=@(args => OnDateToChange(args)) />
+                                  Change=@(args => OnDateFromChange(args)) />
             </div>
         </div>
         <div class="row mb-1">

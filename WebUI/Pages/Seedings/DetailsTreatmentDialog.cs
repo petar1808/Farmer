@@ -26,28 +26,36 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public bool IsModal { get; set; }
 
-        public ТreatmentDetailsModel Тreatment { get; set; } = default!;
+        public ТreatmentDetailsModel Treatment { get; set; } = default!;
 
         public List<SelectionListModel> TreatmentTypes { get; set; } = new List<SelectionListModel>();
+
+        public List<SelectionListModel> TreatmentArticleType { get; set; } = new List<SelectionListModel>();
 
         protected async override Task OnInitializedAsync()
         { 
             TreatmentTypes = await TreatmentService.GetTreatmentTypes();
+            TreatmentArticleType = await TreatmentService.GetTreatmentArticles();
 
             if (TreatmentId == 0) 
             {
                 IsModal = true;
-                Тreatment = new ТreatmentDetailsModel();
+                Treatment = new ТreatmentDetailsModel();
             }
             else
             {
-                Тreatment = await TreatmentService.Get(TreatmentId);
+                Treatment = await TreatmentService.Get(TreatmentId);
             }
         }
 
-        public void OnDropDownChange(object value)
+        public void OnDropDownChangeTreatmentType(object value)
         {
-            Тreatment.TreatmentType = (int)value;
+            Treatment.TreatmentType = (int)value;
+        }
+
+        public void OnDropDownChangeTreatmentArticleType(object value)
+        {
+            Treatment.ArticleId = (int)value;
         }
 
         protected async Task OnSubmit(ТreatmentDetailsModel treatment)
@@ -69,7 +77,7 @@ namespace WebUI.Pages.Seedings
             }
             else
             {
-                await TreatmentService.Update(Тreatment);
+                await TreatmentService.Update(Treatment);
                 StatusClass = "alert-success";
                 Message = "Treatment updated successfully.";
             }

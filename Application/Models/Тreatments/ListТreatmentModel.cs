@@ -25,12 +25,15 @@ namespace Application.Models.Тreatments
 
         public int ArticleId { get; init; }
 
+        public string ArticleName { get; set; } = default!;
+
         public int ArticleQuantity { get; init; }
 
         public int ArticlePrice { get; init; }
 
         public virtual void Mapping(Profile mapper)
         => mapper.CreateMap<Treatment, ListТreatmentModel>()
-            .ForMember(x => x.TreatmentType, cfg => cfg.MapFrom(c => c.TreatmentType.GetEnumDisplayName()));
+            .ForMember(x => x.TreatmentType, cfg => cfg.MapFrom(c => c.TreatmentType.GetEnumDisplayName()))
+            .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name));
     }
 }

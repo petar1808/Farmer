@@ -83,6 +83,7 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("listUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ListUserModel>>> ListUser()
         {
             return await identityService

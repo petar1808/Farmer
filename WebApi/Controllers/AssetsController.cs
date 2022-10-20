@@ -44,6 +44,15 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("treatment")]
+        public async Task<ActionResult<List<SelectionListModel>>> GetTreatmentArticles()
+        {
+            return await articleService
+                .TreatmentArticlesSelectionList()
+                .ToActionResult();
+        }
+
+        [HttpGet]
         [Route("seasons")]
         public async Task<ActionResult<List<SelectionListModel>>> GetAllSeasons()
         {

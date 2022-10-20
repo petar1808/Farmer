@@ -30,6 +30,12 @@ namespace WebUI.Services.Treatment
                 .GetAsync<ТreatmentDetailsModel>($"api/seeding/treatment/{id}");
         }
 
+        public async Task<List<SelectionListModel>> GetTreatmentArticles()
+        {
+            return await _httpService
+                .GetAsync<List<SelectionListModel>>($"api/assets/treatment");
+        }
+
         public async Task<List<SelectionListModel>> GetTreatmentTypes()
         {
             return await _httpService
