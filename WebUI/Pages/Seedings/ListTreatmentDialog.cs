@@ -43,9 +43,9 @@ namespace WebUI.Pages.Seedings
                 .WithSorting();
         }
 
-        public async Task DeleteTreatmentAction(int performedWorkId)
+        public async Task<bool> DeleteTreatmentFunction(int performedWorkId)
         {
-            await this.TreatmentService.Delete(performedWorkId);
+            return await this.TreatmentService.Delete(performedWorkId);
         }
 
         public async Task AddTreatment()
@@ -70,15 +70,26 @@ namespace WebUI.Pages.Seedings
 
         public async Task DeleteTreatment(int treatmentId)
         {
-            var deleteModel = new DeleteModalModel(treatmentId, async (id) => await DeleteTreatmentAction(id));
-            await DialogService.OpenAsync<DeleteModal>($"Третиране",
+            Func<int, Task<bool>> deleteFunction = (id) =>
+            {
+                var funcResult = DeleteTreatmentFunction(treatmentId);
+                return funcResult;
+            };
+
+            var deleteModel = new DeleteModalModel(treatmentId, deleteFunction);
+            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Третиране",
               new Dictionary<string, object>()
               {
                     { "ModelInput", deleteModel }
               },
               options: new DialogOptions() { Width = "500px", Height = "160px" });
-            DataGrid.UpdateData(await TreatmentService.List(SeedingId));
-            this.StateHasChanged();
+
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != treatmentId));
+
+                this.StateHasChanged();
+            }
         }
     }
 }

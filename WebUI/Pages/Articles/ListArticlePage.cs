@@ -35,9 +35,9 @@ namespace WebUI.Pages.Articles
                 .WithSorting();
         }
 
-        public async Task DeleteArticleAction(int articleId)
+        public async Task<bool> DeleteArticleFunction(int articleId)
         {
-            await this.ArticleService.Delete(articleId);
+           return await this.ArticleService.Delete(articleId);
         }
 
         public async Task AddArticle()
@@ -60,15 +60,26 @@ namespace WebUI.Pages.Articles
 
         public async Task DeleteArticle(int articleId)
         {
-            var deleteModel = new DeleteModalModel(articleId, async (id) => await DeleteArticleAction(id));
-            await DialogService.OpenAsync<DeleteModal>($"Изтриване на Артикул",
+            Func<int, Task<bool>> deleteFunction = (id) =>
+            {
+                var funcResult = DeleteArticleFunction(articleId);
+                return funcResult;
+            };
+
+            var deleteModel = new DeleteModalModel(articleId, deleteFunction);
+            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Изтриване на Артикул",
               new Dictionary<string, object>()
               {
                     { "ModelInput", deleteModel }
               },
               options: new DialogOptions() { Width = "500px", Height = "160px" });
-            DataGrid.UpdateData(await ArticleService.List());
-            this.StateHasChanged();
+
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != articleId));
+
+                this.StateHasChanged();
+            }
         }
     }
 }

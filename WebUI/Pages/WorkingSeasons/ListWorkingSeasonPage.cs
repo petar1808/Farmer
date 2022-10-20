@@ -36,9 +36,9 @@ namespace WebUI.Pages.WorkingSeasons
                 .WithSorting();
         }
 
-        public async Task DeleteWorkingSeasonAction(int workingSeasonId)
+        public async Task<bool> DeleteWorkingSeasonFunction(int workingSeasonId)
         {
-            await this.WorkingSeasonService.Delete(workingSeasonId);
+            return await this.WorkingSeasonService.Delete(workingSeasonId);
         }
 
         public async Task AddWorkingSeason()
@@ -61,15 +61,26 @@ namespace WebUI.Pages.WorkingSeasons
 
         public async Task DeleteWorkingSeason(int workingSeasonId)
         {
-            var deleteModel = new DeleteModalModel(workingSeasonId, async (id) => await DeleteWorkingSeasonAction(id));
-            await DialogService.OpenAsync<DeleteModal>($"Изтриване на Сезон",
+            Func<int, Task<bool>> deleteFunction = (id) =>
+            {
+                var funcResult = DeleteWorkingSeasonFunction(workingSeasonId);
+                return funcResult;
+            };
+
+            var deleteModel = new DeleteModalModel(workingSeasonId, deleteFunction);
+            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Изтриване на Сезон",
               new Dictionary<string, object>()
               {
                     { "ModelInput", deleteModel }
               },
               options: new DialogOptions() { Width = "500px", Height = "160px" });
-            DataGrid.UpdateData(await WorkingSeasonService.List());
-            this.StateHasChanged();
+
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != workingSeasonId));
+
+                this.StateHasChanged();
+            }
         }
     }
 }

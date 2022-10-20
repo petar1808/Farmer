@@ -2,14 +2,14 @@
 {
     public class DeleteModalModel
     {
-        public DeleteModalModel(int id, Action<int> deleteAction)
+        public DeleteModalModel(int id, Func<int, Task<bool>> deleteFuction)
         {
             Id = id;
-            DeleteAction = deleteAction;
+            DeleteFuction = deleteFuction;
         }
 
         public int Id { get; set; }
 
-        public Action<int> DeleteAction { get; set; } = default!;
+        public Func<int, Task<bool>> DeleteFuction { get; set; } = default!;
     }
 }

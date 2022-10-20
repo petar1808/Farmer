@@ -15,7 +15,7 @@ namespace WebUI.Services.Treatment
         public async Task<bool> Add(ТreatmentDetailsModel treatment, int seedingId)
         {
             return await _httpService
-                .PostAsync<bool>($"api/seeding/{seedingId}/performedWork", treatment);
+                .PostAsync<bool>($"api/seeding/{seedingId}/treatment", treatment);
         }
 
         public async Task<bool> Delete(int id)

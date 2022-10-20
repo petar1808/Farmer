@@ -35,9 +35,9 @@ namespace WebUI.Pages.ArableLands
                 .WithSorting();
         }
 
-        public async Task DeleteArableLandAction(int articleId)
+        public async Task<bool> DeleteArableLandFunction(int articleId)
         {
-            await this.ArableLandService.Delete(articleId);
+            return await this.ArableLandService.Delete(articleId);
         }
 
         public async Task EditArableLand(int arableLandId)
@@ -60,15 +60,26 @@ namespace WebUI.Pages.ArableLands
 
         public async Task DeleteArableLand(int arableLandId)
         {
-            var deleteModel = new DeleteModalModel(arableLandId, async (id) => await DeleteArableLandAction(id));
-            await DialogService.OpenAsync<DeleteModal>($"Изтриване на Земя",
+            Func<int, Task<bool>> deleteFunction = (id) => 
+            {
+                var funcResult = DeleteArableLandFunction(id);
+                return funcResult;
+            };
+
+            var deleteModel = new DeleteModalModel(arableLandId, deleteFunction);
+            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Изтриване на Земя",
               new Dictionary<string, object>()
               {
                     { "ModelInput", deleteModel }
               },
               options: new DialogOptions() { Width = "500px", Height = "160px" });
-            DataGrid.UpdateData(await ArableLandService.List());
-            this.StateHasChanged();
+
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != arableLandId));
+
+                this.StateHasChanged();
+            }
         }
     }
 }

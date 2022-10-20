@@ -40,9 +40,9 @@ namespace WebUI.Pages.Seedings
                 .WithSorting();
         }
 
-        public async Task DeletePerformedWorkAction(int performedWorkId)
+        public async Task<bool> DeletePerformedWorkFunction(int performedWorkId)
         {
-            await this.PerformedWorkService.Delete(performedWorkId);
+           return await this.PerformedWorkService.Delete(performedWorkId);
         }
 
         public async Task AddPerformedWork()
@@ -66,15 +66,27 @@ namespace WebUI.Pages.Seedings
 
         public async Task DeletePerformedWork(int performedWorkId)
         {
-            var deleteModel = new DeleteModalModel(performedWorkId, async (id) => await DeletePerformedWorkAction(id));
-            await DialogService.OpenAsync<DeleteModal>($"Работа",
+            Func<int, Task<bool>> deleteFunction = (id) =>
+            {
+                var funcResult = DeletePerformedWorkFunction(performedWorkId);
+                return funcResult;
+            };
+
+
+            var deleteModel = new DeleteModalModel(performedWorkId, deleteFunction);
+            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Работа",
               new Dictionary<string, object>()
               {
                     { "ModelInput", deleteModel }
               },
               options: new DialogOptions() { Width = "500px", Height = "160px" });
-            DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
-            this.StateHasChanged();
+
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != performedWorkId));
+
+                this.StateHasChanged();
+            }
         }
     }
 }
