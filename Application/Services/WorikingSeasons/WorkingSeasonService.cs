@@ -42,6 +42,15 @@ namespace Application.Services.WorikingSeasons
                 return $"Сезон с Ид: {id} не съществува!";
             }
 
+            var workingSeasonSeeding = await farmerDbContext
+                .Seedings
+                .AnyAsync(x => x.WorkingSeasonId == id);
+
+            if (workingSeasonSeeding)
+            {
+                return $"Сезон с Ид: {id} не може да бъде изтрит, защото е създадена сеитба за този сезон!";
+            }
+
             farmerDbContext.WorkingSeasons.Remove(workingSeason);
             await farmerDbContext.SaveChangesAsync();
 

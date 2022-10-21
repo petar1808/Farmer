@@ -83,6 +83,15 @@ namespace Application.Services.ArableLands
                 return $"Земя с Ид: {id} не съществува!";
             }
 
+            var seeding = await farmerDbContext
+                .Seedings
+                .AnyAsync(x => x.ArableLandId == id);
+
+            if (seeding)
+            {
+                return $"Земя с Ид: {id} не може да бъде изтрита, защото имате данни в сеитбата с тази земя!";
+            }
+
             farmerDbContext.Remove(arableLand);
             await farmerDbContext.SaveChangesAsync();
 

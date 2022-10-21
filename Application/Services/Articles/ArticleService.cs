@@ -40,6 +40,24 @@ namespace Application.Services.Articles
                 return $"Артикул с Ид: {id} не съществува!";
             }
 
+            var seedingArticle = await farmerDbContext
+                .Seedings
+                .AnyAsync(x => x.ArticleId == id);
+
+            if (seedingArticle)
+            {
+                return $"Артикул с Ид: {id} нe може да бъде изтрит, защото е създадена сеитба с този артикул";
+            }
+
+            var treatmentArticle = await farmerDbContext
+                .Treatments
+                .AnyAsync(x => x.ArticleId == id);
+
+            if (treatmentArticle)
+            {
+                return $"Артикул с Ид: {id} нe може да бъде изтрит, защото е създанено третиране с този артикул!";
+            }
+
             farmerDbContext.Articles.Remove(article);
             await farmerDbContext.SaveChangesAsync();
 

@@ -17,17 +17,20 @@ namespace Infrastructure.Persistence.Configuration
             builder
                 .HasOne(x => x.ArableLand)
                 .WithMany(x => x.Seedings)
-                .HasForeignKey(p => p.ArableLandId);
+                .HasForeignKey(p => p.ArableLandId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                .HasOne(x => x.WorkingSeason)
                .WithMany()
-               .HasForeignKey(p => p.WorkingSeasonId);
+               .HasForeignKey(p => p.WorkingSeasonId)
+               .OnDelete(DeleteBehavior.Restrict);
 
             builder
                .HasOne(x => x.Article)
                .WithMany()
                .HasForeignKey(p => p.ArticleId)
+               .OnDelete(DeleteBehavior.Restrict)
                .IsRequired(false);
 
             builder.Property(p => p.ArableLandId).IsRequired();
