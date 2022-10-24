@@ -11,6 +11,7 @@ namespace WebUI.Pages.Articles
     {
         private string StatusClass = default!;
         private string Message = default!;
+        bool popup;
 
         [Inject]
         public IArticleService ArticleService { get; set; } = default!;
@@ -47,6 +48,11 @@ namespace WebUI.Pages.Articles
         public void OnDropDownChange(object value)
         {
             Article.ArticleType = (int)value;
+        }
+
+        public void OnClose()
+        {
+            DialogService.Close(false);
         }
 
         protected async Task OnSubmit(ArticleDetailsModel article)

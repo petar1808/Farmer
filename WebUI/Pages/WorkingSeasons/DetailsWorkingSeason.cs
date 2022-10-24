@@ -37,6 +37,11 @@ namespace WebUI.Pages.WorkingSeasons
             }
         }
 
+        public void OnClose()
+        {
+            DialogService.Close(false);
+        }
+
         private void ChangeName(DateTime? startDate, DateTime? endDate)
         {
             string start = startDate == null ? "" : startDate.Value.ToString("yyyy");

@@ -48,9 +48,15 @@ namespace WebUI.Pages.Seedings
             }
         }
 
+        public void OnClose()
+        {
+            DialogService.Close(false);
+        }
+
         public void OnDropDownChangeTreatmentType(object value)
         {
             Treatment.TreatmentType = (int)value;
+            TreatmentArticleType = TreatmentArticleType.Where(x => x.Value != (int)value).ToList();
         }
 
         public void OnDropDownChangeTreatmentArticleType(object value)

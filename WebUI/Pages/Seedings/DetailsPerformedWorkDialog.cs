@@ -10,6 +10,7 @@ namespace WebUI.Pages.Seedings
     {
         private string StatusClass = default!;
         private string Message = default!;
+        bool popup;
 
         [Inject]
         public IPerformedWorkService PerformedWorkService { get; set; } = default!;
@@ -43,6 +44,11 @@ namespace WebUI.Pages.Seedings
             {
                 PerformedWork = await PerformedWorkService.Get(PerformedWorkId);
             }
+        }
+
+        public void OnClose()
+        {
+            DialogService.Close(false);
         }
 
         public void OnDropDownChange(object value)

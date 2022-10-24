@@ -2,13 +2,14 @@
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Components.DeleteModal;
+using WebUI.Extensions;
 using WebUI.Services.Article;
 using WebUI.ServicesModel.Article;
 
 namespace WebUI.Pages.Articles
 {
     public partial class ListArticlePage
-    { 
+    {
         [Inject]
         public IArticleService ArticleService { get; set; } = default!;
 
@@ -37,13 +38,13 @@ namespace WebUI.Pages.Articles
 
         public async Task<bool> DeleteArticleFunction(int articleId)
         {
-           return await this.ArticleService.Delete(articleId);
+            return await this.ArticleService.Delete(articleId);
         }
 
         public async Task AddArticle()
         {
             await DialogService.OpenAsync<DetailsArticle>($"Добавяне на Артикул",
-              options: new DialogOptions() { Width = "600px", Height = "285px" });
+                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("285px").WithWidth("600px"));
 
             DataGrid.UpdateData(await ArticleService.List());
             this.StateHasChanged();
@@ -52,7 +53,7 @@ namespace WebUI.Pages.Articles
         {
             await DialogService.OpenAsync<DetailsArticle>($"Редактиране на Артикул",
               new Dictionary<string, object>() { { "ArticleId", articleId } },
-              new DialogOptions() { Width = "600px", Height = "285px" });
+              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("285px").WithWidth("600px"));
 
             DataGrid.UpdateData(await ArticleService.List());
             this.StateHasChanged();
@@ -72,7 +73,7 @@ namespace WebUI.Pages.Articles
               {
                     { "ModelInput", deleteModel }
               },
-              options: new DialogOptions() { Width = "500px", Height = "160px" });
+              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
 
             if (dialogResult == true)
             {

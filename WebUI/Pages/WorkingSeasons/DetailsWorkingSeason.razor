@@ -1,46 +1,52 @@
 ﻿@using WebUI.ServicesModel.WorkingSeason
+@attribute [Authorize]
 
-<RadzenTemplateForm TItem="WorkingSeasonModel" Data=@WorkingSeason Submit=@OnSubmit>
-    <RadzenFieldset>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Име" />
+@if (@WorkingSeason is not null)
+{
+    <RadzenTemplateForm TItem="WorkingSeasonModel" Data=@WorkingSeason Submit=@OnSubmit>
+        <RadzenFieldset>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Име" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenTextBox style="display: block" Name="Name" Disabled @bind-Value=@WorkingSeason.Name Class="w-100" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <RadzenTextBox style="display: block" Name="Name" Disabled @bind-Value=@WorkingSeason.Name Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Начало" />
-            </div>
-            <div class="col-md-6">
-                <RadzenDatePicker DateFormat="d" style="display: block"
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Начало" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDatePicker DateFormat="d" style="display: block"
                                   Name="StartDate" @bind-Value=@WorkingSeason.StartDate Class="w-100"
                                   Change=@(args => OnDateFromChange(args)) />
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Край" />
-            </div>
-            <div class="col-md-6">
-                <RadzenDatePicker DateFormat="d" style="display: block"
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Край" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDatePicker DateFormat="d" style="display: block"
                                   Name="EndDate" @bind-Value=@WorkingSeason.EndDate Class="w-100"
-                                  Change=@(args => OnDateFromChange(args)) />
+                                  Change=@(args => OnDateToChange(args)) />
+                </div>
             </div>
-        </div>
-        <div class="row mb-1">
-            <div class="col-md-2">
-                @if (IsModal)
-                {
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                }
-                else
-                {
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
-                }
+            <div class="row mb-1">
+                <div class="col-md-5">
+                    @if (IsModal)
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+                    }
+                    else
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
+                    }
+                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
+                </div>
             </div>
-        </div>
-    </RadzenFieldset>
-</RadzenTemplateForm>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+}
+

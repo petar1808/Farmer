@@ -1,8 +1,9 @@
 ﻿@page "/listUser"
 @using WebUI.Components.DataGrid
 @using WebUI.ServicesModel.Identity
+@attribute [Authorize(Roles = "admin")]
 
-<h2 class="text-center"> Aртикули </h2>
+<h2 class="text-center"> Потребители </h2>
 
 <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => CreateUser())"/>
 

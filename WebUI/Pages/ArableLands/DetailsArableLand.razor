@@ -1,34 +1,40 @@
 ﻿@using WebUI.ServicesModel.ArableLand
+@attribute [Authorize]
 
-<RadzenTemplateForm TItem="ArableLandModel" Data=@ArableLands Submit=@OnSubmit>
-    <RadzenFieldset>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Име" />
+@if (@ArableLands is not null)
+{
+    <RadzenTemplateForm TItem="ArableLandModel" Data=@ArableLands Submit=@OnSubmit>
+        <RadzenFieldset>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Име" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenTextBox style="display: block" Name="Name" @bind-Value=@ArableLands.Name Class="w-100" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <RadzenTextBox style="display: block" Name="Name" @bind-Value=@ArableLands.Name Class="w-100" />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Декари" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="SizeInDecar" @bind-Value=@ArableLands.SizeInDecar Class="w-100" />
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Декари" />
+            <div class="row mb-1">
+                <div class="col-md-5">
+                    @if (IsModal)
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+                    }
+                    else
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
+                    }
+                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <RadzenNumeric style="display: block" Name="SizeInDecar" @bind-Value=@ArableLands.SizeInDecar Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-1">
-            <div class="col-md-2">
-                @if (IsModal)
-                {
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                }
-                else
-                {
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
-                }
-            </div>
-        </div>
-    </RadzenFieldset>
-</RadzenTemplateForm>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+}
+

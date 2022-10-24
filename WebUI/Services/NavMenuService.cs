@@ -61,7 +61,7 @@ namespace WebUI.Services
             {
                 return menuItems;
             }  
-            //To do: if isAdmin add the admin menu
+
             return menuItems.Where(x => x.Name != "Потребители");
         }
     }

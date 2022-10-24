@@ -2,6 +2,7 @@
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Components.DeleteModal;
+using WebUI.Extensions;
 using WebUI.Services.WorkingSeasons;
 using WebUI.ServicesModel.WorkingSeason;
 
@@ -44,7 +45,7 @@ namespace WebUI.Pages.WorkingSeasons
         public async Task AddWorkingSeason()
         {
             await DialogService.OpenAsync<DetailsWorkingSeason>($"Добавяне на Сезон",
-              options: new DialogOptions() { Width = "600px", Height = "330px" });
+                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("330px").WithWidth("600px"));
 
             DataGrid.UpdateData(await WorkingSeasonService.List());
             this.StateHasChanged();
@@ -53,7 +54,7 @@ namespace WebUI.Pages.WorkingSeasons
         {
             await DialogService.OpenAsync<DetailsWorkingSeason>($"Редактиране на Сезон",
               new Dictionary<string, object>() { { "WorkingSeasonId", workingSeasonId } },
-              new DialogOptions() { Width = "600px", Height = "330px" });
+              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("330px").WithWidth("600px"));
 
             DataGrid.UpdateData(await WorkingSeasonService.List());
             this.StateHasChanged();
@@ -73,7 +74,7 @@ namespace WebUI.Pages.WorkingSeasons
               {
                     { "ModelInput", deleteModel }
               },
-              options: new DialogOptions() { Width = "500px", Height = "160px" });
+              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
 
             if (dialogResult == true)
             {

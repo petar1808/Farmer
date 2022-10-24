@@ -69,10 +69,10 @@ namespace WebUI.Services
             {
                 using (var response = await _httpClient.SendAsync(request))
                 {
-                    if (response.StatusCode == HttpStatusCode.Unauthorized)
-                    {
-                        _navigationManager.NavigateTo("login");
-                    }
+                    //if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    //{
+                    //    _navigationManager.NavigateTo("login");
+                    //}
 
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
@@ -99,9 +99,20 @@ namespace WebUI.Services
                         });
                     }
 
-                    if (response.StatusCode == HttpStatusCode.Forbidden)
+                    //if (response.StatusCode == HttpStatusCode.Forbidden)
+                    //{
+                    //    _navigationManager.NavigateTo($"{_navigationManager.BaseUri}forbidden");
+                    //}
+
+                    if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        _navigationManager.NavigateTo($"{_navigationManager.BaseUri}forbidden");
+                        notificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Warning,
+                            Summary = "Грешка",
+                            Detail = "Ресурсът не е открит",
+                            Duration = 10000
+                        });
                     }
                     // To do: add other cases 404, 403
                     // 

@@ -3,31 +3,25 @@
 @using WebUI.Pages.Articles
 @using WebUI.Pages.Seedings
 
-<style>
-    .col{
-         text-align:right;
-    }
-</style>
+@attribute [Authorize]
 
 
-<RadzenCard Style="display: flex; margin-bottom: 20px">
-    <div class="row">
-        <div class="col-md-6">
+
+
+<RadzenCard Style="margin-bottom: 20px">
+    <div class="row justify-content-start align-items-center">
+        <div class="col-5 d-flex align-items-center">
             <RadzenButton Icon="add_circle_outline" style="margin-bottom: 5px" Text="Добави" Click="@(() => AddArableLand())" />
         </div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col">
+        <div class="col-7 d-flex align-items-center justify-content-end">
+            <div class="d-none d-md-inline-flex align-items-center">
                     <RadzenLabel Text="Избери сезон:" />
-                </div>
-                <div class="col-md-6">
                     <RadzenDropDown Data=@WorkingSeasons
                                     TValue="int"
                                     TextProperty="Name"
                                     ValueProperty="Value"
                                     @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
                                     Change=@(args => OnDropDownChange(args)) Class="w-100" />
-                </div>
             </div>
         </div>
     </div>
@@ -42,14 +36,14 @@
         {
             <RadzenTabsItem Text="@sownArableLand.ArableLandName">
                 <Accordion>
-                    <Collapse Visible="@(CollapseSeedingSummary)">
+                    <Collapse  Visible="@(CollapseSeedingSummary)">
                         <CollapseHeader>
                             <Heading Size="HeadingSize.Is5">
                                 <Button Clicked="@(()=>CollapseSeedingSummary = !CollapseSeedingSummary)">Сеидба</Button>
                             </Heading>
                         </CollapseHeader>
                         <CollapseBody>
-                            <SeedingSummary SeedingId="@sownArableLand.SeedingId" IsModal="false"></SeedingSummary>
+                            <SeedingSummary SeedingId="@sownArableLand.SeedingId" ArableLandName="@sownArableLand.ArableLandName"  IsModal="false"></SeedingSummary>
                         </CollapseBody>
                     </Collapse>
                 </Accordion>
@@ -61,19 +55,19 @@
                             </Heading>
                         </CollapseHeader>
                         <CollapseBody>
-                            <ListPerformedWorkDialog SeedingId="@sownArableLand.SeedingId"></ListPerformedWorkDialog>
+                                <ListPerformedWorkDialog SeedingId="@sownArableLand.SeedingId" ArableLandName="@sownArableLand.ArableLandName"></ListPerformedWorkDialog>
                         </CollapseBody>
                     </Collapse>
                 </Accordion>
                 <Accordion>
-                    <Collapse Visible="@CollapsePerformedWork">
+                    <Collapse Visible="@CollapseTreatment">
                         <CollapseHeader>
                             <Heading Size="HeadingSize.Is5">
-                                <Button Clicked="@(()=>CollapsePerformedWork = !CollapsePerformedWork)">Третиране</Button>
+                                    <Button Clicked="@(()=>CollapseTreatment = !CollapseTreatment)">Третиране</Button>
                             </Heading>
                         </CollapseHeader>
                         <CollapseBody>
-                            <ListTreatmentDialog SeedingId="@sownArableLand.SeedingId"></ListTreatmentDialog>
+                                <ListTreatmentDialog SeedingId="@sownArableLand.SeedingId" ArableLandName="@sownArableLand.ArableLandName"></ListTreatmentDialog>
                         </CollapseBody>
                     </Collapse>
                 </Accordion>

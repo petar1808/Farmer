@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using WebUI.Extensions;
 using WebUI.Services.Article;
 using WebUI.Services.Seeding;
 using WebUI.ServicesModel.Common;
@@ -22,6 +23,9 @@ namespace WebUI.Pages.Seedings
         public int SeedingId { get; set; }
 
         [Parameter]
+        public string ArableLandName { get; set; } = default!;
+
+        [Parameter]
         public bool IsModal { get; set; }
 
         public GetSeedingSummaryModel GetSeedingModel { get; set; } = default!;
@@ -37,6 +41,12 @@ namespace WebUI.Pages.Seedings
                 AllArticleOfTypeSeeds = await ArticleService.GetSeeds();
             }
         }
+
+        public void OnClose()
+        {
+            DialogService.Close(false);
+        } 
+
         public void OnDropDownChange(object value)
         {
             GetSeedingModel.ArticleId = (int)value;
@@ -44,12 +54,13 @@ namespace WebUI.Pages.Seedings
 
         public async Task OnEdit()
         {
-            await DialogService.OpenAsync<SeedingSummary>($"Добавяне на Сеитба",
+            await DialogService.OpenAsync<SeedingSummary>($"Редактиране на Сеитба за земя: {ArableLandName}",
                 new Dictionary<string, object>() { 
                     { "SeedingId", SeedingId },
                     { "IsModal", true}
                 },
-                options: new DialogOptions() { Width = "900px", Height = "370px" });
+                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("410px").WithWidth("900px"));
+
 
             GetSeedingModel = await SeedingService.GetSeedingSummary(SeedingId);
 

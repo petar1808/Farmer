@@ -29,13 +29,14 @@
                     <RadzenLabel Text="Фермер">
                     </RadzenLabel>
                 </div>
-            </div>
-            <div class="col-7 d-flex align-items-center justify-content-end">
-                <div class="d-none d-md-inline-flex align-items-center">
-                    <a href="@($"{UriHelper.BaseUri}/changePassword")" title="Ако сте забравили паролата си" class="mx-2 mx-lg-3">Смяна на парола</a>
-                    <button onclick="@(() => Logout())" class="btn btn-default btn-sm">Излез</button>
+                <div class="col-7 d-flex align-items-center justify-content-end">
+                    <div class="d-none d-md-inline-flex align-items-center">
+                        <a href="@($"{UriHelper.BaseUri}/changePassword")" title="Ако сте забравили паролата си" class="mx-2 mx-lg-3">Смяна на парола</a>
+                        <button onclick="@(() => Logout())" class="btn btn-default btn-sm">Излез</button>
+                    </div>
                 </div>
             </div>
+
         </ChildContent>
     </RadzenHeader>
     <RadzenBody @ref="@body0" @bind-Expanded="@bodyExpanded">
@@ -45,9 +46,6 @@
                     <div class="row">
                         <div class="col-12 pt-4 pb-5 px-3 px-lg-5">
                             @Body
-                            <p class="mt-5 md-3 text-center">
-                                <RadzenLabel Text="Фермер 2022"></RadzenLabel>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -102,7 +100,7 @@
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-        var role = authState.User.Claims.FirstOrDefault(c => c.Type.ToLower() == "role")!.Value;
+        var role = authState.User?.Claims?.FirstOrDefault(c => c.Type.ToLower() == "role")?.Value;
 
         if (role is not null)
         {

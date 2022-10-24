@@ -27,6 +27,11 @@ namespace WebUI.Pages.Seedings
             ArableLands = await SeedingService.GetAvailableArableLandSeeds(SelectedWorkingSeasonService.SelectedWorkingSeasonId);
         }
 
+        public void OnClose()
+        {
+            DialogService.Close(false);
+        }
+
         protected async Task OnSubmit()
         {
             var response = await SeedingService.AddSeeding(new AddSeedingModel()

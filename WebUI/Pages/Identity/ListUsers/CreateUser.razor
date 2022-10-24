@@ -1,5 +1,5 @@
 ﻿@using WebUI.ServicesModel.Identity
-
+@attribute [Authorize(Roles = "Admin")]
 
 <RadzenTemplateForm TItem="CreateUserModel" Data=@CreateUserModel Submit=@OnSubmit>
     <RadzenFieldset>
@@ -28,8 +28,9 @@
             </div>
         </div>
         <div class="row mb-1">
-            <div class="col-md-2">
+            <div class="col-md-5">
                 <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+                <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
             </div>
         </div>
     </RadzenFieldset>

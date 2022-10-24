@@ -2,6 +2,7 @@
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Components.DeleteModal;
+using WebUI.Extensions;
 using WebUI.Services.ArableLand;
 using WebUI.ServicesModel.ArableLand;
 
@@ -44,7 +45,7 @@ namespace WebUI.Pages.ArableLands
         {
             await DialogService.OpenAsync<DetailsArableLand>($"Редактиране на Земя",
               new Dictionary<string, object>() { { "ArableLandId", arableLandId } },
-              new DialogOptions() { Width = "600px", Height = "275px" });
+               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("280px").WithWidth("600px"));
 
             DataGrid.UpdateData(await ArableLandService.List());
             this.StateHasChanged();
@@ -53,7 +54,7 @@ namespace WebUI.Pages.ArableLands
         public async Task AddArableLand()
         {
             await DialogService.OpenAsync<DetailsArableLand>($"Добавяне на Земя",
-              options: new DialogOptions() { Width = "600px", Height = "275px" });
+              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("280px").WithWidth("600px"));
 
             DataGrid.UpdateData(await ArableLandService.List());
         }
@@ -72,7 +73,7 @@ namespace WebUI.Pages.ArableLands
               {
                     { "ModelInput", deleteModel }
               },
-              options: new DialogOptions() { Width = "500px", Height = "160px" });
+              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
 
             if (dialogResult == true)
             {

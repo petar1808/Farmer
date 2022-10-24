@@ -1,37 +1,40 @@
 ﻿@using WebUI.ServicesModel.PerformedWork
+@attribute [Authorize]
 
-<RadzenTemplateForm TItem="PerformedWorkDatailsModel" Data=@PerformedWork Submit=@OnSubmit>
-    <RadzenFieldset>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Дата" />
+@if (PerformedWork is not null)
+{
+    <RadzenTemplateForm TItem="PerformedWorkDatailsModel" Data=@PerformedWork Submit=@OnSubmit>
+        <RadzenFieldset>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Дата" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDatePicker DateFormat="d" style="display: block" Name="Date" @bind-Value=@PerformedWork.Date Class="w-100" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <RadzenDatePicker DateFormat="d" style="display: block" Name="Date" @bind-Value=@PerformedWork.Date Class="w-100" />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Гориво" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Гориво" />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Цена" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Цена" />
-            </div>
-            <div class="col-md-6">
-                <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Тип" />
-            </div>
-            <div class="col-md-6">
-                <RadzenDropDown AllowClear="true"
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Тип" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDropDown AllowClear="true"
                                 AllowFiltering="true"
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                 Data=@WorkTypes
@@ -39,19 +42,22 @@
                                 ValueProperty="Value"
                                 TextProperty="Name"
                                 Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                </div>
             </div>
-        </div>
-        <div class="row mb-1">
-            <div class="col-md-2">
-                @if (IsModal)
-                {
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                }
-                else
-                {
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
-                }
+            <div class="row mb-1">
+                <div class="col-md-5">
+                    @if (IsModal)
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+                    }
+                    else
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
+                    }
+                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
+                </div>
             </div>
-        </div>
-    </RadzenFieldset>
-</RadzenTemplateForm>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+}
+

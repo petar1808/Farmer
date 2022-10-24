@@ -9,6 +9,7 @@ namespace WebUI.Pages.ArableLands
     {
         private string StatusClass = default!;
         private string Message = default!;
+        bool popup;
 
         [Inject]
         public IArableLandService ArableLandService { get; set; } = default!;
@@ -35,6 +36,11 @@ namespace WebUI.Pages.ArableLands
             {
                 ArableLands = await ArableLandService.Get(ArableLandId);
             }
+        }
+
+        public void OnClose()
+        {
+            DialogService.Close(false);
         }
 
         protected async Task OnSubmit(ArableLandModel arableLand)

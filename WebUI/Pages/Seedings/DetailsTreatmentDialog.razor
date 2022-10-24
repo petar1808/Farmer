@@ -1,22 +1,25 @@
 ﻿@using WebUI.ServicesModel.Тreatment
+@attribute [Authorize]
 
 
-<RadzenTemplateForm TItem="ТreatmentDetailsModel" Data=@Treatment Submit=@OnSubmit>
-    <RadzenFieldset>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Дата" />
+@if (@Treatment is not null)
+{
+    <RadzenTemplateForm TItem="ТreatmentDetailsModel" Data=@Treatment Submit=@OnSubmit>
+        <RadzenFieldset>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Дата" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDatePicker DateFormat="d" style="display: block" Name="Date" @bind-Value=@Treatment.Date Class="w-100" />
+                </div>
             </div>
-            <div class="col-md-6">
-               <RadzenDatePicker DateFormat="d" style="display: block" Name="Date" @bind-Value=@Treatment.Date Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Тип" />
-            </div>
-            <div class="col-md-6">
-                <RadzenDropDown AllowClear="true"
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Тип" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDropDown AllowClear="true"
                                 AllowFiltering="true"
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                 Data=@TreatmentTypes
@@ -24,63 +27,65 @@
                                 ValueProperty="Value"
                                 TextProperty="Name"
                                 Change=@(args => OnDropDownChangeTreatmentType(args)) Class="w-100" />
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Препарат" />
-            </div>
-            <div class="col-md-6">
-                <RadzenDropDown Data=@TreatmentArticleType
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Препарат/Тор" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDropDown Data=@TreatmentArticleType
                                 @bind-Value=@Treatment.ArticleId
                                 ValueProperty="Value"
                                 TextProperty="Name"
                                 Change=@(args => OnDropDownChangeTreatmentArticleType(args)) Class="w-100" />
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Препарат на декар" />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Количество тор/препарат на декар" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="ArticleQuantity" @bind-Value=@Treatment.ArticleQuantity Class="w-100" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <RadzenNumeric style="display: block" Name="ArticleQuantity" @bind-Value=@Treatment.ArticleQuantity Class="w-100" />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Количество гориво за обработката" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@Treatment.AmountOfFuel Class="w-100" />
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Гориво" />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Цена на гориво на литър" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@Treatment.FuelPrice Class="w-100" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@Treatment.AmountOfFuel Class="w-100" />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Цена артикул за единица кг/л" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="ArticlePrice" @bind-Value=@Treatment.ArticlePrice Class="w-100" />
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Цена на гориво" />
+            <div class="row mb-1">
+                <div class="col-md-5">
+                    @if (IsModal)
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+                    }
+                    else
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
+                    }
+                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@Treatment.FuelPrice Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <RadzenLabel Text="Цена на препарат" />
-            </div>
-            <div class="col-md-6">
-                <RadzenNumeric style="display: block" Name="ArticlePrice" @bind-Value=@Treatment.ArticlePrice Class="w-100" />
-            </div>
-        </div>
-        <div class="row mb-1">
-            <div class="col-md-2">
-                @if (IsModal)
-                {
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                }
-                else
-                {
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
-                }
-            </div>
-        </div>
-    </RadzenFieldset>
-</RadzenTemplateForm>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+}

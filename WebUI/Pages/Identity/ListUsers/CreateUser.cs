@@ -21,6 +21,11 @@ namespace WebUI.Pages.Identity.ListUsers
 
         public CreateUserModel CreateUserModel { get; set; } = new CreateUserModel();
 
+        public void OnClose()
+        {
+            DialogService.Close(false);
+        }
+
         protected async Task OnSubmit(CreateUserModel createUserModel)
         {
             createUserModel.ActivateUserUrl = $"{NavigationManager.BaseUri}/createUserPassword";
