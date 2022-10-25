@@ -18,6 +18,8 @@ namespace Domain.Models
             ArableLand = default!;
             WorkingSeason = default!;
             Article = default!;
+            Treatments = default!;
+            PerformedWorks = default!;
         }
 
         public int ArableLandId { get;}
@@ -32,7 +34,7 @@ namespace Domain.Models
 
         public Article Article { get; private set; }
 
-        public int SeedsQuantityPerDecare { get; private set; } = default!;
+        public int SeedsQuantityPerDecare { get; private set; } = default!; 
 
         public decimal SeedsPricePerKilogram { get; private set; } = default!;
 
@@ -41,6 +43,10 @@ namespace Domain.Models
         public decimal HarvestedGrainSellingPricePerKilogram { get; private set; }
 
         public decimal SubsidiesIncome { get; private set; }
+
+        public Treatment Treatments { get;}
+
+        public PerformedWork PerformedWorks { get;}
 
         public Seeding UpdateArticle(int? articleId)
         {

@@ -15,64 +15,82 @@
         </div>
         <div class="col-7 d-flex align-items-center justify-content-end">
             <div class="d-none d-md-inline-flex align-items-center">
-                    <RadzenLabel Text="Избери сезон:" />
-                    <RadzenDropDown Data=@WorkingSeasons
-                                    TValue="int"
-                                    TextProperty="Name"
-                                    ValueProperty="Value"
-                                    @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
-                                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                <RadzenLabel Text="Избери сезон:" />
+                <RadzenDropDown Data=@WorkingSeasons
+                                TValue="int"
+                                TextProperty="Name"
+                                ValueProperty="Value"
+                                @bind-Value="@SelectedWorkingSeasonService.SelectedWorkingSeasonId"
+                                Change=@(args => OnDropDownChange(args)) Class="w-100" />
             </div>
         </div>
     </div>
 </RadzenCard>
 
 
-@if(SownArableLands != null)
+@if (SownArableLands != null)
 {
-    <RadzenTabs Change=@OnChange TabPosition="@Radzen.TabPosition.Top" RenderMode="TabRenderMode.Client">
-    <Tabs>
-        @foreach (var sownArableLand in SownArableLands)
-        {
-            <RadzenTabsItem Text="@sownArableLand.ArableLandName">
-                <Accordion>
-                    <Collapse  Visible="@(CollapseSeedingSummary)">
-                        <CollapseHeader>
-                            <Heading Size="HeadingSize.Is5">
-                                <Button Clicked="@(()=>CollapseSeedingSummary = !CollapseSeedingSummary)">Сеидба</Button>
-                            </Heading>
-                        </CollapseHeader>
-                        <CollapseBody>
-                            <SeedingSummary SeedingId="@sownArableLand.SeedingId" ArableLandName="@sownArableLand.ArableLandName"  IsModal="false"></SeedingSummary>
-                        </CollapseBody>
-                    </Collapse>
-                </Accordion>
-                <Accordion>
-                    <Collapse Visible="@CollapsePerformedWork">
-                        <CollapseHeader>
-                            <Heading Size="HeadingSize.Is5">
-                                <Button Clicked="@(()=>CollapsePerformedWork = !CollapsePerformedWork)">Обработки</Button>
-                            </Heading>
-                        </CollapseHeader>
-                        <CollapseBody>
-                                <ListPerformedWorkDialog SeedingId="@sownArableLand.SeedingId" ArableLandName="@sownArableLand.ArableLandName"></ListPerformedWorkDialog>
-                        </CollapseBody>
-                    </Collapse>
-                </Accordion>
-                <Accordion>
-                    <Collapse Visible="@CollapseTreatment">
-                        <CollapseHeader>
-                            <Heading Size="HeadingSize.Is5">
-                                    <Button Clicked="@(()=>CollapseTreatment = !CollapseTreatment)">Третиране</Button>
-                            </Heading>
-                        </CollapseHeader>
-                        <CollapseBody>
-                                <ListTreatmentDialog SeedingId="@sownArableLand.SeedingId" ArableLandName="@sownArableLand.ArableLandName"></ListTreatmentDialog>
-                        </CollapseBody>
-                    </Collapse>
-                </Accordion>
-            </RadzenTabsItem>
-        }
+    <RadzenTabs Change=@OnTabChange TabPosition="@Radzen.TabPosition.Top" RenderMode="TabRenderMode.Client">
+        <Tabs>
+            @foreach (var sownArableLand in SownArableLands)
+            {
+                <RadzenTabsItem Text="@sownArableLand.ArableLandName">
+                    <Accordion>
+                        <Collapse Visible="@(CollapseSeedingSummary)">
+                            <CollapseHeader>
+                                <Heading Size="HeadingSize.Is5">
+                                    <Button Clicked="@(async ()=> await OnSeedingSummaryCollapse(sownArableLand.SeedingId))">
+                                        Сеидба
+                                    </Button>
+                                </Heading>
+                            </CollapseHeader>
+                            <CollapseBody>
+                                <SeedingSummary SeedingSummaryData="@SeedingSummaryData"
+                                        SeedingId="@sownArableLand.SeedingId"
+                                        ArableLandName="@sownArableLand.ArableLandName"
+                                        IsModal="false">
+                                </SeedingSummary>
+                            </CollapseBody>
+                        </Collapse>
+                    </Accordion>
+                    <Accordion>
+                        <Collapse Visible="@CollapsePerformedWork">
+                            <CollapseHeader>
+                                <Heading Size="HeadingSize.Is5">
+                                <Button Clicked="@(()=> this.CollapsePerformedWork = !this.CollapsePerformedWork)">
+                                        Обработки
+                                    </Button>
+                                </Heading>
+                            </CollapseHeader>
+                            <CollapseBody>
+                                <ListPerformedWork
+                                           SeedingId="@sownArableLand.SeedingId"
+                                           ArableLandName="@sownArableLand.ArableLandName"
+                                           OnChangeData="@LoadSeedingSummary">
+                                </ListPerformedWork>
+                            </CollapseBody>
+                        </Collapse>
+                    </Accordion>
+                    <Accordion>
+                        <Collapse Visible="@CollapseTreatment">
+                            <CollapseHeader>
+                                <Heading Size="HeadingSize.Is5">
+                                    <Button Clicked="@(()=>this.CollapseTreatment = !this.CollapseTreatment)">
+                                        Третиране
+                                    </Button>
+                                </Heading>
+                            </CollapseHeader>
+                            <CollapseBody>
+                                <ListTreatment 
+                                       SeedingId="@sownArableLand.SeedingId"
+                                       ArableLandName="@sownArableLand.ArableLandName"
+                                       OnChangeData="@LoadSeedingSummary">
+                                </ListTreatment>
+                            </CollapseBody>
+                        </Collapse>
+                    </Accordion>
+                </RadzenTabsItem>
+            }
         </Tabs>
     </RadzenTabs>
 }

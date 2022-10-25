@@ -23,7 +23,22 @@ namespace Application.Models.Seedings
            => mapper.CreateMap<Seeding, GetSeedingSummaryModel>()
                 .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name))
                 .ForMember(x => x.ArticleId, cfg => cfg.MapFrom(c => c.Article.Id))
-                .ForMember(x => x.IncomeFromHarvestedGrains, cfg => cfg.MapFrom(c => c.HarvestedQuantityPerDecare * c.HarvestedGrainSellingPricePerKilogram))
-                .ForMember(x => x.Expenses, cfg => cfg.MapFrom(c => c.SeedsQuantityPerDecare * c.SeedsPricePerKilogram));
+                .ForMember(x => x.Expenses, cfg => cfg.MapFrom(c => c.Treatments.ArticlePrice + c.Treatments.ArticleQuantity));
+                //.ForMember(x => x.Expenses, cfg => cfg.MapFrom(c => CalculateExpenses(c)));
+
+
+        private decimal? CalculateExpenses(Seeding seeding)
+        {
+            //var seedingSummaryExpensesSum = seeding.ArableLand.SizeInDecar * (seeding.SeedsPricePerKilogram * seeding.SeedsQuantityPerDecare);
+
+            var performedWorkExpensesSum = seeding.PerformedWorks.FuelPrice * seeding.PerformedWorks.AmountOfFuel;
+
+            var treatmentExpensesSum = (seeding.Treatments.AmountOfFuel * seeding.Treatments.FuelPrice) +
+                (seeding.Treatments.ArticlePrice * seeding.Treatments.ArticleQuantity);
+
+            var totalExpenses =  performedWorkExpensesSum + treatmentExpensesSum;
+
+            return totalExpenses;
+        }
     }
 }

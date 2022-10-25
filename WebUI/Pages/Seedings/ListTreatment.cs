@@ -8,7 +8,7 @@ using WebUI.ServicesModel.Тreatment;
 
 namespace WebUI.Pages.Seedings
 {
-    public partial class ListTreatmentDialog
+    public partial class ListTreatment
     {
         [Inject]
         public ITreatmentService TreatmentService { get; set; } = default!;
@@ -22,9 +22,13 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public string ArableLandName { get; set; } = default!;
 
-        public DynamicDataGridModel<GetTreatmentModel> DataGrid { get; set; } = default!;
+        [Parameter]
+        public EventCallback<int> OnChangeData { get; set; }
 
-        protected async override Task OnParametersSetAsync()
+        private DynamicDataGridModel<GetTreatmentModel> DataGrid { get; set; } = default!;
+
+
+        protected async override Task OnInitializedAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
@@ -35,21 +39,14 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Количество на декар"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Гориво за цялата нива"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво на л."),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена на артикул на декър"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена на артикул на декър")
             };
-            DataGrid = new DynamicDataGridModel<GetTreatmentModel>(
-                    await TreatmentService.List(SeedingId),
-                    columns)
+            DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId),columns)
                 .WithEdit(async (x) => await EditTreatment(x))
                 .WithDelete(async (x) => await DeleteTreatment(x))
                 .WithFiltering()
                 .WithPaging()
                 .WithSorting();
-        }
-
-        public async Task<bool> DeleteTreatmentFunction(int performedWorkId)
-        {
-            return await this.TreatmentService.Delete(performedWorkId);
         }
 
         public async Task AddTreatment()
@@ -58,7 +55,9 @@ namespace WebUI.Pages.Seedings
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("550px").WithWidth("600px"));
 
+
             DataGrid.UpdateData(await TreatmentService.List(SeedingId));
+            await this.OnChangeData.InvokeAsync(this.SeedingId);
             this.StateHasChanged();
         }
 
@@ -69,6 +68,7 @@ namespace WebUI.Pages.Seedings
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("550px").WithWidth("600px"));
 
             DataGrid.UpdateData(await TreatmentService.List(SeedingId));
+            await this.OnChangeData.InvokeAsync(this.SeedingId);
             this.StateHasChanged();
         }
 
@@ -91,9 +91,14 @@ namespace WebUI.Pages.Seedings
             if (dialogResult == true)
             {
                 DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != treatmentId));
-
+                await this.OnChangeData.InvokeAsync(this.SeedingId);
                 this.StateHasChanged();
             }
+        }
+
+        public async Task<bool> DeleteTreatmentFunction(int performedWorkId)
+        {
+            return await this.TreatmentService.Delete(performedWorkId);
         }
     }
 }

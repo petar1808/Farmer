@@ -14,7 +14,7 @@ namespace Domain.Models
         public PerformedWork(int seedingId,
             WorkType workType,
             DateTime date,
-            int fuelPrice,
+            decimal fuelPrice,
             int amountOfFuel)
         {
             Validate(workType);
@@ -37,7 +37,7 @@ namespace Domain.Models
 
         public int AmountOfFuel { get; private set; } 
 
-        public int FuelPrice { get; private set; }
+        public decimal FuelPrice { get; private set; }
 
         public PerformedWork UpdateWorkType(WorkType workType)
         {

@@ -1,9 +1,9 @@
 ﻿@using WebUI.ServicesModel.Seeding
 @attribute [Authorize]
 
-@if (GetSeedingModel is not null)
+@if (SeedingSummaryData is not null)
 {
-    <RadzenTemplateForm TItem="GetSeedingSummaryModel" Data=@GetSeedingModel Submit=@OnSubmit>
+    <RadzenTemplateForm TItem="GetSeedingSummaryModel" Data=@SeedingSummaryData Submit=@OnSubmit>
         <div class="row">
             <div class="col-md-8">
                 <RadzenFieldset Text="">
@@ -15,14 +15,14 @@
                                     @if (IsModal)
                                     {
                                         <RadzenDropDown Data=@AllArticleOfTypeSeeds
-                                                @bind-Value=@GetSeedingModel.ArticleId
+                                                @bind-Value=@SeedingSummaryData.ArticleId
                                                 ValueProperty="Value"
                                                 TextProperty="Name"
                                                 Change=@(args => OnDropDownChange(args)) Class="w-100" />
                                     }
                                     else
                                     {
-                                        <RadzenTextBox Disabled="true" Value="@GetSeedingModel.ArticleName" style="width: 100%;" Name="ArticleName" />
+                                        <RadzenTextBox Disabled="true" Value="@SeedingSummaryData.ArticleName" style="width: 100%;" Name="ArticleName" />
                                     }
 
                                 </div>
@@ -30,13 +30,13 @@
                             <div class="col-md-12">
                                 <RadzenLabel Text="Засяти килограми семе на(дка)" />
                                 <div>
-                                    <RadzenNumeric Format="#кг" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" style="display: block" Name="SeedsQuantityPerDecare" @bind-Value=@GetSeedingModel.SeedsQuantityPerDecare Class="w-100" />
+                                    <RadzenNumeric Format="#кг" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" style="display: block" Name="SeedsQuantityPerDecare" @bind-Value=@SeedingSummaryData.SeedsQuantityPerDecare Class="w-100" />
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <RadzenLabel Text="Цена на семе за(кг)" />
                                 <div>
-                                    <RadzenNumeric Format="#лв" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="SeedsPricePerKilogram" @bind-Value=@GetSeedingModel.SeedsPricePerKilogram Class="w-100" />
+                                    <RadzenNumeric Format="#лв" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="SeedsPricePerKilogram" @bind-Value=@SeedingSummaryData.SeedsPricePerKilogram Class="w-100" />
                                 </div>
                             </div>
                         </div>
@@ -44,20 +44,20 @@
                             <div class="col-md-12">
                                 <RadzenLabel Text="Изкарано количество на(дка) в(кг)" />
                                 <div>
-                                    <RadzenNumeric Format="#кг" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="HarvestedQuantityPerDecare" @bind-Value=@GetSeedingModel.HarvestedQuantityPerDecare Class="w-100" />
+                                    <RadzenNumeric Format="#кг" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="HarvestedQuantityPerDecare" @bind-Value=@SeedingSummaryData.HarvestedQuantityPerDecare Class="w-100" />
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <RadzenLabel Text="Продажна цена зърно на(кг)" />
                                 <div>
-                                    <RadzenNumeric Format="#лв" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" style="display: block" Name="HarvestedGrainSellingPricePerKilogram" @bind-Value=@GetSeedingModel.HarvestedGrainSellingPricePerKilogram Class="w-100" />
+                                    <RadzenNumeric Format="#лв" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" style="display: block" Name="HarvestedGrainSellingPricePerKilogram" @bind-Value=@SeedingSummaryData.HarvestedGrainSellingPricePerKilogram Class="w-100" />
                                 </div>
                             </div>
                             <div class="col-md-12">
 
                                 <div>
                                     <RadzenLabel Text="Приходи от субсидии" />
-                                    <RadzenNumeric Format="#лв" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="SubsidiesIncome" @bind-Value=@GetSeedingModel.SubsidiesIncome Class="w-100" />
+                                    <RadzenNumeric Format="#лв" Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="SubsidiesIncome" @bind-Value=@SeedingSummaryData.SubsidiesIncome Class="w-100" />
                                 </div>
                             </div>
                         </div>
@@ -69,19 +69,19 @@
                     <div class="col-md-12">
                         <RadzenLabel Text="Общо приходи от зърно(лв)" />
                         <div>
-                            <RadzenTextBox Format="#лв" Disabled="true" Value="@GetSeedingModel.IncomeFromHarvestedGrains.ToString()" style="width: 100%;" Name="IncomeFromHarvestedGrains" />
+                            <RadzenTextBox Format="#лв" Disabled="true" Value="@SeedingSummaryData.IncomeFromHarvestedGrains.ToString()" style="width: 100%;" Name="IncomeFromHarvestedGrains" />
                         </div>
                     </div>
                     <div class="col-md-12">
                         <RadzenLabel Text="Разходи(лв)" />
                         <div>
-                            <RadzenTextBox Format="#лв" Disabled="true" Value="@GetSeedingModel.Expenses.ToString()" style="width: 100%;" Name="Expenses" />
+                            <RadzenTextBox Format="#лв" Disabled="true" Value="@SeedingSummaryData.Expenses.ToString()" style="width: 100%;" Name="Expenses" />
                         </div>
                     </div>
                     <div class="col-md-12">
                         <RadzenLabel Text="Печалба(лв)" />
                         <div>
-                            <RadzenTextBox Format="#лв" Disabled="true" Value="@GetSeedingModel.Profit.ToString()" style="width: 100%;" Name="Profit" />
+                            <RadzenTextBox Format="#лв" Disabled="true" Value="@SeedingSummaryData.Profit.ToString()" style="width: 100%;" Name="Profit" />
                         </div>
                     </div>
                 </RadzenFieldset>

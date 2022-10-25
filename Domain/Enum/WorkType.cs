@@ -20,6 +20,8 @@ namespace Domain.Enum
         [Description("Жътва")]
         Harvest,
         [Description("Сеитба")]
-        Sowing
+        Sowing,
+        [Description("Сечка")]
+        Felling
     }
 }
