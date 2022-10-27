@@ -14,43 +14,39 @@ namespace WebUI.Services
             new NavMenuItem()
             {
                 Name = "Номенклатури",
-                Icon = "&#xe871",
-                Title = "How to get started with the Radzen Blazor components",
+                Icon = "source",
                 Children = new List<NavMenuItem>()
                 {
                     new NavMenuItem()
                     {
                         Name = "Артикули",
                         Path = "/article/list",
-                        Icon = "&#xe871",
-                        Title = "How to get started with the Radzen Blazor components"
+                        Icon = "grass"
                     },
                     new NavMenuItem()
                     {
                         Name = "Земи",
                         Path = "/arableLand/list",
-                        Icon = "&#xe871",
-                        Title = "How to get started with the Radzen Blazor components"
+                        Icon = "location_pin"
                     },
                     new NavMenuItem()
                     {
                         Name = "Сезони",
                         Path = "/workingSeason/list",
-                        Icon = "&#xe871",
-                        Title = "How to get started with the Radzen Blazor components"
+                        Icon = "calendar_month"
                     }
                 }
             },
             new NavMenuItem()
             {
                 Name = "Жътва",
-                Icon = "&#xe664",
+                Icon = "agriculture",
                 Path = "/seeding"
             },
             new NavMenuItem()
             {
                 Name = "Потребители",
-                Icon = "&#xe664",
+                Icon = "group",
                 Path = "/listUser"
             }
         };
