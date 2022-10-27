@@ -22,5 +22,7 @@ namespace Application.Models.Seedings
         public decimal HarvestedGrainSellingPricePerKilogram { get; init; }
 
         public decimal SubsidiesIncome { get; init; }
+
+        public decimal ExpensesForHarvesting { get;  init; }
     }
 }

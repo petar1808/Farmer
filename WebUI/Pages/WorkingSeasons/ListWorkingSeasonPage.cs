@@ -24,8 +24,8 @@ namespace WebUI.Pages.WorkingSeasons
             {
                 new DynamicDataGridColumnModel(nameof(WorkingSeasonModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(WorkingSeasonModel.Name), "Име"),
-                new DynamicDataGridColumnModel(nameof(WorkingSeasonModel.StartDate), "Начало"),
-                new DynamicDataGridColumnModel(nameof(WorkingSeasonModel.EndDate), "Край"),
+                new DynamicDataGridColumnModel(nameof(WorkingSeasonModel.StartDate), "Начало", "{0:dd/MM/yy}"),
+                new DynamicDataGridColumnModel(nameof(WorkingSeasonModel.EndDate), "Край", "{0:dd/MM/yy}"),
             };
             DataGrid = new DynamicDataGridModel<WorkingSeasonModel>(
                     await WorkingSeasonService.List(),

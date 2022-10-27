@@ -4,16 +4,18 @@ using Infrastructure.DbContect;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(FarmerDbContext))]
-    partial class FarmerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221025125954_FixPropertyInPerformedWorkAndSeedingAndTreatment")]
+    partial class FixPropertyInPerformedWorkAndSeedingAndTreatment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,7 +184,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("FuelPrice")
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("int");
@@ -211,35 +213,31 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ExpensesForHarvesting")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<decimal>("HarvestedGrainSellingPricePerKilogram")
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("HarvestedQuantityPerDecare")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SeedsPricePerKilogram")
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("SeedsQuantityPerDecare")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SubsidiesIncome")
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("WorkingSeasonId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ArableLandId");
+
                     b.HasIndex("ArticleId");
 
                     b.HasIndex("WorkingSeasonId");
-
-                    b.HasIndex("ArableLandId", "WorkingSeasonId")
-                        .IsUnique();
 
                     b.ToTable("Seedings");
                 });
@@ -259,7 +257,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("ArticlePrice")
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ArticleQuantity")
                         .HasColumnType("int");
@@ -268,7 +266,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal?>("FuelPrice")
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("int");
@@ -418,7 +416,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
                 {
                     b.HasOne("Domain.Models.Seeding", "Seeding")
-                        .WithMany("PerformedWorks")
+                        .WithMany()
                         .HasForeignKey("SeedingId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -461,7 +459,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Seeding", "Seeding")
-                        .WithMany("Treatments")
+                        .WithMany()
                         .HasForeignKey("SeedingId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -525,13 +523,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Models.ArableLand", b =>
                 {
                     b.Navigation("Seedings");
-                });
-
-            modelBuilder.Entity("Domain.Models.Seeding", b =>
-                {
-                    b.Navigation("PerformedWorks");
-
-                    b.Navigation("Treatments");
                 });
 #pragma warning restore 612, 618
         }

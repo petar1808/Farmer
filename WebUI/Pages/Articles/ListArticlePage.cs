@@ -44,7 +44,7 @@ namespace WebUI.Pages.Articles
         public async Task AddArticle()
         {
             await DialogService.OpenAsync<DetailsArticle>($"Добавяне на Артикул",
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("285px").WithWidth("600px"));
+                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
             DataGrid.UpdateData(await ArticleService.List());
             this.StateHasChanged();
@@ -53,7 +53,7 @@ namespace WebUI.Pages.Articles
         {
             await DialogService.OpenAsync<DetailsArticle>($"Редактиране на Артикул",
               new Dictionary<string, object>() { { "ArticleId", articleId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("285px").WithWidth("600px"));
+              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
             DataGrid.UpdateData(await ArticleService.List());
             this.StateHasChanged();

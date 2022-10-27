@@ -35,20 +35,11 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("seeds")]
-        public async Task<ActionResult<List<SelectionListModel>>> GetSeeds()
+        [Route("treatment/{type:int}")]
+        public async Task<ActionResult<List<SelectionListModel>>> GetArticles(ArticleType type)
         {
             return await articleService
-                .SeedsArticlesSelectionList()
-                .ToActionResult();
-        }
-
-        [HttpGet]
-        [Route("treatment")]
-        public async Task<ActionResult<List<SelectionListModel>>> GetTreatmentArticles()
-        {
-            return await articleService
-                .TreatmentArticlesSelectionList()
+                .ArticlesSelectionList(type)
                 .ToActionResult();
         }
 

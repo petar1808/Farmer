@@ -8,7 +8,7 @@ using WebUI.ServicesModel.PerformedWork;
 
 namespace WebUI.Pages.Seedings
 {
-    public partial class ListPerformedWorkDialog
+    public partial class ListPerformedWork
     {
         [Inject]
         public IPerformedWorkService PerformedWorkService { get; set; } = default!;
@@ -22,22 +22,24 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public string ArableLandName { get; set; } = default!;
 
+        [Parameter]
+        public EventCallback<int> OnChangeData { get; set; }
+
         public DynamicDataGridModel<GetPerformedWorkModel> DataGrid { get; set; } = default!;
 
-        protected async override Task OnParametersSetAsync()
+
+        protected async override Task OnInitializedAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Id), "Ид"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Date), "Дата"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.WorkType), "Тип"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.AmountOfFuel), "Гориво"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Date), "Дата", "{0:dd/MM/yy}"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.WorkType), "Тип обработка"),
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPrice), "Цена на литър"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPriceTotal), "Цена на литър общо"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.AmountOfFuel), "Количество гориво"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPriceTotal), "Разход за гориво"),
             };
-            DataGrid = new DynamicDataGridModel<GetPerformedWorkModel>(
-                    await PerformedWorkService.List(SeedingId),
-                    columns)
+            DataGrid = new DynamicDataGridModel<GetPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns)
                 .WithEdit(async (x) => await EditPerformedWork(x))
                 .WithDelete(async (x) => await DeletePerformedWork(x))
                 .WithFiltering()
@@ -47,25 +49,28 @@ namespace WebUI.Pages.Seedings
 
         public async Task<bool> DeletePerformedWorkFunction(int performedWorkId)
         {
-           return await this.PerformedWorkService.Delete(performedWorkId);
+            return await this.PerformedWorkService.Delete(performedWorkId);
         }
 
         public async Task AddPerformedWork()
         {
             await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Добавяне на Обработка за земя: {ArableLandName}",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("390px").WithWidth("600px"));
+                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
 
             DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
+
+            await this.OnChangeData.InvokeAsync(this.SeedingId);
             this.StateHasChanged();
         }
         public async Task EditPerformedWork(int performedWorkId)
         {
             await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Редактиране на Обработка за земя: {ArableLandName}",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("390px").WithWidth("600px"));
+              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
 
             DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
+            await this.OnChangeData.InvokeAsync(this.SeedingId);
             this.StateHasChanged();
         }
 
@@ -88,7 +93,7 @@ namespace WebUI.Pages.Seedings
             if (dialogResult == true)
             {
                 DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != performedWorkId));
-
+                await this.OnChangeData.InvokeAsync(this.SeedingId);
                 this.StateHasChanged();
             }
         }

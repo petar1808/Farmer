@@ -21,7 +21,7 @@ namespace Application.Models.PerformedWorks
 
         public int AmountOfFuel { get; init; }
 
-        public int FuelPrice { get; init; }
+        public decimal FuelPrice { get; init; }
 
         public virtual void Mapping(Profile mapper)
         => mapper.CreateMap<PerformedWork, ListPerformedWorkModel>()

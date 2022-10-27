@@ -4,6 +4,7 @@ using WebUI.Extensions;
 using WebUI.Services.Article;
 using WebUI.Services.Seeding;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.Enum;
 using WebUI.ServicesModel.Seeding;
 
 namespace WebUI.Pages.Seedings
@@ -28,17 +29,16 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public bool IsModal { get; set; }
 
-        public GetSeedingSummaryModel GetSeedingModel { get; set; } = default!;
+        [Parameter]
+        public GetSeedingSummaryModel SeedingSummaryData { get; set; } = default!;
 
         public List<SelectionListModel> AllArticleOfTypeSeeds { get; set; } = new List<SelectionListModel>();
 
-        protected async override Task OnParametersSetAsync()
+        protected async override Task OnInitializedAsync()
         {
-            GetSeedingModel = await SeedingService.GetSeedingSummary(SeedingId);
-
             if (IsModal)
             {
-                AllArticleOfTypeSeeds = await ArticleService.GetSeeds();
+                AllArticleOfTypeSeeds = await ArticleService.GetArticles(ArticleType.Seeds);
             }
         }
 
@@ -49,7 +49,7 @@ namespace WebUI.Pages.Seedings
 
         public void OnDropDownChange(object value)
         {
-            GetSeedingModel.ArticleId = (int)value;
+            SeedingSummaryData.ArticleId = (int)value;
         }
 
         public async Task OnEdit()
@@ -57,19 +57,19 @@ namespace WebUI.Pages.Seedings
             await DialogService.OpenAsync<SeedingSummary>($"Редактиране на Сеитба за земя: {ArableLandName}",
                 new Dictionary<string, object>() { 
                     { "SeedingId", SeedingId },
-                    { "IsModal", true}
+                    { "IsModal", true},
+                    { "SeedingSummaryData", SeedingSummaryData }
                 },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("410px").WithWidth("900px"));
+                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("500px").WithWidth("900px"));
 
-
-            GetSeedingModel = await SeedingService.GetSeedingSummary(SeedingId);
+            SeedingSummaryData = await SeedingService.GetSeedingSummary(SeedingId);
 
             this.StateHasChanged();
         }
 
         public async Task OnSubmit()
         {
-            var response = await SeedingService.UpdateSeedingSummary(GetSeedingModel, SeedingId);
+            var response = await SeedingService.UpdateSeedingSummary(SeedingSummaryData, SeedingId);
 
             DialogService.Close(response);
         }

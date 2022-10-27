@@ -7,10 +7,6 @@ namespace WebUI.Pages.ArableLands
 {
     public partial class DetailsArableLand
     {
-        private string StatusClass = default!;
-        private string Message = default!;
-        bool popup;
-
         [Inject]
         public IArableLandService ArableLandService { get; set; } = default!;
 
@@ -48,22 +44,10 @@ namespace WebUI.Pages.ArableLands
             if (arableLand.Id == 0)
             {
                 var addIsSuccess = await ArableLandService.Add(ArableLands);
-                if (addIsSuccess)
-                {
-                    StatusClass = "alert-success";
-                    Message = "New ArableLand added successfully.";
-                }
-                else
-                {
-                    StatusClass = "alert-danger";
-                    Message = "Something went wrong adding the new ArableLand. Please try again.";
-                }
             }
             else
             {
                 await ArableLandService.Update(ArableLands);
-                StatusClass = "alert-success";
-                Message = "ArableLand updated successfully.";
             }
             DialogService.Close(false);
         }

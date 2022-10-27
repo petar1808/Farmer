@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace Domain.Enum
+namespace WebUI.ServicesModel.Enum
 {
     public enum WorkType
     {
@@ -17,6 +12,8 @@ namespace Domain.Enum
         Disking,
         [Description("Оране")]
         Plowing,
+        [Description("Жътва")]
+        Harvest,
         [Description("Сеитба")]
         Sowing,
         [Description("Сечка")]

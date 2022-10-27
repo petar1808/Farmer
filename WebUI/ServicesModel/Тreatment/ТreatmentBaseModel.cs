@@ -6,14 +6,14 @@
 
         public DateTime Date { get; set; } = DateTime.Now;
 
-        public int? AmountOfFuel { get; set; }
+        public int AmountOfFuel { get; set; }
 
-        public int? FuelPrice { get; set; }
+        public decimal FuelPrice { get; set; }
 
         public int ArticleId { get; set; }
 
         public int ArticleQuantity { get; set; }
 
-        public int ArticlePrice { get; set; }
+        public decimal ArticlePrice { get; set; }
     }
 }

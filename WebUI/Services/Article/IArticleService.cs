@@ -1,5 +1,6 @@
 ﻿using WebUI.ServicesModel.Article;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.Enum;
 
 namespace WebUI.Services.Article
 {
@@ -15,8 +16,8 @@ namespace WebUI.Services.Article
 
         Task<List<SelectionListModel>> GetArticlesType();
 
-        Task<List<SelectionListModel>> GetSeeds();
-
         Task<bool> Delete(int id);
+
+        Task<List<SelectionListModel>> GetArticles(ArticleType type);
     }
 }

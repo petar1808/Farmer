@@ -13,11 +13,11 @@ namespace Domain.Models
         public Treatment(DateTime date,
             ТreatmentType treatmentType, 
             int? amountOfFuel,
-            int? fuelPrice,
+            decimal? fuelPrice,
             int articleId,
             int articleQuantity,
             int seedingId,
-            int articlePrice)
+            decimal articlePrice)
             :this(date, treatmentType, articleId, articleQuantity, seedingId,articlePrice)
         {
             AmountOfFuel = amountOfFuel;
@@ -29,7 +29,7 @@ namespace Domain.Models
             int articleId,
             int articleQuantity,
             int seedingId,
-            int articlePrice)
+            decimal articlePrice)
         {
             ValidateТreatmentType(treatmentType);
             Date = date;
@@ -46,7 +46,7 @@ namespace Domain.Models
 
         public int? AmountOfFuel { get; private set; }
 
-        public int? FuelPrice { get; private set; }
+        public decimal? FuelPrice { get; private set; }
 
         public int ArticleId { get; private set; }
 
@@ -54,7 +54,7 @@ namespace Domain.Models
 
         public int ArticleQuantity { get; private set; }
 
-        public int ArticlePrice { get; private set; }
+        public decimal ArticlePrice { get; private set; }
 
         public int SeedingId { get; private set; }
 
@@ -80,7 +80,7 @@ namespace Domain.Models
             return this;
         }
 
-        public Treatment UpdateFuelPrice(int? fuelPrice)
+        public Treatment UpdateFuelPrice(decimal? fuelPrice)
         {
             this.FuelPrice = fuelPrice;
             return this;
@@ -98,7 +98,7 @@ namespace Domain.Models
             return this;
         }
 
-        public Treatment UpdateArticlePrice(int articlePrice)
+        public Treatment UpdateArticlePrice(decimal articlePrice)
         {
             this.ArticlePrice = articlePrice;
             return this;

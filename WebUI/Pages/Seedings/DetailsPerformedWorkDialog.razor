@@ -1,4 +1,5 @@
-﻿@using WebUI.ServicesModel.PerformedWork
+﻿@using WebUI.Components.Validators
+@using WebUI.ServicesModel.PerformedWork
 @attribute [Authorize]
 
 @if (PerformedWork is not null)
@@ -10,28 +11,13 @@
                     <RadzenLabel Text="Дата" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenDatePicker DateFormat="d" style="display: block" Name="Date" @bind-Value=@PerformedWork.Date Class="w-100" />
+                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block" Name="Date" @bind-Value=@PerformedWork.Date Class="w-100" />
+                    <RadzenRequiredValidator Component="Date" Text="Датата е задължителна" Style="position: absolute" />
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <RadzenLabel Text="Гориво" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Цена" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Тип" />
+                    <RadzenLabel Text="Тип обработка" />
                 </div>
                 <div class="col-md-6">
                     <RadzenDropDown AllowClear="true"
@@ -41,7 +27,29 @@
                                 @bind-Value=@PerformedWork.WorkType
                                 ValueProperty="Value"
                                 TextProperty="Name"
+                                Name="WorkType"
                                 Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                    ​<div>
+                        <RadzenRequiredValidator Component="WorkType" Text="Тип работа е задължителен" DefaultValue="0" />
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Количество гориво" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
+                    ​<NumericRangeValidator Component="AmountOfFuel" Text="Гориво трябва да е положително число" Min="0" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Цена на гориво на литър" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
+                    <NumericRangeValidator Component="FuelPrice" Text="Цената на горивото трябва да е положително число" Min="0" />
                 </div>
             </div>
             <div class="row mb-1">

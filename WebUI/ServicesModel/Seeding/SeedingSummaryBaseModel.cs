@@ -13,5 +13,7 @@
         public decimal HarvestedGrainSellingPricePerKilogram { get; set; }
 
         public decimal SubsidiesIncome { get; set; }
+
+        public decimal ExpensesForHarvesting { get; set; }
     }
 }
