@@ -7,7 +7,7 @@
     <p><em>Loading...</em></p>
 }*@
 @if (@Article is not null)
-{  
+{
     <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Submit=@OnSubmit>
         <RadzenFieldset>
             <div class="row mb-3">
@@ -16,6 +16,8 @@
                 </div>
                 <div class="col-md-6">
                     <RadzenTextBox style="display: block" Name="Name" @bind-Value=@Article.Name Class="w-100" />
+                    <RadzenLengthValidator Component="Name" Min="2" Text="Името трябва да съдържа поне 2 знака" Style="position: absolute" />
+                    <RadzenLengthValidator Component="Name" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style ="position: absolute" />
                 </div>
             </div>
             <div class="row mb-3">
@@ -24,16 +26,21 @@
                 </div>
                 <div class="col-md-6">
                     <RadzenDropDown AllowClear="true"
-                                    AllowFiltering="true"
-                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                    Data=@ArticleTypes
-                                    @bind-Value=@Article.ArticleType
-                                    ValueProperty="Value"
-                                    TextProperty="Name"
-                                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                                AllowFiltering="true"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                Data=@ArticleTypes
+                                @bind-Value=@Article.ArticleType
+                                ValueProperty="Value"
+                                TextProperty="Name"
+                                Name="ArticleType"
+                                Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                    ​<div>
+                        <RadzenRequiredValidator Component="ArticleType" Text="Тип артикул е задължителен" DefaultValue="0"/>
+                    </div>
                 </div>
             </div>
-            <div class="row mb-1">
+
+            <div class="row mb-3">
                 <div class="col-md-5">
                     @if (IsModal)
                     {
@@ -47,5 +54,5 @@
                 </div>
             </div>
         </RadzenFieldset>
-    </RadzenTemplateForm> 
+    </RadzenTemplateForm>
 }

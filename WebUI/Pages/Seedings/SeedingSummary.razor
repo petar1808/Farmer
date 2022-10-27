@@ -1,4 +1,5 @@
-﻿@using WebUI.ServicesModel.Seeding
+﻿@using WebUI.Components.Validators
+@using WebUI.ServicesModel.Seeding
 @attribute [Authorize]
 
 @if (SeedingSummaryData is not null)
@@ -31,18 +32,21 @@
                                 <RadzenLabel Text="Засяти килограми семе на(дка)" />
                                 <div>
                                     <RadzenNumeric Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" style="display: block" Name="SeedsQuantityPerDecare" @bind-Value=@SeedingSummaryData.SeedsQuantityPerDecare Class="w-100" />
+                                    <NumericRangeValidator CanBeZero=true Component="SeedsQuantityPerDecare" Text="Засяти килограми семе трябва да е положително число" Min="0" />
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <RadzenLabel Text="Цена на семе за(кг)" />
                                 <div>
                                     <RadzenNumeric Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="SeedsPricePerKilogram" @bind-Value=@SeedingSummaryData.SeedsPricePerKilogram Class="w-100" />
+                                    <NumericRangeValidator CanBeZero=true Component="SeedsPricePerKilogram" Text="Цена на семе трябва да е положително число" Min="0" />
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <RadzenLabel Text="Разход за жътва(лв)" />
                                 <div>
                                     <RadzenNumeric Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="ExpensesForHarvesting" @bind-Value=@SeedingSummaryData.ExpensesForHarvesting Class="w-100" />
+                                    <NumericRangeValidator CanBeZero=true Component="ExpensesForHarvesting" Text="Разход за жътва трябва да е положително число" Min="0" />
                                 </div>
                             </div>
                         </div>
@@ -51,12 +55,14 @@
                                 <RadzenLabel Text="Изкарано количество на(дка) в(кг)" />
                                 <div>
                                     <RadzenNumeric Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="HarvestedQuantityPerDecare" @bind-Value=@SeedingSummaryData.HarvestedQuantityPerDecare Class="w-100" />
+                                    <NumericRangeValidator CanBeZero=true Component="HarvestedQuantityPerDecare" Text="Изкарано количество трябва да е положително число" Min="0" />
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <RadzenLabel Text="Продажна цена зърно на(кг)" />
                                 <div>
                                     <RadzenNumeric Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" style="display: block" Name="HarvestedGrainSellingPricePerKilogram" @bind-Value=@SeedingSummaryData.HarvestedGrainSellingPricePerKilogram Class="w-100" />
+                                    <NumericRangeValidator CanBeZero=true Component="HarvestedGrainSellingPricePerKilogram" Text="Продажна цена зърно трябва да е положително число" Min="0" />
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -68,8 +74,9 @@
                             <div class="col-md-12">
 
                                 <div>
-                                    <RadzenLabel Text="Приходи от субсидии" />
+                                    <RadzenLabel Text="Приходи от субсидии(лв)" />
                                     <RadzenNumeric Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="SubsidiesIncome" @bind-Value=@SeedingSummaryData.SubsidiesIncome Class="w-100" />
+                                    <NumericRangeValidator CanBeZero=true Component="SubsidiesIncome" Text="Приходи от субсидии трябва да е положително число" Min="0" />
                                 </div>
                             </div>
                         </div>

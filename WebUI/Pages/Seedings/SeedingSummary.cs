@@ -60,7 +60,7 @@ namespace WebUI.Pages.Seedings
                     { "IsModal", true},
                     { "SeedingSummaryData", SeedingSummaryData }
                 },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("410px").WithWidth("900px"));
+                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("500px").WithWidth("900px"));
 
             SeedingSummaryData = await SeedingService.GetSeedingSummary(SeedingId);
 

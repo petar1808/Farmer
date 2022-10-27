@@ -8,10 +8,6 @@ namespace WebUI.Pages.Seedings
 {
     public partial class DetailsPerformedWorkDialog
     {
-        private string StatusClass = default!;
-        private string Message = default!;
-        bool popup;
-
         [Inject]
         public IPerformedWorkService PerformedWorkService { get; set; } = default!;
 
@@ -60,24 +56,11 @@ namespace WebUI.Pages.Seedings
         {
             if (performedWork.Id == 0)
             {
-                var addIsSuccess = await PerformedWorkService.Add(PerformedWork,SeedingId);
-
-                if (addIsSuccess)
-                {
-                    StatusClass = "alert-success";
-                    Message = "New PerformedWork added successfully.";
-                }
-                else
-                {
-                    StatusClass = "alert-danger";
-                    Message = "Something went wrong adding the new PerformedWork. Please try again.";
-                }
+                await PerformedWorkService.Add(PerformedWork,SeedingId);
             }
             else
             {
                 await PerformedWorkService.Update(PerformedWork);
-                StatusClass = "alert-success";
-                Message = "PerformedWork updated successfully.";
             }
             DialogService.Close(false);
         }

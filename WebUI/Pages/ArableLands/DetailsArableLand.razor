@@ -1,4 +1,5 @@
-﻿@using WebUI.ServicesModel.ArableLand
+﻿@using WebUI.Components.Validators
+@using WebUI.ServicesModel.ArableLand
 @attribute [Authorize]
 
 @if (@ArableLands is not null)
@@ -11,6 +12,8 @@
                 </div>
                 <div class="col-md-6">
                     <RadzenTextBox style="display: block" Name="Name" @bind-Value=@ArableLands.Name Class="w-100" />
+                    <RadzenLengthValidator Component="Name" Min="2" Text="Името трябва да съдържа поне 2 знака" Style="position: absolute" />
+                    <RadzenLengthValidator Component="Name" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style="position: absolute" />
                 </div>
             </div>
             <div class="row mb-3">
@@ -19,6 +22,7 @@
                 </div>
                 <div class="col-md-6">
                     <RadzenNumeric style="display: block" Name="SizeInDecar" @bind-Value=@ArableLands.SizeInDecar Class="w-100" />
+                    ​<NumericRangeValidator Component="SizeInDecar" Text="Декарите трябва да са положително число" Min="0"/>
                 </div>
             </div>
             <div class="row mb-1">

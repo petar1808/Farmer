@@ -73,11 +73,21 @@ namespace WebUI.Components.DataGrid
         {
             PropertyName = propertyName;
             DisplayName = displayName;
+            StringFormat = "";
+        }
+
+        public DynamicDataGridColumnModel(string propertyName, string displayName, string stringFormat)
+        {
+            PropertyName = propertyName;
+            DisplayName = displayName;
+            StringFormat = stringFormat;
         }
 
         public string PropertyName { get; set; }
 
         public string DisplayName { get; set; }
+
+        public string StringFormat { get; set; }
     }
 
     public interface IDynamicDataGridModel

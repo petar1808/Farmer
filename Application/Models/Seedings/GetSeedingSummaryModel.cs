@@ -36,7 +36,7 @@ namespace Application.Models.Seedings
 
             var performedWorkExpensesSum = seeding.PerformedWorks.Sum(x => (x.AmountOfFuel * x.FuelPrice));
 
-            var treatmentExpensesSum = seeding.Treatments.Sum(x => (x.AmountOfFuel * x.FuelPrice) + (x.ArticlePrice * x.ArticleQuantity));
+            var treatmentExpensesSum = seeding.Treatments.Sum(x => (x.AmountOfFuel * x.FuelPrice) + (x.ArticlePrice * x.ArticleQuantity * seeding.ArableLand.SizeInDecar));
 
             var expensesForHarvesting = seeding.ExpensesForHarvesting;
 

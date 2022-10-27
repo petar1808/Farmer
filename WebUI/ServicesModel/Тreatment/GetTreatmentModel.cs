@@ -7,5 +7,11 @@ namespace WebUI.ServicesModel.Тreatment
         public string ArticleName { get; set; } = default!;
 
         public string TreatmentType { get; set; } = default!;
+
+        public decimal FuelPriceTotal => FuelPrice * AmountOfFuel;
+
+        public decimal ArticlePriceTotal => ArticlePrice * ArticleQuantity;
+
+        public decimal TotalCost => FuelPriceTotal + ArticlePriceTotal;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazorise;
+using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Services.Article;
 using WebUI.Services.Treatment;
@@ -10,8 +11,9 @@ namespace WebUI.Pages.Seedings
 {
     public partial class DetailsTreatmentDialog
     {
-        private string StatusClass = default!;
-        private string Message = default!;
+        private const string sprayingDisplayName = "Препарат";
+        private const string fertilizationDisplayName = "Тор";
+        private string treatmentTypePlaceholder = "";
 
         [Inject]
         public ITreatmentService TreatmentService { get; set; } = default!;
@@ -28,9 +30,6 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public int SeedingId { get; set; }
 
-        [Parameter]
-        public bool IsModal { get; set; }
-
         public ТreatmentDetailsModel Treatment { get; set; } = default!;
 
         public List<SelectionListModel> TreatmentTypes { get; set; } = new List<SelectionListModel>();
@@ -43,13 +42,12 @@ namespace WebUI.Pages.Seedings
 
             if (TreatmentId == 0)
             {
-                IsModal = true;
                 Treatment = new ТreatmentDetailsModel();
             }
             else
             {
                 Treatment = await TreatmentService.Get(TreatmentId);
-
+                treatmentTypePlaceholder = Treatment.TreatmentType == (int)ТreatmentType.Spraying ? sprayingDisplayName : fertilizationDisplayName;
                 if ((ТreatmentType)Treatment.TreatmentType == ТreatmentType.Spraying)
                 {
                     Articles = await ArticleService.GetArticles(ArticleType.Preparations);
@@ -70,12 +68,15 @@ namespace WebUI.Pages.Seedings
         public async Task OnDropDownChangeTreatmentType(object value)
         {
             Treatment.TreatmentType = (int)value;
+
             if ((ТreatmentType)value == ТreatmentType.Spraying)
             {
+                treatmentTypePlaceholder = sprayingDisplayName;
                 Articles = await ArticleService.GetArticles(ArticleType.Preparations);
             }
             if ((ТreatmentType)value == ТreatmentType.Fertilization)
             {
+                treatmentTypePlaceholder = fertilizationDisplayName;
                 Articles = await ArticleService.GetArticles(ArticleType.Fertilizers);
             }
         }
@@ -89,24 +90,11 @@ namespace WebUI.Pages.Seedings
         {
             if (treatment.Id == 0)
             {
-                var addIsSuccess = await TreatmentService.Add(treatment, SeedingId);
-
-                if (addIsSuccess)
-                {
-                    StatusClass = "alert-success";
-                    Message = "New Treatment added successfully.";
-                }
-                else
-                {
-                    StatusClass = "alert-danger";
-                    Message = "Something went wrong adding the new Treatment. Please try again.";
-                }
+                await TreatmentService.Add(treatment, SeedingId);
             }
             else
             {
                 await TreatmentService.Update(Treatment);
-                StatusClass = "alert-success";
-                Message = "Treatment updated successfully.";
             }
             DialogService.Close(false);
         }

@@ -9,10 +9,6 @@ namespace WebUI.Pages.Articles
 {
     public partial class DetailsArticle
     {
-        private string StatusClass = default!;
-        private string Message = default!;
-        bool popup;
-
         [Inject]
         public IArticleService ArticleService { get; set; } = default!;
 
@@ -59,25 +55,11 @@ namespace WebUI.Pages.Articles
         {
             if (article.Id == 0)
             {
-                var addIsSuccess = await ArticleService.Add(Article);
-               
-                if (addIsSuccess)
-                {
-                    StatusClass = "alert-success";
-                    Message = "New Article added successfully.";
-                    
-                }
-                else
-                {
-                    StatusClass = "alert-danger";
-                    Message = "Something went wrong adding the new Article. Please try again.";
-                }
+                await ArticleService.Add(Article);
             }
             else
             {
                 await ArticleService.Update(Article);
-                StatusClass = "alert-success";
-                Message = "Article updated successfully.";
             }
             DialogService.Close(false);
         }

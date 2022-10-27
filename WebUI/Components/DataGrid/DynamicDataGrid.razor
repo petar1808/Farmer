@@ -12,7 +12,7 @@
         <Columns>
             @foreach (var column in Data.Columns)
             {
-                <RadzenDataGridColumn TItem="TData" Property="@column.PropertyName" Title="@column.DisplayName" />
+                <RadzenDataGridColumn TItem="TData" Property="@column.PropertyName" FormatString="@column.StringFormat" Title="@column.DisplayName" />
             }
             @if (Data.EditAction != null || Data.DeleteAction != null)
             {         

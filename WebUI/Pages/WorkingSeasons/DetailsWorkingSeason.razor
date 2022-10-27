@@ -1,4 +1,5 @@
-﻿@using WebUI.ServicesModel.WorkingSeason
+﻿@using WebUI.Components.Validators
+@using WebUI.ServicesModel.WorkingSeason
 @attribute [Authorize]
 
 @if (@WorkingSeason is not null)
@@ -18,9 +19,9 @@
                     <RadzenLabel Text="Начало" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenDatePicker DateFormat="d" style="display: block"
+                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block"
                                   Name="StartDate" @bind-Value=@WorkingSeason.StartDate Class="w-100"
-                                  Change=@(args => OnDateFromChange(args)) />
+                                  Change=@(args => OnStartDateChange(args)) />
                 </div>
             </div>
             <div class="row mb-3">
@@ -28,9 +29,13 @@
                     <RadzenLabel Text="Край" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenDatePicker DateFormat="d" style="display: block"
+                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block"
                                   Name="EndDate" @bind-Value=@WorkingSeason.EndDate Class="w-100"
-                                  Change=@(args => OnDateToChange(args)) />
+                                  Change=@(args => OnEndDateChange(args)) />
+                    <CompareDateTimeByYearValidator Component="EndDate"
+                                                Text="Края трябва да е с 1 година повече от началото"
+                                                FromYear="@WorkingSeason.StartDate"
+                                                MustBeBiggerWithNumberOfYears="1"/>
                 </div>
             </div>
             <div class="row mb-1">

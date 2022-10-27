@@ -45,7 +45,7 @@ namespace WebUI.Pages.ArableLands
         {
             await DialogService.OpenAsync<DetailsArableLand>($"Редактиране на Земя",
               new Dictionary<string, object>() { { "ArableLandId", arableLandId } },
-               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("280px").WithWidth("600px"));
+               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
             DataGrid.UpdateData(await ArableLandService.List());
             this.StateHasChanged();
@@ -54,7 +54,7 @@ namespace WebUI.Pages.ArableLands
         public async Task AddArableLand()
         {
             await DialogService.OpenAsync<DetailsArableLand>($"Добавяне на Земя",
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("280px").WithWidth("600px"));
+              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
             DataGrid.UpdateData(await ArableLandService.List());
         }

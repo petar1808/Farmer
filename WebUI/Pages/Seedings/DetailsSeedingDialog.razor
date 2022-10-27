@@ -10,7 +10,11 @@
                             @bind-Value=@SelectedArableLandId
                             ValueProperty="Value"
                             TextProperty="Name"
+                            Name="ArableLand"
                             Class="w-100" />
+            <div class="col">
+                <RadzenRequiredValidator Component="ArableLand" Text="Земята е задължителна" DefaultValue="0"/>
+            </div>
         </div>
     </div>
     <div class="row">

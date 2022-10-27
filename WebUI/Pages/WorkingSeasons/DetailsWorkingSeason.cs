@@ -49,14 +49,17 @@ namespace WebUI.Pages.WorkingSeasons
             WorkingSeason.Name = $"{start}/{end}";
         }
 
-        protected void OnDateFromChange(DateTime? value)
+        protected void OnStartDateChange(DateTime? stratDate)
         {
-            ChangeName(value, WorkingSeason.EndDate);
+            ChangeName(stratDate, WorkingSeason.EndDate);
         }
 
-        protected void OnDateToChange(DateTime? value)
+        protected void OnEndDateChange(DateTime? endDate)
         {
-            ChangeName(WorkingSeason.StartDate, value);
+            // endDate.year - StartDate.year = 1
+            // 
+
+            ChangeName(WorkingSeason.StartDate, endDate);
         }
 
         protected async Task OnSubmit(WorkingSeasonModel workingSeason)
