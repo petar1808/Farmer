@@ -19,8 +19,7 @@
                     <RadzenLabel Text="Тип" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenDropDown AllowClear="true"
-                                AllowFiltering="true"
+                    <RadzenDropDown 
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                 Data=@TreatmentTypes
                                 @bind-Value=@Treatment.TreatmentType
@@ -34,7 +33,7 @@
                     <RadzenLabel Text="Препарат/Тор" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenDropDown Data=@TreatmentArticleType
+                    <RadzenDropDown Data=@Articles
                                 @bind-Value=@Treatment.ArticleId
                                 ValueProperty="Value"
                                 TextProperty="Name"

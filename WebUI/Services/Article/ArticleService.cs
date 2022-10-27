@@ -2,6 +2,7 @@
 using System.Text.Json;
 using WebUI.ServicesModel.Article;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.Enum;
 
 namespace WebUI.Services.Article
 {
@@ -49,10 +50,10 @@ namespace WebUI.Services.Article
                 .DeleteAsync<bool>($"api/Articles/{id}");
         }
 
-        public async Task<List<SelectionListModel>> GetSeeds()
+        public async Task<List<SelectionListModel>> GetArticles(ArticleType type)
         {
             return await _httpService
-                .GetAsync<List<SelectionListModel>>($"api/assets/seeds");
+                .GetAsync<List<SelectionListModel>>($"api/assets/treatment/{(int)type}");
         }
     }
 }

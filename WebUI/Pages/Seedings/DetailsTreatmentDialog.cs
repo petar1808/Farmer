@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using WebUI.Services.Article;
 using WebUI.Services.Treatment;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.Enum;
 using WebUI.ServicesModel.Тreatment;
 
 namespace WebUI.Pages.Seedings
@@ -13,6 +15,9 @@ namespace WebUI.Pages.Seedings
 
         [Inject]
         public ITreatmentService TreatmentService { get; set; } = default!;
+
+        [Inject]
+        public IArticleService ArticleService { get; set; } = default!;
 
         [Inject]
         public DialogService DialogService { get; set; } = default!;
@@ -30,14 +35,13 @@ namespace WebUI.Pages.Seedings
 
         public List<SelectionListModel> TreatmentTypes { get; set; } = new List<SelectionListModel>();
 
-        public List<SelectionListModel> TreatmentArticleType { get; set; } = new List<SelectionListModel>();
+        public List<SelectionListModel> Articles { get; set; } = new List<SelectionListModel>();
 
         protected async override Task OnInitializedAsync()
-        { 
+        {
             TreatmentTypes = await TreatmentService.GetTreatmentTypes();
-            TreatmentArticleType = await TreatmentService.GetTreatmentArticles();
 
-            if (TreatmentId == 0) 
+            if (TreatmentId == 0)
             {
                 IsModal = true;
                 Treatment = new ТreatmentDetailsModel();
@@ -45,6 +49,16 @@ namespace WebUI.Pages.Seedings
             else
             {
                 Treatment = await TreatmentService.Get(TreatmentId);
+
+                if ((ТreatmentType)Treatment.TreatmentType == ТreatmentType.Spraying)
+                {
+                    Articles = await ArticleService.GetArticles(ArticleType.Preparations);
+                }
+                if ((ТreatmentType)Treatment.TreatmentType == ТreatmentType.Fertilization)
+                {
+                    Articles = await ArticleService.GetArticles(ArticleType.Fertilizers);
+                }
+
             }
         }
 
@@ -53,10 +67,17 @@ namespace WebUI.Pages.Seedings
             DialogService.Close(false);
         }
 
-        public void OnDropDownChangeTreatmentType(object value)
+        public async Task OnDropDownChangeTreatmentType(object value)
         {
             Treatment.TreatmentType = (int)value;
-            
+            if ((ТreatmentType)value == ТreatmentType.Spraying)
+            {
+                Articles = await ArticleService.GetArticles(ArticleType.Preparations);
+            }
+            if ((ТreatmentType)value == ТreatmentType.Fertilization)
+            {
+                Articles = await ArticleService.GetArticles(ArticleType.Fertilizers);
+            }
         }
 
         public void OnDropDownChangeTreatmentArticleType(object value)

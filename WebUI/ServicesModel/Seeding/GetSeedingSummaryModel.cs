@@ -4,10 +4,12 @@
     {
         public string ArticleName { get; set; } = default!;
 
-        public decimal IncomeFromHarvestedGrains => HarvestedQuantityPerDecare * HarvestedGrainSellingPricePerKilogram;
+        public decimal IncomeFromHarvestedGrains { get; set; }
 
-        public decimal Expenses => SeedsQuantityPerDecare * SeedsPricePerKilogram;
+        public decimal Expenses { get; set; }
 
-        public decimal Profit => (IncomeFromHarvestedGrains + SubsidiesIncome) - Expenses;
+        public decimal Profit { get; set; }
+
+        public decimal Income { get; set; }
     }
 }

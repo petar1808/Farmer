@@ -27,6 +27,13 @@ namespace Infrastructure.Persistence.Configuration
                .OnDelete(DeleteBehavior.Restrict);
 
             builder
+                .HasIndex(x => new
+                {
+                    x.ArableLandId,
+                    x.WorkingSeasonId
+                }).IsUnique();
+
+            builder
                .HasOne(x => x.Article)
                .WithMany()
                .HasForeignKey(p => p.ArticleId)
@@ -35,6 +42,10 @@ namespace Infrastructure.Persistence.Configuration
 
             builder.Property(p => p.ArableLandId).IsRequired();
             builder.Property(p => p.WorkingSeasonId).IsRequired();
+            builder.Property(p => p.HarvestedGrainSellingPricePerKilogram).HasColumnType("decimal(12,2)");
+            builder.Property(p => p.SeedsPricePerKilogram).HasColumnType("decimal(12,2)");
+            builder.Property(p => p.SubsidiesIncome).HasColumnType("decimal(12,2)");
+            builder.Property(p => p.ExpensesForHarvesting).HasColumnType("decimal(12,2)");
             builder.Property(p => p.ArticleId);
 
             base.Configure(builder);

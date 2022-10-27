@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.Enum;
 using WebUI.ServicesModel.Тreatment;
 
 namespace WebUI.Services.Treatment
@@ -28,12 +29,6 @@ namespace WebUI.Services.Treatment
         {
             return await _httpService
                 .GetAsync<ТreatmentDetailsModel>($"api/seeding/treatment/{id}");
-        }
-
-        public async Task<List<SelectionListModel>> GetTreatmentArticles()
-        {
-            return await _httpService
-                .GetAsync<List<SelectionListModel>>($"api/assets/treatment");
         }
 
         public async Task<List<SelectionListModel>> GetTreatmentTypes()

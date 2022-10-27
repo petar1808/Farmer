@@ -108,20 +108,10 @@ namespace Application.Services.Articles
             return result;
         }
 
-        public async Task<Result<List<SelectionListModel>>> SeedsArticlesSelectionList()
+        public async Task<Result<List<SelectionListModel>>> ArticlesSelectionList(ArticleType type)
         {
             var articles = await farmerDbContext.Articles
-                .Where(x => x.ArticleType == ArticleType.Seeds)
-                .Select(x => new SelectionListModel(x.Id, x.Name))
-                .ToListAsync();
-
-            return articles;
-        }
-
-        public async Task<Result<List<SelectionListModel>>> TreatmentArticlesSelectionList()
-        {
-            var articles = await farmerDbContext.Articles
-                .Where(x => x.ArticleType != ArticleType.Seeds)
+                .Where(x => x.ArticleType == type)
                 .Select(x => new SelectionListModel(x.Id, x.Name))
                 .ToListAsync();
 

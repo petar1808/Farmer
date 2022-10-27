@@ -4,6 +4,7 @@ using WebUI.Extensions;
 using WebUI.Services.Article;
 using WebUI.Services.Seeding;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.Enum;
 using WebUI.ServicesModel.Seeding;
 
 namespace WebUI.Pages.Seedings
@@ -37,7 +38,7 @@ namespace WebUI.Pages.Seedings
         {
             if (IsModal)
             {
-                AllArticleOfTypeSeeds = await ArticleService.GetSeeds();
+                AllArticleOfTypeSeeds = await ArticleService.GetArticles(ArticleType.Seeds);
             }
         }
 

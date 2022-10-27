@@ -80,7 +80,7 @@ namespace Domain.Models
             return this;
         }
 
-        public Treatment UpdateFuelPrice(int? fuelPrice)
+        public Treatment UpdateFuelPrice(decimal? fuelPrice)
         {
             this.FuelPrice = fuelPrice;
             return this;
@@ -98,7 +98,7 @@ namespace Domain.Models
             return this;
         }
 
-        public Treatment UpdateArticlePrice(int articlePrice)
+        public Treatment UpdateArticlePrice(decimal articlePrice)
         {
             this.ArticlePrice = articlePrice;
             return this;

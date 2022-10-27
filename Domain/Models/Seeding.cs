@@ -18,13 +18,11 @@ namespace Domain.Models
             ArableLand = default!;
             WorkingSeason = default!;
             Article = default!;
-            Treatments = default!;
-            PerformedWorks = default!;
         }
 
-        public int ArableLandId { get;}
+        public int ArableLandId { get; private set; }
 
-        public ArableLand ArableLand { get;  }
+        public ArableLand ArableLand { get; private set; }
 
         public int WorkingSeasonId { get;  }
 
@@ -34,9 +32,9 @@ namespace Domain.Models
 
         public Article Article { get; private set; }
 
-        public int SeedsQuantityPerDecare { get; private set; } = default!; 
+        public int SeedsQuantityPerDecare { get; private set; }
 
-        public decimal SeedsPricePerKilogram { get; private set; } = default!;
+        public decimal SeedsPricePerKilogram { get; private set; }
 
         public int HarvestedQuantityPerDecare { get; private set; }
 
@@ -44,13 +42,21 @@ namespace Domain.Models
 
         public decimal SubsidiesIncome { get; private set; }
 
-        public Treatment Treatments { get;}
+        public decimal ExpensesForHarvesting { get; private set; }
 
-        public PerformedWork PerformedWorks { get;}
+        public List<Treatment> Treatments { get; } = default!;
+
+        public List<PerformedWork> PerformedWorks { get; } = default!;
 
         public Seeding UpdateArticle(int? articleId)
         {
             this.ArticleId = articleId;
+            return this;
+        }
+
+        public Seeding UpdateExpensesForHarvesting(decimal expensesForHarvesting)
+        {
+            this.ExpensesForHarvesting = expensesForHarvesting;
             return this;
         }
 

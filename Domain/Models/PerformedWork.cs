@@ -58,7 +58,7 @@ namespace Domain.Models
             return this;
         }
 
-        public PerformedWork UpdateFuelPrice(int fuelPrice)
+        public PerformedWork UpdateFuelPrice(decimal fuelPrice)
         {
             this.FuelPrice = fuelPrice;
             return this;

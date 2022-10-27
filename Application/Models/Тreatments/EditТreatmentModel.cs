@@ -22,7 +22,7 @@ namespace Application.Models.Тreatments
 
         public int? AmountOfFuel { get; init; }
 
-        public int? FuelPrice { get; init; }
+        public decimal? FuelPrice { get; init; }
 
         [Required]
         public int ArticleId { get; init; }
@@ -31,6 +31,6 @@ namespace Application.Models.Тreatments
         public int ArticleQuantity { get; init; }
 
         [Required]
-        public int ArticlePrice { get; init; }
+        public decimal ArticlePrice { get; init; }
     }
 }

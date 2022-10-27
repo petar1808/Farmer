@@ -16,7 +16,7 @@ namespace Infrastructure.Persistence.Configuration
         {
             builder
                .HasOne(x => x.Seeding)
-               .WithMany()
+               .WithMany(x => x.Treatments)
                .HasForeignKey(p => p.SeedingId)
                .OnDelete(DeleteBehavior.Restrict);
 
@@ -26,10 +26,11 @@ namespace Infrastructure.Persistence.Configuration
               .HasForeignKey(p => p.ArticleId)
               .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Property(p => p.FuelPrice).HasColumnType("decimal(12,2)").IsRequired(false);
             builder.Property(p => p.ArticleQuantity).IsRequired();
             builder.Property(p => p.Date).IsRequired();
             builder.Property(p => p.TreatmentType).IsRequired();
-            builder.Property(p => p.ArticlePrice).IsRequired();
+            builder.Property(p => p.ArticlePrice).HasColumnType("decimal(12,2)").IsRequired();
             base.Configure(builder);
         }
     }

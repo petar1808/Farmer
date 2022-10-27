@@ -8,7 +8,7 @@
 
         public int AmountOfFuel { get; set; }
 
-        public int FuelPrice { get; set; }
+        public decimal FuelPrice { get; set; }
 
         public decimal FuelPriceTotal => AmountOfFuel * FuelPrice;
     }

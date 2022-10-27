@@ -22,6 +22,6 @@ namespace Application.Models.PerformedWorks
         public int AmountOfFuel { get; init; }
 
         [Required]
-        public int FuelPrice { get; init; }
+        public decimal FuelPrice { get; init; }
     }
 }

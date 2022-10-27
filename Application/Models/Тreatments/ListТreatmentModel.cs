@@ -19,9 +19,9 @@ namespace Application.Models.Тreatments
 
         public string TreatmentType { get; init; } = default!;
 
-        public int? AmountOfFuel { get; init; }
+        public int AmountOfFuel { get; init; }
 
-        public int? FuelPrice { get; init; }
+        public decimal FuelPrice { get; init; }
 
         public int ArticleId { get; init; }
 
@@ -29,7 +29,7 @@ namespace Application.Models.Тreatments
 
         public int ArticleQuantity { get; init; }
 
-        public int ArticlePrice { get; init; }
+        public decimal ArticlePrice { get; init; }
 
         public virtual void Mapping(Profile mapper)
         => mapper.CreateMap<Treatment, ListТreatmentModel>()
