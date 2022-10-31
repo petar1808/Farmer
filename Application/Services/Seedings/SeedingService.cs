@@ -79,7 +79,7 @@ namespace Application.Services.Seedings
             var arableLands = await farmerDbContext
                 .Seedings
                 .Where(x => x.WorkingSeasonId == seasonId)
-                .Select(x => new SownArableLandModel(x.Id, x.ArableLand.Name))
+                .Select(x => new SownArableLandModel(x.Id, x.ArableLand.Name, x.ArableLand.SizeInDecar))
                 .ToListAsync();
 
             return arableLands;

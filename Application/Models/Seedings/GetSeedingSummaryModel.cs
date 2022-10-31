@@ -25,7 +25,6 @@ namespace Application.Models.Seedings
            => mapper.CreateMap<Seeding, GetSeedingSummaryModel>()
                 .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name))
                 .ForMember(x => x.ArticleId, cfg => cfg.MapFrom(c => c.Article.Id))
-                
                 .ForMember(x => x.IncomeFromHarvestedGrains, cfg => cfg.MapFrom(c => (c.HarvestedQuantityPerDecare * c.HarvestedGrainSellingPricePerKilogram) * c.ArableLand.SizeInDecar))
                 .ForMember(x => x.Expenses, cfg => cfg.MapFrom(c => CalculateExpenses(c)));
 

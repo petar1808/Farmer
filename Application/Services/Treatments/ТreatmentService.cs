@@ -31,6 +31,8 @@ namespace Application.Services.Treatments
             var treatment = await farmerDbContext
                 .Treatments
                 .Include(x => x.Article)
+                .Include(x => x.Seeding)
+                .Include(x => x.Seeding.ArableLand)
                 .Where(x => x.SeedingId == seedingId)
                 .ToListAsync();
 

@@ -8,14 +8,17 @@ namespace Application.Models.Seedings
 {
     public class SownArableLandModel
     {
-        public SownArableLandModel(int seedingId, string arableLandName)
+        public SownArableLandModel(int seedingId, string arableLandName, int sizeInDecar)
         {
             SeedingId = seedingId;
             ArableLandName = arableLandName;
+            SizeInDecar = sizeInDecar;
         }
 
         public int SeedingId { get; set; }
 
         public string ArableLandName { get; set; }
+
+        public int SizeInDecar { get; set; }
     }
 }

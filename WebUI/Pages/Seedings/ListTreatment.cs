@@ -23,6 +23,9 @@ namespace WebUI.Pages.Seedings
         public string ArableLandName { get; set; } = default!;
 
         [Parameter]
+        public int SizeInDecar { get; set; }
+
+        [Parameter]
         public EventCallback<int> OnChangeData { get; set; }
 
         private DynamicDataGridModel<GetTreatmentModel> DataGrid { get; set; } = default!;
@@ -54,7 +57,7 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddTreatment()
         {
-            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Добавяне на Третиране за земя: {ArableLandName}",
+            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Добавяне на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
 
@@ -66,7 +69,7 @@ namespace WebUI.Pages.Seedings
 
         public async Task EditTreatment(int treatmentId)
         {
-            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Редактиране на Третиране за земя: {ArableLandName}",
+            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Редактиране на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "TreatmentId", treatmentId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
 

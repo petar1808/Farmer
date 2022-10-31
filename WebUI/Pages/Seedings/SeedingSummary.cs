@@ -27,6 +27,9 @@ namespace WebUI.Pages.Seedings
         public string ArableLandName { get; set; } = default!;
 
         [Parameter]
+        public int SizeInDecar { get; set; }
+
+        [Parameter]
         public bool IsModal { get; set; }
 
         [Parameter]
@@ -54,7 +57,7 @@ namespace WebUI.Pages.Seedings
 
         public async Task OnEdit()
         {
-            await DialogService.OpenAsync<SeedingSummary>($"Редактиране на Сеитба за земя: {ArableLandName}",
+            await DialogService.OpenAsync<SeedingSummary>($"Редактиране на Сеитба за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { 
                     { "SeedingId", SeedingId },
                     { "IsModal", true},

@@ -10,7 +10,7 @@ namespace WebUI.ServicesModel.Тreatment
 
         public decimal FuelPriceTotal => FuelPrice * AmountOfFuel;
 
-        public decimal ArticlePriceTotal => ArticlePrice * ArticleQuantity;
+        public decimal ArticlePriceTotal { get; set; }
 
         public decimal TotalCost => FuelPriceTotal + ArticlePriceTotal;
     }

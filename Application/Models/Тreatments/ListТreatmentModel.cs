@@ -31,9 +31,19 @@ namespace Application.Models.Тreatments
 
         public decimal ArticlePrice { get; init; }
 
+        public decimal ArticlePriceTotal { get; init; }
+
         public virtual void Mapping(Profile mapper)
         => mapper.CreateMap<Treatment, ListТreatmentModel>()
             .ForMember(x => x.TreatmentType, cfg => cfg.MapFrom(c => c.TreatmentType.GetEnumDisplayName()))
-            .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name));
+            .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name))
+            .ForMember(x => x.ArticlePriceTotal, cfg => cfg.MapFrom(c => CalculateExpenses(c)));
+
+        private decimal? CalculateExpenses(Treatment treatment)
+        {
+            var test = treatment.Seeding.ArableLand.SizeInDecar * (treatment.ArticlePrice * treatment.ArticleQuantity);
+
+            return test;
+        }
     }
 }

@@ -23,6 +23,9 @@ namespace WebUI.Pages.Seedings
         public string ArableLandName { get; set; } = default!;
 
         [Parameter]
+        public int SizeInDecar { get; set; }
+
+        [Parameter]
         public EventCallback<int> OnChangeData { get; set; }
 
         public DynamicDataGridModel<GetPerformedWorkModel> DataGrid { get; set; } = default!;
@@ -35,9 +38,9 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.WorkType), "Тип обработка"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPrice), "Цена на литър"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.AmountOfFuel), "Количество гориво"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPriceTotal), "Разход за гориво"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPrice), "Цена на литър(лв.)"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.AmountOfFuel), "Количество гориво(л.)"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPriceTotal), "Разход за гориво(лв.)"),
             };
             DataGrid = new DynamicDataGridModel<GetPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns)
                 .WithEdit(async (x) => await EditPerformedWork(x))
@@ -54,7 +57,7 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddPerformedWork()
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Добавяне на Обработка за земя: {ArableLandName}",
+            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Добавяне на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
 
@@ -65,7 +68,7 @@ namespace WebUI.Pages.Seedings
         }
         public async Task EditPerformedWork(int performedWorkId)
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Редактиране на Обработка за земя: {ArableLandName}",
+            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Редактиране на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
 

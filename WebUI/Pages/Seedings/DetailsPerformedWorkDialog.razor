@@ -36,10 +36,10 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <RadzenLabel Text="Количество гориво" />
+                    <RadzenLabel Text="Количество гориво(литра)" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
+                    <RadzenNumeric Format="# л" style="display: block" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
                     ​<NumericRangeValidator Component="AmountOfFuel" Text="Гориво трябва да е положително число" Min="0" />
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <RadzenLabel Text="Цена на гориво на литър" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
+                    <RadzenNumeric Format="#0.00 лв" style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
                     <NumericRangeValidator Component="FuelPrice" Text="Цената на горивото трябва да е положително число" Min="0" />
                 </div>
             </div>
