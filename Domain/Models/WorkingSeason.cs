@@ -11,8 +11,8 @@ namespace Domain.Models
     public class WorkingSeason : Entity<int>
     {
         public WorkingSeason(string name,
-            DateTime? startDate,
-            DateTime? endDate)
+            DateTime startDate,
+            DateTime endDate)
             :this(name)
         {
             StartDate = startDate;
@@ -27,9 +27,9 @@ namespace Domain.Models
 
         public string Name { get; private set; }
 
-        public DateTime? StartDate { get; private set; }
+        public DateTime StartDate { get; private set; }
 
-        public DateTime? EndDate { get; private set; }
+        public DateTime EndDate { get; private set; }
 
         public WorkingSeason UpdateName(string name)
         {
@@ -38,13 +38,13 @@ namespace Domain.Models
             return this;
         }
 
-        public WorkingSeason UpdateSratDate(DateTime? sratDate)
+        public WorkingSeason UpdateSratDate(DateTime sratDate)
         {
             this.StartDate = sratDate;
             return this;
         }
 
-        public WorkingSeason UpdateEndDate(DateTime? endDate)
+        public WorkingSeason UpdateEndDate(DateTime endDate)
         {
             this.EndDate = endDate;
             return this;

@@ -53,7 +53,7 @@ namespace WebUI.Pages.Seedings
             if (SelectedWorkingSeasonService.IsDefaultValue())
             {
                 SelectedWorkingSeasonService
-                    .ChangeSelectedWorkingSeason(WorkingSeasons.OrderByDescending(x => x.Value).First()?.Value ?? 0);
+                    .ChangeSelectedWorkingSeason(WorkingSeasons.OrderByDescending(x => x.Name).First()?.Value ?? 0);
             }
 
             SownArableLands = await SeedingService

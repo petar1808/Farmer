@@ -15,6 +15,8 @@ namespace Infrastructure.Persistence.Configuration
     {
         public override void Configure(EntityTypeBuilder<WorkingSeason> builder)
         {
+            builder.HasIndex(x => x.Name).IsUnique();
+
             builder.Property(p => p.Name).HasMaxLength(MaxNameLenght).IsRequired(); 
             base.Configure(builder);
         }

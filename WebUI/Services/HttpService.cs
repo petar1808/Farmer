@@ -69,10 +69,10 @@ namespace WebUI.Services
             {
                 using (var response = await _httpClient.SendAsync(request))
                 {
-                    //if (response.StatusCode == HttpStatusCode.Unauthorized)
-                    //{
-                    //    _navigationManager.NavigateTo("login");
-                    //}
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        _navigationManager.NavigateTo("login");
+                    }
 
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
@@ -99,11 +99,6 @@ namespace WebUI.Services
                         });
                     }
 
-                    //if (response.StatusCode == HttpStatusCode.Forbidden)
-                    //{
-                    //    _navigationManager.NavigateTo($"{_navigationManager.BaseUri}forbidden");
-                    //}
-
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
                         notificationService.Notify(new NotificationMessage
@@ -114,9 +109,7 @@ namespace WebUI.Services
                             Duration = 10000
                         });
                     }
-                    // To do: add other cases 404, 403
-                    // 
-
+  
                     if (!response.IsSuccessStatusCode)
                     {
                         return (T)Activator.CreateInstance(typeof(T))!;

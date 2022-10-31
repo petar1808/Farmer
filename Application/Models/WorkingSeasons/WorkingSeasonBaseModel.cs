@@ -15,9 +15,9 @@ namespace Application.Models.WorkingSeasons
         public string Name { get; init; } = default!;
 
         [DataType(DataType.DateTime)]
-        public DateTime? StartDate { get; init; }
+        public DateTime StartDate { get; init; }
 
         [DataType(DataType.DateTime)]
-        public DateTime? EndDate { get; init; }
+        public DateTime EndDate { get; init; }
     }
 }

@@ -20,6 +20,15 @@ namespace Application.Services.WorikingSeasons
 
         public async Task<Result> Add(AddWorkingSeasonModel workingSeasonModel)
         {
+            var workingSeasonDate = await farmerDbContext
+                .WorkingSeasons
+                .AnyAsync(x => x.StartDate.Year == workingSeasonModel.StartDate.Year && x.EndDate.Year == workingSeasonModel.EndDate.Year);
+
+            if (workingSeasonDate)
+            {
+                return "Има съзаден сезон с същото начало и край";
+            }
+
             var workingSeason = new WorkingSeason(
                 workingSeasonModel.Name,
                 workingSeasonModel.StartDate,

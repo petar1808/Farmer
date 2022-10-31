@@ -7,9 +7,6 @@ namespace WebUI.Pages.WorkingSeasons
 {
     public partial class DetailsWorkingSeason
     {
-        private string StatusClass = default!;
-        private string Message = default!;
-
         [Inject]
         public IWorkingSeasonService WorkingSeasonService { get; set; } = default!;
 
@@ -19,16 +16,12 @@ namespace WebUI.Pages.WorkingSeasons
         [Parameter]
         public int WorkingSeasonId { get; set; }
 
-        [Parameter]
-        public bool IsModal { get; set; }
-
         public WorkingSeasonModel WorkingSeason { get; set; } = default!;
 
         protected async override Task OnInitializedAsync()
         {
             if (WorkingSeasonId == 0)
             {
-                IsModal = true;
                 WorkingSeason = new WorkingSeasonModel();
             }
             else
@@ -56,9 +49,6 @@ namespace WebUI.Pages.WorkingSeasons
 
         protected void OnEndDateChange(DateTime? endDate)
         {
-            // endDate.year - StartDate.year = 1
-            // 
-
             ChangeName(WorkingSeason.StartDate, endDate);
         }
 
@@ -66,23 +56,11 @@ namespace WebUI.Pages.WorkingSeasons
         {
             if (workingSeason.Id == 0)
             {
-                var addIsSuccess = await WorkingSeasonService.Add(WorkingSeason);
-                if (addIsSuccess)
-                {
-                    StatusClass = "alert-success";
-                    Message = "New WorkingSeason added successfully.";
-                }
-                else
-                {
-                    StatusClass = "alert-danger";
-                    Message = "Something went wrong adding the new WorkingSeason. Please try again.";
-                }
+                await WorkingSeasonService.Add(WorkingSeason);
             }
             else
             {
                 await WorkingSeasonService.Update(WorkingSeason);
-                StatusClass = "alert-success";
-                Message = "WorkingSeason updated successfully.";
             }
             DialogService.Close(false);
         }
