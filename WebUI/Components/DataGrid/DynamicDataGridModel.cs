@@ -26,6 +26,8 @@ namespace WebUI.Components.DataGrid
 
         public bool AllowSorting { get; private set; } = false;
 
+        public bool AllowResizable { get; private set; } = false;
+
         public int PageSize { get; private set; } = 10;
 
 
@@ -62,6 +64,12 @@ namespace WebUI.Components.DataGrid
         public DynamicDataGridModel<TData> WithSorting()
         {
             this.AllowSorting = true;
+            return this;
+        }
+
+        public DynamicDataGridModel<TData> WithResizable()
+        {
+            this.AllowResizable = true;
             return this;
         }
 

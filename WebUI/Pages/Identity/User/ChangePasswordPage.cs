@@ -8,8 +8,6 @@ namespace WebUI.Pages.Identity.User
 {
     public partial class ChangePasswordPage
     {
-        bool popup;
-
         [Inject]
         public IIdentityService IdentityService { get; set; } = default!;
 

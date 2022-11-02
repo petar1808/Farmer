@@ -48,7 +48,7 @@
                     <RadzenLabel Text="Цена на гориво на литър" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Format="#0.00 лв" style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
+                    <RadzenNumeric Format="#0.00 лв" s style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
                     <NumericRangeValidator Component="FuelPrice" Text="Цената на горивото трябва да е положително число" Min="0" />
                 </div>
             </div>

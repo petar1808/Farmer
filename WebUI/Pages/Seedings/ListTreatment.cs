@@ -31,7 +31,7 @@ namespace WebUI.Pages.Seedings
         private DynamicDataGridModel<GetTreatmentModel> DataGrid { get; set; } = default!;
 
 
-        protected async override Task OnInitializedAsync()
+        protected async override Task OnParametersSetAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
@@ -52,7 +52,8 @@ namespace WebUI.Pages.Seedings
                 .WithDelete(async (x) => await DeleteTreatment(x))
                 .WithFiltering()
                 .WithPaging()
-                .WithSorting();
+                .WithSorting()
+                .WithResizable();
         }
 
         public async Task AddTreatment()

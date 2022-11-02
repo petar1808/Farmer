@@ -50,7 +50,9 @@ namespace WebUI.Pages.Seedings
         {
             WorkingSeasons = await WorkingSeasonService.GetAllSeasons();
 
-            if (SelectedWorkingSeasonService.IsDefaultValue())
+            var workingSeasons = WorkingSeasons.Any(x => x.Value == SelectedWorkingSeasonService.SelectedWorkingSeasonId);
+
+            if (SelectedWorkingSeasonService.IsDefaultValue() || !WorkingSeasons.Any(x => x.Value == SelectedWorkingSeasonService.SelectedWorkingSeasonId))
             {
                 SelectedWorkingSeasonService
                     .ChangeSelectedWorkingSeason(WorkingSeasons.OrderByDescending(x => x.Name).First()?.Value ?? 0);
@@ -77,23 +79,6 @@ namespace WebUI.Pages.Seedings
                 this.SeedingSummaryData = default!;
             }
 
-            //if (this.CollapseTreatment)
-            //{
-            //    await LoadTreatmentData(selectedSeedingId);
-            //}
-            //else if (!this.CollapseTreatment)
-            //{
-            //    this.TreatmentData = default!;
-            //}
-
-            //if (this.CollapsePerformedWork)
-            //{
-            //    await LoadPerformedWorkData(selectedSeedingId);
-            //}
-            //else if (!this.CollapsePerformedWork)
-            //{
-            //    this.TreatmentData = default!;
-            //}
             this.StateHasChanged();
         }
 
@@ -158,10 +143,10 @@ namespace WebUI.Pages.Seedings
 
         //public async Task OnPerformedWokrCollapse(int seedingId)
         //{
-        //    //if (!this.CollapsePerformedWork && this.PerformedWorkData == null)
-        //    //{
-        //    //    await LoadPerformedWorkData(seedingId);
-        //    //}
+        //    if (!this.CollapsePerformedWork && this.PerformedWorkData == null)
+        //    {
+        //        await LoadPerformedWorkData(seedingId);
+        //    }
 
         //    this.CollapsePerformedWork = !this.CollapsePerformedWork;
         //}

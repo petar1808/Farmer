@@ -7,8 +7,6 @@ namespace WebUI.Pages.Identity.User
 {
     public partial class CreateUserPassword
     {
-        bool popup;
-
         [Inject]
         public IIdentityService IdentityService { get; set; } = default!;
 

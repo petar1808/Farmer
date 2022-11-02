@@ -31,7 +31,7 @@ namespace WebUI.Pages.Seedings
         public DynamicDataGridModel<GetPerformedWorkModel> DataGrid { get; set; } = default!;
 
 
-        protected async override Task OnInitializedAsync()
+        protected async override Task OnParametersSetAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {

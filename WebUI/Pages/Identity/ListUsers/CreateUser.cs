@@ -7,9 +7,6 @@ namespace WebUI.Pages.Identity.ListUsers
 {
     public partial class CreateUser
     {
-        private string StatusClass = default!;
-        private string Message = default!;
-
         [Inject]
         public IIdentityService IdentityService { get; set; } = default!;
 
@@ -30,16 +27,7 @@ namespace WebUI.Pages.Identity.ListUsers
         {
             createUserModel.ActivateUserUrl = $"{NavigationManager.BaseUri}/createUserPassword";
             var addIsSuccess = await IdentityService.CreateUser(CreateUserModel);
-            if (addIsSuccess)
-            {
-                StatusClass = "alert-success";
-                Message = "New ArableLand added successfully.";
-            }
-            else
-            {
-                StatusClass = "alert-danger";
-                Message = "Something went wrong adding the new ArableLand. Please try again.";
-            }
+
             DialogService.Close(false);
         }
     }

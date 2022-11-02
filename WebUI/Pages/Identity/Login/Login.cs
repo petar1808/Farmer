@@ -8,9 +8,6 @@ namespace WebUI.Pages.Identity.Login
 {
     public partial class Login
     {
-
-        bool showValidationMessage;
-
         [Inject]
         public ILocalStorageService LocalStorage { get; set; } = default!;
 
