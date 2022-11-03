@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Application.Models;
+using System;
+using System.Net;
 
 namespace WebApi.Middlewares
 {
@@ -28,6 +30,8 @@ namespace WebApi.Middlewares
                 {
                     message = "Грешка в сървара";
                 }
+
+                logger.LogError(default(EventId), ex, ex.Message);
 
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
