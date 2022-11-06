@@ -1,0 +1,21 @@
+﻿.loader {
+    font-size: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: transparent;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 0 0 #ff6d41, 10em 0 #3a474d;
+    animation: marquee 5s infinite ease;
+}
+
+    .loader:before {
+        content: "Зареждане...";
+    }
+
+@keyframes marquee {
+    to {
+        text-shadow: -10em 0 #ff6d41, 0 0 #3a474d
+    }
+}

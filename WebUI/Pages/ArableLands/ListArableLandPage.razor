@@ -5,6 +5,15 @@
 
 <h2 class="text-center"> Земи </h2>
 
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArableLand())"/>
 
-<DynamicDataGrid TData="ArableLandModel" Data="@DataGrid"></DynamicDataGrid>
+@if (DataGrid is null)
+{
+    <div class="loader"></div>
+}
+else
+{
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArableLand())"/>
+
+    <DynamicDataGrid TData="ArableLandModel" Data="@DataGrid"></DynamicDataGrid>
+}
+

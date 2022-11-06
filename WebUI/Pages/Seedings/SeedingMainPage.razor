@@ -62,8 +62,11 @@
     </div>
 </div>
 
-
-@if (SownArableLands.Any())
+@if (ShowLoading)
+{
+    <div class="loader"></div>
+}
+else
 {
     <Tabs SelectedTab="@SelectedSeedingId.ToString()" SelectedTabChanged="@OnSelectedTabChanged" RenderMode="TabsRenderMode.LazyLoad">
         <Items>

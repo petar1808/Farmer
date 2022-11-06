@@ -5,16 +5,16 @@
 
 <h2 class="text-center"> Aртикули </h2>
 
-@if (DataGrid == null)
+@if (DataGrid is null)
 {
-    <p><em>Loading...</em></p>
+    <div class="loader"></div>
 }
 else
 {
-    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArticle())"/>  
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArticle())"/>
+    <DynamicDataGrid TData="ListArticleModel" Data="@DataGrid"></DynamicDataGrid>
 }
 
 
-<DynamicDataGrid TData="ListArticleModel" Data="@DataGrid"></DynamicDataGrid>
 
 

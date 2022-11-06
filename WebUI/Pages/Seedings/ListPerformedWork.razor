@@ -4,8 +4,15 @@
 @attribute [Authorize]
 @inherits FluxorComponent
 
-<h2 class="text-center"> Обработки </h2>
+@if (DataGrid is null)
+{
+    <div class="loader"></div>
+}
+else
+{
+    <h2 class="text-center"> Обработки </h2>
 
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddPerformedWork())"/>
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddPerformedWork())" />
 
-<DynamicDataGrid TData="GetPerformedWorkModel" Data="@DataGrid"></DynamicDataGrid>
+    <DynamicDataGrid TData="GetPerformedWorkModel" Data="@DataGrid"></DynamicDataGrid>
+}

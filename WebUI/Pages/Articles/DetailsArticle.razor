@@ -1,11 +1,6 @@
 ﻿@using WebUI.ServicesModel.Article
 @attribute [Authorize]
 
-
-@*@if (Article is null || ArticleTypes is null)
-{
-    <p><em>Loading...</em></p>
-}*@
 @if (@Article is not null)
 {
     <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Submit=@OnSubmit>

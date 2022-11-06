@@ -54,8 +54,11 @@ namespace WebUI.Pages.Seedings
         public bool CollapsePerformedWork { get; set; }
         public bool CollapseTreatment { get; set; }
 
+        public bool ShowLoading { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
+            ShowLoading = true;
             SownArableLands = await SeedingService.GetSownArableLands(WorkingSeasonsId);
 
             if (SownArableLands.Any())
@@ -64,6 +67,7 @@ namespace WebUI.Pages.Seedings
                 SelectedSeedingId = SownArableLands[0].SeedingId;
                 await UpdateArableLandBalance(SelectedSeedingId);
             }
+            ShowLoading = false;
         }
 
         public void BackToMainMenu()
