@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Fluxor;
+using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
+using WebUI.Pages.Seedings.Dialogs;
+using WebUI.Services.Seeding;
 using WebUI.Services.Treatment;
 using WebUI.ServicesModel.Тreatment;
+using WebUI.Store;
 
 namespace WebUI.Pages.Seedings
 {
@@ -25,8 +29,11 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public int SizeInDecar { get; set; }
 
-        [Parameter]
-        public EventCallback<int> OnChangeData { get; set; }
+        [Inject]
+        public IDispatcher Dispatcher { get; set; } = default!;
+
+        [Inject]
+        public ISeedingService SeedingService { get; set; } = default!;
 
         private DynamicDataGridModel<GetTreatmentModel> DataGrid { get; set; } = default!;
 
@@ -62,9 +69,8 @@ namespace WebUI.Pages.Seedings
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
 
-
             DataGrid.UpdateData(await TreatmentService.List(SeedingId));
-            await this.OnChangeData.InvokeAsync(this.SeedingId);
+            await UpdateArableLandBalance(this.SeedingId);
             this.StateHasChanged();
         }
 
@@ -75,7 +81,7 @@ namespace WebUI.Pages.Seedings
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
 
             DataGrid.UpdateData(await TreatmentService.List(SeedingId));
-            await this.OnChangeData.InvokeAsync(this.SeedingId);
+            await UpdateArableLandBalance(this.SeedingId);
             this.StateHasChanged();
         }
 
@@ -98,7 +104,7 @@ namespace WebUI.Pages.Seedings
             if (dialogResult == true)
             {
                 DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != treatmentId));
-                await this.OnChangeData.InvokeAsync(this.SeedingId);
+                await UpdateArableLandBalance(this.SeedingId);
                 this.StateHasChanged();
             }
         }
@@ -106,6 +112,13 @@ namespace WebUI.Pages.Seedings
         public async Task<bool> DeleteTreatmentFunction(int performedWorkId)
         {
             return await this.TreatmentService.Delete(performedWorkId);
+        }
+
+        private async Task UpdateArableLandBalance(int seedingId)
+        {
+            this.Dispatcher.Dispatch(
+                new UpdateSeedingArableLandBalance(await SeedingService.GetArableLandBalance(seedingId))
+                );
         }
     }
 }

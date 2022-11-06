@@ -1,0 +1,72 @@
+﻿@page "/workingSeason"
+@attribute [Authorize]
+
+
+<div class="container">
+    <div class="row py-5">
+        <div class="col">
+            <RadzenCard>
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" 
+                Icon="add_circle_outline" 
+                style="margin-bottom: 10px" 
+                Text="Добави" 
+                Click="@(() => AddWorkingSeason())" />
+
+                <RadzenDataList WrapItems="true" Data="@WorkingSeasons" TItem="WorkingSeasonModel" PagerHorizontalAlign="HorizontalAlign.Left">
+                    <Template Context="WorkingSeasons">
+                        <RadzenCard Style="width: 100%; padding: 0; overflow: hidden;">
+                            <div class="container">
+                                <div class="row" style="margin-left: calc(var(--bs-gutter-x) * -1); margin-right: calc(var(--bs-gutter-x) * -1)">
+                                    <div class="col-lg-2 p-3 product-title">
+                                        <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-color-secondary">@(WorkingSeasons.Name)</RadzenText>
+                                    </div>
+                                    <div class="col-lg-6 p-3">
+                                        <div class="row d-flex">
+                                            <div class="col-md-6 col-lg-2">
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Начало</RadzenText>
+                                                    <RadzenText TextStyle="TextStyle.Body2" class="mb-sm-2 mb-lg-0">
+                                                        @(WorkingSeasons.StartDate.ToString("dd/MM/yyyy"))
+                                                    </RadzenText>
+                                            </div>
+                                            <div class="col-md-6 col-lg-2">
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Край</RadzenText>
+                                                <RadzenText TextStyle="TextStyle.Body2" class="mb-sm-2 mb-lg-0">
+                                                    @(WorkingSeasons.EndDate.ToString("dd/MM/yyyy"))
+                                                </RadzenText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 p-3">
+                                        <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Class="m-1" 
+                                            Click="async() =>  await EditWorkingSeason(WorkingSeasons.Id)" />
+                                    </div>
+                                    <div class="col-lg-1 p-3">
+                                        <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Class="m-1" 
+                                            Click="async() =>await DeleteWorkingSeason(WorkingSeasons.Id)" />
+                                    </div>
+                                    <div class="col-lg-2 p-3">
+                                        <RadzenButton Icon="agriculture" Text="Към жътва" Class="w-100" Click="() => ToSeeding(WorkingSeasons.Id)" />
+                                    </div>
+                                </div>
+                            </div>
+                        </RadzenCard>
+                    </Template>
+                </RadzenDataList>
+            </RadzenCard>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-title {
+        min-height: 72px;
+        background-color: var(--rz-secondary-lighter);
+    }
+
+    .price-badge {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 20px;
+        padding: 8px;
+    }
+</style>

@@ -2,7 +2,6 @@ using WebUI;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using WebUI.Services;
-using Radzen;
 using WebUI.Extensions;
 using WebUI.Services.ArableLand;
 using WebUI.Services.WorkingSeasons;
@@ -16,6 +15,7 @@ using WebUI.Services.Article;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using WebUI.Services.Identity;
+using Fluxor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -61,6 +61,13 @@ builder.Services.AddTransient<IPerformedWorkService, PerformedWorkService>();
 builder.Services.AddTransient<ITreatmentService, TreatmentService>();
 builder.Services.AddTransient<ISeedingService, SeedingService>();
 builder.Services.AddTransient<IIdentityService, IdentityService>();
+
+builder.Services.AddFluxor(conf =>
+{
+    conf
+    .ScanAssemblies(typeof(Program).Assembly)
+    .UseReduxDevTools();
+});
 
 
 await builder.Build().RunAsync();

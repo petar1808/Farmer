@@ -116,6 +116,9 @@ namespace Infrastructure
         {
             using (var scope = builder.ApplicationServices.CreateScope())
             {
+                var db = scope.ServiceProvider.GetRequiredService<FarmerDbContext>();
+                db.Database.Migrate();
+
                 var serviceProvider = scope.ServiceProvider;
 
                 var roleManager = serviceProvider.GetService<RoleManager<Role>>();

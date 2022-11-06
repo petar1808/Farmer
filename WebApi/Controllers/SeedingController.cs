@@ -65,6 +65,15 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("sownArableLand/balance/{seedingId:int}")]
+        public async Task<ActionResult<GetArableLandBalance>> GetArableLandBalance(int seedingId)
+        {
+            return await seedingService
+                .GetArableLandBalance(seedingId)
+                .ToActionResult();
+        }
+
+        [HttpGet]
         [Route("summary/{seedingId:int}")]
         public async Task<ActionResult<GetSeedingSummaryModel>> GetSeedingSummary(int seedingId)
         {

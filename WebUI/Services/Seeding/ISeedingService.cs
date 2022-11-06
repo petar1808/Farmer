@@ -14,5 +14,7 @@ namespace WebUI.Services.Seeding
         Task<GetSeedingSummaryModel> GetSeedingSummary(int seedingId);
 
         Task<bool> UpdateSeedingSummary(SeedingSummaryBaseModel model, int seedingId);
+
+        Task<GetArableLandBalanceModel> GetArableLandBalance(int seedingId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Fluxor;
+using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Extensions;
 using WebUI.Services.Article;
@@ -6,6 +7,7 @@ using WebUI.Services.Seeding;
 using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.Enum;
 using WebUI.ServicesModel.Seeding;
+using WebUI.Store;
 
 namespace WebUI.Pages.Seedings
 {
@@ -32,10 +34,12 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public bool IsModal { get; set; }
 
-        [Parameter]
         public GetSeedingSummaryModel SeedingSummaryData { get; set; } = default!;
 
         public List<SelectionListModel> AllArticleOfTypeSeeds { get; set; } = new List<SelectionListModel>();
+
+        [Inject]
+        public IDispatcher Dispatcher { get; set; } = default!;
 
         protected async override Task OnInitializedAsync()
         {
@@ -43,6 +47,8 @@ namespace WebUI.Pages.Seedings
             {
                 AllArticleOfTypeSeeds = await ArticleService.GetArticles(ArticleType.Seeds);
             }
+
+            SeedingSummaryData = await SeedingService.GetSeedingSummary(SeedingId);
         }
 
         public void OnClose()
@@ -57,17 +63,19 @@ namespace WebUI.Pages.Seedings
 
         public async Task OnEdit()
         {
-            await DialogService.OpenAsync<SeedingSummary>($"Редактиране на Сеитба за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<SeedingSummary>($"Редактиране на Сеитба за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { 
                     { "SeedingId", SeedingId },
-                    { "IsModal", true},
-                    { "SeedingSummaryData", SeedingSummaryData }
+                    { "IsModal", true}
                 },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("500px").WithWidth("900px"));
 
-            SeedingSummaryData = await SeedingService.GetSeedingSummary(SeedingId);
-
-            this.StateHasChanged();
+            if (dialogResult != null)
+            {
+                SeedingSummaryData = await SeedingService.GetSeedingSummary(SeedingId);
+                await UpdateArableLandBalance(SeedingId);
+                this.StateHasChanged();
+            }
         }
 
         public async Task OnSubmit()
@@ -75,6 +83,13 @@ namespace WebUI.Pages.Seedings
             var response = await SeedingService.UpdateSeedingSummary(SeedingSummaryData, SeedingId);
 
             DialogService.Close(response);
+        }
+
+        private async Task UpdateArableLandBalance(int seedingId)
+        {
+            this.Dispatcher.Dispatch(
+                new UpdateSeedingArableLandBalance(await SeedingService.GetArableLandBalance(seedingId))
+                );
         }
     }
 }

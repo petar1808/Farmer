@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Fluxor;
+using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
+using WebUI.Pages.Seedings.Dialogs;
 using WebUI.Services.PerformedWork;
+using WebUI.Services.Seeding;
 using WebUI.ServicesModel.PerformedWork;
+using WebUI.Store;
 
 namespace WebUI.Pages.Seedings
 {
@@ -25,11 +29,13 @@ namespace WebUI.Pages.Seedings
         [Parameter]
         public int SizeInDecar { get; set; }
 
-        [Parameter]
-        public EventCallback<int> OnChangeData { get; set; }
+        [Inject]
+        public IDispatcher Dispatcher { get; set; } = default!;
+
+        [Inject]
+        public ISeedingService SeedingService { get; set; } = default!;
 
         public DynamicDataGridModel<GetPerformedWorkModel> DataGrid { get; set; } = default!;
-
 
         protected async override Task OnParametersSetAsync()
         {
@@ -63,7 +69,7 @@ namespace WebUI.Pages.Seedings
 
             DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
 
-            await this.OnChangeData.InvokeAsync(this.SeedingId);
+            await UpdateArableLandBalance(this.SeedingId);
             this.StateHasChanged();
         }
         public async Task EditPerformedWork(int performedWorkId)
@@ -73,7 +79,7 @@ namespace WebUI.Pages.Seedings
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
 
             DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
-            await this.OnChangeData.InvokeAsync(this.SeedingId);
+            await UpdateArableLandBalance(this.SeedingId);
             this.StateHasChanged();
         }
 
@@ -96,9 +102,16 @@ namespace WebUI.Pages.Seedings
             if (dialogResult == true)
             {
                 DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != performedWorkId));
-                await this.OnChangeData.InvokeAsync(this.SeedingId);
+                await UpdateArableLandBalance(this.SeedingId);
                 this.StateHasChanged();
             }
+        }
+
+        private async Task UpdateArableLandBalance(int seedingId)
+        {
+            this.Dispatcher.Dispatch(
+                new UpdateSeedingArableLandBalance(await SeedingService.GetArableLandBalance(seedingId))
+                );
         }
     }
 }

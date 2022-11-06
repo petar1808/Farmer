@@ -65,6 +65,26 @@ namespace Application.Services.Seedings
             return result;
         }
 
+        public async Task<Result<GetArableLandBalance>> GetArableLandBalance(int seedingId)
+        {
+            var seeding = await farmerDbContext
+                .Seedings
+                .Include(x => x.Article)
+                .Include(x => x.ArableLand)
+                .Include(x => x.Treatments)
+                .Include(x => x.PerformedWorks)
+                .FirstOrDefaultAsync(x => x.Id == seedingId);
+
+            if (seeding == null)
+            {
+                return $"Сеитба с Ид: {seedingId} не съществува!";
+            }
+
+            var result = mapper.Map<GetArableLandBalance>(seeding);
+
+            return result;
+        }
+
         public async Task<Result<List<SownArableLandModel>>> SownArableLands(int seasonId)
         {
             var workingSeason = await farmerDbContext
@@ -82,7 +102,7 @@ namespace Application.Services.Seedings
                 .Select(x => new SownArableLandModel(x.Id, x.ArableLand.Name, x.ArableLand.SizeInDecar))
                 .ToListAsync();
 
-            return arableLands;
+            return arableLands.OrderByDescending(x => x.SeedingId).ToList();
         }
 
         public async Task<Result> UpdateSeedingSummary(UpdateSeedingSummaryModel updateModel, int seedingId)

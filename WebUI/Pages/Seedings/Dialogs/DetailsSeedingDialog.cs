@@ -5,7 +5,7 @@ using WebUI.Services.Seeding;
 using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.Seeding;
 
-namespace WebUI.Pages.Seedings
+namespace WebUI.Pages.Seedings.Dialogs
 {
     public partial class DetailsSeedingDialog
     {
@@ -13,10 +13,10 @@ namespace WebUI.Pages.Seedings
         public ISeedingService SeedingService { get; set; } = default!;
 
         [Inject]
-        public SelectedWorkingSeasonService SelectedWorkingSeasonService { get; set; } = default!;
-
-        [Inject]
         public DialogService DialogService { get; set; } = default!;
+
+        [Parameter]
+        public int WorkingSeasonsId { get; set; }
 
         public List<SelectionListModel> ArableLands { get; set; } = new List<SelectionListModel>();
 
@@ -24,7 +24,7 @@ namespace WebUI.Pages.Seedings
 
         protected async override Task OnInitializedAsync()
         {
-            ArableLands = await SeedingService.GetAvailableArableLandSeeds(SelectedWorkingSeasonService.SelectedWorkingSeasonId);
+            ArableLands = await SeedingService.GetAvailableArableLandSeeds(WorkingSeasonsId);
         }
 
         public void OnClose()
@@ -37,7 +37,7 @@ namespace WebUI.Pages.Seedings
             var response = await SeedingService.AddSeeding(new AddSeedingModel()
             {
                 ArableLandId = SelectedArableLandId,
-                WorkingSeasonId = SelectedWorkingSeasonService.SelectedWorkingSeasonId
+                WorkingSeasonId = WorkingSeasonsId
             });
 
             DialogService.Close(response);

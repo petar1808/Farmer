@@ -29,19 +29,19 @@ namespace WebUI.Services
                         Path = "/arableLand/list",
                         Icon = "location_pin"
                     },
-                    new NavMenuItem()
-                    {
-                        Name = "Сезони",
-                        Path = "/workingSeason/list",
-                        Icon = "calendar_month"
-                    }
+                    //new NavMenuItem()
+                    //{
+                    //    Name = "Сезони",
+                    //    Path = "/workingSeason/list",
+                    //    Icon = "calendar_month"
+                    //}
                 }
             },
             new NavMenuItem()
             {
                 Name = "Жътва",
                 Icon = "agriculture",
-                Path = "/seeding"
+                Path = "/workingSeason"
             },
             new NavMenuItem()
             {

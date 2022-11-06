@@ -15,5 +15,6 @@ namespace Application.Services.Seedings
 
         Task<Result> UpdateSeedingSummary(UpdateSeedingSummaryModel updateModel, int seedingId);
 
+        Task<Result<GetArableLandBalance>> GetArableLandBalance(int seedingId);
     }
 }

@@ -6,18 +6,13 @@
 
 @inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
-@inject NavigationManager UriHelper
 @inject NavMenuService NavMenuService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager UriHelper
-@inject ILocalStorageService LocalStorageService;
 
 <RadzenDialog />
 <RadzenNotification />
 <RadzenTooltip />
 <RadzenContextMenu />
-
-
 
 <RadzenLayout>
     <RadzenHeader>
@@ -29,16 +24,8 @@
                     <RadzenLabel Text="Фермер">
                     </RadzenLabel>
                 </div>
-                <div class="col-7 d-flex align-items-center justify-content-end">
-                    <div class="d-none d-md-inline-flex align-items-center">
-                        <a href="@($"{UriHelper.BaseUri}/changePassword")" title="Ако сте забравили паролата си" class="mx-2 mx-lg-3">Смяна на парола</a>
-                        <button onclick="@(() => Logout())" style="margin: 1rem">      
-                            <RadzenIcon Icon="logout" />
-                        </button>
-                    </div>
-                </div>
+                <HeaderUserSection></HeaderUserSection>
             </div>
-
         </ChildContent>
     </RadzenHeader>
     <RadzenBody @ref="@body0" @bind-Expanded="@bodyExpanded">
@@ -57,7 +44,6 @@
     <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" class="demos-sidebar">
         <ChildContent>
             <RadzenPanelMenu Match="NavLinkMatch.Prefix">
-
                 @foreach (var menuItem in menuItems)
                 {
                     <NavigationItem @bind-Expanded=@menuItem.Expanded NavMenuItem=@menuItem>
@@ -110,12 +96,5 @@
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         }
-    }
-
-    public async Task Logout()
-    {
-        await LocalStorageService.RemoveItemAsync("token");
-
-        UriHelper.NavigateTo($"{UriHelper.BaseUri}login");
     }
 }

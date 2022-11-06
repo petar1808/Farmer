@@ -31,6 +31,12 @@ namespace WebUI.Services.Seeding
                 .GetAsync<GetSeedingSummaryModel>($"api/seeding/summary/{seedingId}");
         }
 
+        public async Task<GetArableLandBalanceModel> GetArableLandBalance(int seedingId)
+        {
+            return await _httpService
+                .GetAsync<GetArableLandBalanceModel>($"api/seeding/sownArableLand/balance/{seedingId}");
+        }
+
         public async Task<bool> UpdateSeedingSummary(SeedingSummaryBaseModel model, int seedingId)
         {
             return await _httpService

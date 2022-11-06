@@ -4,7 +4,7 @@ using WebUI.Services.PerformedWork;
 using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.PerformedWork;
 
-namespace WebUI.Pages.Seedings
+namespace WebUI.Pages.Seedings.Dialogs
 {
     public partial class DetailsPerformedWorkDialog
     {

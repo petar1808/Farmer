@@ -1,0 +1,138 @@
+﻿@layout SeedingLayout
+@page "/workingSeason/{WorkingSeasonsId:int}/seeding"
+@using Blazorise
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using WebUI.Store
+
+@inherits FluxorComponent
+
+<RadzenCard Style="margin-bottom: 20px">
+    <div class="row justify-content-start align-items-center">
+        <div class="col-5 d-flex align-items-center">
+            <RadzenButton Icon="arrow_back" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Secondary" Text="Назад към основното меню" Click="@(() => BackToMainMenu())" />
+
+        </div>
+        <div class="col-7 d-flex align-items-center justify-content-end">
+            <div class="d-none d-md-inline-flex align-items-center">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 5px" Text="Добави" Click="@(() => AddArableLand())" />
+            </div>
+        </div>
+    </div>
+</RadzenCard>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 p-3">
+            <RadzenCard>
+                <div class="row">
+                    <div class="col">
+                        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H3">Приходи</RadzenText>
+                    </div>
+                    <div class="col">
+                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@(SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Income.ToString() + "лв")" />
+                    </div>
+                </div>     
+            </RadzenCard>
+        </div>
+        <div class="col-md-4 p-3">
+            <RadzenCard>
+                <div class="row">
+                    <div class="col">
+                        <RadzenText TextStyle="TextStyle.H5">Разходи</RadzenText>
+                    </div>
+                    <div class="col">
+                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@(SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Expenses.ToString() + "лв")" />
+                    </div>
+                </div>     
+            </RadzenCard>
+        </div>
+        <div class="col-md-4 p-3">
+            <RadzenCard>
+                <div class="row">
+                    <div class="col">
+                        <RadzenText TextStyle="TextStyle.H5">Печалба</RadzenText>
+                    </div>
+                    <div class="col">
+                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@(SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Profit.ToString() + "лв")" />
+                    </div>
+                </div>
+            </RadzenCard>
+        </div>
+    </div>
+</div>
+
+
+@if (SownArableLands.Any())
+{
+    <Tabs SelectedTab="@SelectedSeedingId.ToString()" SelectedTabChanged="@OnSelectedTabChanged" RenderMode="TabsRenderMode.LazyLoad">
+        <Items>
+            @foreach (var arableLand in SownArableLands)
+            {
+                <Tab Name="@arableLand.SeedingId.ToString()">@arableLand.ArableLandName</Tab>
+            }
+        </Items>
+        <Content>
+            @foreach (var arableLand in SownArableLands)
+            {
+                <TabPanel Name="@arableLand.SeedingId.ToString()">
+                    <Accordion>
+                        <Collapse Visible="@(CollapseSeedingSummary)">
+                            <CollapseHeader>
+                                <Heading Size="HeadingSize.Is5">
+                                    <Button Clicked="@(()=>this.CollapseSeedingSummary = !this.CollapseSeedingSummary)">
+                                        Сеидба
+                                    </Button>
+                                </Heading>
+                            </CollapseHeader>
+                            <CollapseBody>
+                                <SeedingSummary 
+                                        SeedingId="@arableLand.SeedingId"
+                                        ArableLandName="@arableLand.ArableLandName"
+                                        SizeInDecar="@arableLand.SizeInDecar"
+                                        IsModal="false">
+                                </SeedingSummary>
+                            </CollapseBody>
+                        </Collapse>
+                    </Accordion>
+                    <Accordion>
+                        <Collapse Visible="@CollapsePerformedWork">
+                            <CollapseHeader>
+                                <Heading Size="HeadingSize.Is5">
+                                <Button Clicked="@(()=> this.CollapsePerformedWork = !this.CollapsePerformedWork)">
+                                        Обработки
+                                    </Button>
+                                </Heading>
+                            </CollapseHeader>
+                            <CollapseBody>
+                                <ListPerformedWork
+                                           SeedingId="@arableLand.SeedingId"
+                                           ArableLandName="@arableLand.ArableLandName"
+                                           SizeInDecar="@arableLand.SizeInDecar">
+                                </ListPerformedWork>
+                            </CollapseBody>
+                        </Collapse>
+                    </Accordion>
+                    <Accordion>
+                        <Collapse Visible="@CollapseTreatment">
+                            <CollapseHeader>
+                                <Heading Size="HeadingSize.Is5">
+                                    <Button Clicked="@(()=>this.CollapseTreatment = !this.CollapseTreatment)">
+                                        Третиране
+                                    </Button>
+                                </Heading>
+                            </CollapseHeader>
+                            <CollapseBody>
+                                <ListTreatment 
+                                       SeedingId="@arableLand.SeedingId"
+                                       ArableLandName="@arableLand.ArableLandName"
+                                       SizeInDecar="@arableLand.SizeInDecar">
+                                </ListTreatment>
+                            </CollapseBody>
+                        </Collapse>
+                    </Accordion>
+                </TabPanel>
+            }
+        </Content>
+    </Tabs>
+}

@@ -1,6 +1,9 @@
-﻿@using WebUI.Components.Validators
+﻿@using Fluxor.Blazor.Web.Components
+@using WebUI.Components.Validators
 @using WebUI.ServicesModel.Seeding
 @attribute [Authorize]
+
+@inherits FluxorComponent
 
 @if (SeedingSummaryData is not null)
 {

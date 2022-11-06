@@ -5,7 +5,7 @@ using WebUI.ServicesModel.WorkingSeason;
 
 namespace WebUI.Pages.WorkingSeasons
 {
-    public partial class DetailsWorkingSeason
+    public partial class WorkingSeasonDialog
     {
         [Inject]
         public IWorkingSeasonService WorkingSeasonService { get; set; } = default!;
