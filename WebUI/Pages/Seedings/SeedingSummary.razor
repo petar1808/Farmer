@@ -9,8 +9,8 @@
 {
     <RadzenTemplateForm TItem="GetSeedingSummaryModel" Data=@SeedingSummaryData Submit=@OnSubmit>
         <div class="row">
-            <div class="col-md-8">
-                <RadzenFieldset Text="">
+            <div class="col-md-12">
+                <RadzenFieldset>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="col-md-12">
@@ -86,28 +86,7 @@
                     </div>
                 </RadzenFieldset>
             </div>
-            <div class="col-md-4">
-                <RadzenFieldset Text="">
-                    <div class="col-md-12">
-                        <RadzenLabel Text="Приход" />
-                        <div>
-                            <RadzenTextBox Disabled="true" Value="@(SeedingSummaryData.Income.ToString() + "лв")" style="width: 100%;" Name="Income" />
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <RadzenLabel Text="Разходи(лв)" />
-                        <div>
-                            <RadzenTextBox Disabled="true" Value="@(SeedingSummaryData.Expenses.ToString() + "лв")" style="width: 100%;" Name="Expenses" />
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <RadzenLabel Text="Печалба(лв)" />
-                        <div>
-                            <RadzenTextBox Disabled="true" Value="@(SeedingSummaryData.Profit.ToString() + "лв")" style="width: 100%;" Name="Profit" />
-                        </div>
-                    </div>
-                </RadzenFieldset>
-            </div>
+  
         </div>
         <div class="row">
             <div class="col-md-5" style="margin-top: 16px;">

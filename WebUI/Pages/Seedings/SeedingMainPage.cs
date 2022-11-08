@@ -63,7 +63,6 @@ namespace WebUI.Pages.Seedings
 
             if (SownArableLands.Any())
             {
-                this.Dispatcher.Dispatch(new UpdateSeedingArableLandBalance(new GetArableLandBalanceModel()));
                 SelectedSeedingId = SownArableLands[0].SeedingId;
                 await UpdateArableLandBalance(SelectedSeedingId);
             }
@@ -72,6 +71,7 @@ namespace WebUI.Pages.Seedings
 
         public void BackToMainMenu()
         {
+            this.Dispatcher.Dispatch(new UpdateSeedingArableLandBalance(new GetArableLandBalanceModel()));
             UriHelper.NavigateTo($"{UriHelper.BaseUri}workingSeason");
         }
 

@@ -41,7 +41,7 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public IDispatcher Dispatcher { get; set; } = default!;
 
-        protected async override Task OnInitializedAsync()
+        protected async override Task OnParametersSetAsync()
         {
             if (IsModal)
             {
