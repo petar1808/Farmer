@@ -37,10 +37,11 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GetWorkingSeasonModel>>> List()
+        [Route("balance")]
+        public async Task<ActionResult<List<ListWorkingSeasonBalanceModel>>> ListWorkingSeasonBalance()
         {
             return await workingSeasonService
-                .List()
+                .ListWorkingSeasonsBalance()
                 .ToActionResult();
         }
 

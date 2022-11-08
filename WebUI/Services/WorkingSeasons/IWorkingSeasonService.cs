@@ -16,5 +16,7 @@ namespace WebUI.Services.WorkingSeasons
         Task<bool> Delete(int id);
 
         Task<List<SelectionListModel>> GetAllSeasons();
+
+        Task<List<ListWorkingSeasonBalanceModel>> ListWorkingSeasonsBalance();
     }
 }

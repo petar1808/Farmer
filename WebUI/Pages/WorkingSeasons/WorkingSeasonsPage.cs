@@ -21,9 +21,11 @@ namespace WebUI.Pages.WorkingSeasons
 
         public List<WorkingSeasonModel> WorkingSeasons { get; set; } = new List<WorkingSeasonModel>();
 
+        public List<ListWorkingSeasonBalanceModel> WorkingSeasonBalance { get; set; } = new List<ListWorkingSeasonBalanceModel>();
+
         protected override async Task OnInitializedAsync()
         {
-            WorkingSeasons = await WorkingSeasonService.List();
+            WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
         }
 
         public async Task AddWorkingSeason()
@@ -31,7 +33,7 @@ namespace WebUI.Pages.WorkingSeasons
             await DialogService.OpenAsync<WorkingSeasonDialog>($"Добавяне на Сезон",
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("330px").WithWidth("600px"));
 
-            WorkingSeasons = await WorkingSeasonService.List();
+            WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
             this.StateHasChanged();
         }
         public async Task EditWorkingSeason(int workingSeasonId)
@@ -40,7 +42,7 @@ namespace WebUI.Pages.WorkingSeasons
               new Dictionary<string, object>() { { "WorkingSeasonId", workingSeasonId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("330px").WithWidth("600px"));
 
-            WorkingSeasons = await WorkingSeasonService.List();
+            WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
             this.StateHasChanged();
         }
 
@@ -62,7 +64,7 @@ namespace WebUI.Pages.WorkingSeasons
 
             if (dialogResult == true)
             {
-                WorkingSeasons = await WorkingSeasonService.List();
+                WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
 
                 this.StateHasChanged();
             }

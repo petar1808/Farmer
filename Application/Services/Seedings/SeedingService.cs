@@ -3,6 +3,7 @@ using Application.Models.Seedings;
 using AutoMapper;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Application.Services.Seedings
 {
@@ -111,7 +112,7 @@ namespace Application.Services.Seedings
                 .Articles
                 .AnyAsync(x => x.Id == updateModel.ArticleId);
 
-            if (!article)
+            if (!article && updateModel.ArticleId != null)
             {
                 return $"Артикул с Ид: {updateModel.ArticleId} не съществува!";
             }
@@ -122,7 +123,7 @@ namespace Application.Services.Seedings
 
             if (seeding == null)
             {
-                return $"Сеитба с Ид: {updateModel.ArticleId} не съществува!";
+                return $"Сеитба с Ид: {updateModel.Id} не съществува!";
             }
 
             seeding.UpdateArticle(updateModel.ArticleId)

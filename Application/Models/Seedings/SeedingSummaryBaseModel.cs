@@ -11,6 +11,8 @@ namespace Application.Models.Seedings
 {
     public class SeedingSummaryBaseModel : IMapFrom<Seeding>
     {
+        public int Id { get; set; }
+
         public int? ArticleId { get; init; }
 
         public int SeedsQuantityPerDecare { get; init; }

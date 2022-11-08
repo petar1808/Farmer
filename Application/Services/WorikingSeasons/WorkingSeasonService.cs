@@ -103,13 +103,26 @@ namespace Application.Services.WorikingSeasons
             return result;
         }
 
-        public async Task<Result<List<GetWorkingSeasonModel>>> List()
+        public async Task<Result<List<ListWorkingSeasonBalanceModel>>> ListWorkingSeasonsBalance()
         {
-            var workingSeason = await farmerDbContext.WorkingSeasons.ToListAsync();
+            var workingSeasonBalance = await farmerDbContext
+                .WorkingSeasons
+                .Include(x => x.Seedings)
+                .ThenInclude(x => x.ArableLand)
+                .Include(x => x.Seedings)
+                .ThenInclude(x => x.Article)
+                .Include(x => x.Seedings)
+                .ThenInclude(x => x.PerformedWorks)
+                .Include(x => x.Seedings)
+                .ThenInclude(x => x.Treatments)
+                .OrderByDescending(x => x.StartDate)
+                .ToListAsync();
 
-            var result = mapper.Map<List<GetWorkingSeasonModel>>(workingSeason);
+            var result = mapper.Map<List<ListWorkingSeasonBalanceModel>>(workingSeasonBalance);
+
             return result;
         }
+
 
         public async Task<Result<List<SelectionListModel>>> SeasonsSelectionList()
         {

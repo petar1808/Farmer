@@ -23,6 +23,7 @@ namespace Domain.Models
         {
             Validate(name);
             Name = name;
+            Seedings = default!;
         }
 
         public string Name { get; private set; }
@@ -30,6 +31,8 @@ namespace Domain.Models
         public DateTime StartDate { get; private set; }
 
         public DateTime EndDate { get; private set; }
+
+        public List<Seeding> Seedings { get; private set; }
 
         public WorkingSeason UpdateName(string name)
         {

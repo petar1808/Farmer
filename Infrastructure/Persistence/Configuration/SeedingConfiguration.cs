@@ -22,7 +22,7 @@ namespace Infrastructure.Persistence.Configuration
 
             builder
                .HasOne(x => x.WorkingSeason)
-               .WithMany()
+               .WithMany(x => x.Seedings)
                .HasForeignKey(p => p.WorkingSeasonId)
                .OnDelete(DeleteBehavior.Restrict);
 

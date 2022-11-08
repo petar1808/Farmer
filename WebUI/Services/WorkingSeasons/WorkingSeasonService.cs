@@ -47,5 +47,11 @@ namespace WebUI.Services.WorkingSeasons
             return await _httpService
                 .GetAsync<List<SelectionListModel>>($"api/assets/seasons");
         }
+
+        public async Task<List<ListWorkingSeasonBalanceModel>> ListWorkingSeasonsBalance()
+        {
+            return await _httpService
+                .GetAsync<List<ListWorkingSeasonBalanceModel>>($"api/workingSeasons/balance");
+        }
     }
 }

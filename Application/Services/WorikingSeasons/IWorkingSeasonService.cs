@@ -17,10 +17,10 @@ namespace Application.Services.WorikingSeasons
 
         Task<Result<GetWorkingSeasonModel>> Get(int id);
 
-        Task<Result<List<GetWorkingSeasonModel>>> List();
-
         Task<Result> Delete(int id);
 
         Task<Result<List<SelectionListModel>>> SeasonsSelectionList();
+
+        Task<Result<List<ListWorkingSeasonBalanceModel>>> ListWorkingSeasonsBalance();
     }
 }
