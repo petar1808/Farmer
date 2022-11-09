@@ -6,11 +6,11 @@ namespace Application.Models.Articles
 {
     public class ArticleBaseModel
     {
-        [Required]
-        [MaxLength(MaxNameLenght)]
+        [Required(ErrorMessage = "Името е задължително")]
+        [MaxLength(MaxNameLenght, ErrorMessage = "Името трябва да съдържа най-много 50 знака")]
         public string Name { get; init; } = default!;
 
-        [Required]
+        [Required(ErrorMessage = "Типът артикул е задължителен")]
         [EnumDataType(typeof(ArticleType))]
         public ArticleType ArticleType { get; init; }
     }

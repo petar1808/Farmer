@@ -1,6 +1,7 @@
 using Application;
 using Infrastructure;
 using Serilog;
+using WebApi.Filters;
 using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,10 @@ builder.Services.AddCors(p => p.AddPolicy(MyAllowSpecificOrigins, builder =>
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<FilterInvalidModelStateResponse>(int.MinValue);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

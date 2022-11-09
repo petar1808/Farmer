@@ -10,12 +10,12 @@ namespace Application.Models.ArableLands
 {
     public class ArablaLandBaseModel
     {
-        [Required]
-        [MaxLength(MaxNameLenght)]
+        [Required(ErrorMessage = "Името е задължително")]
+        [MaxLength(MaxNameLenght,ErrorMessage = "Името трябва да съдържа най-много 50 знака")]
         public string Name { get; init; } = default!;
 
-        [Required]
-        [Range(1, int.MaxValue)]
+        [Required(ErrorMessage = "Декарите са задължителни")]
+        [Range(1, int.MaxValue,ErrorMessage = "Декарите трябва да са положително число")]
         public int SizeInDecar { get; init; }
     }
 }

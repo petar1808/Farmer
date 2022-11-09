@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
 
@@ -36,7 +37,7 @@ namespace WebApi.Middlewares
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                await context.Response.WriteAsync(message);
+                await context.Response.WriteAsJsonAsync(Result.Failure(new List<string>() { message }));
             }
         }
     }

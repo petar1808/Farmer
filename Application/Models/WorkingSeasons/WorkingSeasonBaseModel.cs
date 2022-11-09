@@ -10,13 +10,14 @@ namespace Application.Models.WorkingSeasons
 {
     public class WorkingSeasonBaseModel
     {
-        [Required]
-        [MaxLength(MaxNameLenght)]
+        [Required(ErrorMessage = "Името е задължително")]
         public string Name { get; init; } = default!;
 
+        [Required(ErrorMessage = "Началната дата е задължителна")]
         [DataType(DataType.DateTime)]
         public DateTime StartDate { get; init; }
 
+        [Required(ErrorMessage = "Крайната дата е задължителна")]
         [DataType(DataType.DateTime)]
         public DateTime EndDate { get; init; }
     }

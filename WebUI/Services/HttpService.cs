@@ -3,11 +3,13 @@
 using Blazorise;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Newtonsoft.Json.Serialization;
 using Radzen;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using WebUI.Models;
 
 namespace WebUI.Services
 {
@@ -76,13 +78,15 @@ namespace WebUI.Services
 
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
-                        var errorcontent = await response.Content.ReadAsStringAsync();
+                        var errorMessages = JsonSerializer.Deserialize<ApiErrorMessage>(
+                            await response.Content.ReadAsStringAsync(), 
+                            jsonOptions)!;
 
                         notificationService.Notify(new NotificationMessage
                         {
                             Severity = NotificationSeverity.Error,
                             Summary = "Валидационна грешка",
-                            Detail = errorcontent,
+                            Detail = string.Join(", ", errorMessages.Errors),
                             Duration = 10000
                         });
 
@@ -90,11 +94,15 @@ namespace WebUI.Services
 
                     if ((int)response.StatusCode >= 500)
                     {
+                        var errorMessages = JsonSerializer.Deserialize<ApiErrorMessage>(
+                            await response.Content.ReadAsStringAsync(),
+                            jsonOptions)!;
+
                         notificationService.Notify(new NotificationMessage
                         {
                             Severity = NotificationSeverity.Error,
-                            Summary = "Грешка",
-                            Detail = "Грешка в сървъра",
+                            Summary = "Грешка в сървара",
+                            Detail = string.Join(", ", errorMessages.Errors),
                             Duration = 10000
                         });
                     }

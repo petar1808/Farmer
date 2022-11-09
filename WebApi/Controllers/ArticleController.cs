@@ -22,11 +22,11 @@ namespace WebApi.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] AddArticleModel articleModel)
-        {  
+        {
             return await articleService
                 .Add(articleModel)
                 .ToActionResult();
-        } 
+        }
 
         [HttpGet]
         [Route("{id:int}")]
@@ -48,9 +48,10 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult> Edit(EditArticleModel articleModel)
         {
-            return await articleService
-                .Edit(articleModel)
-                .ToActionResult();
+            throw new NotImplementedException();
+            //return await articleService
+            //    .Edit(articleModel)
+            //    .ToActionResult();
         }
 
         [HttpDelete]
