@@ -25,7 +25,7 @@ namespace WebUI.Pages.Identity.ListUsers
 
         protected async Task OnSubmit(CreateUserModel createUserModel)
         {
-            createUserModel.ActivateUserUrl = $"{NavigationManager.BaseUri}/createUserPassword";
+            createUserModel.ActivateUserUrl = $"{NavigationManager.BaseUri}createUserPassword";
             var addIsSuccess = await IdentityService.CreateUser(CreateUserModel);
 
             DialogService.Close(false);
