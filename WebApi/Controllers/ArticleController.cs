@@ -48,10 +48,9 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult> Edit(EditArticleModel articleModel)
         {
-            throw new NotImplementedException();
-            //return await articleService
-            //    .Edit(articleModel)
-            //    .ToActionResult();
+            return await articleService
+                .Edit(articleModel)
+                .ToActionResult();
         }
 
         [HttpDelete]

@@ -8,6 +8,8 @@ namespace Infrastructure.Common
 {
     public class ConnectionStrings
     {
-        public string DefaultConnection { get; set; } = default!;
+        public string SqlDefaultConnection { get; set; } = default!;
+
+        public string SqlLiteConncetion { get; set; } = default!;
     }
 }

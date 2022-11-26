@@ -14,17 +14,17 @@ namespace Infrastructure.Identity
 {
     public class JwtTokenGeneratorService : IJwtTokenGenerator
     {
-        private readonly ApplicationSettings applicationSettings;
+        private readonly InfrastructureSettings infrastructureSettings;
 
-        public JwtTokenGeneratorService(IOptions<ApplicationSettings> applicationSettings)
+        public JwtTokenGeneratorService(IOptions<InfrastructureSettings> infrastructureSettings)
         {
-            this.applicationSettings = applicationSettings.Value;
+            this.infrastructureSettings = infrastructureSettings.Value;
         }
 
         public string GenerateToken(User user, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this.applicationSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(this.infrastructureSettings.Secret);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

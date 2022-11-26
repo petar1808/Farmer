@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Models.Common
+namespace Infrastructure
 {
-    public class ApplicationSettings
+    public class InfrastructureSettings
     {
         public string Secret { get; set; } = default!;
+
+        public bool UseSqlLite { get; set; }
     }
 }

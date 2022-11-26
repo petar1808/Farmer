@@ -3,12 +3,40 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Persistence.Migrations.SqlServer
 {
-    public partial class AddIdentity : Migration
+    public partial class MergeMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ArableLands",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SizeInDecar = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArableLands", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Articles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ArticleType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Articles", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -28,6 +56,9 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -46,6 +77,21 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkingSeasons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkingSeasons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +200,100 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Seedings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArableLandId = table.Column<int>(type: "int", nullable: false),
+                    WorkingSeasonId = table.Column<int>(type: "int", nullable: false),
+                    ArticleId = table.Column<int>(type: "int", nullable: true),
+                    SeedsQuantityPerDecare = table.Column<int>(type: "int", nullable: false),
+                    SeedsPricePerKilogram = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    HarvestedQuantityPerDecare = table.Column<int>(type: "int", nullable: false),
+                    HarvestedGrainSellingPricePerKilogram = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    SubsidiesIncome = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    ExpensesForHarvesting = table.Column<decimal>(type: "decimal(12,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seedings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Seedings_ArableLands_ArableLandId",
+                        column: x => x.ArableLandId,
+                        principalTable: "ArableLands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Seedings_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Seedings_WorkingSeasons_WorkingSeasonId",
+                        column: x => x.WorkingSeasonId,
+                        principalTable: "WorkingSeasons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PerformedWorks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SeedingId = table.Column<int>(type: "int", nullable: false),
+                    WorkType = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AmountOfFuel = table.Column<int>(type: "int", nullable: false),
+                    FuelPrice = table.Column<decimal>(type: "decimal(12,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerformedWorks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PerformedWorks_Seedings_SeedingId",
+                        column: x => x.SeedingId,
+                        principalTable: "Seedings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Treatments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TreatmentType = table.Column<int>(type: "int", nullable: false),
+                    AmountOfFuel = table.Column<int>(type: "int", nullable: true),
+                    FuelPrice = table.Column<decimal>(type: "decimal(12,2)", nullable: true),
+                    ArticleId = table.Column<int>(type: "int", nullable: false),
+                    ArticleQuantity = table.Column<int>(type: "int", nullable: false),
+                    ArticlePrice = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    SeedingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Treatments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Treatments_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Treatments_Seedings_SeedingId",
+                        column: x => x.SeedingId,
+                        principalTable: "Seedings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -192,6 +332,43 @@ namespace Infrastructure.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PerformedWorks_SeedingId",
+                table: "PerformedWorks",
+                column: "SeedingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seedings_ArableLandId_WorkingSeasonId",
+                table: "Seedings",
+                columns: new[] { "ArableLandId", "WorkingSeasonId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seedings_ArticleId",
+                table: "Seedings",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seedings_WorkingSeasonId",
+                table: "Seedings",
+                column: "WorkingSeasonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Treatments_ArticleId",
+                table: "Treatments",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Treatments_SeedingId",
+                table: "Treatments",
+                column: "SeedingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkingSeasons_Name",
+                table: "WorkingSeasons",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,10 +389,28 @@ namespace Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "PerformedWorks");
+
+            migrationBuilder.DropTable(
+                name: "Treatments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Seedings");
+
+            migrationBuilder.DropTable(
+                name: "ArableLands");
+
+            migrationBuilder.DropTable(
+                name: "Articles");
+
+            migrationBuilder.DropTable(
+                name: "WorkingSeasons");
         }
     }
 }

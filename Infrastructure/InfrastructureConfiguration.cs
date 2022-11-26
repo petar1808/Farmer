@@ -5,7 +5,6 @@ using Application.Services.Identity;
 using Infrastructure.DbContect;
 using Infrastructure.Email;
 using Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -20,11 +19,10 @@ using Serilog;
 using Infrastructure.Common.LoggingSettings;
 using Serilog.Core;
 using Serilog.Events;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Humanizer.Configuration;
-using Infrastructure.Common;
 using System.Reflection;
+using Infrastructure.Common;
+using Infrastructure.Persistence;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure
 {
@@ -34,48 +32,80 @@ namespace Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddDataBase(configuration);
-            services.AddIdentity(configuration);
+
             services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
-            services.Configure<ApplicationSettings>(configuration.GetSection(nameof(ApplicationSettings)));
+            services.Configure<InfrastructureSettings>(configuration.GetSection(nameof(InfrastructureSettings)));
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IJwtTokenGenerator, JwtTokenGeneratorService>();
+
+            var infrastructureSettings = new InfrastructureSettings();
+            configuration.Bind(nameof(InfrastructureSettings), infrastructureSettings);
+
+            services.AddDataBase(configuration, infrastructureSettings);
+            services.AddIdentity(infrastructureSettings);
+
             return services;
         }
 
         private static IServiceCollection AddDataBase(
             this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            InfrastructureSettings infrastructureSettings)
         {
-            services.AddScoped<IFarmerDbContext, FarmerDbContext>();
-            services.AddDbContext<FarmerDbContext>(opt =>
+            var connectionStrings = new ConnectionStrings();
+            configuration.Bind(nameof(ConnectionStrings), connectionStrings);
+
+            if (infrastructureSettings.UseSqlLite)
             {
-                var connectionString = configuration
-                    .GetSection("ConnectionStrings:DefaultConnection").Value;
-                opt.UseSqlServer(connectionString);
-            });
+                services.AddScoped<IFarmerDbContext, SqlLiteFarmerDbContext>();
+
+                services.AddDbContext<SqlLiteFarmerDbContext>(opt =>
+                {
+                    opt.UseSqlite(connectionStrings.SqlLiteConncetion);
+                });
+            }
+            else
+            {
+                services.AddScoped<IFarmerDbContext, SqlFarmerDbContext>();
+
+                services.AddDbContext<SqlFarmerDbContext>(opt =>
+                {
+                    opt.UseSqlServer(connectionStrings.SqlDefaultConnection);
+                });
+            }
 
             return services;
         }
 
         private static IServiceCollection AddIdentity(
             this IServiceCollection services,
-            IConfiguration configuration)
+            InfrastructureSettings infrastructureSettings)
         {
-            services
-                .AddIdentity<User, Role>(options =>
-                {
-                    options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
-                    options.SignIn.RequireConfirmedAccount = true;
-                })
-                .AddEntityFrameworkStores<FarmerDbContext>()
-                .AddDefaultTokenProviders();
+            if (infrastructureSettings.UseSqlLite)
+            {
+                services
+                    .AddIdentity<User, Role>(options =>
+                    {
+                        options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+                        options.SignIn.RequireConfirmedAccount = true;
+                    })
+                    .AddEntityFrameworkStores<SqlLiteFarmerDbContext>()
+                    .AddDefaultTokenProviders();
+            }
+            else
+            {
+                services
+                    .AddIdentity<User, Role>(options =>
+                    {
+                        options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+                        options.SignIn.RequireConfirmedAccount = true;
+                    })
+                    .AddEntityFrameworkStores<SqlFarmerDbContext>()
+                    .AddDefaultTokenProviders();
+            }
 
-            var secret = configuration
-                .GetSection("ApplicationSettings:Secret").Value;
-
-            var key = Encoding.ASCII.GetBytes(secret);
+            var key = Encoding.ASCII.GetBytes(infrastructureSettings.Secret);
 
             services
                 .AddAuthentication(authentication =>
@@ -116,7 +146,19 @@ namespace Infrastructure
         {
             using (var scope = builder.ApplicationServices.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<FarmerDbContext>();
+                var infrastructureSettings = scope.ServiceProvider.GetRequiredService<IOptions<InfrastructureSettings>>();
+
+                FarmerDbContext db;
+
+                if (infrastructureSettings.Value.UseSqlLite)
+                {
+                    db = scope.ServiceProvider.GetRequiredService<SqlLiteFarmerDbContext>();
+                }
+                else
+                {
+                    db = scope.ServiceProvider.GetRequiredService<SqlFarmerDbContext>();
+                }
+
                 db.Database.Migrate();
 
                 var serviceProvider = scope.ServiceProvider;
