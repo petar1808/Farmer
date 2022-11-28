@@ -455,3 +455,4 @@ $RECYCLE.BIN/
 *.db
 *.db-shm
 *.db-wal
+/WebApi/Properties/ServiceDependencies
