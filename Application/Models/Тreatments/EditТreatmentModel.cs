@@ -20,21 +20,21 @@ namespace Application.Models.Тreatments
         [EnumDataType(typeof(ТreatmentType))]
         public ТreatmentType TreatmentType { get; init; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Количеството гориво трябва да е положително число")]
-        public int? AmountOfFuel { get; init; }
+        [Range(0d, int.MaxValue, ErrorMessage = "Количеството гориво трябва да е положително число")]
+        public decimal? AmountOfFuel { get; init; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Цената на горивото трябва да е положително число")]
+        [Range(0d, int.MaxValue, ErrorMessage = "Цената на горивото трябва да е положително число")]
         public decimal? FuelPrice { get; init; }
 
         [Required]
         public int ArticleId { get; init; }
 
         [Required(ErrorMessage = "Количеството на артикула е задължително")]
-        [Range(1, int.MaxValue, ErrorMessage = "Количеството на артикула трябва да е положително число")]
-        public int ArticleQuantity { get; init; }
+        [Range(0d, int.MaxValue, ErrorMessage = "Количеството на артикула трябва да е положително число")]
+        public decimal ArticleQuantity { get; init; }
 
         [Required(ErrorMessage = "Цената на артикула е задължителна")]
-        [Range(0, int.MaxValue, ErrorMessage = "Цената на артикула трябва да е положително число")]
+        [Range(0d, int.MaxValue, ErrorMessage = "Цената на артикула трябва да е положително число")]
         public decimal ArticlePrice { get; init; }
     }
 }

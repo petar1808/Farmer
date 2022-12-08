@@ -19,7 +19,7 @@ namespace Application.Models.PerformedWorks
 
         public DateTime Date { get; init; }
 
-        public int AmountOfFuel { get; init; }
+        public decimal AmountOfFuel { get; init; }
 
         public decimal FuelPrice { get; init; }
 

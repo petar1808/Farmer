@@ -48,8 +48,8 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Препарат/Тор"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Количество препарат/тор на декар кг/л"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена на препарат/тор за л/кг"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Количество гориво"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво на л"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Количество гориво общо(литър)"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво на литър"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePriceTotal), "Разход препарат/тор"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход"),
@@ -57,7 +57,6 @@ namespace WebUI.Pages.Seedings
             DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId),columns)
                 .WithEdit(async (x) => await EditTreatment(x))
                 .WithDelete(async (x) => await DeleteTreatment(x))
-                .WithFiltering()
                 .WithPaging()
                 .WithSorting()
                 .WithResizable();

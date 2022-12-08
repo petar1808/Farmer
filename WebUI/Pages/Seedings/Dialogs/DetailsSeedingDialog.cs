@@ -20,11 +20,14 @@ namespace WebUI.Pages.Seedings.Dialogs
 
         public List<SelectionListModel> ArableLands { get; set; } = new List<SelectionListModel>();
 
+        public AddSeedingModel AddSeeding { get; set; } = new AddSeedingModel();
+
         public int SelectedArableLandId { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
             ArableLands = await SeedingService.GetAvailableArableLandSeeds(WorkingSeasonsId);
+            AddSeeding.WorkingSeasonId = WorkingSeasonsId;
         }
 
         public void OnClose()
@@ -32,13 +35,9 @@ namespace WebUI.Pages.Seedings.Dialogs
             DialogService.Close(false);
         }
 
-        protected async Task OnSubmit()
+        protected async Task OnSubmit(AddSeedingModel addSeeding)
         {
-            var response = await SeedingService.AddSeeding(new AddSeedingModel()
-            {
-                ArableLandId = SelectedArableLandId,
-                WorkingSeasonId = WorkingSeasonsId
-            });
+            var response = await SeedingService.AddSeeding(addSeeding);
 
             DialogService.Close(response);
         }

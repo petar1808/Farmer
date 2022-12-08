@@ -24,7 +24,7 @@ namespace Infrastructure.Persistence.Configuration
             builder.Property(p => p.WorkType).IsRequired();
             builder.Property(p => p.Date).IsRequired();
             builder.Property(p => p.FuelPrice).HasColumnType("decimal(12,2)").IsRequired();
-            builder.Property(p => p.AmountOfFuel).IsRequired();
+            builder.Property(p => p.AmountOfFuel).HasColumnType("decimal(12,2)").IsRequired();
             base.Configure(builder);
         }
     }

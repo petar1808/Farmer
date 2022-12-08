@@ -54,37 +54,37 @@
             }
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <RadzenLabel Text="@($"Количество {treatmentTypePlaceholder} на декар кг/л")" />
+                    <RadzenLabel Text="@($"Количество {treatmentTypePlaceholder} на декар (кг/л)")" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Format="# кг/л" style="display: block" Name="ArticleQuantity" @bind-Value=@Treatment.ArticleQuantity Class="w-100" />
+                    <RadzenNumeric style="display: block" Name="ArticleQuantity" @bind-Value=@Treatment.ArticleQuantity Class="w-100" />
                     <NumericRangeValidator Component="ArticleQuantity" Text=@($"Количество {treatmentTypePlaceholder} е трябва да е положително число") Min="0" />
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <RadzenLabel Text="@($"Цена на {treatmentTypePlaceholder} за кг/л")" />
+                    <RadzenLabel Text="@($"Цена на {treatmentTypePlaceholder} за (кг/л)")" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Format="#0.00 лв" style="display: block" Name="ArticlePrice" @bind-Value=@Treatment.ArticlePrice Class="w-100" />
+                    <RadzenNumeric  style="display: block"  Name="ArticlePrice" @bind-Value=@Treatment.ArticlePrice Class="w-100" />
                     <NumericRangeValidator Component="ArticlePrice" Text=@($"Цената на {treatmentTypePlaceholder} е трябва да е положително число") Min="0" />
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <RadzenLabel Text="Количество гориво(литра)" />
+                    <RadzenLabel Text="Количество гориво общо(литра)" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Format="# л" style="display: block" Name="AmountOfFuel" @bind-Value=@Treatment.AmountOfFuel Class="w-100" />
+                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@Treatment.AmountOfFuel Class="w-100" />
                     <NumericRangeValidator Component="AmountOfFuel" Text="Количество гориво трябва да е положително число" Min="0" />
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <RadzenLabel Text="Цена на гориво на литър" />
+                    <RadzenLabel Text="Цена на гориво на литър(лв)" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Format="#0.00 лв" style="display: block" Name="FuelPrice" @bind-Value=@Treatment.FuelPrice Class="w-100" />
+                    <RadzenNumeric style="display: block" Name="FuelPrice" Step="any" @bind-Value=@Treatment.FuelPrice Class="w-100" />
                     <NumericRangeValidator Component="FuelPrice" Text="Цената трябва да е положително число" Min="0" />
                 </div>
             </div>

@@ -98,7 +98,7 @@ namespace Application.Services.ArableLands
             return Result.Success;
         }
 
-        public async Task<Result<List<SelectionListModel>>> ArableLandsSelectionList(int seasonId)
+        public async Task<Result<List<SelectionListModel>>> GetAvailableArableLands(int seasonId)
         {
             var workingseason = await this.farmerDbContext
                 .WorkingSeasons

@@ -1,79 +1,67 @@
 ﻿@page "/workingSeason"
 @attribute [Authorize]
 
-
 <div class="container-fluid">
     <div class="row py-5">
         <div class="col">
-            <RadzenCard>
-                <RadzenButton ButtonStyle="ButtonStyle.Secondary" 
-                Icon="add_circle_outline"
-                style="margin-bottom: 10px; margin-left:10px"
-                Text="Добави" 
-                Click="@(() => AddWorkingSeason())" />
+             <RadzenCard>
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                              Icon="add_circle_outline"
+                              style="margin-bottom: 10px; margin-left:10px"
+                              Text="Добави Сезон"
+                              Click="@(() => AddWorkingSeason())" />
 
-                <RadzenDataList WrapItems="true" Data="@WorkingSeasonBalance" TItem="ListWorkingSeasonBalanceModel" PagerHorizontalAlign="HorizontalAlign.Left">
+                <RadzenDataList WrapItems="true" Data="@WorkingSeasonBalance" TItem="ListWorkingSeasonBalanceModel">
                     <Template Context="WorkingSeasonBalance">
                         <RadzenCard Style="width: 100%; padding: 0; overflow: hidden;">
                             <div class="container-fluid">
                                 <div class="row" style="margin-left: calc(var(--bs-gutter-x) * -1); margin-right: calc(var(--bs-gutter-x) * -1)">
                                     <div class="col-md-2 p-3 product-title">
-                                        <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-color-secondary">@(WorkingSeasonBalance.Name)</RadzenText>
+                                        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H5">@(WorkingSeasonBalance.Name)</RadzenText>
                                     </div>
                                     <div class="col-md-2 p-3">
-                                        <div class="row">
+                                        <div class="row d-flex">
                                             <div class="col-md-6">
-                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Начало</RadzenText>
-                                                    <RadzenText TextStyle="TextStyle.Body2" class="mb-sm-2 mb-lg-0">
-                                                        @(WorkingSeasonBalance.StartDate.ToString("dd/MM/yyyy"))
-                                                    </RadzenText>
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Начало:</RadzenText>
+                                                <RadzenText TextStyle="TextStyle.Body1" class="mb-sm-2 mb-lg-0">@(WorkingSeasonBalance.StartDate.ToString("dd/MM/yyyy"))</RadzenText>
                                             </div>
                                             <div class="col-md-6">
-                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Край</RadzenText>
-                                                <RadzenText TextStyle="TextStyle.Body2" class="mb-sm-2 mb-lg-0">
-                                                    @(WorkingSeasonBalance.EndDate.ToString("dd/MM/yyyy"))
-                                                </RadzenText>
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Край:</RadzenText>
+                                                <RadzenText TextStyle="TextStyle.Body1" class="mb-sm-2 mb-lg-0">@(WorkingSeasonBalance.EndDate.ToString("dd/MM/yyyy"))</RadzenText>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-5 p-3" id="balance">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Приход</RadzenText>
-                                                <RadzenText TextStyle="TextStyle.Body1" class="mb-sm-2 mb-lg-0">
-                                                    @(WorkingSeasonBalance.Income)
-                                                </RadzenText>
+                                    <div class="col-md-5 p-3">
+                                        <div class="row d-flex">
+                                            <div class="col-md-4" style="text-align: right;">
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Приход:</RadzenText>
+                                                <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Income} лв") />
                                             </div>
-                                            <div class="col-md-4">
-                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Разход</RadzenText>
-                                                <RadzenText TextStyle="TextStyle.Body2" class="mb-sm-2 mb-lg-0">
-                                                    @(WorkingSeasonBalance.Expenses)
-                                                </RadzenText>
+                                            <div class="col-md-4" style="text-align: right;">
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Разход:</RadzenText>
+                                                <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Expenses} лв") />
                                             </div>
-                                            <div class="col-md-4">
-                                                    <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Печалба</RadzenText>
-                                                    <RadzenText TextStyle="TextStyle.Body2" class="mb-sm-2 mb-lg-0">
-                                                    @(WorkingSeasonBalance.Profit)
-                                                    </RadzenText>
+                                            <div class="col-md-4" style="text-align: right;">
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Печалба:</RadzenText>
+                                                    <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Profit} лв") />
                                             </div>
                                         </div>
-                                     </div>
+                                    </div>
                                     <div class="col-md-3 p-3">
-                                        <div class="row">
+                                        <div class="row d-flex">
                                             <div class="col-md-2">
                                                 <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Class="mb-0"
-                                                              Click="async() =>  await EditWorkingSeason(WorkingSeasonBalance.Id)" />
+                                                            Click="async() =>  await EditWorkingSeason(WorkingSeasonBalance.Id)" />
                                             </div>
                                             <div class="col-md-2">
                                                 <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Class="mb-0"
-                                                              Click="async() =>await DeleteWorkingSeason(WorkingSeasonBalance.Id)" />
+                                                            Click="async() =>await DeleteWorkingSeason(WorkingSeasonBalance.Id)" />
                                             </div>
                                             <div class="col-md-8">
-                                                <RadzenButton Icon="agriculture" Text="Към жътва" Class="w-100" Click="() => ToSeeding(WorkingSeasonBalance.Id)" />
+                                                <RadzenButton Icon="agriculture" Text="Към дейности" Class="w-100" Click="() => ToSeeding(WorkingSeasonBalance.Id)" />
                                             </div>
                                         </div>
                                     </div>
-                                   
                                 </div>
                             </div>
                         </RadzenCard>
@@ -84,10 +72,29 @@
     </div>
 </div>
 
+
 <style>
     .product-title {
         min-height: 72px;
         background-color: var(--rz-secondary-lighter);
+    }
+
+    .price-badge {
+        font-size: 14px;
+        line-height: 20px;
+    }
+</style>
+
+@*<style>
+    .datalist-cell{
+        text-align: center;
+        align-content: center;
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: center;
+    }
+    .product-title {
+        background-color: var(--rz-secondary-light);
     }
 
     .price-badge {
@@ -96,7 +103,12 @@
         line-height: 20px;
         padding: 8px;
     }
-    #balance{
+
+    .balance {
+        background-color: var(--rz-primary-lighter);
+    }
+
+    .season {
         background-color: var(--rz-secondary-lighter);
     }
-</style>
+</style>*@

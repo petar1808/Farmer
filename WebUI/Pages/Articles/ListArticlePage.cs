@@ -31,7 +31,6 @@ namespace WebUI.Pages.Articles
                     columns)
                 .WithEdit(async (x) => await EditArticle(x))
                 .WithDelete(async (x) => await DeleteArticle(x))
-                .WithFiltering()
                 .WithPaging()
                 .WithSorting();
         }

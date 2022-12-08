@@ -12,10 +12,10 @@ namespace Domain.Models
     {
         public Treatment(DateTime date,
             ТreatmentType treatmentType, 
-            int? amountOfFuel,
+            decimal? amountOfFuel,
             decimal? fuelPrice,
             int articleId,
-            int articleQuantity,
+            decimal articleQuantity,
             int seedingId,
             decimal articlePrice)
             :this(date, treatmentType, articleId, articleQuantity, seedingId,articlePrice)
@@ -27,7 +27,7 @@ namespace Domain.Models
         public Treatment(DateTime date,
             ТreatmentType treatmentType,
             int articleId,
-            int articleQuantity,
+            decimal articleQuantity,
             int seedingId,
             decimal articlePrice)
         {
@@ -44,7 +44,7 @@ namespace Domain.Models
 
         public ТreatmentType TreatmentType { get; private set; }
 
-        public int? AmountOfFuel { get; private set; }
+        public decimal? AmountOfFuel { get; private set; }
 
         public decimal? FuelPrice { get; private set; }
 
@@ -52,7 +52,7 @@ namespace Domain.Models
 
         public Article Article { get;  } = default!;
 
-        public int ArticleQuantity { get; private set; }
+        public decimal ArticleQuantity { get; private set; }
 
         public decimal ArticlePrice { get; private set; }
 
@@ -74,7 +74,7 @@ namespace Domain.Models
             return this;
         }
 
-        public Treatment UpdateAmountOfFuel(int? amountOfFuel)
+        public Treatment UpdateAmountOfFuel(decimal? amountOfFuel)
         {
             this.AmountOfFuel = amountOfFuel;
             return this;
@@ -92,7 +92,7 @@ namespace Domain.Models
             return this;
         }
 
-        public Treatment UpdateArticleQuantity(int articleQuantity)
+        public Treatment UpdateArticleQuantity(decimal articleQuantity)
         {
             this.ArticleQuantity = articleQuantity;
             return this;
@@ -107,10 +107,5 @@ namespace Domain.Models
 
         private void ValidateТreatmentType(ТreatmentType type)
             => Guard.Guard.ForValidEnum<ТreatmentType>((int)type, nameof(ТreatmentType));
-
-        private void Validate(ТreatmentType type)
-        {
-            ValidateТreatmentType(type);
-        }
     }
 }
