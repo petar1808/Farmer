@@ -175,8 +175,8 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AmountOfFuel")
-                        .HasColumnType("int");
+                    b.Property<decimal>("AmountOfFuel")
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -252,8 +252,8 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AmountOfFuel")
-                        .HasColumnType("int");
+                    b.Property<decimal?>("AmountOfFuel")
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
@@ -261,8 +261,8 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Property<decimal>("ArticlePrice")
                         .HasColumnType("decimal(12,2)");
 
-                    b.Property<int>("ArticleQuantity")
-                        .HasColumnType("int");
+                    b.Property<decimal>("ArticleQuantity")
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");

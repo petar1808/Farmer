@@ -19,8 +19,8 @@ namespace Application.Models.PerformedWorks
         public DateTime Date { get; init; }
 
         [Required(ErrorMessage = "Количеството гориво е задължително")]
-        [Range(1, int.MaxValue, ErrorMessage = "Количеството гориво трябва да е положително число")]
-        public int AmountOfFuel { get; init; }
+        [Range(0d, int.MaxValue, ErrorMessage = "Количеството гориво трябва да е положително число")]
+        public decimal AmountOfFuel { get; init; }
 
         [Required(ErrorMessage = "Цената на горивото е задължителна")]
         [Range(0d, int.MaxValue, ErrorMessage = "Цената на горивото трябва да е положително число")]

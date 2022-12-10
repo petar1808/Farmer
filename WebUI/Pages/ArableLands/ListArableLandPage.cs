@@ -31,7 +31,6 @@ namespace WebUI.Pages.ArableLands
                     columns)
                 .WithEdit(async (x) => await EditArableLand(x))
                 .WithDelete(async (x) => await DeleteArableLand(x))
-                .WithFiltering()
                 .WithPaging()
                 .WithSorting();
         }

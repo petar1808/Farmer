@@ -99,11 +99,13 @@ namespace Application.Services.Seedings
 
             var arableLands = await farmerDbContext
                 .Seedings
+                .Include(x => x.ArableLand)
                 .Where(x => x.WorkingSeasonId == seasonId)
-                .Select(x => new SownArableLandModel(x.Id, x.ArableLand.Name, x.ArableLand.SizeInDecar))
                 .ToListAsync();
 
-            return arableLands.OrderByDescending(x => x.SeedingId).ToList();
+            var result = mapper.Map<List<SownArableLandModel>>(arableLands);
+
+            return result;
         }
 
         public async Task<Result> UpdateSeedingSummary(UpdateSeedingSummaryModel updateModel, int seedingId)

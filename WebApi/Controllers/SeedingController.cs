@@ -51,7 +51,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<List<SelectionListModel>>> GetAvailableArableLands(int seasonId)
         {
             return await arableLandService
-                .ArableLandsSelectionList(seasonId)
+                .GetAvailableArableLands(seasonId)
                 .ToActionResult();
         }
 

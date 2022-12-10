@@ -44,14 +44,13 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.WorkType), "Тип обработка"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPrice), "Цена на литър(лв.)"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.AmountOfFuel), "Количество гориво(л.)"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPriceTotal), "Разход за гориво(лв.)"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPrice), "Цена на литър(лв)"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.AmountOfFuel), "Количество гориво общо(литър)"),
+                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPriceTotal), "Разход за гориво(лв)"),
             };
             DataGrid = new DynamicDataGridModel<GetPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns)
                 .WithEdit(async (x) => await EditPerformedWork(x))
                 .WithDelete(async (x) => await DeletePerformedWork(x))
-                .WithFiltering()
                 .WithPaging()
                 .WithSorting();
         }

@@ -15,9 +15,9 @@ namespace Domain.Models
             WorkType workType,
             DateTime date,
             decimal fuelPrice,
-            int amountOfFuel)
+            decimal amountOfFuel)
         {
-            Validate(workType);
+            ValidateWorkType(workType);
             SeedingId = seedingId;
             WorkType = workType;
             Date = date;
@@ -35,7 +35,7 @@ namespace Domain.Models
 
         public DateTime Date { get; private set; }
 
-        public int AmountOfFuel { get; private set; } 
+        public decimal AmountOfFuel { get; private set; } 
 
         public decimal FuelPrice { get; private set; }
 
@@ -52,7 +52,7 @@ namespace Domain.Models
             return this;
         }
 
-        public PerformedWork UpdateAmountOfFuel(int amountOfFuel)
+        public PerformedWork UpdateAmountOfFuel(decimal amountOfFuel)
         {
             this.AmountOfFuel = amountOfFuel;
             return this;
@@ -66,10 +66,5 @@ namespace Domain.Models
 
         private void ValidateWorkType(WorkType type)
             => Guard.Guard.ForValidEnum<WorkType>((int)type, nameof(WorkType));
-
-        private void Validate(WorkType type)
-        {
-            ValidateWorkType(type);
-        }
     }
 }

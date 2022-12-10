@@ -16,6 +16,6 @@ namespace Application.Services.ArableLands
 
         Task<Result> Delete(int id);
 
-        Task<Result<List<SelectionListModel>>> ArableLandsSelectionList(int seasonId);
+        Task<Result<List<SelectionListModel>>> GetAvailableArableLands(int seasonId);
     }
 }

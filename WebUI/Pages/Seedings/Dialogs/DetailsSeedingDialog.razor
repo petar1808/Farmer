@@ -1,5 +1,7 @@
 ﻿@using WebUI.ServicesModel.Seeding
 @attribute [Authorize]
+
+<RadzenTemplateForm TItem="AddSeedingModel" Data=@AddSeeding Submit=@OnSubmit>
 <RadzenFieldset>
     <div class="row">
         <div class="col-md-6">
@@ -7,21 +9,22 @@
         </div>
         <div class="col-md-6">
             <RadzenDropDown Data=@ArableLands
-                            @bind-Value=@SelectedArableLandId
+                            @bind-Value=@AddSeeding.ArableLandId
                             ValueProperty="Value"
                             TextProperty="Name"
                             Name="ArableLand"
                             Class="w-100" />
-            <div class="col">
+            <div>
                 <RadzenRequiredValidator Component="ArableLand" Text="Земята е задължителна" DefaultValue="0"/>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <RadzenButton Icon="add_circle_outline"  Text="Добави" Click="@(() => OnSubmit())" />
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+            @*<RadzenButton Icon="add_circle_outline"  Text="Добави" Click="@(() => OnSubmit())" />*@
             <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
         </div>
     </div>
 </RadzenFieldset>
-
+</RadzenTemplateForm>

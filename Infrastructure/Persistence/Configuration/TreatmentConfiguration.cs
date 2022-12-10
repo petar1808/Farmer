@@ -27,9 +27,10 @@ namespace Infrastructure.Persistence.Configuration
               .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(p => p.FuelPrice).HasColumnType("decimal(12,2)").IsRequired(false);
-            builder.Property(p => p.ArticleQuantity).IsRequired();
+            builder.Property(p => p.AmountOfFuel).HasColumnType("decimal(12,2)").IsRequired(false);
             builder.Property(p => p.Date).IsRequired();
             builder.Property(p => p.TreatmentType).IsRequired();
+            builder.Property(p => p.ArticleQuantity).HasColumnType("decimal(12,2)").IsRequired();
             builder.Property(p => p.ArticlePrice).HasColumnType("decimal(12,2)").IsRequired();
             base.Configure(builder);
         }

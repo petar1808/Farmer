@@ -18,7 +18,7 @@ namespace Application.Models.Тreatments
 
         public ТreatmentType TreatmentType { get; init; } = default!;
 
-        public int AmountOfFuel { get; init; }
+        public decimal AmountOfFuel { get; init; }
 
         public decimal FuelPrice { get; init; }
 
@@ -26,7 +26,7 @@ namespace Application.Models.Тreatments
 
         public string ArticleName { get; set; } = default!;
 
-        public int ArticleQuantity { get; init; }
+        public decimal ArticleQuantity { get; init; }
 
         public decimal ArticlePrice { get; init; }
 
