@@ -1,0 +1,42 @@
+﻿@using WebUI.Components.Validators
+@using WebUI.ServicesModel.Subsidies
+@attribute [Authorize]
+
+@if (Subsidies is not null)
+{
+    <RadzenTemplateForm TItem="SubsidiesModel" Data=@Subsidies Submit=@OnSubmit>
+        <RadzenFieldset>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Дата" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block" Name="Date" @bind-Value=@Subsidies.Date Class="w-100" />
+                    <RadzenRequiredValidator Component="Date" Text="Датата е задължителна" Style="position: absolute" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Приход" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric style="display: block" Name="Income" @bind-Value=@Subsidies.Income Class="w-100" />
+                    ​<NumericRangeValidator Component="Income" Text="Прихода трябва да е положително число" Min="0" />
+                </div>
+            </div>
+            <div class="row mb-1">
+                <div class="col-md-5">
+                    @if (SubsidyId == 0)
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
+                    }
+                    else
+                    {
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
+                    }
+                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
+                </div>
+            </div>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+}

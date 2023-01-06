@@ -134,6 +134,21 @@ else
                             </CollapseBody>
                         </Collapse>
                     </Accordion>
+                    <Accordion>
+                        <Collapse Visible="@CollapseSubsidy">
+                            <CollapseHeader>
+                                <Heading Size="HeadingSize.Is5">
+                                    <Button Clicked="@(()=>this.CollapseSubsidy = !this.CollapseSubsidy)">
+                                        Субсидии
+                                    </Button>
+                                </Heading>
+                            </CollapseHeader>
+                            <CollapseBody>
+                                <ListSubsidy SeedingId="@arableLand.SeedingId">
+                                </ListSubsidy>
+                            </CollapseBody>
+                        </Collapse>
+                    </Accordion>
                 </TabPanel>
             }
         </Content>

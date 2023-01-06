@@ -38,5 +38,7 @@ namespace Infrastructure.DbContect
         public override DbSet<Role> Roles { get; set; } = default!;
 
         public DbSet<Treatment> Treatments { get; set; } = default!;
+
+        public DbSet<Subsidy> Subsidies { get; set; } = default!;
     }
 }

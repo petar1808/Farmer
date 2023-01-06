@@ -53,6 +53,7 @@ namespace WebUI.Pages.Seedings
         public bool CollapseSeedingSummary { get; set; }
         public bool CollapsePerformedWork { get; set; }
         public bool CollapseTreatment { get; set; }
+        public bool CollapseSubsidy { get; set; }
 
         public bool ShowLoading { get; set; }
 

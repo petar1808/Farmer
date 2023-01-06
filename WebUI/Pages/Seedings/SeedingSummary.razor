@@ -74,14 +74,6 @@
                                     <RadzenTextBox Disabled="true" Value="@SeedingSummaryData.IncomeFromHarvestedGrains.ToString()" style="width: 100%;" Name="IncomeFromHarvestedGrains" />
                                 </div>
                             </div>
-                            <div class="col-md-12">
-
-                                <div>
-                                    <RadzenLabel Text="Приходи от субсидии(лв)" />
-                                    <RadzenNumeric Disabled="@(!IsModal)" ShowUpDown="@(IsModal)" Name="SubsidiesIncome" @bind-Value=@SeedingSummaryData.SubsidiesIncome Class="w-100" />
-                                    <NumericRangeValidator CanBeZero=true Component="SubsidiesIncome" Text="Приходи от субсидии трябва да е положително число" Min="0" />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </RadzenFieldset>

@@ -5,6 +5,7 @@ using Application.Services.Articles;
 using Application.Services.Identity;
 using Application.Services.PerformedWorks;
 using Application.Services.Seedings;
+using Application.Services.Subsidies;
 using Application.Services.Treatments;
 using Application.Services.WorikingSeasons;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,7 @@ namespace Application
             services.AddTransient<ISeedingService, SeedingService>();
             services.AddTransient<IPerformedWorkService, PerformedWorkService>();
             services.AddTransient<IТreatmentService, ТreatmentService>();
+            services.AddTransient<ISubsidyService, SubsidyService>();
             return services;
         }
 

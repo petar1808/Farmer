@@ -15,6 +15,8 @@ namespace Application.Services
 
         DbSet<Seeding> Seedings { get; } 
 
+        DbSet<Subsidy> Subsidies { get; }
+
         DbSet<WorkingSeason> WorkingSeasons { get; set; }
 
         DbSet<Treatment> Treatments { get; }

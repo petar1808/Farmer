@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using WebUI.Services.Identity;
 using Fluxor;
+using WebUI.Services.Subsidies;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -67,6 +68,7 @@ builder.Services.AddTransient<IPerformedWorkService, PerformedWorkService>();
 builder.Services.AddTransient<ITreatmentService, TreatmentService>();
 builder.Services.AddTransient<ISeedingService, SeedingService>();
 builder.Services.AddTransient<IIdentityService, IdentityService>();
+builder.Services.AddTransient<ISubsidyService, SubsidyService>();
 
 builder.Services.AddFluxor(conf =>
 {
