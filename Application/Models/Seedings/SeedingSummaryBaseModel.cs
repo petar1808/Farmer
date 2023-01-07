@@ -30,5 +30,7 @@ namespace Application.Models.Seedings
 
         [Range(0d, int.MaxValue, ErrorMessage = "Разходите за жътва трябва да са положително число")]
         public decimal ExpensesForHarvesting { get;  init; }
+
+
     }
 }

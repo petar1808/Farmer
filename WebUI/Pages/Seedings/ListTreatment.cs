@@ -46,15 +46,15 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Тип третиране"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Препарат/Тор"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Количество препарат/тор на декар кг/л"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена на препарат/тор за л/кг"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Количество гориво общо(литър)"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво на литър"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePriceTotal), "Разход препарат/тор"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Количество препарат/тор на декар", "{0:0.00} кг/л."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена на препарат/тор за кг/л.", "{0:0.00} лв."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Количество гориво общо", "{0:0.00} л."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво на литър", "{0:0.00} лв."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePriceTotal), "Разход препарат/тор", "{0:0.00} лв."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход", "{0:0.00} лв."),
             };
-            DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId),columns)
+            DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns)
                 .WithEdit(async (x) => await EditTreatment(x))
                 .WithDelete(async (x) => await DeleteTreatment(x))
                 .WithPaging()

@@ -37,7 +37,7 @@ namespace WebUI.Pages.Seedings
             {
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход")
+                new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход", "{0:0.00} лв.")
             };
             DataGrid = new DynamicDataGridModel<SubsidiesModel>(await SubsidyService.List(SeedingId), columns)
                 .WithEdit(async (x) => await EditSubsidy(x))

@@ -25,10 +25,10 @@ namespace WebUI.Services.PerformedWork
                 .DeleteAsync<bool>($"api/seeding/performedWork/{id}");
         }
 
-        public async Task<List<GetPerformedWorkModel>> List(int seedingId)
+        public async Task<List<ListPerformedWorkModel>> List(int seedingId)
         {
             return await _httpService
-                .GetAsync<List<GetPerformedWorkModel>>($"api/seeding/{seedingId}/performedWork");
+                .GetAsync<List<ListPerformedWorkModel>>($"api/seeding/{seedingId}/performedWork");
         }
 
         public async Task<List<SelectionListModel>> GetWorkTypes()

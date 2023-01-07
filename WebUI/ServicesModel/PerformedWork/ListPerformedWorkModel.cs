@@ -2,8 +2,10 @@
 
 namespace WebUI.ServicesModel.PerformedWork
 {
-    public class GetPerformedWorkModel : PerformedWorkBaseModel, IDynamicDataGridModel
+    public class ListPerformedWorkModel : PerformedWorkBaseModel, IDynamicDataGridModel
     {
         public string WorkType { get; set; } = default!;
+
+        public decimal FuelPriceTotal { get; set; }
     }
 }

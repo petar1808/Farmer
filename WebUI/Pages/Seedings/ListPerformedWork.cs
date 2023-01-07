@@ -35,20 +35,20 @@ namespace WebUI.Pages.Seedings
         [Inject]
         public ISeedingService SeedingService { get; set; } = default!;
 
-        public DynamicDataGridModel<GetPerformedWorkModel> DataGrid { get; set; } = default!;
+        public DynamicDataGridModel<ListPerformedWorkModel> DataGrid { get; set; } = default!;
 
         protected async override Task OnParametersSetAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Id), "Ид"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.WorkType), "Тип обработка"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPrice), "Цена на литър(лв)"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.AmountOfFuel), "Количество гориво общо(литър)"),
-                new DynamicDataGridColumnModel(nameof(GetPerformedWorkModel.FuelPriceTotal), "Разход за гориво(лв)"),
+                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.Id), "Ид"),
+                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.Date), "Дата", "{0:dd/MM/yy}"),
+                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.WorkType), "Тип обработка"),
+                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.FuelPrice), "Цена на литър", "{0:0.00} лв."),
+                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.AmountOfFuel), "Количество гориво общо", "{0:0.00} л."),
+                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв."),
             };
-            DataGrid = new DynamicDataGridModel<GetPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns)
+            DataGrid = new DynamicDataGridModel<ListPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns)
                 .WithEdit(async (x) => await EditPerformedWork(x))
                 .WithDelete(async (x) => await DeletePerformedWork(x))
                 .WithPaging()
