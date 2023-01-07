@@ -5,7 +5,7 @@ namespace WebUI.Services.PerformedWork
 {
     public interface IPerformedWorkService
     {
-        Task<List<GetPerformedWorkModel>> List(int seedingId);
+        Task<List<ListPerformedWorkModel>> List(int seedingId);
 
         Task<PerformedWorkDatailsModel> Get(int id);
 

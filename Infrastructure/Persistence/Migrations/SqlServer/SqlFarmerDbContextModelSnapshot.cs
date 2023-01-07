@@ -226,9 +226,6 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Property<int>("SeedsQuantityPerDecare")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("SubsidiesIncome")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<int>("WorkingSeasonId")
                         .HasColumnType("int");
 
@@ -242,6 +239,30 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                         .IsUnique();
 
                     b.ToTable("Seedings");
+                });
+
+            modelBuilder.Entity("Domain.Models.Subsidy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Income")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("SeedingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SeedingId");
+
+                    b.ToTable("Subsidies");
                 });
 
             modelBuilder.Entity("Domain.Models.Treatment", b =>
@@ -455,6 +476,17 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Navigation("WorkingSeason");
                 });
 
+            modelBuilder.Entity("Domain.Models.Subsidy", b =>
+                {
+                    b.HasOne("Domain.Models.Seeding", "Seeding")
+                        .WithMany("Subsidies")
+                        .HasForeignKey("SeedingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Seeding");
+                });
+
             modelBuilder.Entity("Domain.Models.Treatment", b =>
                 {
                     b.HasOne("Domain.Models.Article", "Article")
@@ -533,6 +565,8 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
             modelBuilder.Entity("Domain.Models.Seeding", b =>
                 {
                     b.Navigation("PerformedWorks");
+
+                    b.Navigation("Subsidies");
 
                     b.Navigation("Treatments");
                 });

@@ -28,10 +28,9 @@ namespace Application.Models.Seedings
         [Range(0d, int.MaxValue, ErrorMessage = "Продажната цена зърното трябва да е положително число")]
         public decimal HarvestedGrainSellingPricePerKilogram { get; init; }
 
-        [Range(0d, int.MaxValue, ErrorMessage = "Субсидиите трябва да са положително число")]
-        public decimal SubsidiesIncome { get; init; }
-
         [Range(0d, int.MaxValue, ErrorMessage = "Разходите за жътва трябва да са положително число")]
         public decimal ExpensesForHarvesting { get;  init; }
+
+
     }
 }

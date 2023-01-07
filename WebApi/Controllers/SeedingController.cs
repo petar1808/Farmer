@@ -2,11 +2,13 @@
 using Application.Models.Common;
 using Application.Models.PerformedWorks;
 using Application.Models.Seedings;
+using Application.Models.Subsidies;
 using Application.Models.Тreatments;
 using Application.Services.ArableLands;
 using Application.Services.Articles;
 using Application.Services.PerformedWorks;
 using Application.Services.Seedings;
+using Application.Services.Subsidies;
 using Application.Services.Treatments;
 using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
@@ -24,17 +26,20 @@ namespace WebApi.Controllers
         private readonly IArableLandService arableLandService;
         private readonly IТreatmentService treatmentService;
         private readonly IPerformedWorkService performedWorkService;
+        private readonly ISubsidyService subsidyService;
 
         public SeedingController(
             ISeedingService seedingService,
             IArableLandService arableLandService,
             IТreatmentService treatmentService,
-            IPerformedWorkService performedWorkService)
+            IPerformedWorkService performedWorkService,
+            ISubsidyService subsidyService)
         {
             this.seedingService = seedingService;
             this.arableLandService = arableLandService;
             this.treatmentService = treatmentService;
             this.performedWorkService = performedWorkService;
+            this.subsidyService = subsidyService;
         }
 
         #region Seeding
@@ -184,6 +189,54 @@ namespace WebApi.Controllers
                 .Delete(id)
                 .ToActionResult();
         }
+        #endregion
+
+        #region
+        [HttpPost]
+        [Route("{seedingId:int}/subsidy")]
+        public async Task<ActionResult> AddSubsidy([FromBody] AddSubsidyModel subsidyModel, int seedingId)
+        {
+            return await subsidyService
+                .Add(subsidyModel, seedingId)
+                .ToActionResult();
+        }
+
+        [HttpGet]
+        [Route("{seedingId:int}/subsidy")]
+        public async Task<ActionResult<List<ListSubsidiesModel>>> ListSubsidies(int seedingId)
+        {
+            return await subsidyService
+                .List(seedingId)
+                .ToActionResult();
+        }
+
+        [HttpGet]
+        [Route("subsidy/{subsidyId:int}")]
+        public async Task<ActionResult<GetSubsidyModel>> GetSubsidy(int subsidyId)
+        {
+            return await subsidyService
+                .Get(subsidyId)
+                .ToActionResult();
+        }
+
+        [HttpPut]
+        [Route("subsidy")]
+        public async Task<ActionResult> EditSubsidy(EditSubsidyModel subsidyModel)
+        {
+            return await subsidyService
+                .Edit(subsidyModel)
+                .ToActionResult();
+        }
+
+        [HttpDelete]
+        [Route("subsidy/{subsidyId:int}")]
+        public async Task<ActionResult> DeleteSubsidy(int subsidyId)
+        {
+            return await subsidyService
+                .Delete(subsidyId)
+                .ToActionResult();
+        }
+
         #endregion
     }
 }

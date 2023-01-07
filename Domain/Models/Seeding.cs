@@ -40,9 +40,9 @@ namespace Domain.Models
 
         public decimal HarvestedGrainSellingPricePerKilogram { get; private set; }
 
-        public decimal SubsidiesIncome { get; private set; }
-
         public decimal ExpensesForHarvesting { get; private set; }
+
+        public List<Subsidy> Subsidies { get; } = default!;
 
         public List<Treatment> Treatments { get; } = default!;
 
@@ -81,12 +81,6 @@ namespace Domain.Models
         public Seeding UpdateHarvestedGrainSellingPricePerKilogram(decimal harvestedGrainSellingPricePerKilogram)
         {
             this.HarvestedGrainSellingPricePerKilogram = harvestedGrainSellingPricePerKilogram;
-            return this;
-        }
-
-        public Seeding UpdateSubsidies(decimal subsidiesIncome)
-        {
-            this.SubsidiesIncome = subsidiesIncome;
             return this;
         }
     }

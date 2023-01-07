@@ -108,13 +108,15 @@ namespace Application.Services.WorikingSeasons
             var workingSeasonBalance = await farmerDbContext
                 .WorkingSeasons
                 .Include(x => x.Seedings)
-                .ThenInclude(x => x.ArableLand)
+                    .ThenInclude(x => x.ArableLand)
                 .Include(x => x.Seedings)
-                .ThenInclude(x => x.Article)
+                    .ThenInclude(x => x.Article)
                 .Include(x => x.Seedings)
-                .ThenInclude(x => x.PerformedWorks)
+                    .ThenInclude(x => x.PerformedWorks)
                 .Include(x => x.Seedings)
-                .ThenInclude(x => x.Treatments)
+                    .ThenInclude(x => x.Subsidies)
+                .Include(x => x.Seedings)
+                    .ThenInclude(x => x.Treatments)
                 .OrderByDescending(x => x.StartDate)
                 .ToListAsync();
 

@@ -15,7 +15,7 @@ namespace Application.Models.Seedings
 
         public virtual void Mapping(Profile mapper)
            => mapper.CreateMap<Seeding, GetArableLandBalance>()
-                .ForMember(x => x.Income, cfg => cfg.MapFrom(c => (c.HarvestedQuantityPerDecare * c.HarvestedGrainSellingPricePerKilogram) * c.ArableLand.SizeInDecar))
+                .ForMember(x => x.Income, cfg => cfg.MapFrom(c => ((c.HarvestedQuantityPerDecare * c.HarvestedGrainSellingPricePerKilogram) * c.ArableLand.SizeInDecar) + c.Subsidies.Sum(x => x.Income)))
                 .ForMember(x => x.Expenses, cfg => cfg.MapFrom(c => CalculateExpenses(c)));
 
         private decimal? CalculateExpenses(Seeding seeding)

@@ -13,9 +13,12 @@ namespace Application.Models.Seedings
     {
         public string ArticleName { get; init; } = default!;
 
+        public decimal IncomeFromHarvestedGrains { get; private set; }
+
         public virtual void Mapping(Profile mapper)
            => mapper.CreateMap<Seeding, GetSeedingSummaryModel>()
                 .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name))
-                .ForMember(x => x.ArticleId, cfg => cfg.MapFrom(c => c.Article.Id));
+                .ForMember(x => x.ArticleId, cfg => cfg.MapFrom(c => c.Article.Id))
+                .ForMember(x => x.IncomeFromHarvestedGrains, cfg => cfg.MapFrom(c => (c.HarvestedQuantityPerDecare * c.HarvestedGrainSellingPricePerKilogram) * c.ArableLand.SizeInDecar));
     }
 }

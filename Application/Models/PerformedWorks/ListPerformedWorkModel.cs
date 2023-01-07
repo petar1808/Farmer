@@ -23,6 +23,8 @@ namespace Application.Models.PerformedWorks
 
         public decimal FuelPrice { get; init; }
 
+        public decimal FuelPriceTotal => AmountOfFuel * FuelPrice;
+
         public virtual void Mapping(Profile mapper)
         => mapper.CreateMap<PerformedWork, ListPerformedWorkModel>()
             .ForMember(x => x.WorkType, cfg => cfg.MapFrom(c => c.WorkType.GetEnumDisplayName()));

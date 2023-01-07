@@ -13,9 +13,6 @@ namespace WebUI.Pages.ArableLands
         [Parameter]
         public int ArableLandId { get; set; }
 
-        [Parameter]
-        public bool IsModal { get; set; }
-
         public ArableLandModel ArableLands { get; set; } = default!;
 
         [Inject]
@@ -25,7 +22,6 @@ namespace WebUI.Pages.ArableLands
         {
             if (ArableLandId == 0)
             {
-                IsModal = true;
                 ArableLands = new ArableLandModel();
             }
             else

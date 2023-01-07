@@ -74,6 +74,7 @@ namespace Application.Services.Seedings
                 .Include(x => x.ArableLand)
                 .Include(x => x.Treatments)
                 .Include(x => x.PerformedWorks)
+                .Include(x => x.Subsidies)
                 .FirstOrDefaultAsync(x => x.Id == seedingId);
 
             if (seeding == null)
@@ -133,7 +134,6 @@ namespace Application.Services.Seedings
                    .UpdateSeedsPricePerKilogram(updateModel.SeedsPricePerKilogram)
                    .UpdateHarvestedQuantityPerDecare(updateModel.HarvestedQuantityPerDecare)
                    .UpdateHarvestedGrainSellingPricePerKilogram(updateModel.HarvestedGrainSellingPricePerKilogram)
-                   .UpdateSubsidies(updateModel.SubsidiesIncome)
                    .UpdateExpensesForHarvesting(updateModel.ExpensesForHarvesting);
 
             farmerDbContext.Update(seeding);
