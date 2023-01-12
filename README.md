@@ -15,16 +15,23 @@ Here is a working live demo :  https://lemon-meadow-0a1e92e03.2.azurestaticapps.
 
 Test Users
 
- - **Username**: admin@farmer.com **Password**: P@ssw0rd **Role**: Admin
- - **Username**: farmer_user@yahoo.com **Password**: P@ssw0rd **Role**: User
+ - **Username**: system_farmer@mail.bg **Password**: P@ssw0rd **Role**: System Admin
+   - This user can manage the tenants and the admins of the tenants
+ 
+ - **Username**: farmer_amin@mail.bg **Password**: P@ssw0rd **Role**: Admin
+   - This user can manage the users of a specific tenant and also operate with all agriculture functionalities in the system
+   
+ - **Username**: farmer_test_user@mail.bg **Password**: P@ssw0rd **Role**: User
+   - This user can operate with all agriculture functionalities in the system
  
 ## Functionalities
+  - Multitenancy 
+  - User management
   - Managing various types of articles: 
     - Seeds 
     - Fertilizers
     - Preparations
   - Management of arable land
-  - User management
   - Management of working seasons with the following functionalities: 
     - Income, 
     - Expenses 
@@ -32,6 +39,7 @@ Test Users
     - Seeding 
     - Performed work 
     - Treatment
+    - Subsidy
 
 ## Arhitecture
 
@@ -57,7 +65,7 @@ The Backed follows the Clean Architecture Pattern
 
 
 <p>
-    <img src="https://www.dandoescode.com/static/f89816449cce6517b5ae83403212b6ca/99f37/clean-architecture.png" height="300px">
+    <img src="https://netsharpdev.com/images/posts/shape.png" height="300px">
 </p>
 
 ## Build Process
