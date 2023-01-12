@@ -51,7 +51,7 @@ namespace Application.Services.PerformedWorks
                 performedWorkModel.FuelPrice,
                 performedWorkModel.AmountOfFuel);
 
-            await farmerDbContext.PerformedWorks.AddAsync(performedWork);
+            await farmerDbContext.AddAsync(performedWork);
             await farmerDbContext.SaveChangesAsync();
 
             return Result.Success;

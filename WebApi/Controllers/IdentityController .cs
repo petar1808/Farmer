@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Extensions;
+using static Application.IdentityConstants;
 
 namespace WebApi.Controllers
 {
@@ -23,7 +24,7 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("createUser")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = IdentityRoles.AdminRole)]
         public async Task<ActionResult> CreateUser([FromBody]CreateUserModel createUserModel)
         {
             return await identityService

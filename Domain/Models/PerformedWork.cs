@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class PerformedWork : Entity<int>
+    public class PerformedWork : Entity<int>, ITenant
     {
 
         public PerformedWork(int seedingId,
@@ -27,6 +27,7 @@ namespace Domain.Models
             Seeding = default!;
         }
 
+
         public int SeedingId { get;}
 
         public Seeding Seeding { get;}
@@ -38,6 +39,8 @@ namespace Domain.Models
         public decimal AmountOfFuel { get; private set; } 
 
         public decimal FuelPrice { get; private set; }
+
+        public int TenantId { get; set; }
 
         public PerformedWork UpdateWorkType(WorkType workType)
         {

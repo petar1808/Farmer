@@ -4,7 +4,7 @@ using static Domain.ModelConstraint.CommonConstraints;
 
 namespace Domain.Models
 {
-    public class Article : Entity<int>
+    public class Article : Entity<int>, ITenant
     {
         public Article(string name, ArticleType articleType)
         {
@@ -16,6 +16,8 @@ namespace Domain.Models
         public string Name { get; private set; }
 
         public ArticleType ArticleType { get; private set; }
+
+        public int TenantId { get; set; }
 
         public Article UpdateName(string name)
         {

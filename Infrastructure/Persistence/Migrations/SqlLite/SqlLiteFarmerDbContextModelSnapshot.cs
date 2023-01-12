@@ -43,6 +43,25 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
+            modelBuilder.Entity("Application.Models.Tenant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Tenants");
+                });
+
             modelBuilder.Entity("Application.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -99,6 +118,9 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
@@ -114,6 +136,8 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("TenantId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -132,7 +156,13 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Property<int>("SizeInDecar")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique();
 
                     b.ToTable("ArableLands");
                 });
@@ -151,7 +181,13 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "TenantId", "ArticleType")
+                        .IsUnique();
 
                     b.ToTable("Articles");
                 });
@@ -172,6 +208,9 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("SeedingId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TenantId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("WorkType")
@@ -211,6 +250,9 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Property<int>("SeedsQuantityPerDecare")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("WorkingSeasonId")
                         .HasColumnType("INTEGER");
 
@@ -239,6 +281,9 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("SeedingId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TenantId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -275,6 +320,9 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Property<int>("SeedingId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("TreatmentType")
                         .HasColumnType("INTEGER");
 
@@ -298,15 +346,17 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Name", "TenantId")
                         .IsUnique();
 
                     b.ToTable("WorkingSeasons");
@@ -412,6 +462,16 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Application.Models.User", b =>
+                {
+                    b.HasOne("Application.Models.Tenant", "Tenant")
+                        .WithMany("Users")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
@@ -530,6 +590,11 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Application.Models.Tenant", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Domain.Models.ArableLand", b =>

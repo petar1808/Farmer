@@ -25,6 +25,8 @@ namespace Application.Services
 
         DbSet<Role> Roles { get; set; }
 
+        DbSet<Tenant> Tenants { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : class;

@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Application.Models.Tenants;
 using Application.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,7 @@ namespace Application.Services.Identity
         Task<Result<LoginOutputModel>> Login(LoginInputModel loginInputModel);
 
         Task<Result<List<ListUserModel>>> ListUser();
+
+        Task<Result> CreateAdmin(CreateAdminModel createAdmin);
     }
 }

@@ -1,11 +1,10 @@
 ﻿using Application.Mappings;
-using Application.Services;
 using Application.Services.ArableLands;
 using Application.Services.Articles;
-using Application.Services.Identity;
 using Application.Services.PerformedWorks;
 using Application.Services.Seedings;
 using Application.Services.Subsidies;
+using Application.Services.Tenants;
 using Application.Services.Treatments;
 using Application.Services.WorikingSeasons;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +26,7 @@ namespace Application
             services.AddTransient<IPerformedWorkService, PerformedWorkService>();
             services.AddTransient<IТreatmentService, ТreatmentService>();
             services.AddTransient<ISubsidyService, SubsidyService>();
+            services.AddTransient<ITenantService, TenantService>();
             return services;
         }
 

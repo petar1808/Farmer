@@ -21,6 +21,15 @@ namespace Application.Services.Articles
 
         public async Task<Result> Add(AddArticleModel articleModel)
         {
+            var articleUnique = await farmerDbContext
+                .Articles
+                .AnyAsync(x => x.Name == articleModel.Name && x.ArticleType == articleModel.ArticleType);
+
+            if (articleUnique)
+            {
+                return "Има създаден артикул със същото име и тип";
+            }
+
             var article = new Article(articleModel.Name, articleModel.ArticleType);
 
             await farmerDbContext.AddAsync(article);

@@ -31,7 +31,7 @@ namespace Application.Services.Subsidies
                 subsidyModel.Income,
                 subsidyModel.Date);
 
-            await farmerDbContext.Subsidies.AddAsync(subsidy);
+            await farmerDbContext.AddAsync(subsidy);
             await farmerDbContext.SaveChangesAsync();
 
             return Result.Success;

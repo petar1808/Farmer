@@ -70,7 +70,7 @@ namespace Application.Services.Treatments
                 seedingId,
                 treatmentModel.ArticlePrice);
 
-            await farmerDbContext.Treatments.AddAsync(treatment);
+            await farmerDbContext.AddAsync(treatment);
             await farmerDbContext.SaveChangesAsync();
 
             return Result.Success;

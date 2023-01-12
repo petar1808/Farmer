@@ -173,19 +173,20 @@ namespace Infrastructure
 
                 if (!roleManager.Roles.Any())
                 {
+                    roleManager.CreateAsync(new Role(IdentityRoles.SystemAdminRole)).GetAwaiter().GetResult();
                     roleManager.CreateAsync(new Role(IdentityRoles.AdminRole)).GetAwaiter().GetResult();
                     roleManager.CreateAsync(new Role(IdentityRoles.UserRole)).GetAwaiter().GetResult();
                 }
 
                 if (!userManager.Users.Any())
                 {
-                    var user = new User(configuration.GetSection("DefaultUser:Email").Value,"Admin","Admin");
+                    var user = new User(configuration.GetSection("DefaultUser:Email").Value, "System", "Admin", null);
 
                     user.UpdateActive(true);
 
                     userManager.CreateAsync(user, configuration.GetSection("DefaultUser:Password").Value).GetAwaiter().GetResult();
 
-                    userManager.AddToRoleAsync(user, IdentityRoles.AdminRole).GetAwaiter().GetResult();
+                    userManager.AddToRoleAsync(user, IdentityRoles.SystemAdminRole).GetAwaiter().GetResult();
                 }
 
             }

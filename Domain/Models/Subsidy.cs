@@ -1,13 +1,8 @@
 ﻿using Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class Subsidy : Entity<int>
+    public class Subsidy : Entity<int>, ITenant
     {
         public Subsidy(int seedingId, decimal income, DateTime date)
         {
@@ -24,6 +19,8 @@ namespace Domain.Models
         public decimal Income { get; private set; }
 
         public DateTime Date { get; private set; }
+
+        public int TenantId { get; set; }
 
         public Subsidy UpdateIncome(decimal income)
         {

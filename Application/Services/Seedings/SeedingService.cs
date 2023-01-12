@@ -40,7 +40,7 @@ namespace Application.Services.Seedings
 
             var seeding = new Seeding(model.ArableLandId, model.WorkingSeasonId);
 
-            await farmerDbContext.Seedings.AddAsync(seeding);
+            await farmerDbContext.AddAsync(seeding);
             await farmerDbContext.SaveChangesAsync();
 
             return Result.Success;

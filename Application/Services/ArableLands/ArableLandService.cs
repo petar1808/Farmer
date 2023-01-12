@@ -19,9 +19,18 @@ namespace Application.Services.ArableLands
 
         public async Task<Result> Add(AddArableLandModel arableLandModel)
         {
+            var arableLandUnique = await farmerDbContext
+                .ArableLands
+                .AnyAsync(x => x.Name == arableLandModel.Name);
+
+            if (arableLandUnique)
+            {
+                return "Има създадена земя със същото име";
+            }
+
             var arableLand = new ArableLand(arableLandModel.Name, arableLandModel.SizeInDecar);
 
-            await farmerDbContext.ArableLands.AddAsync(arableLand);
+            await farmerDbContext.AddAsync(arableLand);
             await farmerDbContext.SaveChangesAsync();
 
             return Result.Success;
