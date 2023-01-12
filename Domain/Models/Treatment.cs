@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class Treatment : Entity<int>
+    public class Treatment : Entity<int>, ITenant
     {
         public Treatment(DateTime date,
             ТreatmentType treatmentType, 
@@ -59,6 +59,8 @@ namespace Domain.Models
         public int SeedingId { get; private set; }
 
         public Seeding Seeding { get; } = default!;
+
+        public int TenantId { get; set; }
 
         #region UpdateMethods
         public Treatment UpdateТreatmentType(ТreatmentType treatmentType)

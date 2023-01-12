@@ -1,8 +1,9 @@
 using Application;
+using Application.Services;
 using Infrastructure;
-using Serilog;
 using WebApi.Filters;
 using WebApi.Middlewares;
+using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
+
+builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 
 builder.Host.UseSerilogLogging();
 

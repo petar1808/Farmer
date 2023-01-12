@@ -10,10 +10,15 @@ namespace Infrastructure.Persistence.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder
+               .HasOne(x => x.Tenant)
+               .WithMany(x => x.Users)
+               .HasForeignKey(p => p.TenantId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder
                 .HasMany(x => x.UserRoles)
                 .WithMany(x => x.Users)
                 .UsingEntity<IdentityUserRole<string>>();
-
         }
     }
 }

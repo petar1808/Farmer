@@ -10,6 +10,13 @@ namespace Infrastructure.Persistence.Configuration
     {
         public override void Configure(EntityTypeBuilder<Article> builder)
         {
+            builder.HasIndex(x => new
+            {
+                x.Name,
+                x.TenantId,
+                x.ArticleType
+            }).IsUnique();
+
             builder.Property(p => p.Name).HasMaxLength(MaxNameLenght).IsRequired();
             builder.Property(p => p.ArticleType).IsRequired();
             base.Configure(builder);

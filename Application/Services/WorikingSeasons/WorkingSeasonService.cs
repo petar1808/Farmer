@@ -26,7 +26,7 @@ namespace Application.Services.WorikingSeasons
 
             if (workingSeasonDate)
             {
-                return "Има съзаден сезон с същото начало и край";
+                return "Има съзаден сезон със същото начало и край";
             }
 
             var workingSeason = new WorkingSeason(

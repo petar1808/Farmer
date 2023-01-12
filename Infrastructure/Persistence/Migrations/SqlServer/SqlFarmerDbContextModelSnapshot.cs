@@ -49,6 +49,27 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
+            modelBuilder.Entity("Application.Models.Tenant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Tenants");
+                });
+
             modelBuilder.Entity("Application.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -105,6 +126,9 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -121,6 +145,8 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("TenantId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -141,7 +167,13 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Property<int>("SizeInDecar")
                         .HasColumnType("int");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique();
 
                     b.ToTable("ArableLands");
                 });
@@ -162,7 +194,13 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "TenantId", "ArticleType")
+                        .IsUnique();
 
                     b.ToTable("Articles");
                 });
@@ -185,6 +223,9 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("SeedingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<int>("WorkType")
@@ -226,6 +267,9 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Property<int>("SeedsQuantityPerDecare")
                         .HasColumnType("int");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.Property<int>("WorkingSeasonId")
                         .HasColumnType("int");
 
@@ -256,6 +300,9 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("SeedingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -294,6 +341,9 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Property<int>("SeedingId")
                         .HasColumnType("int");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TreatmentType")
                         .HasColumnType("int");
 
@@ -319,15 +369,17 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Name", "TenantId")
                         .IsUnique();
 
                     b.ToTable("WorkingSeasons");
@@ -437,6 +489,16 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Application.Models.User", b =>
+                {
+                    b.HasOne("Application.Models.Tenant", "Tenant")
+                        .WithMany("Users")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
@@ -555,6 +617,11 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Application.Models.Tenant", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Domain.Models.ArableLand", b =>

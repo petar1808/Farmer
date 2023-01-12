@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Application.Models.Tenants;
 using Application.Models.Users;
 using Application.Services;
 using Application.Services.Identity;
@@ -16,20 +17,23 @@ namespace Infrastructure.Identity
         private readonly IEmailService _emailService;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IMapper mapper;
+        private readonly ICurrentUserService _currentUserService;
         public IdentityService(UserManager<User> userManager,
             IEmailService emailService,
             IJwtTokenGenerator jwtTokenGenerator,
-            IMapper mapper)
+            IMapper mapper,
+            ICurrentUserService currentUserService)
         {
             _userManager = userManager;
             _emailService = emailService;
             _jwtTokenGenerator = jwtTokenGenerator;
             this.mapper = mapper;
+            _currentUserService = currentUserService;
         }
 
         public async Task<Result> CreateUser(CreateUserModel createUserModel)
         {
-            var user = new User(createUserModel.UserEmail, createUserModel.FirstName, createUserModel.LastName);
+            var user = new User(createUserModel.UserEmail, createUserModel.FirstName, createUserModel.LastName, _currentUserService.UserTenantId);
             var role = IdentityRoles.UserRole;
 
             var identityResult = await this._userManager.CreateAsync(user);
@@ -55,6 +59,43 @@ namespace Infrastructure.Identity
                 createUserModel.FirstName + " " + createUserModel.LastName,
                 createUserModel.UserEmail,
                 $"{createUserModel.ActivateUserUrl}?email={createUserModel.UserEmail}&token={encoded}");
+
+            if (!sendEmailResult)
+            {
+                return "Имейлът не беше изпратен успешно!";
+            }
+
+            return Result.Success;
+        }
+
+        public async Task<Result> CreateAdmin(CreateAdminModel createAdmin)
+        {
+            var admin = new User(createAdmin.UserEmail, createAdmin.FirstName, createAdmin.LastName, createAdmin.TenantId);
+            var role = IdentityRoles.AdminRole;
+
+            var identityResult = await this._userManager.CreateAsync(admin);
+            if (!identityResult.Succeeded)
+            {
+                if (identityResult.Errors.Any(x => x.Code == "DuplicateUserName"))
+                {
+                    return "Имейлът вече съществува!";
+                }
+            }
+
+            var roleResult = await this._userManager.AddToRoleAsync(admin, role);
+            if (!roleResult.Succeeded)
+            {
+                return "Грешка при задаването на роля!";
+            }
+
+            var token = await this._userManager.GenerateEmailConfirmationTokenAsync(admin);
+
+            var encoded = HttpUtility.UrlEncode(token);
+
+            var sendEmailResult = await this._emailService.SendUserCreatedEmail(
+                createAdmin.FirstName + " " + createAdmin.LastName,
+                createAdmin.UserEmail,
+                $"{createAdmin.ActivateUserUrl}?email={createAdmin.UserEmail}&token={encoded}");
 
             if (!sendEmailResult)
             {
@@ -192,7 +233,8 @@ namespace Infrastructure.Identity
         {
             var users = await _userManager
                 .Users
-                .Where(x => x.UserRoles.Any(x => x.Name != "Admin"))
+                .Where(x => x.TenantId == _currentUserService.UserTenantId)
+                .Where(x => x.UserRoles.Any(x => x.Name != IdentityRoles.AdminRole && x.Name != IdentityRoles.SystemAdminRole))
                 .ToListAsync();
 
             if (users == null)

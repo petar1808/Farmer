@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using WebUI.Models;
+using static WebUI.IdentityConstants;
 
 namespace WebUI.Services
 {
@@ -28,13 +29,7 @@ namespace WebUI.Services
                         Name = "Земи",
                         Path = "/arableLand/list",
                         Icon = "location_pin"
-                    },
-                    //new NavMenuItem()
-                    //{
-                    //    Name = "Сезони",
-                    //    Path = "/workingSeason/list",
-                    //    Icon = "calendar_month"
-                    //}
+                    }
                 }
             },
             new NavMenuItem()
@@ -48,17 +43,27 @@ namespace WebUI.Services
                 Name = "Потребители",
                 Icon = "group",
                 Path = "/listUser"
+            },
+            new NavMenuItem()
+            {
+                Name = "Организации и потребители",
+                Icon = "group",
+                Path = "/tenantsWithUsers"
             }
         };
 
         public IEnumerable<NavMenuItem> GetMenuItems(string role)
         {
-            if (role.ToLower() == "admin")
+            if (role.ToLower() == IdentityRoles.AdminRole.ToLower())
             {
-                return menuItems;
-            }  
+                return menuItems.Where(x => x.Name != "Организации и потребители");
+            }
+            if (role.ToLower() == IdentityRoles.SystemAdminRole.ToLower())
+            {
+                return menuItems.Where(x => x.Name == "Организации и потребители");
+            }
 
-            return menuItems.Where(x => x.Name != "Потребители");
+            return menuItems.Where(x => x.Name != "Потребители" && x.Name != "Организации и потребители");
         }
     }
 }

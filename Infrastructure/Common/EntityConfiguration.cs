@@ -1,11 +1,7 @@
-﻿using Domain.Common;
+﻿using Application.Services;
+using Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Common
 {
@@ -14,8 +10,13 @@ namespace Infrastructure.Common
         where TKey : struct
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
-        {
+        { 
             builder.HasKey(x => x.Id);
+
+            if (typeof(ITenant).IsAssignableFrom(builder.Metadata.ClrType))
+            {
+                builder.Property((nameof(ITenant.TenantId))).IsRequired();
+            }
         }
     }
 }

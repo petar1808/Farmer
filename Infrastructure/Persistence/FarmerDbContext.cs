@@ -6,19 +6,37 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Application.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 
 namespace Infrastructure.DbContect
 {
     public class FarmerDbContext : IdentityDbContext<User, Role, string>, IFarmerDbContext
     {
-        public FarmerDbContext(DbContextOptions options)
+        private readonly ICurrentUserService _currentUserService;
+        public FarmerDbContext(DbContextOptions options, ICurrentUserService currentUserService)
             : base(options)
         {
+            _currentUserService = currentUserService;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            Expression<Func<ITenant, bool>> filterExpr = bm => bm.TenantId == _currentUserService.UserTenantId;
+            foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (mutableEntityType.ClrType.IsAssignableTo(typeof(ITenant)))
+                {
+                    var parameter = Expression.Parameter(mutableEntityType.ClrType);
+                    var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
+                    var lambdaExpression = Expression.Lambda(body, parameter);
+
+                    mutableEntityType.SetQueryFilter(lambdaExpression);
+                }
+            }
 
             base.OnModelCreating(modelBuilder);
         }
@@ -40,5 +58,17 @@ namespace Infrastructure.DbContect
         public DbSet<Treatment> Treatments { get; set; } = default!;
 
         public DbSet<Subsidy> Subsidies { get; set; } = default!;
+
+        public DbSet<Tenant> Tenants { get; set; } = default!;
+
+        public override async ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default)
+        {
+            if (entity is ITenant tenantEntity)
+            {
+                tenantEntity.TenantId = _currentUserService.UserTenantId;
+            }
+
+            return await base.AddAsync(entity, cancellationToken);
+        }
     }
 }
