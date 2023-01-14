@@ -49,7 +49,7 @@ if (builder.HostEnvironment.Environment == "Development")
 }
 else
 {
-    apiUrl = "https://farmer-api-demo-windows.azurewebsites.net/";
+    apiUrl = "https://farmer-api-production.azurewebsites.net/";
 
 }
 
