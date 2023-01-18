@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.WebUtilities;
+using Radzen;
 using WebUI.Services.Identity;
 using WebUI.ServicesModel.Identity;
+using WebUI.ServicesModel.Seeding;
+using WebUI.Store;
 
 namespace WebUI.Pages.Identity.User
 {
@@ -17,7 +20,16 @@ namespace WebUI.Pages.Identity.User
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
+        [Inject]
+        public NotificationService NotificationService { get; set; } = default!;
+
         public ChangePasswordModel ChangePasswordModel { get; set; } = new ChangePasswordModel();
+
+
+        public void OnClose()
+        {
+            NavigationManager.NavigateTo(NavigationManager.BaseUri);
+        }
 
         protected async Task OnSubmit(ChangePasswordModel changePasswordModel)
         {
@@ -34,7 +46,13 @@ namespace WebUI.Pages.Identity.User
 
             if (changePassword)
             {
-                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}/login");
+                NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Info,
+                    Detail = "Успешно сменихте вашата парола",
+                    Duration = 10000
+                });
+                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}login");
             }
 
             NavigationManager.NavigateTo(NavigationManager.Uri);

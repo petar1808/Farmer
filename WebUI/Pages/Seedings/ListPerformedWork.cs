@@ -41,7 +41,6 @@ namespace WebUI.Pages.Seedings
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.WorkType), "Тип обработка"),
                 new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.FuelPrice), "Цена на литър", "{0:0.00} лв."),

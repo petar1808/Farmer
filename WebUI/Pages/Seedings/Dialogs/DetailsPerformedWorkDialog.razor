@@ -20,8 +20,7 @@
                     <RadzenLabel Text="Тип обработка" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenDropDown AllowClear="true"
-                                AllowFiltering="true"
+                    <RadzenDropDown
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                 Data=@WorkTypes
                                 @bind-Value=@PerformedWork.WorkType
@@ -39,7 +38,7 @@
                     <RadzenLabel Text="Количество гориво общо в литра" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
+                    <RadzenNumeric style="display: block"  Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
                     ​<NumericRangeValidator Component="AmountOfFuel" Text="Гориво трябва да е положително число" Min="0" />
                 </div>
             </div>

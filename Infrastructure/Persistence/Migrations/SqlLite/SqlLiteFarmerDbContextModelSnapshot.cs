@@ -247,8 +247,8 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Property<decimal>("SeedsPricePerKilogram")
                         .HasColumnType("decimal(12,2)");
 
-                    b.Property<int>("SeedsQuantityPerDecare")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("SeedsQuantityPerDecare")
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("INTEGER");

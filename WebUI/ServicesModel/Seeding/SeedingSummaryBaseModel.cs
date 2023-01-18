@@ -4,7 +4,7 @@
     {
         public int? ArticleId { get; set; }
 
-        public int SeedsQuantityPerDecare { get; set; } = default!;
+        public decimal SeedsQuantityPerDecare { get; set; } = default!;
 
         public decimal SeedsPricePerKilogram { get; set; } = default!;
 

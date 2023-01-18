@@ -32,7 +32,7 @@ namespace Domain.Models
 
         public Article Article { get; private set; }
 
-        public int SeedsQuantityPerDecare { get; private set; }
+        public decimal SeedsQuantityPerDecare { get; private set; }
 
         public decimal SeedsPricePerKilogram { get; private set; }
 
@@ -62,7 +62,7 @@ namespace Domain.Models
             return this;
         }
 
-        public Seeding UpdateSeedsQuantityPerDecare(int seedsQuantityPerDecare)
+        public Seeding UpdateSeedsQuantityPerDecare(decimal seedsQuantityPerDecare)
         {
             this.SeedsQuantityPerDecare = seedsQuantityPerDecare;
             return this;

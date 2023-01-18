@@ -16,8 +16,8 @@ namespace Application.Models.Seedings
 
         public int? ArticleId { get; init; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Засято семе на декар трябва да е положително число")]
-        public int SeedsQuantityPerDecare { get; init; }
+        [Range(0d, int.MaxValue, ErrorMessage = "Засято семе на декар трябва да е положително число")]
+        public decimal SeedsQuantityPerDecare { get; init; }
 
         [Range(0d, int.MaxValue, ErrorMessage = "Цената на засятото семе трябва да е положително число")]
         public decimal SeedsPricePerKilogram { get; init; }

@@ -54,7 +54,7 @@
                                 else
                                 {
                                     <RadzenLabel Text="Цена на семе" />
-                                    <RadzenTextBox Disabled=true style="display: block" Name="SeedsPricePerKilogram" Value="@(SeedingSummaryData.SeedsPricePerKilogram + " кг.")" Class="w-100" />
+                                    <RadzenTextBox Disabled=true style="display: block" Name="SeedsPricePerKilogram" Value="@(SeedingSummaryData.SeedsPricePerKilogram + " лв.")" Class="w-100" />
                                 }
                             </div>
                             <div class="col-md-12">
@@ -102,7 +102,14 @@
                             {
                                 <div class="col-md-12">
                                     <RadzenLabel Text="Общо приходи от зърно" />
-                                    <RadzenTextBox Disabled="true"  Name="IncomeFromHarvestedGrains" Value="@(SeedingSummaryData.IncomeFromHarvestedGrains.ToString()  + " лв")" style="width: 100%;" />
+                                    <RadzenNumeric Disabled="true" Format="0.00 лв." ShowUpDown="false" Name="IncomeFromHarvestedGrains" Value="@SeedingSummaryData.IncomeFromHarvestedGrains" style="width: 100%;" />
+                                </div>
+                            }
+                            @if (!IsModal)
+                            {
+                                <div class="col-md-12">
+                                    <RadzenLabel Text="Общо разход за семе" />
+                                    <RadzenNumeric Disabled="true" Format="0.00 лв." ShowUpDown="false" Name="TotalSeedCost" Value="@SeedingSummaryData.TotalSeedCost" style="width: 100%;" />
                                 </div>
                             }
                         </div>

@@ -30,6 +30,8 @@ namespace WebUI.Components.DataGrid
 
         public int PageSize { get; private set; } = 10;
 
+        public string? DefaultColumnWidth { get; private set; } = default!;
+
 
         public void UpdateData(IEnumerable<TData> data)
         {
@@ -73,22 +75,21 @@ namespace WebUI.Components.DataGrid
             return this;
         }
 
+        public DynamicDataGridModel<TData> WithDefaultWidth(string defaultWidth)
+        {
+            this.DefaultColumnWidth = defaultWidth;
+            return this;
+        }
     }
 
     public class DynamicDataGridColumnModel
     {
-        public DynamicDataGridColumnModel(string propertyName, string displayName)
-        {
-            PropertyName = propertyName;
-            DisplayName = displayName;
-            StringFormat = "";
-        }
-
-        public DynamicDataGridColumnModel(string propertyName, string displayName, string stringFormat)
+        public DynamicDataGridColumnModel(string propertyName, string displayName, string stringFormat = "", string? width = null)
         {
             PropertyName = propertyName;
             DisplayName = displayName;
             StringFormat = stringFormat;
+            Width = width;
         }
 
         public string PropertyName { get; set; }
@@ -96,6 +97,8 @@ namespace WebUI.Components.DataGrid
         public string DisplayName { get; set; }
 
         public string StringFormat { get; set; }
+
+        public string? Width { get; set; }
     }
 
     public interface IDynamicDataGridModel

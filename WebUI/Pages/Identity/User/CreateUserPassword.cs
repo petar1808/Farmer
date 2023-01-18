@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazorise;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
+using Radzen;
 using WebUI.Services.Identity;
 using WebUI.ServicesModel.Identity;
 
@@ -9,6 +11,9 @@ namespace WebUI.Pages.Identity.User
     {
         [Inject]
         public IIdentityService IdentityService { get; set; } = default!;
+
+        [Inject]
+        public NotificationService NotificationService { get; set; } = default!;
 
         public CreateUserPasswordModel CreateUserPasswordModel { get; set; } = new CreateUserPasswordModel();
 
@@ -29,7 +34,14 @@ namespace WebUI.Pages.Identity.User
 
             await IdentityService.CreateUserPassword(CreateUserPasswordModel);
 
-            NavManager.NavigateTo($"{NavManager.BaseUri}/login");
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Info,
+                Detail = "Успешно създадохте вашата парола",
+                Duration = 10000
+            });
+
+            NavManager.NavigateTo($"{NavManager.BaseUri}login");
         }
     }
 }

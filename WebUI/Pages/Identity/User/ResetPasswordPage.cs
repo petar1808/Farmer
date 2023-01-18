@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
+using Radzen;
 using WebUI.Services.Identity;
 using WebUI.ServicesModel.Identity;
 
@@ -12,6 +13,9 @@ namespace WebUI.Pages.Identity.User
 
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
+
+        [Inject]
+        public NotificationService NotificationService { get; set; } = default!;
 
         public ResetPasswordModel ResetPasswordModel { get; set; } = new ResetPasswordModel();
 
@@ -30,9 +34,18 @@ namespace WebUI.Pages.Identity.User
                 resetPasswordModel.Token = token;
             }
 
-            await IdentityService.ResetPassword(resetPasswordModel);
+            var resetPassword = await IdentityService.ResetPassword(resetPasswordModel);
 
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}/login");
+            if (resetPassword)
+            {
+                NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Info,
+                    Detail = "Успешно създадохте вашата нова парола",
+                    Duration = 10000
+                });
+                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}login");
+            }
         }
     }
 }
