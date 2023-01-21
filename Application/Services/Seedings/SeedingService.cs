@@ -68,28 +68,21 @@ namespace Application.Services.Seedings
 
         public async Task<Result<GetArableLandBalance>> GetArableLandBalance(int seedingId)
         {
-            var seeding = farmerDbContext
+            var seeding = await farmerDbContext
                 .Seedings
-                .Where(x => x.Id == seedingId)
                 .Include(x => x.Article)
                 .Include(x => x.ArableLand)
                 .Include(x => x.Treatments)
                 .Include(x => x.PerformedWorks)
                 .Include(x => x.Subsidies)
-                .AsQueryable();
+                .FirstOrDefaultAsync(x => x.Id == seedingId);
 
             if (seeding == null)
             {
                 return $"Сеитба с Ид: {seedingId} не съществува!";
             }
 
-            var result = await mapper.ProjectTo<GetArableLandBalance>(seeding)
-                .FirstOrDefaultAsync();
-
-            if (result == null)
-            {
-                return "Грешка при извличането на данни!";
-            }
+            var result = mapper.Map<GetArableLandBalance>(seeding);
 
             return result;
         }
