@@ -8,15 +8,15 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-  - task: DotNetCoreCLI@2
+  - task: Restore
     inputs:
       command: 'restore'
-      projects: 'WebUI/WebUI.csproj'
+      projects: 'WebApi/WebApi.csproj'
       feedsToUse: 'select'
   - task: DotNetCoreCLI@2
     inputs:
       command: 'build'
-      projects: 'WebUI/WebUI.csproj'
+      projects: 'WebApi/WebApi.csproj'
   - task: DotNetCoreCLI@2
     inputs:
       command: 'publish'
