@@ -9,7 +9,14 @@ stages:
 - stage: Demo  
   jobs:  
   - job: BuildAndRelease  
+    variables:
+      globalHeaders.Blazor-Environment: Demo
     steps:
+    - task: FileTransform@1
+      inputs:
+        folderPath: '$(System.DefaultWorkingDirectory)/WebUI'
+        fileType: 'json'
+        targetFiles: 'staticwebapp.config.json'
     - task: AzureStaticWebApp@0
       inputs:
         app_location: 'WebUI'
@@ -18,10 +25,19 @@ stages:
         config_file_location: 'WebUI'
         build_timeout_in_minutes: 5
         azure_static_web_apps_api_token: "$(azure-static-web-app-token-demo)"
+        
 - stage: Production  
   jobs:  
   - job: BuildAndRelease  
+    variables:
+      globalHeaders.Blazor-Environment: Production
     steps:
+    - task: FileTransform@1
+      inputs:
+        folderPath: '$(System.DefaultWorkingDirectory)/WebUI'
+        fileType: 'json'
+        targetFiles: 'staticwebapp.config.json'
+
     - task: AzureStaticWebApp@0
       inputs:
         app_location: 'WebUI'
