@@ -19,7 +19,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    projects: 'WebApi/WebAPI.csproj'
+    projects: 'WebApi'
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
 
