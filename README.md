@@ -11,7 +11,7 @@ Started as a university project, then was developed to cover the basic needs for
 
 
 ## Demo
-Here is a working live demo :  https://lemon-meadow-0a1e92e03.2.azurestaticapps.net/
+Here is a working live demo :  https://jolly-dune-075677e03.2.azurestaticapps.net/
 
 Test Users
 
@@ -72,7 +72,7 @@ The Backed follows the Clean Architecture Pattern
 
 Use the dotnet commands: **dotnet build** and **dotnet run**, or use **Visual Studio 2022**
 
-- The start-up project for the **frontend** is **WebUI**
+- The start-up project for the **frontend** is **WebUI**. 
 
 - The start-up project for the **backend** is **WebApi**. The application settings can be configured through the appsettings.json file
 
