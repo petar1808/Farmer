@@ -24,7 +24,7 @@ stages:
         output_location: 'wwwroot'
         config_file_location: 'WebUI'
         build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: "$(azure-static-web-app-token)"
+        azure_static_web_apps_api_token: "$(azure-static-web-app-token-demo)"
 - stage: Production  
   jobs:  
   - job: BuildAndRelease  
