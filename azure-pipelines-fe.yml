@@ -12,12 +12,28 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- task: AzureStaticWebApp@0
-  inputs:
-    app_location: 'WebUI'
-    app_build_command: 'dotnet build WebUI'
-    output_location: 'wwwroot'
-    config_file_location: 'WebUI'
-    build_timeout_in_minutes: 5
-    azure_static_web_apps_api_token: "$(azure-static-web-app-token)"
+stages:  
+- stage: Demo  
+  jobs:  
+  - job: BuildAndRelease  
+    steps:
+    - task: AzureStaticWebApp@0
+      inputs:
+        app_location: 'WebUI'
+        app_build_command: 'dotnet build WebUI'
+        output_location: 'wwwroot'
+        config_file_location: 'WebUI'
+        build_timeout_in_minutes: 5
+        azure_static_web_apps_api_token: "$(azure-static-web-app-token)"
+- stage: Production  
+  jobs:  
+  - job: BuildAndRelease  
+    steps:
+    - task: AzureStaticWebApp@0
+      inputs:
+        app_location: 'WebUI'
+        app_build_command: 'dotnet build WebUI'
+        output_location: 'wwwroot'
+        config_file_location: 'WebUI'
+        build_timeout_in_minutes: 5
+        azure_static_web_apps_api_token: "$(azure-static-web-app-token-production)"
