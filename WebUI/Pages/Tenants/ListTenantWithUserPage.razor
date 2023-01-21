@@ -3,7 +3,7 @@
 @using static WebUI.IdentityConstants
 @attribute [Authorize]
 
-@if (@TenantsWithUsers is not null)
+@*@if (@TenantsWithUsers is not null)
 {
     <RadzenCard Style="margin-bottom: 20px">
         <div class="row justify-content-start align-items-center">
@@ -35,4 +35,42 @@
             <RadzenDataGridColumn TItem="ListTenantsWithUsersModel" Property="UserRole" Title="Роля" />
         </Columns>
     </RadzenDataGrid>
+}*@
+
+
+@if (@TenantsWithUsers is not null)
+{
+    <RadzenCard Style="margin-bottom: 20px">
+        <div class="row justify-content-start align-items-center">
+            <div class="col-5 d-flex align-items-center">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави ораганизация" Click="@(() => CreateTenant())" />
+            </div>
+            <div class="col-7 d-flex align-items-center justify-content-end">
+                <div class="d-none d-md-inline-flex align-items-center">
+                    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави админ" Click="@(() => CreateAdmin())" />
+
+                </div>
+            </div>
+        </div>
+    </RadzenCard>
+
+    <h2 class="text-center"> Ораганизации и потребители </h2>
+
+    <RadzenDataGrid ExpandMode="DataGridExpandMode.Multiple"
+                Data="@TenantsWithUsers" TItem="ListTenantsWithUsersModel">
+        <Template Context="listTenantsWithUsersModel">
+                        <RadzenDataGrid Data="@listTenantsWithUsersModel.TenantUsers" TItem="TenatUser">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="TenatUser" Property="UserEmail" Title="Имейл" />
+                                <RadzenDataGridColumn TItem="TenatUser" Property="UserName" Title="Име" />
+                                <RadzenDataGridColumn TItem="TenatUser" Property="UserRole" Title="Роля" />
+                            </Columns>
+                        </RadzenDataGrid>
+        </Template>
+        <Columns>
+            <RadzenDataGridColumn TItem="ListTenantsWithUsersModel" Property="TanantName" Title="Име на организация" />
+        </Columns>
+    </RadzenDataGrid>
 }
+
+

@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Web;
 using static Application.IdentityConstants;
 using static System.Net.Mime.MediaTypeNames;
@@ -41,24 +42,56 @@ namespace Application.Services.Tenants
 
         public async Task<Result<List<SelectionListModel>>> ListSelectionTenants()
         {
-             return await farmerDbContext
+             var tenants =  await farmerDbContext
                 .Tenants
+                //.Where(x => !x.Users.Any())
                 .Select(x => new SelectionListModel(x.Id, x.Name))
                 .ToListAsync();
+
+            return tenants;
         }
 
         public async Task<Result<List<ListTenantsWithUsersModel>>> ListTenantsWithUsers()
         {
-            var tenantWithUsers = await farmerDbContext
-                .Users
-                .Where(x => x.UserRoles.Any(x => x.Name != IdentityRoles.SystemAdminRole))
-                .Include(x => x.UserRoles)
-                .Include(x => x.Tenant)
+            //var test = await farmerDbContext
+            //    .Tenants
+            //    .Where(x => x.Users.First().UserRoles.First().Name != IdentityRoles.SystemAdminRole)
+            //    .Include(x => x.Users)
+            //        .ThenInclude(x => x.UserRoles)
+            //     .Select(x => new ListTenantsWithUsersModel
+            //     {
+            //         TanantId = x.Id,
+            //         TanantName = x.Name,
+            //         UserTenants = x.Users.Select(c => new UserTenant
+            //         {
+            //             UserEmail = c.UserName,
+            //             UserName= c.FirstName,
+            //             UserRole = c.UserRoles.First().Name
+            //         }).ToList()
+            //     })
+            //    .ToListAsync();
+
+            //var test2 = await farmerDbContext
+            //     .Tenants
+
+            //         .ToListAsync();
+
+
+            var result =  await this.mapper.ProjectTo<ListTenantsWithUsersModel>(
+                    farmerDbContext.Tenants.AsQueryable()
+                )
                 .ToListAsync();
 
-            var result = mapper.Map<List<ListTenantsWithUsersModel>>(tenantWithUsers);
-
             return result;
+            //var tenantWithUsers = await farmerDbContext
+            //    .Users
+            //    .Where(x => x.UserRoles.Any(x => x.Name != IdentityRoles.SystemAdminRole))
+            //    .Include(x => x.UserRoles)
+            //    .Include(x => x.Tenant)
+            //    .ToListAsync();
+
+            //var result = mapper.Map<List<ListTenantsWithUsersModel>>(tenantWithUsers);
+
         }
     }
 }

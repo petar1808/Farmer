@@ -63,6 +63,11 @@ namespace Infrastructure
                 services.AddDbContext<SqlLiteFarmerDbContext>(opt =>
                 {
                     opt.UseSqlite(connectionStrings.SqlLiteConncetion);
+                    if (connectionStrings.EnableSensitiveDataLogging)
+                    {
+                        opt.EnableSensitiveDataLogging()
+                            .LogTo(Console.WriteLine);
+                    }
                 });
             }
             else
@@ -72,6 +77,11 @@ namespace Infrastructure
                 services.AddDbContext<SqlFarmerDbContext>(opt =>
                 {
                     opt.UseSqlServer(connectionStrings.SqlDefaultConnection);
+                    if (connectionStrings.EnableSensitiveDataLogging)
+                    {
+                        opt.EnableSensitiveDataLogging()
+                            .LogTo(Console.WriteLine);
+                    }
                 });
             }
 

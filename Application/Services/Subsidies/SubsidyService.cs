@@ -102,12 +102,12 @@ namespace Application.Services.Subsidies
                 return $"Сеитба с Ид: {seedingId} не съществува!";
             }
 
-            var subsidy = await farmerDbContext
+            var subsidy = farmerDbContext
                 .Subsidies
                 .Where(x => x.SeedingId == seedingId)
-                .ToListAsync();
+                .AsQueryable();
 
-            var result = mapper.Map<List<ListSubsidiesModel>>(subsidy);
+            var result = await mapper.ProjectTo<ListSubsidiesModel>(subsidy).ToListAsync();
 
             return result;
         }
