@@ -8,6 +8,6 @@ namespace WebUI.ServicesModel.ArableLand
 
         public string Name { get; set; } = default!;
 
-        public int SizeInDecar { get; set; }
+        public int? SizeInDecar { get; set; }
     }
 }

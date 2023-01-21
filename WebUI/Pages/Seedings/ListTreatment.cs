@@ -42,16 +42,15 @@ namespace WebUI.Pages.Seedings
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Тип третиране"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Препарат/Тор"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Количество препарат/тор на декар", "{0:0.00} кг/л."),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена на препарат/тор за кг/л.", "{0:0.00} лв."),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Количество гориво общо", "{0:0.00} л."),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво на литър", "{0:0.00} лв."),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв."),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePriceTotal), "Разход препарат/тор", "{0:0.00} лв."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Тип"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Артикул", width:"170px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Кол. артикул на декар", "{0:0.00} кг/л.", width:"170px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена на артикул за кг/л.", "{0:0.00} лв." , width:"170px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePriceTotal), "Разход за артикул", "{0:0.00} лв." , width:"150px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Количество гориво общо", "{0:0.00} л." , width:"200px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво", "{0:0.00} лв.", width:"150px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв.", width:"150px"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход", "{0:0.00} лв."),
             };
             DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns)
@@ -59,7 +58,8 @@ namespace WebUI.Pages.Seedings
                 .WithDelete(async (x) => await DeleteTreatment(x))
                 .WithPaging()
                 .WithSorting()
-                .WithResizable();
+                .WithResizable()
+                .WithDefaultWidth("100px");
         }
 
         public async Task AddTreatment()

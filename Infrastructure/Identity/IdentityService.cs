@@ -141,6 +141,7 @@ namespace Infrastructure.Identity
         {
             var user = await this._userManager
                 .Users
+                .Include(x => x.Tenant)
                 .FirstOrDefaultAsync(x => x.UserName == loginInputModel.Email);
 
             if (user == null)
@@ -160,7 +161,7 @@ namespace Infrastructure.Identity
 
             if (role == null)
             {
-                return "Потребителят не е присвоен на никаква роля";
+                return "Потребителят не е присвоен към никаква роля";
             }
 
             var token = this._jwtTokenGenerator.GenerateToken(user, role);

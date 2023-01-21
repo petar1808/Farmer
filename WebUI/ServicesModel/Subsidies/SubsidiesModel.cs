@@ -6,7 +6,7 @@ namespace WebUI.ServicesModel.Subsidies
     {
         public int Id { get; set; }
 
-        public decimal Income { get; set; }
+        public decimal? Income { get; set; }
 
         public DateTime Date { get; set; } = DateTime.Now;
     }

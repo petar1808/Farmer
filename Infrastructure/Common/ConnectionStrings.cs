@@ -5,5 +5,7 @@
         public string SqlDefaultConnection { get; set; } = default!;
 
         public string SqlLiteConncetion { get; set; } = default!;
+
+        public bool EnableSensitiveDataLogging { get; set; }
     }
 }

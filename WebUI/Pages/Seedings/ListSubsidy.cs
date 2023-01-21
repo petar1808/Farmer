@@ -27,6 +27,12 @@ namespace WebUI.Pages.Seedings
         public ISeedingService SeedingService { get; set; } = default!;
 
         [Parameter]
+        public string ArableLandName { get; set; } = default!;
+
+        [Parameter]
+        public int SizeInDecar { get; set; }
+
+        [Parameter]
         public int SeedingId { get; set; }
 
         public DynamicDataGridModel<SubsidiesModel> DataGrid { get; set; } = default!;
@@ -48,7 +54,7 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddSubsidy()
         {
-            await DialogService.OpenAsync<DetailsSubsidyDialog>($"Добавяне на субсидия",
+            await DialogService.OpenAsync<DetailsSubsidyDialog>($"Добавяне на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("580px"));
 
@@ -60,7 +66,7 @@ namespace WebUI.Pages.Seedings
 
         public async Task EditSubsidy(int subsidyId)
         {
-            await DialogService.OpenAsync<DetailsSubsidyDialog>($"Редактиране на субсидия",
+            await DialogService.OpenAsync<DetailsSubsidyDialog>($"Редактиране на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "SubsidyId", subsidyId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("580px"));
 

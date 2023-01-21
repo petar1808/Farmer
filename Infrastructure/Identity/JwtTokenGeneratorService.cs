@@ -33,7 +33,8 @@ namespace Infrastructure.Identity
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Name,user.FirstName + " " + user.LastName),
                     new Claim(ClaimTypes.Role, role),
-                    new Claim("TenantId", user.TenantId == null ? "" : user.TenantId.Value.ToString())
+                    new Claim("TenantId", user.TenantId == null ? "" : user.TenantId.Value.ToString()),
+                    new Claim("TenantName", user.Tenant?.Name == null ? "" : user.Tenant.Name)
                 }),
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = new SigningCredentials(

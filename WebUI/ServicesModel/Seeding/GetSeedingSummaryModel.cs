@@ -5,5 +5,7 @@
         public string ArticleName { get; set; } = default!;
 
         public decimal IncomeFromHarvestedGrains { get; set; }
+
+        public decimal TotalSeedCost { get; set; }
     }
 }

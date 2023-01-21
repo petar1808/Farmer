@@ -21,7 +21,7 @@
                 <div class="col-5 d-flex align-items-center">
                     <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
                     </RadzenSidebarToggle>
-                    <RadzenLabel Text="Фермер">
+                    <RadzenLabel Text=@($"Фермер - {tenantName}")>
                     </RadzenLabel>
                 </div>
                 <HeaderUserSection></HeaderUserSection>
@@ -81,6 +81,7 @@
 
     RadzenSidebar? sidebar0 = default!;
     RadzenBody? body0 = default!;
+    string tenantName = "";
 
     IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
 
@@ -89,6 +90,7 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
         var role = authState.User?.Claims?.FirstOrDefault(c => c.Type.ToLower() == "role")?.Value;
+        tenantName = authState.User?.Claims?.FirstOrDefault(c => c.Type.ToLower() == "tenantname")?.Value!;
 
         if (role is not null)
         {

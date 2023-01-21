@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
+using Radzen;
 using WebUI.Services.Identity;
 using WebUI.ServicesModel.Identity;
 
@@ -13,22 +14,30 @@ namespace WebUI.Pages.Identity.User
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
+        [Inject]
+        public NotificationService NotificationService { get; set; } = default!;
+
         public ForgotPasswordModel ForgotPasswordModel { get; set; } = new ForgotPasswordModel();
 
-        public bool ShowMessage { get; set; }
-
-        protected override void OnInitialized()
+        public void OnClose()
         {
-            ShowMessage = false;
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}/login");
         }
 
         protected async Task OnSubmit(ForgotPasswordModel forgotPasswordModel)
         {
-            forgotPasswordModel.ChangePasswordUrl = $"{NavigationManager.BaseUri}/resetPassword";
+            forgotPasswordModel.ChangePasswordUrl = $"{NavigationManager.BaseUri}resetPassword";
 
             await IdentityService.ForgotPassword(forgotPasswordModel);
 
-            ShowMessage = true;
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Info,
+                Detail = "Ако вашият имейл съществува в ситемата ще получите имейл с инструкции",
+                Duration = 10000
+            });
+
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}login");
         }
     }
 }

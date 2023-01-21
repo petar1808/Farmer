@@ -24,7 +24,7 @@ namespace WebApi.Extensions
 
             if (!result.Succeeded)
             {
-                return new BadRequestObjectResult(result.Errors);
+                return new BadRequestObjectResult(new { errors = result.Errors});
             }
 
             return result.Data;

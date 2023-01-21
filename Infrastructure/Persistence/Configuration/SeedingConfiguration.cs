@@ -44,6 +44,7 @@ namespace Infrastructure.Persistence.Configuration
             builder.Property(p => p.WorkingSeasonId).IsRequired();
             builder.Property(p => p.HarvestedGrainSellingPricePerKilogram).HasColumnType("decimal(12,2)");
             builder.Property(p => p.SeedsPricePerKilogram).HasColumnType("decimal(12,2)");
+            builder.Property(p => p.SeedsQuantityPerDecare).HasColumnType("decimal(12,2)");
             builder.Property(p => p.ExpensesForHarvesting).HasColumnType("decimal(12,2)");
             builder.Property(p => p.ArticleId);
 
