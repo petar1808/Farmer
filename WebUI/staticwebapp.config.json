@@ -3,6 +3,6 @@
     "rewrite": "/index.html"
   },
   "globalHeaders": {
-    "Blazor-Environment": ""
+    "Blazor-Environment": "Demo"
   }
 }
