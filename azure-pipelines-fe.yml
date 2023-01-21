@@ -18,6 +18,6 @@ steps:
     app_location: 'WebUI'
     app_build_command: 'dotnet build WebUI'
     output_location: 'wwwroot'
-    config_file_location: 'WebUI/staticwebapp.config.json'
+    config_file_location: 'WebUI'
     build_timeout_in_minutes: 5
     azure_static_web_apps_api_token: "55efc913be8e4124e2a2b2ecb119b300c488b90e240ef65060d9344b668b03a42-48c690e0-d027-4d31-ab54-2177a9efa64f003179293"
