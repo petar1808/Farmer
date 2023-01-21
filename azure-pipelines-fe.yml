@@ -13,20 +13,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet restore WebUI
-  displayName: 'dotnet restore'
-
-- script: dotnet build  WebUI --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet publish $(buildConfiguration)'
+- task: AzureStaticWebApp@0
   inputs:
-    command: publish
-    publishWebProjects: true
-    projects: 'WebUI'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
-
-- task: PublishBuildArtifacts@1
-  displayName: 'publish artifacts'
+    app_location: 'WebUI'
+    app_build_command: 'dotnet build WebUI'
+    output_location: 'wwwroot'
+    config_file_location: 'WebUI/staticwebapp.config.json'
+    build_timeout_in_minutes: 5
+    azure_static_web_apps_api_token: "55efc913be8e4124e2a2b2ecb119b300c488b90e240ef65060d9344b668b03a42-48c690e0-d027-4d31-ab54-2177a9efa64f003179293"
