@@ -45,7 +45,7 @@ string apiUrl;
 
 if (builder.HostEnvironment.Environment == "Development")
 {
-    apiUrl = "https://localhost:5001/";
+    apiUrl = "https://localhost:5001/.";
 }
 else
 {
