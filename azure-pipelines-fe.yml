@@ -10,7 +10,7 @@ stages:
   jobs:  
   - job: BuildAndRelease  
     variables:
-      Blazor-Environment: Demo
+      globalHeaders.Blazor-Environment: Demo
     steps:
     - task: FileTransform@1
       inputs:
@@ -30,7 +30,7 @@ stages:
   jobs:  
   - job: BuildAndRelease  
     variables:
-      Blazor-Environment: Production
+      globalHeaders.Blazor-Environment: Production
     steps:
     - task: FileTransform@1
       inputs:
