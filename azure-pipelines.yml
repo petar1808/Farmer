@@ -1,5 +1,10 @@
 trigger:
-- main
+  branches:
+    include:
+      - azure-pipelines-api
+  paths:
+    exclude:
+      - WebUI
 
 pool:
   vmImage: ubuntu-latest
