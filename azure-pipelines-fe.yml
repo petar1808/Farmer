@@ -1,0 +1,32 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:  
+- stage: Demo  
+  jobs:  
+  - job: BuildAndRelease  
+    steps:
+    - task: AzureStaticWebApp@0
+      inputs:
+        app_location: 'WebUI'
+        app_build_command: 'dotnet build WebUI'
+        output_location: 'wwwroot'
+        config_file_location: 'WebUI'
+        build_timeout_in_minutes: 5
+        deployment_environment: "Demo"
+        azure_static_web_apps_api_token: "$(azure-static-web-app-token-demo)"
+- stage: Production  
+  jobs:  
+  - job: BuildAndRelease  
+    steps:
+    - task: AzureStaticWebApp@0
+      inputs:
+        app_location: 'WebUI'
+        app_build_command: 'dotnet build WebUI'
+        output_location: 'wwwroot'
+        config_file_location: 'WebUI'
+        build_timeout_in_minutes: 5
+        deployment_environment: "Production"
+        azure_static_web_apps_api_token: "$(azure-static-web-app-token-production)"

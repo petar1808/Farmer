@@ -41,22 +41,10 @@ builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationService>()
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 
-string apiUrl;
-
-if (builder.HostEnvironment.Environment == "Development")
-{
-    apiUrl = "https://localhost:5001/";
-}
-else
-{
-    apiUrl = "https://farmer-api-production.azurewebsites.net/";
-
-}
-
 builder.Services.AddScoped(sp =>
     new HttpClient
     {
-        BaseAddress = new Uri(apiUrl)
+        BaseAddress = new Uri(builder.Configuration.GetValue<string>("WebApiURL"))
     });
 
 
