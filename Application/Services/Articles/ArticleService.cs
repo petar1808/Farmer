@@ -84,6 +84,15 @@ namespace Application.Services.Articles
                 return $"Артикул с Ид: {articleModel.Id} не съществува!";
             }
 
+            var articleUnique = await farmerDbContext
+                .Articles
+                .AnyAsync(x => x.Name == articleModel.Name && x.ArticleType == articleModel.ArticleType);
+
+            if (articleUnique)
+            {
+                return "Има създаден артикул със същото име и тип";
+            }
+
             article
                 .UpdateName(articleModel.Name)
                 .UpdateArticleType(articleModel.ArticleType);
@@ -96,24 +105,26 @@ namespace Application.Services.Articles
 
         public async Task<Result<GetArticleModel>> Get(int id)
         {
-            var article = await farmerDbContext
+            var article = farmerDbContext
                 .Articles
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .AsQueryable();
 
-            if (article == null)
+            var result = await mapper.ProjectTo<GetArticleModel>(article).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result == null)
             {
                 return $"Артикул с Ид: {id} не съществува!";
             }
 
-            var result = mapper.Map<GetArticleModel>(article);
             return result;
         }
 
         public async Task<Result<List<ListArticleModel>>> List()
         {
-            var articles = await farmerDbContext.Articles.ToListAsync();
+            var articles = farmerDbContext.Articles.AsQueryable();
 
-            var result = mapper.Map<List<ListArticleModel>>(articles);
+            var result = await mapper.ProjectTo<ListArticleModel>(articles).ToListAsync();
+
             return result;
         }
 

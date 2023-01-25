@@ -50,15 +50,17 @@ namespace WebUI.Pages.Seedings.Dialogs
 
         protected async Task OnSubmit(PerformedWorkDatailsModel performedWork)
         {
+            bool addIsSuccess = false;
+
             if (performedWork.Id == 0)
             {
-                await PerformedWorkService.Add(PerformedWork,SeedingId);
+                addIsSuccess = await PerformedWorkService.Add(PerformedWork,SeedingId);
             }
             else
             {
-                await PerformedWorkService.Update(PerformedWork);
+                addIsSuccess = await PerformedWorkService.Update(PerformedWork);
             }
-            DialogService.Close(false);
+            DialogService.Close(addIsSuccess);
         }
     }
 }

@@ -4,12 +4,13 @@ using Application.Services.WorikingSeasons;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Extensions;
+using static Application.IdentityConstants;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/workingSeasons")]
-    [Authorize]
+    [Authorize(Roles = $"{IdentityRoles.AdminRole},  {IdentityRoles.UserRole}")]
     public class WorkingSeasonController : ControllerBase
     {
         private readonly IWorkingSeasonService workingSeasonService;

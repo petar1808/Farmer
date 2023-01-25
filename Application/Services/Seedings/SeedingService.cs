@@ -48,20 +48,20 @@ namespace Application.Services.Seedings
 
         public async Task<Result<GetSeedingSummaryModel>> GetSeedingSummary(int seedingId)
         {
-            var seeding = await farmerDbContext
+            var seeding = farmerDbContext
                 .Seedings
                 .Include(x => x.Article)
                 .Include(x => x.ArableLand)
                 .Include(x => x.Treatments)
                 .Include(x => x.PerformedWorks)
-                .FirstOrDefaultAsync(x => x.Id == seedingId);
+                .AsQueryable();
 
-            if (seeding == null)
+            var result = await mapper.ProjectTo<GetSeedingSummaryModel>(seeding).FirstOrDefaultAsync(x => x.Id == seedingId);
+
+            if (result == null)
             {
                 return $"Сеитба с Ид: {seedingId} не съществува!";
             }
-
-            var result = mapper.Map<GetSeedingSummaryModel>(seeding);
 
             return result;
         }
@@ -98,13 +98,13 @@ namespace Application.Services.Seedings
                 return $"Сезон с Ид: {seasonId} не съществува!";
             }
 
-            var arableLands = await farmerDbContext
+            var arableLands = farmerDbContext
                 .Seedings
                 .Include(x => x.ArableLand)
                 .Where(x => x.WorkingSeasonId == seasonId)
-                .ToListAsync();
+                .AsQueryable();
 
-            var result = mapper.Map<List<SownArableLandModel>>(arableLands);
+            var result = await mapper.ProjectTo<SownArableLandModel>(arableLands).ToListAsync();
 
             return result;
         }

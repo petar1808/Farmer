@@ -70,7 +70,7 @@ namespace WebUI.Pages.Seedings
                 },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("500px").WithWidth("900px"));
 
-            if (dialogResult != null)
+            if (dialogResult == true)
             {
                 SeedingSummaryData = await SeedingService.GetSeedingSummary(SeedingId);
                 await UpdateArableLandBalance(SeedingId);

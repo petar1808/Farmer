@@ -37,7 +37,7 @@ namespace WebUI.Pages.Tenants
             createAdmin.ActivateUserUrl = $"{NavigationManager.BaseUri}createUserPassword";
             var addIsSuccess = await TenantService.CreateAdmin(createAdmin);
 
-            DialogService.Close(false);
+            DialogService.Close(addIsSuccess);
         }
     }
 }

@@ -30,20 +30,26 @@ namespace WebUI.Pages.WorkingSeasons
 
         public async Task AddWorkingSeason()
         {
-            await DialogService.OpenAsync<WorkingSeasonDialog>($"Добавяне на Сезон",
+            var dialogResult = await DialogService.OpenAsync<WorkingSeasonDialog>($"Добавяне на Сезон",
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("330px").WithWidth("600px"));
 
-            WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
+                this.StateHasChanged();
+            }
         }
         public async Task EditWorkingSeason(int workingSeasonId)
         {
-            await DialogService.OpenAsync<WorkingSeasonDialog>($"Редактиране на Сезон",
+            var dialogResult = await DialogService.OpenAsync<WorkingSeasonDialog>($"Редактиране на Сезон",
               new Dictionary<string, object>() { { "WorkingSeasonId", workingSeasonId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("330px").WithWidth("600px"));
 
-            WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
+                this.StateHasChanged();
+            }
         }
 
         public async Task DeleteWorkingSeason(int workingSeasonId)

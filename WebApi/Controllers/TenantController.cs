@@ -11,7 +11,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/tenants")]
-    [Authorize]
+    [Authorize(Roles = IdentityRoles.SystemAdminRole)]
     public class TenantController
     {
         private readonly ITenantService tenantService;
@@ -25,7 +25,6 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = IdentityRoles.SystemAdminRole)]
         public async Task<ActionResult> AddTenant(AddTenantModel tenantModel)
         {
             return await tenantService
@@ -35,7 +34,6 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("createAdmin")]
-        [Authorize(Roles = IdentityRoles.SystemAdminRole)]
         public async Task<ActionResult> CreateAdmin(CreateAdminModel createAdmin)
         {
             return await identityService
@@ -44,7 +42,6 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = IdentityRoles.SystemAdminRole)]
         public async Task<ActionResult<List<ListTenantsWithUsersModel>>> ListTenantsWithUsers()
         {
             return await tenantService
@@ -54,7 +51,6 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("listTenants")]
-        [Authorize(Roles = IdentityRoles.SystemAdminRole)]
         public async Task<ActionResult<List<SelectionListModel>>> ListSelectionTenants()
         {
             return await tenantService

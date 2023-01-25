@@ -1,5 +1,8 @@
 using Application;
 using Application.Services;
+using Elastic.Apm.AspNetCore;
+using Elastic.Apm.Cloud;
+using Elastic.Apm.DiagnosticSource;
 using Infrastructure;
 using WebApi.Filters;
 using WebApi.Middlewares;
@@ -30,6 +33,10 @@ builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 builder.Host.UseSerilogLogging();
 
 var app = builder.Build();
+if (builder.Configuration.GetValue<bool?>("UseAPM") == true)
+{
+    app.UseElasticApm(builder.Configuration, new HttpDiagnosticsSubscriber());
+}
 
 if (app.Environment.IsDevelopment())
 {

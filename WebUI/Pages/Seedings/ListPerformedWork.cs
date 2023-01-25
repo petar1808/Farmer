@@ -61,24 +61,29 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddPerformedWork()
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Добавяне на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Добавяне на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
 
-            DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
-
-            await UpdateArableLandBalance(this.SeedingId);
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
+                await UpdateArableLandBalance(this.SeedingId);
+                this.StateHasChanged();
+            }
         }
         public async Task EditPerformedWork(int performedWorkId)
         {
-            await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Редактиране на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Редактиране на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
 
-            DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
-            await UpdateArableLandBalance(this.SeedingId);
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await PerformedWorkService.List(SeedingId));
+                await UpdateArableLandBalance(this.SeedingId);
+                this.StateHasChanged();
+            }
         }
 
         public async Task DeletePerformedWork(int performedWorkId)

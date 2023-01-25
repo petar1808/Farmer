@@ -77,6 +77,15 @@ namespace Application.Services.WorikingSeasons
                 return $"Сезон с Ид: {workingSeasonModel.Id} не съществува!";
             }
 
+            var workingSeasonDate = await farmerDbContext
+                .WorkingSeasons
+                .AnyAsync(x => x.StartDate.Year == workingSeasonModel.StartDate.Year && x.EndDate.Year == workingSeasonModel.EndDate.Year);
+
+            if (workingSeasonDate)
+            {
+                return "Има съзаден сезон със същото начало и край";
+            }
+
             workingSeason
                 .UpdateName(workingSeasonModel.Name)
                 .UpdateSratDate(workingSeasonModel.StartDate)
@@ -90,16 +99,17 @@ namespace Application.Services.WorikingSeasons
 
         public async Task<Result<GetWorkingSeasonModel>> Get(int id)
         {
-            var workingSeason = await farmerDbContext
+            var workingSeason = farmerDbContext
                 .WorkingSeasons
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .AsQueryable();
 
-            if (workingSeason == null)
+            var result = await mapper.ProjectTo<GetWorkingSeasonModel>(workingSeason).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result == null)
             {
                 return $"Сезон с Ид: {id} не съществува!";
             }
 
-            var result = mapper.Map<GetWorkingSeasonModel>(workingSeason);
             return result;
         }
 

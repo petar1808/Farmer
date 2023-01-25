@@ -54,15 +54,17 @@ namespace WebUI.Pages.WorkingSeasons
 
         protected async Task OnSubmit(WorkingSeasonModel workingSeason)
         {
+            bool addIsSuccess = false;
+
             if (workingSeason.Id == 0)
             {
-                await WorkingSeasonService.Add(WorkingSeason);
+                addIsSuccess = await WorkingSeasonService.Add(WorkingSeason);
             }
             else
             {
-                await WorkingSeasonService.Update(WorkingSeason);
+                addIsSuccess = await WorkingSeasonService.Update(WorkingSeason);
             }
-            DialogService.Close(false);
+            DialogService.Close(addIsSuccess);
         }
     }
 }

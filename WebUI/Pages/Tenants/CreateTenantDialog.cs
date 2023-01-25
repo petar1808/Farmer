@@ -24,7 +24,7 @@ namespace WebUI.Pages.Tenants
         {
             var addIsSuccess = await TenantService.Add(tenantModel);
 
-            DialogService.Close(false);
+            DialogService.Close(addIsSuccess);
         }
     }
 }

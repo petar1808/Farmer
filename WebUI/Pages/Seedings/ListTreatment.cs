@@ -64,24 +64,30 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddTreatment()
         {
-            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Добавяне на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>($"Добавяне на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
 
-            DataGrid.UpdateData(await TreatmentService.List(SeedingId));
-            await UpdateArableLandBalance(this.SeedingId);
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await TreatmentService.List(SeedingId));
+                await UpdateArableLandBalance(this.SeedingId);
+                this.StateHasChanged();
+            }
         }
 
         public async Task EditTreatment(int treatmentId)
         {
-            await DialogService.OpenAsync<DetailsTreatmentDialog>($"Редактиране на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>($"Редактиране на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "TreatmentId", treatmentId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
 
-            DataGrid.UpdateData(await TreatmentService.List(SeedingId));
-            await UpdateArableLandBalance(this.SeedingId);
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await TreatmentService.List(SeedingId));
+                await UpdateArableLandBalance(this.SeedingId);
+                this.StateHasChanged();
+            }
         }
 
         public async Task DeleteTreatment(int treatmentId)

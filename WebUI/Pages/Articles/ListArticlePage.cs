@@ -42,20 +42,26 @@ namespace WebUI.Pages.Articles
 
         public async Task AddArticle()
         {
-            await DialogService.OpenAsync<DetailsArticle>($"Добавяне на Артикул",
+            var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Добавяне на Артикул",
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
-            DataGrid.UpdateData(await ArticleService.List());
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await ArticleService.List());
+                this.StateHasChanged();
+            }
         }
         public async Task EditArticle(int articleId)
         {
-            await DialogService.OpenAsync<DetailsArticle>($"Редактиране на Артикул",
+            var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Редактиране на Артикул",
               new Dictionary<string, object>() { { "ArticleId", articleId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
-            DataGrid.UpdateData(await ArticleService.List());
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await ArticleService.List());
+                this.StateHasChanged();
+            }
         }
 
         public async Task DeleteArticle(int articleId)

@@ -28,7 +28,7 @@ namespace WebUI.Pages.Identity.ListUsers
             createUserModel.ActivateUserUrl = $"{NavigationManager.BaseUri}createUserPassword";
             var addIsSuccess = await IdentityService.CreateUser(CreateUserModel);
 
-            DialogService.Close(false);
+            DialogService.Close(addIsSuccess);
         }
     }
 }

@@ -8,12 +8,13 @@ using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Extensions;
+using static Application.IdentityConstants;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/assets")]
-    [Authorize]
+    [Authorize(Roles = $"{IdentityRoles.AdminRole},  {IdentityRoles.UserRole}")]
     public class AssetsController : ControllerBase
     {
         private readonly IArticleService articleService;

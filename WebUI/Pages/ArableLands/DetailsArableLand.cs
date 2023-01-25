@@ -37,15 +37,18 @@ namespace WebUI.Pages.ArableLands
 
         protected async Task OnSubmit(ArableLandModel arableLand)
         {
+            bool addIsSuccess = false;
+
             if (arableLand.Id == 0)
             {
-                var addIsSuccess = await ArableLandService.Add(ArableLands);
+                addIsSuccess = await ArableLandService.Add(ArableLands);
             }
             else
             {
-                await ArableLandService.Update(ArableLands);
+                addIsSuccess = await ArableLandService.Update(ArableLands);
             }
-            DialogService.Close(false);
+
+            DialogService.Close(addIsSuccess);
         }
     }
 }

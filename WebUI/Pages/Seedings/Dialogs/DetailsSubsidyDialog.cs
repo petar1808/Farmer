@@ -41,15 +41,17 @@ namespace WebUI.Pages.Seedings.Dialogs
 
         protected async Task OnSubmit(SubsidiesModel subsidiesModel)
         {
+            bool addIsSuccess = false;
+
             if (subsidiesModel.Id == 0)
             {
-                await SubsidyService.Add(Subsidies, SeedingId);
+                addIsSuccess = await SubsidyService.Add(Subsidies, SeedingId);
             }
             else
             {
-                await SubsidyService.Update(Subsidies);
+                addIsSuccess = await SubsidyService.Update(Subsidies);
             }
-            DialogService.Close(false);
+            DialogService.Close(addIsSuccess);
         }
     }
 }

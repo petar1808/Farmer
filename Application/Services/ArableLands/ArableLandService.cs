@@ -47,6 +47,15 @@ namespace Application.Services.ArableLands
                 return $"Земя с Ид: {arableLandModel.Id} не съществува!";
             }
 
+            var arableLandUnique = await farmerDbContext
+                .ArableLands
+                .AnyAsync(x => x.Name == arableLandModel.Name);
+
+            if (arableLandUnique)
+            {
+                return "Има създадена земя със същото име";
+            }
+
             arableLand
                 .UpdateName(arableLandModel.Name)
                 .UpdateSizeInDecar(arableLandModel.SizeInDecar);
@@ -59,24 +68,25 @@ namespace Application.Services.ArableLands
 
         public async Task<Result<GetAreableLandModel>> Get(int id)
         {
-            var arableLand = await farmerDbContext
+            var arableLand = farmerDbContext
                 .ArableLands
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .AsQueryable();
 
-            if (arableLand == null)
+            var result = await mapper.ProjectTo<GetAreableLandModel>(arableLand).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result == null)
             {
                 return $"Земя с Ид: {id} не съществува!";
             }
 
-            var result = mapper.Map<GetAreableLandModel>(arableLand);
             return result;
         }
 
         public async Task<Result<List<GetAreableLandModel>>> List()
         {
-            var arableLands = await farmerDbContext.ArableLands.ToListAsync();
+            var arableLands = farmerDbContext.ArableLands.AsQueryable();
 
-            var result = mapper.Map<List<GetAreableLandModel>>(arableLands);
+            var result = await mapper.ProjectTo<GetAreableLandModel>(arableLands).ToListAsync();
 
             return result;
         }

@@ -34,10 +34,14 @@ namespace WebUI.Pages.Identity.ListUsers
 
         public async Task CreateUser()
         {
-            await DialogService.OpenAsync<CreateUser>($"Добавяне на Потребител",
+            var dialogResult = await DialogService.OpenAsync<CreateUser>($"Добавяне на Потребител",
               options: new DialogOptions() { Width = "600px", Height = "330px" });
 
-            DataGrid.UpdateData(await IdentityService.ListUser());
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await IdentityService.ListUser());
+                this.StateHasChanged();
+            }
         }
     }
 }

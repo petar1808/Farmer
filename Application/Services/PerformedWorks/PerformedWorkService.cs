@@ -91,28 +91,28 @@ namespace Application.Services.PerformedWorks
                 return $"Сеитба с Ид: {seedingId} не съществува!";
             }
 
-            var performedWork = await farmerDbContext
+            var performedWork = farmerDbContext
                 .PerformedWorks
                 .Where(x => x.SeedingId == seedingId)
-                .ToListAsync();
+                .AsQueryable();
 
-            var result = mapper.Map<List<ListPerformedWorkModel>>(performedWork);
+            var result = await mapper.ProjectTo<ListPerformedWorkModel>(performedWork).ToListAsync();
 
             return result;
         }
 
         public async Task<Result<GetPerformedWorkModel>> Get(int id)
         {
-            var performedWork = await farmerDbContext
+            var performedWork = farmerDbContext
                 .PerformedWorks
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .AsQueryable();
 
-            if (performedWork == null)
+            var result = await mapper.ProjectTo<GetPerformedWorkModel>(performedWork).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result == null)
             {
                 return $"Обработка с Ид: {id} не съществува!";
             }
-
-            var result = mapper.Map<GetPerformedWorkModel>(performedWork);
 
             return result;
         }

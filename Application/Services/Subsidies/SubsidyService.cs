@@ -77,16 +77,16 @@ namespace Application.Services.Subsidies
 
         public async Task<Result<GetSubsidyModel>> Get(int id)
         {
-            var subsidy = await farmerDbContext
+            var subsidy = farmerDbContext
                 .Subsidies
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .AsQueryable();
 
-            if (subsidy == null)
+            var result = await mapper.ProjectTo<GetSubsidyModel>(subsidy).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result == null)
             {
                 return $"Субсидия с Ид: {id} не съществува";
             }
-
-            var result = mapper.Map<GetSubsidyModel>(subsidy);
 
             return result;
         }

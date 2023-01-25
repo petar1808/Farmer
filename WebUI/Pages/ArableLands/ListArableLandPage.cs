@@ -42,20 +42,27 @@ namespace WebUI.Pages.ArableLands
 
         public async Task EditArableLand(int arableLandId)
         {
-            await DialogService.OpenAsync<DetailsArableLand>($"Редактиране на Земя",
+            var dialogResult = await DialogService.OpenAsync<DetailsArableLand>($"Редактиране на Земя",
               new Dictionary<string, object>() { { "ArableLandId", arableLandId } },
                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
-            DataGrid.UpdateData(await ArableLandService.List());
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await ArableLandService.List());
+                this.StateHasChanged();
+            }
         }
 
         public async Task AddArableLand()
         {
-            await DialogService.OpenAsync<DetailsArableLand>($"Добавяне на Земя",
+            var dialogResult = await DialogService.OpenAsync<DetailsArableLand>($"Добавяне на Земя",
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
-            DataGrid.UpdateData(await ArableLandService.List());
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await ArableLandService.List());
+                this.StateHasChanged();
+            }
         }
 
         public async Task DeleteArableLand(int arableLandId)

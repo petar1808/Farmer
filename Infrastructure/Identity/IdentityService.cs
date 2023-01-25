@@ -232,18 +232,13 @@ namespace Infrastructure.Identity
 
         public async Task<Result<List<ListUserModel>>> ListUser()
         {
-            var users = await _userManager
+            var users = _userManager
                 .Users
                 .Where(x => x.TenantId == _currentUserService.UserTenantId)
                 .Where(x => x.UserRoles.Any(x => x.Name != IdentityRoles.AdminRole && x.Name != IdentityRoles.SystemAdminRole))
-                .ToListAsync();
+                .AsQueryable();
 
-            if (users == null)
-            {
-                return "";
-            }
-
-            var result = mapper.Map<List<ListUserModel>>(users);
+            var result = await mapper.ProjectTo<ListUserModel>(users).ToListAsync();
 
             return result;
         }

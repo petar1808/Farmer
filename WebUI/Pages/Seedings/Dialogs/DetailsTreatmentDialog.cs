@@ -88,15 +88,17 @@ namespace WebUI.Pages.Seedings.Dialogs
 
         protected async Task OnSubmit(ТreatmentDetailsModel treatment)
         {
+            bool addIsSuccess = false;
+
             if (treatment.Id == 0)
             {
-                await TreatmentService.Add(treatment, SeedingId);
+                addIsSuccess = await TreatmentService.Add(treatment, SeedingId);
             }
             else
             {
-                await TreatmentService.Update(Treatment);
+                addIsSuccess = await TreatmentService.Update(Treatment);
             }
-            DialogService.Close(false);
+            DialogService.Close(addIsSuccess);
         }
     }
 }

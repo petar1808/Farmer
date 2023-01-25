@@ -28,15 +28,15 @@ namespace Application.Services.Treatments
                 return $"Сеитба с Ид: {seedingId} не съществува!";
             }
 
-            var treatment = await farmerDbContext
+            var treatment = farmerDbContext
                 .Treatments
                 .Include(x => x.Article)
                 .Include(x => x.Seeding)
                 .Include(x => x.Seeding.ArableLand)
                 .Where(x => x.SeedingId == seedingId)
-                .ToListAsync();
+                .AsQueryable();
 
-            var result = mapper.Map<List<ListТreatmentModel>>(treatment);
+            var result = await mapper.ProjectTo<ListТreatmentModel>(treatment).ToListAsync();
 
             return result;
         }
@@ -130,17 +130,17 @@ namespace Application.Services.Treatments
 
         public async Task<Result<GetTreatmentModel>> Get(int id)
         {
-            var treatment = await farmerDbContext
+            var treatment = farmerDbContext
                 .Treatments
                 .Include(x => x.Article)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .AsQueryable();
 
-            if (treatment == null)
+            var result = await mapper.ProjectTo<GetTreatmentModel>(treatment).FirstOrDefaultAsync(x => x.Id == id); ;
+
+            if (result == null)
             {
                 return $"Третиране с Ид: {id} не съществува!";
             }
-
-            var result = mapper.Map<GetTreatmentModel>(treatment);
 
             return result;
         }

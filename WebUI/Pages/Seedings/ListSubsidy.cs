@@ -54,25 +54,30 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddSubsidy()
         {
-            await DialogService.OpenAsync<DetailsSubsidyDialog>($"Добавяне на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>($"Добавяне на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("580px"));
 
-            DataGrid.UpdateData(await SubsidyService.List(SeedingId));
-
-            await UpdateArableLandBalance(this.SeedingId);
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await SubsidyService.List(SeedingId));
+                await UpdateArableLandBalance(this.SeedingId);
+                this.StateHasChanged();
+            }
         }
 
         public async Task EditSubsidy(int subsidyId)
         {
-            await DialogService.OpenAsync<DetailsSubsidyDialog>($"Редактиране на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>($"Редактиране на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "SubsidyId", subsidyId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("580px"));
 
-            DataGrid.UpdateData(await SubsidyService.List(SeedingId));
-            await UpdateArableLandBalance(this.SeedingId);
-            this.StateHasChanged();
+            if (dialogResult == true)
+            {
+                DataGrid.UpdateData(await SubsidyService.List(SeedingId));
+                await UpdateArableLandBalance(this.SeedingId);
+                this.StateHasChanged();
+            }
         }
 
         public async Task<bool> DeleteSubsidyFunction(int subsidyId)

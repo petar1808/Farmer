@@ -48,15 +48,17 @@ namespace WebUI.Pages.Articles
 
         protected async Task OnSubmit(ArticleDetailsModel article)
         {
+            bool addIsSuccess = false;
+
             if (article.Id == 0)
             {
-                await ArticleService.Add(Article);
+                addIsSuccess = await ArticleService.Add(Article);
             }
             else
             {
-                await ArticleService.Update(Article);
+                addIsSuccess = await ArticleService.Update(Article);
             }
-            DialogService.Close(false);
+            DialogService.Close(addIsSuccess);
         }
     }
 }
