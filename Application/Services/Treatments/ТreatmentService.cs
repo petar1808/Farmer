@@ -30,9 +30,6 @@ namespace Application.Services.Treatments
 
             var treatment = farmerDbContext
                 .Treatments
-                .Include(x => x.Article)
-                .Include(x => x.Seeding)
-                .Include(x => x.Seeding.ArableLand)
                 .Where(x => x.SeedingId == seedingId)
                 .AsQueryable();
 
@@ -132,7 +129,6 @@ namespace Application.Services.Treatments
         {
             var treatment = farmerDbContext
                 .Treatments
-                .Include(x => x.Article)
                 .AsQueryable();
 
             var result = await mapper.ProjectTo<GetTreatmentModel>(treatment).FirstOrDefaultAsync(x => x.Id == id); ;

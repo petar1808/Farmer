@@ -50,10 +50,6 @@ namespace Application.Services.Seedings
         {
             var seeding = farmerDbContext
                 .Seedings
-                .Include(x => x.Article)
-                .Include(x => x.ArableLand)
-                .Include(x => x.Treatments)
-                .Include(x => x.PerformedWorks)
                 .AsQueryable();
 
             var result = await mapper.ProjectTo<GetSeedingSummaryModel>(seeding).FirstOrDefaultAsync(x => x.Id == seedingId);
