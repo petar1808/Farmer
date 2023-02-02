@@ -1,15 +1,13 @@
-﻿namespace Application.Features.PerformedWorks.Queries.ListWorkType
+﻿using Application.Models;
+
+namespace Application.Features.PerformedWorks.Queries.ListWorkType
 {
-    public class WorkTypeOutputQueryModel
+    public class WorkTypeOutputQueryModel : SelectionListModel
     {
         public WorkTypeOutputQueryModel(
            int value,
-           string name)
+           string name) : base(value, name)
         {
-            this.Value = value;
-            this.Name = name;
         }
-        public int Value { get; set; }
-        public string Name { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/arableLands")]
-    [Authorize(Roles = $"{IdentityRoles.AdminRole},  {IdentityRoles.UserRole}")]
+    [Authorize(Roles = $"{IdentityRoles.AdminRole},{IdentityRoles.UserRole}")]
     public class ArableLandController : BaseApiController
     {
         [HttpPost]

@@ -1,12 +1,8 @@
-﻿using Application.Extensions;
-using Application.Features.Articles.Queries;
+﻿using Application.Features.Articles.Queries;
 using Application.Features.Articles.Queries.ListArticleType;
 using Application.Features.Articles.Queries.SearchArticleType;
 using Application.Features.PerformedWorks.Queries.ListWorkType;
 using Application.Features.Treatments.Queries.ListTreatmentType;
-using Application.Models;
-using Application.Models.Common;
-using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Application.IdentityConstants;

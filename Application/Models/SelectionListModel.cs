@@ -1,5 +1,4 @@
-﻿
-namespace Application.Models.Common
+﻿namespace Application.Models
 {
     public class SelectionListModel
     {
@@ -7,8 +6,8 @@ namespace Application.Models.Common
             int value,
             string name)
         {
-            this.Value = value;
-            this.Name = name;
+            Value = value;
+            Name = name;
         }
         public int Value { get; set; }
         public string Name { get; set; }

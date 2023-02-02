@@ -1,15 +1,13 @@
-﻿namespace Application.Features.ArableLands.Queries.SearchAvailableArableLand
+﻿using Application.Models;
+
+namespace Application.Features.ArableLands.Queries.SearchAvailableArableLand
 {
-    public class SearchAvailableArableLandOutputQueryModel
+    public class SearchAvailableArableLandOutputQueryModel : SelectionListModel
     {
         public SearchAvailableArableLandOutputQueryModel(
             int value,
-            string name)
+            string name) : base(value, name)
         {
-            this.Value = value;
-            this.Name = name;
         }
-        public int Value { get; set; }
-        public string Name { get; set; }
     }
 }

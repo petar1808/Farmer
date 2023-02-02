@@ -1,15 +1,14 @@
-﻿namespace Application.Features.Treatments.Queries.ListTreatmentType
+﻿using Application.Models;
+
+namespace Application.Features.Treatments.Queries.ListTreatmentType
 {
-    public class TreatmentTypeOutputQueryModel
+    public class TreatmentTypeOutputQueryModel : SelectionListModel
     {
         public TreatmentTypeOutputQueryModel(
            int value,
-           string name)
+           string name) : base(value, name)
         {
-            this.Value = value;
-            this.Name = name;
+            
         }
-        public int Value { get; set; }
-        public string Name { get; set; }
     }
 }

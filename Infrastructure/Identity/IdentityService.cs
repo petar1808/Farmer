@@ -2,16 +2,12 @@
 using Application.Features.Identity.Commands.ChangePassword;
 using Application.Features.Identity.Commands.CreateAdmin;
 using Application.Features.Identity.Commands.CreatePassword;
-using Application.Features.Identity.Commands.CreateUser;
 using Application.Features.Identity.Commands.ForgotPassword;
 using Application.Features.Identity.Commands.Login;
 using Application.Features.Identity.Commands.ResetPassword;
 using Application.Features.Identity.Queries.List;
 using Application.Models;
-using Application.Models.Tenants;
-using Application.Models.Users;
 using Application.Services;
-using Application.Services.Identity;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

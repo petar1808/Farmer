@@ -1,15 +1,13 @@
-﻿namespace Application.Features.Tenants.Queries.ListSelectionTenants
+﻿using Application.Models;
+
+namespace Application.Features.Tenants.Queries.ListSelectionTenants
 {
-    public class SelectionTenantOutputQueryModel
+    public class SelectionTenantOutputQueryModel : SelectionListModel
     {
         public SelectionTenantOutputQueryModel(
             int value,
-            string name)
+            string name) : base(value, name)
         {
-            this.Value = value;
-            this.Name = name;
         }
-        public int Value { get; set; }
-        public string Name { get; set; }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Application.Models;
-using Application.Models.Common;
 using Application.Services;
-using Application.Services.Identity;
+using Infrastructure.Common;
+using Infrastructure.Common.LoggingSettings;
 using Infrastructure.DbContect;
 using Infrastructure.Email;
 using Infrastructure.Identity;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -12,17 +13,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using static Application.IdentityConstants;
 using Serilog;
-using Infrastructure.Common.LoggingSettings;
 using Serilog.Core;
 using Serilog.Events;
 using System.Reflection;
-using Infrastructure.Common;
-using Infrastructure.Persistence;
-using Microsoft.Extensions.Options;
+using System.Text;
+using static Application.IdentityConstants;
 
 namespace Infrastructure
 {

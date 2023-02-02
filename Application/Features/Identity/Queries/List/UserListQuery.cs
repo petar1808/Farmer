@@ -1,5 +1,5 @@
 ﻿using Application.Models;
-using Application.Services.Identity;
+using Application.Services;
 using MediatR;
 
 namespace Application.Features.Identity.Queries.List

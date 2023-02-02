@@ -1,15 +1,13 @@
-﻿namespace Application.Features.Articles.Queries
+﻿using Application.Models;
+
+namespace Application.Features.Articles.Queries
 {
-    public class CommonArticleTypeOutputQueryModel
+    public class CommonArticleTypeOutputQueryModel : SelectionListModel
     {
         public CommonArticleTypeOutputQueryModel(
             int value,
-            string name)
+            string name) : base(value, name)
         {
-            this.Value = value;
-            this.Name = name;
         }
-        public int Value { get; set; }
-        public string Name { get; set; }
     }
 }

@@ -2,21 +2,13 @@
 using Application.Features.Identity.Commands.ChangePassword;
 using Application.Features.Identity.Commands.CreateAdmin;
 using Application.Features.Identity.Commands.CreatePassword;
-using Application.Features.Identity.Commands.CreateUser;
 using Application.Features.Identity.Commands.ForgotPassword;
 using Application.Features.Identity.Commands.Login;
 using Application.Features.Identity.Commands.ResetPassword;
 using Application.Features.Identity.Queries.List;
 using Application.Models;
-using Application.Models.Tenants;
-using Application.Models.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Services.Identity
+namespace Application.Services
 {
     public interface IIdentityService
     {
