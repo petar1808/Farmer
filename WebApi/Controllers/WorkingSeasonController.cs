@@ -1,9 +1,10 @@
-﻿using Application.Models.Common;
-using Application.Models.WorkingSeasons;
-using Application.Services.WorikingSeasons;
+﻿using Application.Features.WorkingSeasons.Commands.Create;
+using Application.Features.WorkingSeasons.Commands.Delete;
+using Application.Features.WorkingSeasons.Commands.Edit;
+using Application.Features.WorkingSeasons.Queries.Details;
+using Application.Features.WorkingSeasons.Queries.List;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Extensions;
 using static Application.IdentityConstants;
 
 namespace WebApi.Controllers
@@ -11,56 +12,34 @@ namespace WebApi.Controllers
     [ApiController]
     [Route("api/workingSeasons")]
     [Authorize(Roles = $"{IdentityRoles.AdminRole},  {IdentityRoles.UserRole}")]
-    public class WorkingSeasonController : ControllerBase
+    public class WorkingSeasonController : BaseApiController
     {
-        private readonly IWorkingSeasonService workingSeasonService;
-
-        public WorkingSeasonController(IWorkingSeasonService workingSeasonService)
-        {
-            this.workingSeasonService = workingSeasonService;
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddWorkingSeasonModel workingSeasonModel)
-        {
-            return await workingSeasonService
-                .Add(workingSeasonModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> CreateWorkingSeason(
+            [FromBody] CreateWorkingSeasonCommand workingSeasonModel)
+            => await base.Send(workingSeasonModel);
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<ActionResult<GetWorkingSeasonModel>> Get(int id)
-        {
-            return await workingSeasonService
-                .Get(id)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<WorkingSeasonDetailsQueryOutputModel>> WorkingSeasonDetails(
+            [FromRoute] WorkingSeasonDetailsQuery workingSeasonDetailsQuery)
+            => await base.Send(workingSeasonDetailsQuery);
 
         [HttpGet]
         [Route("balance")]
-        public async Task<ActionResult<List<ListWorkingSeasonBalanceModel>>> ListWorkingSeasonBalance()
-        {
-            return await workingSeasonService
-                .ListWorkingSeasonsBalance()
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<WorkingSeasonBalanceListQueryOutputModel>>> ListWorkingSeasonBalance(
+            [FromHeader] WorkingSeasonBalanceListQuery workingSeasonBalanceListQuery)
+            => await base.Send(workingSeasonBalanceListQuery);
 
         [HttpPut]
-        public async Task<IActionResult> Edit(EditWorkingSeasonModel workingSeasonModel)
-        {
-            return await workingSeasonService
-                .Edit(workingSeasonModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> Edit(
+            EditWorkingSeasonCommand workingSeasonModel)
+            => await base.Send(workingSeasonModel);
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            return await workingSeasonService
-                .Delete(id)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> Delete(
+            [FromRoute] DeleteWorkingSeasonCommand deleteWorkingSeason)
+            => await base.Send(deleteWorkingSeason);
     }
 }

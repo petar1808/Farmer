@@ -134,16 +134,5 @@ namespace Application.Services.WorikingSeasons
 
             return result;
         }
-
-
-        public async Task<Result<List<SelectionListModel>>> SeasonsSelectionList()
-        {
-            var workingSeason = await farmerDbContext
-                .WorkingSeasons
-                .Select(x => new SelectionListModel(x.Id, x.Name))
-                .ToListAsync();
-
-            return workingSeason;
-        }
     }
 }

@@ -19,8 +19,6 @@ namespace Application.Services.WorikingSeasons
 
         Task<Result> Delete(int id);
 
-        Task<Result<List<SelectionListModel>>> SeasonsSelectionList();
-
         Task<Result<List<ListWorkingSeasonBalanceModel>>> ListWorkingSeasonsBalance();
     }
 }

@@ -1,8 +1,11 @@
-﻿using Application.Models.ArableLands;
-using Application.Services.ArableLands;
+﻿using Application.Features.ArableLands.Commands.Create;
+using Application.Features.ArableLands.Commands.Delete;
+using Application.Features.ArableLands.Commands.Edit;
+using Application.Features.ArableLands.Queries;
+using Application.Features.ArableLands.Queries.Details;
+using Application.Features.ArableLands.Queries.List;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Extensions;
 using static Application.IdentityConstants;
 
 namespace WebApi.Controllers
@@ -10,55 +13,33 @@ namespace WebApi.Controllers
     [ApiController]
     [Route("api/arableLands")]
     [Authorize(Roles = $"{IdentityRoles.AdminRole},  {IdentityRoles.UserRole}")]
-    public class ArableLandController : ControllerBase
+    public class ArableLandController : BaseApiController
     {
-        private readonly IArableLandService arableLandService;
-
-        public ArableLandController(IArableLandService arableLandService)
-        {
-            this.arableLandService = arableLandService;
-        }
-
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] AddArableLandModel arableLandModel)
-        {
-            return await arableLandService
-                .Add(arableLandModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> CreateArableLand(
+            [FromBody] CreateArableLandCommand arableLandModel)
+            => await base.Send(arableLandModel);
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<ActionResult<GetAreableLandModel>> Get(int id)
-        {
-            return await arableLandService
-                .Get(id)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<CommonArableLandOutputQueryModel>> ArableLandDatails(
+            [FromRoute] ArableLandDetailsQuery arableLandDetailsQuery)
+            => await base.Send(arableLandDetailsQuery);
 
         [HttpGet]
-        public async Task<ActionResult<List<GetAreableLandModel>>> List()
-        {
-            return await arableLandService
-                .List()
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<CommonArableLandOutputQueryModel>>> ListArableLands(
+            [FromHeader] ArableLandListQuery arableLandListQuery)
+            => await base.Send(arableLandListQuery);
 
         [HttpPut]
-        public async Task<IActionResult> Edit(EditArableLandModel arableLandModel)
-        {
-            return await arableLandService
-                .Edit(arableLandModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> EditArableLand(
+            EditArableLandCommand arableLandModel)
+            => await base.Send(arableLandModel);
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            return await arableLandService
-                .Delete(id)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> DeleteArableLand(
+            [FromRoute] DeleteArableLandCommand deleteArableLand)
+            => await base.Send(deleteArableLand);
     }
 }

@@ -42,12 +42,6 @@ namespace WebUI.Services.WorkingSeasons
            return await _httpService.DeleteAsync<bool>($"api/workingSeasons/{id}");
         }
 
-        public async Task<List<SelectionListModel>> GetAllSeasons()
-        {
-            return await _httpService
-                .GetAsync<List<SelectionListModel>>($"api/assets/seasons");
-        }
-
         public async Task<List<ListWorkingSeasonBalanceModel>> ListWorkingSeasonsBalance()
         {
             return await _httpService

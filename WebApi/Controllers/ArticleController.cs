@@ -1,66 +1,44 @@
-﻿using Application.Extensions;
-using Application.Models.Articles;
-using Application.Models.Common;
-using Application.Services.Articles;
-using Domain.Enum;
+﻿using Application.Features.Articles.Commands.Create;
+using Application.Features.Articles.Commands.Delete;
+using Application.Features.Articles.Commands.Edit;
+using Application.Features.Articles.Queries.Details;
+using Application.Features.Articles.Queries.List;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Extensions;
 using static Application.IdentityConstants;
 
 namespace WebApi.Controllers
 {
-    [ApiController]
+
     [Route("api/articles")]
     [Authorize(Roles = $"{IdentityRoles.AdminRole},  {IdentityRoles.UserRole}")]
-    public class ArticleController : ControllerBase
+    public class ArticleController : BaseApiController
     {
-        private readonly IArticleService articleService;
-        public ArticleController(IArticleService articleService)
-        {
-            this.articleService = articleService;
-        }
-
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] AddArticleModel articleModel)
-        {
-            return await articleService
-                .Add(articleModel)
-                .ToActionResult();
-        }
-
+        public async Task<ActionResult> CreateArticle(
+            [FromBody] CreateArticleCommand articleModel)
+            => await this.Send(articleModel);
+        
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<ActionResult<GetArticleModel>> Get(int id)
-        {
-            return await articleService
-                .Get(id)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<ArticleDetailsQueryOutputModel>> ArticleDetails(
+            [FromRoute]ArticleDetailsQuery articleDetailsQuery)
+            => await this.Send(articleDetailsQuery);
 
         [HttpGet]
-        public async Task<ActionResult<List<ListArticleModel>>> List()
-        {
-            return await articleService
-                .List()
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<ArticleListQueryOutputModel>>> ListArticles(
+            [FromHeader] ArticleListQuery articleListQuery)
+            => await this.Send(articleListQuery);
 
         [HttpPut]
-        public async Task<ActionResult> Edit(EditArticleModel articleModel)
-        {
-            return await articleService
-                .Edit(articleModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> EditArticle(
+            EditArticleCommand articleModel)
+            => await this.Send(articleModel);
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            return await articleService
-                .Delete(id)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> DeleteArticle(
+            [FromRoute]DeleteArticleCommand deleteArticle)
+            => await this.Send(deleteArticle);
     }
 }

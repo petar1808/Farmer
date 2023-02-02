@@ -1,4 +1,13 @@
-﻿using Application.Models;
+﻿using Application.Features.Identity.Commands;
+using Application.Features.Identity.Commands.ChangePassword;
+using Application.Features.Identity.Commands.CreateAdmin;
+using Application.Features.Identity.Commands.CreatePassword;
+using Application.Features.Identity.Commands.CreateUser;
+using Application.Features.Identity.Commands.ForgotPassword;
+using Application.Features.Identity.Commands.Login;
+using Application.Features.Identity.Commands.ResetPassword;
+using Application.Features.Identity.Queries.List;
+using Application.Models;
 using Application.Models.Tenants;
 using Application.Models.Users;
 using Application.Services;
@@ -31,7 +40,7 @@ namespace Infrastructure.Identity
             _currentUserService = currentUserService;
         }
 
-        public async Task<Result> CreateUser(CreateUserModel createUserModel)
+        public async Task<Result> CreateUser(CommonIdentityInputComandModel createUserModel)
         {
             var user = new User(createUserModel.UserEmail, createUserModel.FirstName, createUserModel.LastName, _currentUserService.UserTenantId);
             var role = IdentityRoles.UserRole;
@@ -68,7 +77,7 @@ namespace Infrastructure.Identity
             return Result.Success;
         }
 
-        public async Task<Result> CreateAdmin(CreateAdminModel createAdmin)
+        public async Task<Result> CreateAdmin(CreateAdminCommand createAdmin)
         {
             var admin = new User(createAdmin.UserEmail, createAdmin.FirstName, createAdmin.LastName, createAdmin.TenantId);
             var role = IdentityRoles.AdminRole;
@@ -105,7 +114,7 @@ namespace Infrastructure.Identity
             return Result.Success;
         }
 
-        public async Task<Result> CreateUserPassword(CreateUserPasswordModel createUserPasswordModel)
+        public async Task<Result> CreateUserPassword(CreatePasswordInputCommandModel createUserPasswordModel)
         {
             var user = await this._userManager.FindByNameAsync(createUserPasswordModel.Email);
 
@@ -137,7 +146,7 @@ namespace Infrastructure.Identity
             return Result.Success;
         }
 
-        public async Task<Result<LoginOutputModel>> Login(LoginInputModel loginInputModel)
+        public async Task<Result<LoginOutputCommandModel>> Login(LoginInputCommandModel loginInputModel)
         {
             var user = await this._userManager
                 .Users
@@ -165,10 +174,10 @@ namespace Infrastructure.Identity
             }
 
             var token = this._jwtTokenGenerator.GenerateToken(user, role);
-            return new LoginOutputModel(token);
+            return new LoginOutputCommandModel(token);
         }
 
-        public async Task<Result> ChangePassword(ChangePasswordModel changePasswordModel)
+        public async Task<Result> ChangePassword(ChangePasswordInputCommandModel changePasswordModel)
         {
             var user = await this._userManager.FindByNameAsync(changePasswordModel.Email);
 
@@ -191,7 +200,7 @@ namespace Infrastructure.Identity
             return Result.Success;
         }
 
-        public async Task<Result> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
+        public async Task<Result> ForgotPassword(ForgotPasswordInputCommandModel forgotPasswordModel)
         {
             var user = await this._userManager
                 .Users
@@ -213,7 +222,7 @@ namespace Infrastructure.Identity
             return Result.Success;
         }
 
-        public async Task<Result> ResetPassword(ResetPasswordModel resetPasswordModel)
+        public async Task<Result> ResetPassword(ResetPasswordInputCommandModel resetPasswordModel)
         {
             var user = await this._userManager.FindByNameAsync(resetPasswordModel.Email);
             if (user == null)
@@ -230,7 +239,7 @@ namespace Infrastructure.Identity
             return Result.Success;
         }
 
-        public async Task<Result<List<ListUserModel>>> ListUser()
+        public async Task<Result<List<UserListQueryOutputModel>>> ListUser(UserListQuery userListQuery)
         {
             var users = _userManager
                 .Users
@@ -238,7 +247,7 @@ namespace Infrastructure.Identity
                 .Where(x => x.UserRoles.Any(x => x.Name != IdentityRoles.AdminRole && x.Name != IdentityRoles.SystemAdminRole))
                 .AsQueryable();
 
-            var result = await mapper.ProjectTo<ListUserModel>(users).ToListAsync();
+            var result = await mapper.ProjectTo<UserListQueryOutputModel>(users).ToListAsync();
 
             return result;
         }

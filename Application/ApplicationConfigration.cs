@@ -7,6 +7,7 @@ using Application.Services.Subsidies;
 using Application.Services.Tenants;
 using Application.Services.Treatments;
 using Application.Services.WorikingSeasons;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -19,6 +20,8 @@ namespace Application
                 IConfiguration configuration)
         {
             services.AddAutoMapper();
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddTransient<IArableLandService, ArableLandService>();
             services.AddTransient<IWorkingSeasonService, WorkingSeasonService>();
             services.AddTransient<IArticleService, ArticleService>();

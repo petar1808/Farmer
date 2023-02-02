@@ -1,4 +1,13 @@
-﻿using Application.Models;
+﻿using Application.Features.Identity.Commands;
+using Application.Features.Identity.Commands.ChangePassword;
+using Application.Features.Identity.Commands.CreateAdmin;
+using Application.Features.Identity.Commands.CreatePassword;
+using Application.Features.Identity.Commands.CreateUser;
+using Application.Features.Identity.Commands.ForgotPassword;
+using Application.Features.Identity.Commands.Login;
+using Application.Features.Identity.Commands.ResetPassword;
+using Application.Features.Identity.Queries.List;
+using Application.Models;
 using Application.Models.Tenants;
 using Application.Models.Users;
 using System;
@@ -11,20 +20,20 @@ namespace Application.Services.Identity
 {
     public interface IIdentityService
     {
-        Task<Result> CreateUser(CreateUserModel createUserModel);
+        Task<Result> CreateUser(CommonIdentityInputComandModel createUserModel);
 
-        Task<Result> CreateUserPassword(CreateUserPasswordModel createUserPasswordModel);
+        Task<Result> CreateUserPassword(CreatePasswordInputCommandModel createUserPasswordModel);
 
-        Task<Result> ChangePassword(ChangePasswordModel changePasswordModel);
+        Task<Result> ChangePassword(ChangePasswordInputCommandModel changePasswordModel);
 
-        Task<Result> ForgotPassword(ForgotPasswordModel forgotPasswordModel);
+        Task<Result> ForgotPassword(ForgotPasswordInputCommandModel forgotPasswordModel);
 
-        Task<Result> ResetPassword(ResetPasswordModel resetPasswordModel);
+        Task<Result> ResetPassword(ResetPasswordInputCommandModel resetPasswordModel);
 
-        Task<Result<LoginOutputModel>> Login(LoginInputModel loginInputModel);
+        Task<Result<LoginOutputCommandModel>> Login(LoginInputCommandModel loginInputModel);
 
-        Task<Result<List<ListUserModel>>> ListUser();
+        Task<Result<List<UserListQueryOutputModel>>> ListUser(UserListQuery userListQuery);
 
-        Task<Result> CreateAdmin(CreateAdminModel createAdmin);
+        Task<Result> CreateAdmin(CreateAdminCommand createAdmin);
     }
 }

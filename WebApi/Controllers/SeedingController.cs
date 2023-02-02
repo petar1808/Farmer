@@ -1,19 +1,27 @@
-﻿using Application.Extensions;
-using Application.Models.Common;
-using Application.Models.PerformedWorks;
-using Application.Models.Seedings;
-using Application.Models.Subsidies;
-using Application.Models.Тreatments;
-using Application.Services.ArableLands;
-using Application.Services.Articles;
-using Application.Services.PerformedWorks;
-using Application.Services.Seedings;
-using Application.Services.Subsidies;
-using Application.Services.Treatments;
-using Domain.Enum;
+﻿using Application.Features.ArableLands.Queries.SearchAvailableArableLand;
+using Application.Features.PerformedWorks.Commands.Create;
+using Application.Features.PerformedWorks.Commands.Delete;
+using Application.Features.PerformedWorks.Commands.Edit;
+using Application.Features.PerformedWorks.Queries.Details;
+using Application.Features.PerformedWorks.Queries.List;
+using Application.Features.Seedings.Commands.Create;
+using Application.Features.Seedings.Commands.Edit;
+using Application.Features.Seedings.Queries.DetailsArableLandBalance;
+using Application.Features.Seedings.Queries.DetailsSeedingSummary;
+using Application.Features.Seedings.Queries.ListSownArableLands;
+using Application.Features.Subsidies.Commands.Create;
+using Application.Features.Subsidies.Commands.Delete;
+using Application.Features.Subsidies.Commands.Edit;
+using Application.Features.Subsidies.Queries;
+using Application.Features.Subsidies.Queries.Details;
+using Application.Features.Subsidies.Queries.List;
+using Application.Features.Treatments.Commands.Create;
+using Application.Features.Treatments.Commands.Delete;
+using Application.Features.Treatments.Commands.Edit;
+using Application.Features.Treatments.Queries.Details;
+using Application.Features.Treatments.Queries.List;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Extensions;
 using static Application.IdentityConstants;
 
 namespace WebApi.Controllers
@@ -21,222 +29,157 @@ namespace WebApi.Controllers
     [ApiController]
     [Route("api/seeding")]
     [Authorize(Roles = $"{IdentityRoles.AdminRole},  {IdentityRoles.UserRole}")]
-    public class SeedingController : ControllerBase
+    public class SeedingController : BaseApiController
     {
-        private readonly ISeedingService seedingService;
-        private readonly IArableLandService arableLandService;
-        private readonly IТreatmentService treatmentService;
-        private readonly IPerformedWorkService performedWorkService;
-        private readonly ISubsidyService subsidyService;
-
-        public SeedingController(
-            ISeedingService seedingService,
-            IArableLandService arableLandService,
-            IТreatmentService treatmentService,
-            IPerformedWorkService performedWorkService,
-            ISubsidyService subsidyService)
-        {
-            this.seedingService = seedingService;
-            this.arableLandService = arableLandService;
-            this.treatmentService = treatmentService;
-            this.performedWorkService = performedWorkService;
-            this.subsidyService = subsidyService;
-        }
-
         #region Seeding
         [HttpPost]
-        public async Task<ActionResult> AddSeading(AddSeedingModel seedingModel)
-        {
-            return await seedingService
-                .AddSeeding(seedingModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> CreateSeading(
+            [FromBody] CreateSeedingCommand seedingModel)
+            => await base.Send(seedingModel);
 
         [HttpGet]
         [Route("availableArableLands/{seasonId:int}")]
-        public async Task<ActionResult<List<SelectionListModel>>> GetAvailableArableLands(int seasonId)
-        {
-            return await arableLandService
-                .GetAvailableArableLands(seasonId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<SearchAvailableArableLandOutputQueryModel>>> GetAvailableArableLands(
+            [FromRoute] SearchAvailableArableLandQuery searchAvailableArableLandQuery)
+            => await base.Send(searchAvailableArableLandQuery);
 
         [HttpGet]
         [Route("sownArableLand/{seasonId:int}")]
-        public async Task<ActionResult<List<SownArableLandModel>>> GetSownArableLand(int seasonId)
-        {
-            return await seedingService
-                .SownArableLands(seasonId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<SownArableLandListQueryOutputModel>>> ListSownArableLand(
+            [FromRoute] SownArableLandListQuery sownArableLandListQuery)
+            => await base.Send(sownArableLandListQuery);
+
 
         [HttpGet]
         [Route("sownArableLand/balance/{seedingId:int}")]
-        public async Task<ActionResult<GetArableLandBalance>> GetArableLandBalance(int seedingId)
-        {
-            return await seedingService
-                .GetArableLandBalance(seedingId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<ArableLandBalanceDetailsQueryOutputModel>> ArableLandBalance(
+            [FromRoute] ArableLandBalanceDetailsQuery arableLandBalanceDetailsQuery)
+            => await base.Send(arableLandBalanceDetailsQuery);
 
         [HttpGet]
         [Route("summary/{seedingId:int}")]
-        public async Task<ActionResult<GetSeedingSummaryModel>> GetSeedingSummary(int seedingId)
-        {
-            return await seedingService
-                .GetSeedingSummary(seedingId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<SeedingSummaryDetailsQueryOutputModel>> SeedingSummaryDetails(
+            [FromRoute] SeedingSummaryDetailsQuery seedingSummaryDetailsQuery)
+            => await this.Send(seedingSummaryDetailsQuery);
 
         [HttpPut]
         [Route("summary/{seedingId:int}")]
-        public async Task<ActionResult> UpdateSeedingSummary(UpdateSeedingSummaryModel updateSeedingModel, int seedingId)
+        public async Task<ActionResult> EditSeedingSummary(
+            [FromBody] EditArableLandBalanceCommand updateSeedingModel,
+            [FromRoute] int seedingId)
         {
-            return await seedingService
-                .UpdateSeedingSummary(updateSeedingModel, seedingId)
-                .ToActionResult();
+            updateSeedingModel.SetSeedingId(seedingId);
+            return await this.Send(updateSeedingModel);
         }
+            
         #endregion
 
         #region PergormedWork
         [HttpPost]
         [Route("{seedingId:int}/performedWork")]
-        public async Task<ActionResult> AddPerformedWork([FromBody] AddPerformedWorkModel performedWorkModel, int seedingId)
+        public async Task<ActionResult> CreatePerformedWork(
+            [FromBody] CreatePerformedWorkCommand performedWorkModel,
+            [FromRoute] int seedingId)
         {
-            return await performedWorkService
-                .Add(performedWorkModel, seedingId)
-                .ToActionResult();
+            performedWorkModel.SetSeedingId(seedingId);
+            return await this.Send(performedWorkModel);
         }
 
         [HttpGet]
         [Route("{seedingId:int}/performedWork")]
-        public async Task<ActionResult<List<ListPerformedWorkModel>>> ListPerformedWork(int seedingId)
-        {
-            return await performedWorkService
-                .List(seedingId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<PerformedWorkListQueryOutputModel>>> ListPerformedWork(
+            [FromRoute] PerformedWorkListQuery performedWorkListQuery)
+            => await this.Send(performedWorkListQuery);
 
         [HttpGet]
         [Route("performedWork/{performedWorkId:int}")]
-        public async Task<ActionResult<GetPerformedWorkModel>> GetPerformedWork(int performedWorkId)
-        {
-            return await performedWorkService
-                .Get(performedWorkId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<PerformedWorkDetailsQueryOutputModel>> PerformedWorkDetails(
+            [FromRoute]PerformedWorkDetailsQuery performedWorkDetailsQuery)
+            => await this.Send(performedWorkDetailsQuery);
 
         [HttpPut]
         [Route("performedWork")]
-        public async Task<ActionResult> EditPerformedWork(EditPerformedWorkModel performedWorkModel)
-        {
-            return await performedWorkService
-                .Edit(performedWorkModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> EditPerformedWork(
+            EditPerformedWorkCommand performedWorkModel)
+            => await this.Send(performedWorkModel);
 
         [HttpDelete]
         [Route("performedWork/{performedWorkId:int}")]
-        public async Task<ActionResult> DeletePerformedWork(int performedWorkId)
-        {
-            return await performedWorkService
-                .Delete(performedWorkId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> DeletePerformedWork(
+            [FromRoute] DeletePerformedWorkCommand deletePerformedWork)
+            => await this.Send(deletePerformedWork);
         #endregion
 
         #region Treatment
         [HttpPost]
         [Route("{seedingId:int}/treatment")]
-        public async Task<ActionResult> AddТreatment([FromBody] AddТreatmentModel treatmentModel, int seedingId)
+        public async Task<ActionResult> CreateТreatment(
+            [FromBody] CreateTreatmentCommand treatmentModel,
+            [FromRoute] int seedingId)
         {
-            return await treatmentService
-                .Add(treatmentModel, seedingId)
-                .ToActionResult();
+            treatmentModel.SetSeedingId(seedingId);
+            return await this.Send(treatmentModel);
         }
 
         [HttpGet]
         [Route("{seedingId:int}/treatment")]
-        public async Task<ActionResult<List<ListТreatmentModel>>> ListТreatment(int seedingId)
-        {
-            return await treatmentService
-                .List(seedingId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<TreatmentListQueryOutputModel>>> ListТreatments(
+            [FromRoute] TreatmentListQuery treatmentListQuery)
+            => await this.Send(treatmentListQuery);
 
         [HttpGet]
         [Route("treatment/{treatmentId:int}")]
-        public async Task<ActionResult<GetTreatmentModel>> GetТreatment(int treatmentId)
-        {
-            return await treatmentService
-                .Get(treatmentId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<TreatmentDetailsQueryOutputModel>> ТreatmentDetails(
+            [FromRoute] TreatmentDetailsQuery treatmentListQuery)
+            => await this.Send(treatmentListQuery);
 
         [HttpPut]
         [Route("treatment")]
-        public async Task<ActionResult> EditТreatment(EditТreatmentModel treatmentModel)
-        {
-            return await treatmentService
-                .Edit(treatmentModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> EditТreatment(
+            EditTreatmentCommand treatmentModel)
+            => await this.Send(treatmentModel);
 
         [HttpDelete]
         [Route("treatment/{id:int}")]
-        public async Task<ActionResult> DeleteТreatment(int id)
-        {
-            return await treatmentService
-                .Delete(id)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> DeleteТreatment(
+            [FromRoute]DeleteTreatmentCommand deleteTreatment)
+            => await this.Send(deleteTreatment);
         #endregion
 
-        #region
+        #region Subsidies
         [HttpPost]
         [Route("{seedingId:int}/subsidy")]
-        public async Task<ActionResult> AddSubsidy([FromBody] AddSubsidyModel subsidyModel, int seedingId)
+        public async Task<ActionResult> CreateSubsidy(
+            [FromBody] CreateSubsidyCommand subsidyModel,
+            [FromRoute] int seedingId)
         {
-            return await subsidyService
-                .Add(subsidyModel, seedingId)
-                .ToActionResult();
+            subsidyModel.SetSeedingId(seedingId);
+            return await this.Send(subsidyModel);
         }
 
         [HttpGet]
         [Route("{seedingId:int}/subsidy")]
-        public async Task<ActionResult<List<ListSubsidiesModel>>> ListSubsidies(int seedingId)
-        {
-            return await subsidyService
-                .List(seedingId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<CommonSubsidyOutputQueryModel>>> ListSubsidies(
+            [FromRoute] SubsidyListQuery subsidyListQuery)
+            => await this.Send(subsidyListQuery);
 
         [HttpGet]
         [Route("subsidy/{subsidyId:int}")]
-        public async Task<ActionResult<GetSubsidyModel>> GetSubsidy(int subsidyId)
-        {
-            return await subsidyService
-                .Get(subsidyId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult<CommonSubsidyOutputQueryModel>> SubsidyDetails(
+            [FromRoute] SubsidyDetailsQuery subsidyDetailsQuery)
+            => await this.Send(subsidyDetailsQuery);
 
         [HttpPut]
         [Route("subsidy")]
-        public async Task<ActionResult> EditSubsidy(EditSubsidyModel subsidyModel)
-        {
-            return await subsidyService
-                .Edit(subsidyModel)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> EditSubsidy(
+            EditSubsidyCommand subsidyModel)
+            => await this.Send(subsidyModel);
 
         [HttpDelete]
         [Route("subsidy/{subsidyId:int}")]
-        public async Task<ActionResult> DeleteSubsidy(int subsidyId)
-        {
-            return await subsidyService
-                .Delete(subsidyId)
-                .ToActionResult();
-        }
+        public async Task<ActionResult> DeleteSubsidy(
+            [FromRoute] DeleteSubsidyCommand deleteSubsidy)
+            => await this.Send(deleteSubsidy);
 
         #endregion
     }
