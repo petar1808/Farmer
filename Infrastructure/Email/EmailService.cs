@@ -65,8 +65,6 @@ namespace Infrastructure.Email
 
         public async Task<bool> SendUserCreatedEmail(string userName, string userEmail, string url)
         {
-            // url = FE Url(http//:farmer/confirEmail?token?asdadadq)
-            // url- за сега ще е просто токена
             string body = $"Здравейте, <b>{userName}</b>," + newLine +
                           newLine +
                           $"Вие бяхте добавен(а) в платформата на <b>Фермер</b>. За да активирате своя акаунт, моля, натиснете <a href='{url}'>тук.</a>" + newLine ;

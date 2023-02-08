@@ -1,13 +1,10 @@
-﻿using Application.Extensions;
-using Application.Models.Common;
-using Application.Services.Articles;
-using Application.Services.PerformedWorks;
-using Application.Services.Treatments;
-using Application.Services.WorikingSeasons;
-using Domain.Enum;
+﻿using Application.Features.Articles.Queries;
+using Application.Features.Articles.Queries.ListArticleType;
+using Application.Features.Articles.Queries.SearchArticleType;
+using Application.Features.PerformedWorks.Queries.ListWorkType;
+using Application.Features.Treatments.Queries.ListTreatmentType;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Extensions;
 using static Application.IdentityConstants;
 
 namespace WebApi.Controllers
@@ -15,58 +12,31 @@ namespace WebApi.Controllers
     [ApiController]
     [Route("api/assets")]
     [Authorize(Roles = $"{IdentityRoles.AdminRole},  {IdentityRoles.UserRole}")]
-    public class AssetsController : ControllerBase
+    public class AssetsController : BaseApiController
     {
-        private readonly IArticleService articleService;
-        private readonly IWorkingSeasonService workingSeasonService;
-
-        public AssetsController(IArticleService articleService,
-            IWorkingSeasonService workingSeasonService)
-        {
-            this.articleService = articleService;
-            this.workingSeasonService = workingSeasonService;
-        }
-
         [HttpGet]
         [Route("articleTypes")]
-        public ActionResult<List<SelectionListModel>> GetArticleTypes()
-        {
-            return EnumHelper.GetAllNamesAndValues<ArticleType>()
-                .Select(x => new SelectionListModel(x.Key, x.Value)).ToList();
-        }
+        public async Task<ActionResult<List<CommonArticleTypeOutputQueryModel>>> ListArticleType(
+             [FromRoute] ArticleTypeListQuery query)
+            => await base.Send(query);
+
 
         [HttpGet]
         [Route("treatment/{type:int}")]
-        public async Task<ActionResult<List<SelectionListModel>>> GetArticles(ArticleType type)
-        {
-            return await articleService
-                .ArticlesSelectionList(type)
-                .ToActionResult();
-        }
-
-        [HttpGet]
-        [Route("seasons")]
-        public async Task<ActionResult<List<SelectionListModel>>> GetAllSeasons()
-        {
-            return await workingSeasonService
-                .SeasonsSelectionList()
-                .ToActionResult();
-        }
+        public async Task<ActionResult<List<CommonArticleTypeOutputQueryModel>>> SearchArticleByType(
+            [FromRoute] SearchArticleByTypeQuery searchArticleByTypeQuery)
+            => await base.Send(searchArticleByTypeQuery);
 
         [HttpGet]
         [Route("workTypes")]
-        public ActionResult<List<SelectionListModel>> GetWorkTypes()
-        {
-            return EnumHelper.GetAllNamesAndValues<WorkType>()
-                .Select(x => new SelectionListModel(x.Key, x.Value)).ToList();
-        }
+        public async Task<ActionResult<List<WorkTypeOutputQueryModel>>> GetWorkTypes(
+            [FromRoute] WorkTypeListQuery query)
+            => await base.Send(query);
 
         [HttpGet]
         [Route("treatmentType")]
-        public ActionResult<List<SelectionListModel>> GetTreatmentTypes()
-        {
-            return EnumHelper.GetAllNamesAndValues<ТreatmentType>()
-                .Select(x => new SelectionListModel(x.Key, x.Value)).ToList();
-        }
+        public async Task<ActionResult<List<TreatmentTypeOutputQueryModel>>> GetTreatmentTypes(
+            [FromRoute] TreatmentTypeListQuery query)
+            => await base.Send(query);
     }
 }
