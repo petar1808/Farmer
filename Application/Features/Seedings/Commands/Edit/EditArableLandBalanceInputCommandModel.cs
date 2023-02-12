@@ -8,17 +8,17 @@ namespace Application.Features.Seedings.Commands.Edit
     {
         public int SeedingId { get; private set; }
 
-        public int? ArticleId { get; init; }
+        public int? ArticleId { get; set; }
 
-        public decimal SeedsQuantityPerDecare { get; init; }
+        public decimal SeedsQuantityPerDecare { get; set; }
 
-        public decimal SeedsPricePerKilogram { get; init; }
+        public decimal SeedsPricePerKilogram { get; set; }
 
-        public int HarvestedQuantityPerDecare { get; init; }
+        public int HarvestedQuantityPerDecare { get; set; }
 
-        public decimal HarvestedGrainSellingPricePerKilogram { get; init; }
+        public decimal HarvestedGrainSellingPricePerKilogram { get; set; }
 
-        public decimal ExpensesForHarvesting { get; init; }
+        public decimal ExpensesForHarvesting { get; set; }
 
         public void SetSeedingId(int seedingId)
         {

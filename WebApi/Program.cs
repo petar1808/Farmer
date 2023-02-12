@@ -1,9 +1,11 @@
 using Application;
 using Application.Services;
 using Elastic.Apm.AspNetCore;
-using Elastic.Apm.Cloud;
 using Elastic.Apm.DiagnosticSource;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure;
+using System.Reflection;
 using WebApi.Filters;
 using WebApi.Middlewares;
 using WebApi.Services;
@@ -29,6 +31,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 
 builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
+
+builder.Services.AddValidatorsFromAssembly(Assembly.Load(nameof(Application)));
 
 builder.Host.UseSerilogLogging();
 
