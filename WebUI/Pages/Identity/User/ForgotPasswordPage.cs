@@ -28,16 +28,20 @@ namespace WebUI.Pages.Identity.User
         {
             forgotPasswordModel.ChangePasswordUrl = $"{NavigationManager.BaseUri}resetPassword";
 
-            await IdentityService.ForgotPassword(forgotPasswordModel);
+            var isSuccess = await IdentityService.ForgotPassword(forgotPasswordModel);
 
-            NotificationService.Notify(new NotificationMessage
+            if (isSuccess)
             {
-                Severity = NotificationSeverity.Info,
-                Detail = "Ако вашият имейл съществува в ситемата ще получите имейл с инструкции",
-                Duration = 10000
-            });
-
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}login");
+                NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Info,
+                    Detail = "Ако вашият имейл съществува в ситемата ще получите имейл с инструкции",
+                    Duration = 10000
+                });
+                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}login");
+            }
+            
+            NavigationManager.NavigateTo(NavigationManager.Uri);
         }
     }
 }

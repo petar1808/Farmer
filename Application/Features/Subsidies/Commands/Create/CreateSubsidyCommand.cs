@@ -28,15 +28,6 @@ namespace Application.Features.Subsidies.Commands.Create
                 CreateSubsidyCommand request,
                 CancellationToken cancellationToken)
             {
-                var seeding = await farmerDbContext
-                .Seedings
-                .AnyAsync(x => x.Id == request.SeedingId, cancellationToken);
-
-                if (!seeding)
-                {
-                    return $"Сеитба с Ид: {request.SeedingId} не съществува!";
-                }
-
                 var subsidy = new Subsidy(request.SeedingId,
                     request.Income,
                     request.Date);

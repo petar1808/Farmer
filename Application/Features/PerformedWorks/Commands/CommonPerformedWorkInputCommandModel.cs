@@ -4,12 +4,12 @@ namespace Application.Features.PerformedWorks.Commands
 {
     public class CommonPerformedWorkInputCommandModel
     {
-        public WorkType WorkType { get; init; }
+        public WorkType WorkType { get; set; }
 
-        public DateTime Date { get; init; }
+        public DateTime Date { get; set; }
 
-        public decimal AmountOfFuel { get; init; }
+        public decimal AmountOfFuel { get; set; }
 
-        public decimal FuelPrice { get; init; }
+        public decimal FuelPrice { get; set; }
     }
 }

@@ -28,24 +28,6 @@ namespace Application.Features.Treatments.Commands.Create
                 CreateTreatmentCommand request,
                 CancellationToken cancellationToken)
             {
-                var seeding = await farmerDbContext
-               .Seedings
-               .AnyAsync(x => x.Id == request.SeedingId, cancellationToken);
-
-                if (!seeding)
-                {
-                    return $"Сеитба с Ид: {request.SeedingId} не съществува!";
-                }
-
-                var article = await farmerDbContext
-                    .Articles
-                    .AnyAsync(x => x.Id == request.ArticleId, cancellationToken);
-
-                if (!article)
-                {
-                    return $"Артикул с Ид: {request.ArticleId} не съществува!";
-                }
-
                 var treatment = new Treatment(request.Date,
                     request.TreatmentType,
                     request.AmountOfFuel,

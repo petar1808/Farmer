@@ -21,24 +21,6 @@ namespace Application.Features.Seedings.Commands.Create
                 CreateSeedingCommand request,
                 CancellationToken cancellationToken)
             {
-                var arableLand = await farmerDbContext
-                .ArableLands
-                .AnyAsync(x => x.Id == request.ArableLandId, cancellationToken);
-
-                if (!arableLand)
-                {
-                    return $"Земя с Ид: {request.ArableLandId} не съществува!";
-                }
-
-                var workingSeason = await farmerDbContext
-                    .WorkingSeasons
-                    .AnyAsync(x => x.Id == request.WorkingSeasonId, cancellationToken);
-
-                if (!workingSeason)
-                {
-                    return $"Сезон с Ид: {request.WorkingSeasonId} не съществува!";
-                }
-
                 var seeding = new Seeding(request.ArableLandId, request.WorkingSeasonId);
 
                 await farmerDbContext.AddAsync(seeding, cancellationToken);

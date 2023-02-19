@@ -31,13 +31,16 @@ namespace Application.Features.Articles.Commands.Edit
                     return $"Артикул с Ид: {request.Id} не съществува!";
                 }
 
-                var articleUnique = await farmerDbContext
-                    .Articles
-                    .AnyAsync(x => x.Name == request.Name && x.ArticleType == request.ArticleType, cancellationToken);
-
-                if (articleUnique)
+                if (request.Name != article.Name || request.ArticleType != article.ArticleType)
                 {
-                    return "Има създаден артикул със същото име и тип";
+                    var articleUnique = await farmerDbContext
+                   .Articles
+                   .AnyAsync(x => x.Name == request.Name && x.ArticleType == request.ArticleType, cancellationToken);
+
+                    if (articleUnique)
+                    {
+                        return "Има създаден артикул със същото име и тип";
+                    }
                 }
 
                 article

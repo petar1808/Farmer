@@ -1,4 +1,5 @@
-﻿using Application.Mappings;
+﻿using Application.Behaviours;
+using Application.Mappings;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +12,9 @@ namespace Application
         public static IServiceCollection AddApplication(this IServiceCollection services,
                 IConfiguration configuration)
         {
-            services.AddAutoMapper();
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper()
+                    .AddMediatR(Assembly.GetExecutingAssembly())
+                    .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             return services;
         }

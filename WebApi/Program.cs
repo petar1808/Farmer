@@ -1,9 +1,8 @@
 using Application;
 using Application.Services;
-using Elastic.Apm.AspNetCore;
-using Elastic.Apm.Cloud;
-using Elastic.Apm.DiagnosticSource;
+using FluentValidation;
 using Infrastructure;
+using System.Reflection;
 using WebApi.Filters;
 using WebApi.Middlewares;
 using WebApi.Services;
@@ -28,15 +27,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 
+if (builder.Configuration.GetValue<string?>("ApplicationInsights:InstrumentationKey") != null)
+{
+    builder.Services.AddApplicationInsightsTelemetry();
+}
+
 builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
+
+builder.Services.AddValidatorsFromAssembly(Assembly.Load(nameof(Application)));
 
 builder.Host.UseSerilogLogging();
 
 var app = builder.Build();
-if (builder.Configuration.GetValue<bool?>("UseAPM") == true)
-{
-    app.UseElasticApm(builder.Configuration, new HttpDiagnosticsSubscriber());
-}
 
 if (app.Environment.IsDevelopment())
 {
