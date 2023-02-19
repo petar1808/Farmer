@@ -21,15 +21,6 @@ namespace Application.Features.ArableLands.Commands.Create
                 CreateArableLandCommand request,
                 CancellationToken cancellationToken)
             {
-                var arableLandUnique = await farmerDbContext
-                .ArableLands
-                .AnyAsync(x => x.Name == request.Name, cancellationToken);
-
-                if (arableLandUnique)
-                {
-                    return "Има създадена земя със същото име";
-                }
-
                 var arableLand = new ArableLand(request.Name, request.SizeInDecar);
 
                 await farmerDbContext.AddAsync(arableLand, cancellationToken);

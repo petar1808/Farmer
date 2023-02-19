@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using Application.Services;
+using FluentValidation;
 
 namespace Application.Features.Treatments.Commands.Edit
 {
     public class EditTreatmentCommandValidator : AbstractValidator<EditTreatmentCommand>
     {
-        public EditTreatmentCommandValidator()
+        public EditTreatmentCommandValidator(IFarmerDbContext farmerDbContext)
         {
             this.RuleFor(x => x.ArticleId)
                .NotEmpty()
@@ -33,6 +34,17 @@ namespace Application.Features.Treatments.Commands.Edit
             this.RuleFor(x => x.ArticlePrice)
                .ExclusiveBetween(0m, int.MaxValue)
                .WithMessage("Цената на артикула трябва да е положително число");
+
+            this.RuleFor(x => x.ArticleId)
+                .Must((nameValue) =>
+                {
+                    var article = farmerDbContext
+                        .Articles
+                        .Any(x => x.Id == nameValue);
+
+                    return article;
+                })
+                .WithMessage(x => $"Артикул с Ид: {x.ArticleId} не съществува!");
         }
     }
 }

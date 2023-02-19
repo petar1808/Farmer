@@ -28,15 +28,6 @@ namespace Application.Features.PerformedWorks.Commands.Create
                 CreatePerformedWorkCommand request,
                 CancellationToken cancellationToken)
             {
-                var seeding = await farmerDbContext
-                .Seedings
-                .AnyAsync(x => x.Id == request.SeedingId, cancellationToken);
-
-                if (!seeding)
-                {
-                    return $"Сеитба с Ид: {request.SeedingId} не съществува!";
-                }
-
                 var performedWork = new PerformedWork(request.SeedingId,
                     request.WorkType,
                     request.Date,

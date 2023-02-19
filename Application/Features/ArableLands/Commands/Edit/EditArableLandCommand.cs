@@ -37,13 +37,16 @@ namespace Application.Features.ArableLands.Commands.Edit
                     return $"Земя с Ид: {request.Id} не съществува!";
                 }
 
-                var arableLandUnique = await farmerDbContext
+                if (request.Name != arableLand.Name)
+                {
+                    var arableLandUnique = await farmerDbContext
                     .ArableLands
                     .AnyAsync(x => x.Name == request.Name, cancellationToken);
 
-                if (arableLandUnique)
-                {
-                    return "Има създадена земя със същото име";
+                    if (arableLandUnique)
+                    {
+                        return "Има създадена земя със същото име";
+                    }
                 }
 
                 arableLand

@@ -1,10 +1,14 @@
-﻿using FluentValidation;
+﻿using Application.Services;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 
 namespace Application.Features.PerformedWorks.Commands.Create
 {
     public class CreatePerformedWorkCommandValidator : AbstractValidator<CreatePerformedWorkCommand>
     {
-        public CreatePerformedWorkCommandValidator()
+        public CreatePerformedWorkCommandValidator(IFarmerDbContext farmerDbContext)
         {
             this.RuleFor(x => x.WorkType)
                 .IsInEnum()
@@ -21,6 +25,17 @@ namespace Application.Features.PerformedWorks.Commands.Create
             this.RuleFor(x => x.FuelPrice)
                 .ExclusiveBetween(0m, int.MaxValue)
                 .WithMessage("Цената на горивото трябва да е положително число");
+
+            this.RuleFor(x => x.SeedingId)
+                .Must((nameValue) =>
+                {
+                    var seeding = farmerDbContext
+                        .Seedings
+                        .Any(x => x.Id == nameValue);
+
+                    return seeding;
+                })
+                .WithMessage(x => $"Сеитба с Ид: {x.SeedingId} не съществува!");
         }
     }
 }

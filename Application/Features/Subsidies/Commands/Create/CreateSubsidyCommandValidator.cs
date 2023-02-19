@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using Application.Services;
+using FluentValidation;
 
 namespace Application.Features.Subsidies.Commands.Create
 {
     public class CreateSubsidyCommandValidator : AbstractValidator<CreateSubsidyCommand>
     {
-        public CreateSubsidyCommandValidator()
+        public CreateSubsidyCommandValidator(IFarmerDbContext farmerDbContext)
         {
             this.RuleFor(x => x.Income)
                 .ExclusiveBetween(0m, int.MaxValue)
@@ -13,6 +14,17 @@ namespace Application.Features.Subsidies.Commands.Create
             this.RuleFor(x => x.Date)
                 .NotEmpty()
                 .WithMessage("Датата е задължителна");
+
+            this.RuleFor(x => x.SeedingId)
+                .Must((nameValue) =>
+                {
+                    var seeding = farmerDbContext
+                        .Seedings
+                        .Any(x => x.Id == nameValue);
+
+                    return seeding;
+                })
+                .WithMessage(x => $"Сеитба с Ид: {x.SeedingId} не съществува!");
         }
     }
 }

@@ -1,10 +1,14 @@
-﻿using FluentValidation;
+﻿using Application.Services;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace Application.Features.Treatments.Commands.Create
 {
     public class CreateTreatmentCommandValidator : AbstractValidator<CreateTreatmentCommand>
     {
-        public CreateTreatmentCommandValidator()
+        public CreateTreatmentCommandValidator(IFarmerDbContext farmerDbContext)
         {
             this.RuleFor(x => x.ArticleId)
                 .NotEmpty()
@@ -33,6 +37,28 @@ namespace Application.Features.Treatments.Commands.Create
             this.RuleFor(x => x.ArticlePrice)
                .ExclusiveBetween(0m, int.MaxValue)
                .WithMessage("Цената на артикула трябва да е положително число");
+
+            this.RuleFor(x => x.SeedingId)
+                .Must((nameValue) =>
+                {
+                    var seeding = farmerDbContext
+                        .Seedings
+                        .Any(x => x.Id == nameValue);
+
+                    return seeding;
+                })
+                .WithMessage(x => $"Сеитба с Ид: {x.SeedingId} не съществува!");
+
+            this.RuleFor(x => x.ArticleId)
+                .Must((nameValue) =>
+                {
+                    var article = farmerDbContext
+                        .Articles
+                        .Any(x => x.Id == nameValue);
+
+                    return article;
+                })
+                .WithMessage(x => $"Артикул с Ид: {x.ArticleId} не съществува!");
         }
     }
 }

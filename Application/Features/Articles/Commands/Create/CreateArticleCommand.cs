@@ -21,17 +21,6 @@ namespace Application.Features.Articles.Commands.Create
                 CreateArticleCommand request,
                 CancellationToken cancellationToken)
             {
-                var articleUnique = await farmerDbContext
-                            .Articles
-                            .AnyAsync(
-                                x => x.Name == request.Name && x.ArticleType == request.ArticleType, 
-                                cancellationToken);
-
-                if (articleUnique)
-                {
-                    return "Има създаден артикул със същото име и тип";
-                }
-
                 var article = new Article(request.Name, request.ArticleType);
 
                 await farmerDbContext.AddAsync(article, cancellationToken);

@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using Application.Services;
+using FluentValidation;
 
 namespace Application.Features.WorkingSeasons.Commands.Create
 {
     public class CreateWorkingSeasonCommandValidator : AbstractValidator<CreateWorkingSeasonCommand>
     {
-        public CreateWorkingSeasonCommandValidator()
+        public CreateWorkingSeasonCommandValidator(IFarmerDbContext farmerDbContext)
         {
             this.RuleFor(x => x.Name)
                 .NotEmpty()

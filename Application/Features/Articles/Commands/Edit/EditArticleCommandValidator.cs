@@ -1,15 +1,13 @@
-﻿using FluentValidation;
+﻿using Application.Services;
+using FluentValidation;
 
 namespace Application.Features.Articles.Commands.Edit
 {
     public class EditArticleCommandValidator : AbstractValidator<EditArticleCommand>
     {
-        public EditArticleCommandValidator()
+        public EditArticleCommandValidator(IFarmerDbContext farmerDbContext)
         {
             this.RuleFor(x => x.Name)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage("Името е задължително")
                 .Length(2, 50)
                 .WithMessage("Името трябва да е между 2 и 50 символа");
 

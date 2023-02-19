@@ -22,15 +22,6 @@ namespace Application.Features.Treatments.Commands.Edit
                 EditTreatmentCommand request,
                 CancellationToken cancellationToken)
             {
-                var article = await farmerDbContext
-                .Articles
-                .AnyAsync(x => x.Id == request.ArticleId, cancellationToken);
-
-                if (!article)
-                {
-                    return $"Артикул с Ид: {request.ArticleId} не съществува!";
-                }
-
                 var treatment = await farmerDbContext
                   .Treatments
                   .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
