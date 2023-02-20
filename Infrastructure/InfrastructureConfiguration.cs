@@ -37,8 +37,16 @@ namespace Infrastructure
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IJwtTokenGenerator, JwtTokenGeneratorService>();
 
-            var infrastructureSettings = new InfrastructureSettings();
-            configuration.Bind(nameof(InfrastructureSettings), infrastructureSettings);
+            var dbProvider = configuration.GetValue<string>(
+                $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.DatabaseProvider)}");
+            var secret = configuration.GetValue<string>(
+                $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.Secret)}");
+
+            var infrastructureSettings = new InfrastructureSettings()
+            {
+                DatabaseProvider = Enum.Parse<DatabaseProvider>(dbProvider),
+                Secret = secret
+            };
 
             services.AddDataBase(configuration, infrastructureSettings);
             services.AddIdentity(infrastructureSettings);
@@ -54,13 +62,13 @@ namespace Infrastructure
             var connectionStrings = new ConnectionStrings();
             configuration.Bind(nameof(ConnectionStrings), connectionStrings);
 
-            if (infrastructureSettings.UseSqlLite)
+            if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlLite)
             {
                 services.AddScoped<IFarmerDbContext, SqlLiteFarmerDbContext>();
 
                 services.AddDbContext<SqlLiteFarmerDbContext>(opt =>
                 {
-                    opt.UseSqlite(connectionStrings.SqlLiteConncetion);
+                    opt.UseSqlite(connectionStrings.SqlLiteConnection);
                     if (connectionStrings.EnableSensitiveDataLogging)
                     {
                         opt.EnableSensitiveDataLogging()
@@ -68,7 +76,7 @@ namespace Infrastructure
                     }
                 });
             }
-            else
+            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlServer)
             {
                 services.AddScoped<IFarmerDbContext, SqlFarmerDbContext>();
 
@@ -82,6 +90,34 @@ namespace Infrastructure
                     }
                 });
             }
+            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.MySql)
+            {
+                services.AddScoped<IFarmerDbContext, MySqlFarmerDbContext>();
+
+                services.AddDbContext<MySqlFarmerDbContext>(opt =>
+                {
+                    var azureMySqlConncetionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+                    if (!string.IsNullOrWhiteSpace(azureMySqlConncetionString))
+                    {
+                        connectionStrings.MySqlConnection = azureMySqlConncetionString;
+                    }
+
+                    opt.UseMySql(
+                        connectionStrings.MySqlConnection,
+                        ServerVersion.AutoDetect(connectionStrings.MySqlConnection)
+                        );
+
+                    if (connectionStrings.EnableSensitiveDataLogging)
+                    {
+                        opt.EnableSensitiveDataLogging()
+                            .LogTo(Console.WriteLine);
+                    }
+                });
+            }
+            else
+            {
+                throw new NotImplementedException("Unsupported database provider");
+            }
 
             return services;
         }
@@ -90,7 +126,7 @@ namespace Infrastructure
             this IServiceCollection services,
             InfrastructureSettings infrastructureSettings)
         {
-            if (infrastructureSettings.UseSqlLite)
+            if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlLite)
             {
                 services
                     .AddIdentity<User, Role>(options =>
@@ -101,7 +137,7 @@ namespace Infrastructure
                     .AddEntityFrameworkStores<SqlLiteFarmerDbContext>()
                     .AddDefaultTokenProviders();
             }
-            else
+            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlServer)
             {
                 services
                     .AddIdentity<User, Role>(options =>
@@ -111,6 +147,21 @@ namespace Infrastructure
                     })
                     .AddEntityFrameworkStores<SqlFarmerDbContext>()
                     .AddDefaultTokenProviders();
+            }
+            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.MySql)
+            {
+                services
+                    .AddIdentity<User, Role>(options =>
+                    {
+                        options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+                        options.SignIn.RequireConfirmedAccount = true;
+                    })
+                    .AddEntityFrameworkStores<MySqlFarmerDbContext>()
+                    .AddDefaultTokenProviders();
+            }
+            else
+            {
+                throw new NotImplementedException("Unsupported database provider");
             }
 
             var key = Encoding.ASCII.GetBytes(infrastructureSettings.Secret);
@@ -158,13 +209,21 @@ namespace Infrastructure
 
                 FarmerDbContext db;
 
-                if (infrastructureSettings.Value.UseSqlLite)
+                if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlLite)
                 {
                     db = scope.ServiceProvider.GetRequiredService<SqlLiteFarmerDbContext>();
                 }
-                else
+                else if(infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlServer)
                 {
                     db = scope.ServiceProvider.GetRequiredService<SqlFarmerDbContext>();
+                }
+                else if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.MySql)
+                {
+                    db = scope.ServiceProvider.GetRequiredService<MySqlFarmerDbContext>();
+                }
+                else
+                {
+                    throw new NotImplementedException("Unsupported database provider");
                 }
 
                 db.Database.Migrate();

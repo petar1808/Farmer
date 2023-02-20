@@ -10,6 +10,13 @@ namespace Infrastructure
     {
         public string Secret { get; set; } = default!;
 
-        public bool UseSqlLite { get; set; }
+        public DatabaseProvider DatabaseProvider { get; set; }
+    }
+
+    public enum DatabaseProvider
+    {
+        SqlLite,
+        SqlServer,
+        MySql
     }
 }

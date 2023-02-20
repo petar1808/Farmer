@@ -46,7 +46,7 @@ namespace Application.Models
     {
         private readonly TData _data;
 
-        internal Result(bool succeeded, TData data, List<string> errors)
+        public Result(bool succeeded, TData data, List<string> errors)
             : base(succeeded, errors)
             => this._data = data;
 

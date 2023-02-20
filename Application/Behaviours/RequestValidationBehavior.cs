@@ -1,7 +1,9 @@
-﻿using Application.Models;
+﻿using Application.Features.Identity.Commands.Login;
+using Application.Models;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using System.Reflection;
 
 namespace Application.Behaviours
 {
@@ -34,14 +36,30 @@ namespace Application.Behaviours
 
                 foreach (var failureGroup in failureGroups)
                 {
-                    //var propertyName = failureGroup.Key;
                     var propertyFailures = failureGroup.ToArray();
 
                     errors.Add($"{string.Join(", ",propertyFailures)}");
                 }
-                var result =  Result.Failure(errors) as TResponse;
 
-                return result!;
+                if (typeof(TResponse) == typeof(Result))
+                {
+                    var result = Result.Failure(errors);
+                    return (TResponse)(object)result;
+                }
+                else if (typeof(TResponse).IsGenericType && typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
+                {
+                    Type resultGenericType = typeof(Result<>);
+                    Type typeArguments = typeof(TResponse).GetGenericArguments()[0];
+                    Type resultType = resultGenericType.MakeGenericType(typeArguments);
+
+                    object resultInstance = Activator.CreateInstance(resultType, false, null, errors)!;
+
+                    return (TResponse)resultInstance;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Invalid response type: {typeof(TResponse)}");
+                }
             }
 
             return await next();

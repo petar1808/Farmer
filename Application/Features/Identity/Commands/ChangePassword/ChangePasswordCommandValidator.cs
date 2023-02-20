@@ -7,8 +7,6 @@ namespace Application.Features.Identity.Commands.ChangePassword
         public ChangePasswordCommandValidator()
         {
             this.RuleFor(x => x.Email)
-               .NotEmpty()
-               .WithMessage("Имейлът е задължителен")
                .EmailAddress()
                .WithMessage("Имейлът е невалиден");
         }

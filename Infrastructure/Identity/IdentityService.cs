@@ -67,6 +67,8 @@ namespace Infrastructure.Identity
 
             if (!sendEmailResult)
             {
+                await _userManager.DeleteAsync(user);
+
                 return "Имейлът не беше изпратен успешно!";
             }
 
@@ -104,6 +106,8 @@ namespace Infrastructure.Identity
 
             if (!sendEmailResult)
             {
+                await _userManager.DeleteAsync(admin);
+
                 return "Имейлът не беше изпратен успешно!";
             }
 

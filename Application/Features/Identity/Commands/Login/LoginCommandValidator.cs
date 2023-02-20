@@ -7,10 +7,12 @@ namespace Application.Features.Identity.Commands.Login
         public LoginCommandValidator()
         {
             this.RuleFor(x => x.Email)
-                .NotEmpty()
-                .WithMessage("Имейлът е задължителен")
                 .EmailAddress()
                 .WithMessage("Имейлът е невалиден");
+
+            this.RuleFor(x => x.Password)
+                .NotEmpty()
+                .WithMessage("Паролата е задължителна");
         }
     }
 }
