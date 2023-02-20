@@ -20,6 +20,7 @@ using Serilog.Core;
 using Serilog.Events;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using static Application.IdentityConstants;
 
 namespace Infrastructure
@@ -99,7 +100,17 @@ namespace Infrastructure
                     var azureMySqlConncetionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
                     if (!string.IsNullOrWhiteSpace(azureMySqlConncetionString))
                     {
-                        connectionStrings.MySqlConnection = azureMySqlConncetionString;
+                        string dbhost = Regex.Match(azureMySqlConncetionString, @"Data Source=(.+?);").Groups[1].Value;
+                        string server = dbhost.Split(':')[0].ToString();
+                        string port = dbhost.Split(':')[1].ToString();
+                        string dbname = Regex.Match(azureMySqlConncetionString, @"Database=(.+?);").Groups[1].Value;
+                        string dbusername = Regex.Match(azureMySqlConncetionString, @"User Id=(.+?);").Groups[1].Value;
+                        string dbpassword = Regex.Match(azureMySqlConncetionString, @"Password=(.+?)$").Groups[1].Value;
+
+                        string connectionString2 = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling = false; convert zero datetime=True;";
+
+
+                        connectionStrings.MySqlConnection = connectionString2;
                     }
 
                     opt.UseMySql(
