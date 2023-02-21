@@ -20,6 +20,7 @@ using Serilog.Core;
 using Serilog.Events;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using static Application.IdentityConstants;
 
 namespace Infrastructure
@@ -37,8 +38,16 @@ namespace Infrastructure
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IJwtTokenGenerator, JwtTokenGeneratorService>();
 
-            var infrastructureSettings = new InfrastructureSettings();
-            configuration.Bind(nameof(InfrastructureSettings), infrastructureSettings);
+            var dbProvider = configuration.GetValue<string>(
+                $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.DatabaseProvider)}");
+            var secret = configuration.GetValue<string>(
+                $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.Secret)}");
+
+            var infrastructureSettings = new InfrastructureSettings()
+            {
+                DatabaseProvider = Enum.Parse<DatabaseProvider>(dbProvider),
+                Secret = secret
+            };
 
             services.AddDataBase(configuration, infrastructureSettings);
             services.AddIdentity(infrastructureSettings);
@@ -54,13 +63,13 @@ namespace Infrastructure
             var connectionStrings = new ConnectionStrings();
             configuration.Bind(nameof(ConnectionStrings), connectionStrings);
 
-            if (infrastructureSettings.UseSqlLite)
+            if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlLite)
             {
                 services.AddScoped<IFarmerDbContext, SqlLiteFarmerDbContext>();
 
                 services.AddDbContext<SqlLiteFarmerDbContext>(opt =>
                 {
-                    opt.UseSqlite(connectionStrings.SqlLiteConncetion);
+                    opt.UseSqlite(connectionStrings.SqlLiteConnection);
                     if (connectionStrings.EnableSensitiveDataLogging)
                     {
                         opt.EnableSensitiveDataLogging()
@@ -68,7 +77,7 @@ namespace Infrastructure
                     }
                 });
             }
-            else
+            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlServer)
             {
                 services.AddScoped<IFarmerDbContext, SqlFarmerDbContext>();
 
@@ -82,6 +91,44 @@ namespace Infrastructure
                     }
                 });
             }
+            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.MySql)
+            {
+                services.AddScoped<IFarmerDbContext, MySqlFarmerDbContext>();
+
+                services.AddDbContext<MySqlFarmerDbContext>(opt =>
+                {
+                    var azureMySqlConncetionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+                    if (!string.IsNullOrWhiteSpace(azureMySqlConncetionString))
+                    {
+                        string dbhost = Regex.Match(azureMySqlConncetionString, @"Data Source=(.+?);").Groups[1].Value;
+                        string server = dbhost.Split(':')[0].ToString();
+                        string port = dbhost.Split(':')[1].ToString();
+                        string dbname = Regex.Match(azureMySqlConncetionString, @"Database=(.+?);").Groups[1].Value;
+                        string dbusername = Regex.Match(azureMySqlConncetionString, @"User Id=(.+?);").Groups[1].Value;
+                        string dbpassword = Regex.Match(azureMySqlConncetionString, @"Password=(.+?)$").Groups[1].Value;
+
+                        string connectionString2 = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling = false; convert zero datetime=True;";
+
+
+                        connectionStrings.MySqlConnection = connectionString2;
+                    }
+
+                    opt.UseMySql(
+                        connectionStrings.MySqlConnection,
+                        ServerVersion.AutoDetect(connectionStrings.MySqlConnection)
+                        );
+
+                    if (connectionStrings.EnableSensitiveDataLogging)
+                    {
+                        opt.EnableSensitiveDataLogging()
+                            .LogTo(Console.WriteLine);
+                    }
+                });
+            }
+            else
+            {
+                throw new NotImplementedException("Unsupported database provider");
+            }
 
             return services;
         }
@@ -90,7 +137,7 @@ namespace Infrastructure
             this IServiceCollection services,
             InfrastructureSettings infrastructureSettings)
         {
-            if (infrastructureSettings.UseSqlLite)
+            if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlLite)
             {
                 services
                     .AddIdentity<User, Role>(options =>
@@ -101,7 +148,7 @@ namespace Infrastructure
                     .AddEntityFrameworkStores<SqlLiteFarmerDbContext>()
                     .AddDefaultTokenProviders();
             }
-            else
+            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlServer)
             {
                 services
                     .AddIdentity<User, Role>(options =>
@@ -111,6 +158,21 @@ namespace Infrastructure
                     })
                     .AddEntityFrameworkStores<SqlFarmerDbContext>()
                     .AddDefaultTokenProviders();
+            }
+            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.MySql)
+            {
+                services
+                    .AddIdentity<User, Role>(options =>
+                    {
+                        options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+                        options.SignIn.RequireConfirmedAccount = true;
+                    })
+                    .AddEntityFrameworkStores<MySqlFarmerDbContext>()
+                    .AddDefaultTokenProviders();
+            }
+            else
+            {
+                throw new NotImplementedException("Unsupported database provider");
             }
 
             var key = Encoding.ASCII.GetBytes(infrastructureSettings.Secret);
@@ -158,13 +220,21 @@ namespace Infrastructure
 
                 FarmerDbContext db;
 
-                if (infrastructureSettings.Value.UseSqlLite)
+                if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlLite)
                 {
                     db = scope.ServiceProvider.GetRequiredService<SqlLiteFarmerDbContext>();
                 }
-                else
+                else if(infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlServer)
                 {
                     db = scope.ServiceProvider.GetRequiredService<SqlFarmerDbContext>();
+                }
+                else if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.MySql)
+                {
+                    db = scope.ServiceProvider.GetRequiredService<MySqlFarmerDbContext>();
+                }
+                else
+                {
+                    throw new NotImplementedException("Unsupported database provider");
                 }
 
                 db.Database.Migrate();
