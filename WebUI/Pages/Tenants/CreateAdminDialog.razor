@@ -18,6 +18,8 @@
                 </div>
                 <div class="col-md-6">
                 <RadzenTextBox style="display: block" Name="FirstName" @bind-Value=@AdminModel.FirstName Class="w-100" />
+                <RadzenLengthValidator Component="FirstName" Min="2" Text="Името трябва да съдържа поне 2 знака" Style="position: absolute" />
+                <RadzenLengthValidator Component="FirstName" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style="position: absolute" />
                 </div>
             </div>
             <div class="row mb-3">
@@ -26,6 +28,8 @@
                 </div>
                 <div class="col-md-6">
                 <RadzenTextBox style="display: block" Name="LastName" @bind-Value=@AdminModel.LastName Class="w-100" />
+                <RadzenLengthValidator Component="LastName" Min="2" Text="Фамилията трябва да съдържа поне 2 знака" Style="position: absolute" />
+                <RadzenLengthValidator Component="LastName" Max="50" Text="Фамилията трябва да съдържа най-много 50 знака" Style="position: absolute" />
                 </div>
             </div>
             <div class="row mb-3">
