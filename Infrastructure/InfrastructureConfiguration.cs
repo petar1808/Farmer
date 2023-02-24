@@ -4,6 +4,7 @@ using Infrastructure.Common;
 using Infrastructure.Common.LoggingSettings;
 using Infrastructure.DbContect;
 using Infrastructure.Email;
+using Infrastructure.ExternalStorage;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,7 +35,9 @@ namespace Infrastructure
 
             services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
             services.Configure<InfrastructureSettings>(configuration.GetSection(nameof(InfrastructureSettings)));
+            services.Configure<DropBoxSettings>(configuration.GetSection(nameof(DropBoxSettings)));
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IExternalStorage, DropBoxService>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IJwtTokenGenerator, JwtTokenGeneratorService>();
 
@@ -42,11 +45,14 @@ namespace Infrastructure
                 $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.DatabaseProvider)}");
             var secret = configuration.GetValue<string>(
                 $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.Secret)}");
+            var restorSqlLiteDb = configuration.GetValue<bool>(
+                $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.RestorSqlLiteDb)}");
 
             var infrastructureSettings = new InfrastructureSettings()
             {
                 DatabaseProvider = Enum.Parse<DatabaseProvider>(dbProvider),
-                Secret = secret
+                Secret = secret,
+                RestorSqlLiteDb = restorSqlLiteDb
             };
 
             services.AddDataBase(configuration, infrastructureSettings);
@@ -212,7 +218,8 @@ namespace Infrastructure
 
         public static IApplicationBuilder SeedIdentityUsers(
             this IApplicationBuilder builder,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            Assembly assembly)
         {
             using (var scope = builder.ApplicationServices.CreateScope())
             {
@@ -223,6 +230,18 @@ namespace Infrastructure
                 if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlLite)
                 {
                     db = scope.ServiceProvider.GetRequiredService<SqlLiteFarmerDbContext>();
+                    if (infrastructureSettings.Value.RestorSqlLiteDb)
+                    {
+                        var externalStorage = scope.ServiceProvider.GetRequiredService<IExternalStorage>();
+
+                        var test = externalStorage.DownloadFile("/Database backup/Farmer-backup-28-01-23.db").GetAwaiter().GetResult();
+                        var path = Path.GetDirectoryName(assembly.Location);
+                        using (var fileStream = File.Create($"{path}\\test.db"))
+                        {
+
+                            test.CopyTo(fileStream);
+                        }
+                    }
                 }
                 else if(infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlServer)
                 {

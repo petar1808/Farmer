@@ -48,7 +48,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection()
     .UseRouting()
-    .SeedIdentityUsers(builder.Configuration)
+    .SeedIdentityUsers(builder.Configuration, Assembly.GetExecutingAssembly())
     .UseCors(MyAllowSpecificOrigins)
     .UseAuthentication()
     .UseAuthorization()
