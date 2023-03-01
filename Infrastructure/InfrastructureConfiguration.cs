@@ -36,6 +36,8 @@ namespace Infrastructure
             services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
             services.Configure<InfrastructureSettings>(configuration.GetSection(nameof(InfrastructureSettings)));
             services.Configure<DropBoxSettings>(configuration.GetSection(nameof(DropBoxSettings)));
+            services.Configure<ConnectionStrings>(configuration.GetSection(nameof(ConnectionStrings)));
+
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IExternalStorage, DropBoxService>();
             services.AddTransient<IIdentityService, IdentityService>();
@@ -224,7 +226,7 @@ namespace Infrastructure
             using (var scope = builder.ApplicationServices.CreateScope())
             {
                 var infrastructureSettings = scope.ServiceProvider.GetRequiredService<IOptions<InfrastructureSettings>>();
-
+                var connectionStrings = scope.ServiceProvider.GetRequiredService<IOptions<ConnectionStrings>>();
                 FarmerDbContext db;
 
                 if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlLite)
@@ -234,12 +236,17 @@ namespace Infrastructure
                     {
                         var externalStorage = scope.ServiceProvider.GetRequiredService<IExternalStorage>();
 
-                        var test = externalStorage.DownloadFile("/Database backup/Farmer-backup-28-01-23.db").GetAwaiter().GetResult();
-                        var path = Path.GetDirectoryName(assembly.Location);
-                        using (var fileStream = File.Create($"{path}\\test.db"))
-                        {
+                        var bakcupFile = externalStorage
+                            .DownloadLastBackUpFile(infrastructureSettings.Value.SqlLiteBackupFolderName)
+                            .GetAwaiter()
+                            .GetResult();
 
-                            test.CopyTo(fileStream);
+                        var dbName = connectionStrings.Value.SqlLiteConnection.Split("=").Last();
+
+                        var path = Path.GetDirectoryName(assembly.Location);
+                        using (var fileStream = File.Create($"{path}\\{dbName}"))
+                        {
+                            bakcupFile.CopyTo(fileStream);
                         }
                     }
                 }

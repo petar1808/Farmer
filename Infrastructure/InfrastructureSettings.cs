@@ -7,6 +7,8 @@
         public DatabaseProvider DatabaseProvider { get; set; }
 
         public bool RestorSqlLiteDb { get; set; }
+
+        public string SqlLiteBackupFolderName { get; set; } = default!;
     }
 
 }
