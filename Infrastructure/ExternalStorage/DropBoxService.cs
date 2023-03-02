@@ -22,6 +22,27 @@ namespace Infrastructure.ExternalStorage
             _logger = logger;
         }
 
+        public async Task<string> UploadFile(string path, Stream content)
+        {
+            try
+            {
+                using var dropboxClient = new DropboxClient(_dropBoxSettings.AccessToken);
+
+                var result = await dropboxClient.Files.UploadAsync(
+                    path,
+                    WriteMode.Add.Instance,
+                    autorename: true,
+                    body: content);
+
+                return result.Name;
+            }
+            catch (DropboxException ex)
+            {
+                _logger.LogError(default(EventId), ex, ex.Message);
+                throw;
+            }
+        }
+
         public async Task<Stream> DownloadFile(string path)
         {
             try

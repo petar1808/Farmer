@@ -9,6 +9,11 @@ using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.EnvironmentName == "Local")
+{
+    builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly());
+}
+
 var MyAllowSpecificOrigins = "_Origins";
 
 builder.Services.AddCors(p => p.AddPolicy(MyAllowSpecificOrigins, builder =>

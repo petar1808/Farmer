@@ -9,5 +9,12 @@
         public string MySqlConnection { get; set; } = default!;
 
         public bool EnableSensitiveDataLogging { get; set; }
+
+
+        // add nullable check
+        public string GetSqlLiteDatabaseName()
+        {
+            return SqlLiteConnection.Split("=").Last();
+        }
     }
 }

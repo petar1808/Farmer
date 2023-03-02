@@ -7,8 +7,10 @@ using Infrastructure.Email;
 using Infrastructure.ExternalStorage;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
+using Infrastructure.Workers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -59,6 +61,9 @@ namespace Infrastructure
 
             services.AddDataBase(configuration, infrastructureSettings);
             services.AddIdentity(infrastructureSettings);
+
+
+            services.AddHostedService<SqlLiteBackupWorker>();
 
             return services;
         }
@@ -227,6 +232,7 @@ namespace Infrastructure
             {
                 var infrastructureSettings = scope.ServiceProvider.GetRequiredService<IOptions<InfrastructureSettings>>();
                 var connectionStrings = scope.ServiceProvider.GetRequiredService<IOptions<ConnectionStrings>>();
+                var environment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
                 FarmerDbContext db;
 
                 if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlLite)
@@ -241,10 +247,16 @@ namespace Infrastructure
                             .GetAwaiter()
                             .GetResult();
 
-                        var dbName = connectionStrings.Value.SqlLiteConnection.Split("=").Last();
+                        var dbName = connectionStrings.Value.GetSqlLiteDatabaseName();
 
                         var path = Path.GetDirectoryName(assembly.Location);
-                        using (var fileStream = File.Create($"{path}\\{dbName}"))
+
+                        if (environment.IsEnvironment("Local"))
+                        {
+                            path = Directory.GetCurrentDirectory();
+                        }
+
+                        using (var fileStream = File.Create($"{path}/{dbName}"))
                         {
                             bakcupFile.CopyTo(fileStream);
                         }
