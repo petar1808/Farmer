@@ -48,7 +48,14 @@ namespace Infrastructure.Workers
                     string destinationFilePath = $"{directoryPath}/Farmer-{DateTime.UtcNow.ToString("MM/dd/yyyy")}.db";
 
 
+                    var test = Directory.EnumerateFiles(directoryPath!);
+                    _logger.LogError(string.Join("," , test));
+
                     File.Copy(sourceFilePath, destinationFilePath, true);
+                    
+
+
+
 
                     using var file = new FileStream(destinationFilePath!, FileMode.Open, FileAccess.Read);
 
