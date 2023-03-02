@@ -35,31 +35,40 @@ namespace Infrastructure.Workers
             {
                 _logger.LogInformation($"{nameof(SqlLiteBackupWorker)} run at: {DateTime.UtcNow}");
 
-                var directoryPath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
-
-                if (_currentEnvironment.IsEnvironment("Local"))
+                try
                 {
-                    directoryPath = Directory.GetCurrentDirectory();
+                    var directoryPath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+
+                    if (_currentEnvironment.IsEnvironment("Local"))
+                    {
+                        directoryPath = Directory.GetCurrentDirectory();
+                    }
+
+                    string sourceFilePath = $"{directoryPath}/{_connectionStrings.Value.GetSqlLiteDatabaseName()}";
+                    string destinationFilePath = $"{directoryPath}/Farmer-{DateTime.UtcNow.ToString("MM/dd/yyyy")}.db";
+
+
+                    File.Copy(sourceFilePath, destinationFilePath, true);
+
+                    using var file = new FileStream(destinationFilePath!, FileMode.Open, FileAccess.Read);
+
+                    string saveToPath = $"{_infrastructureSettings.Value.SqlLiteBackupFolderName}/" +
+                        $"{_currentEnvironment.EnvironmentName}/Farmer-{DateTime.UtcNow.ToString("MM/dd/yyyy")}.db";
+
+                    var createdFileName = await _externalStorage.UploadFile(saveToPath, file);
+
+                    File.Delete(destinationFilePath);
+
+                    _logger.LogInformation($"New backup created {createdFileName}");
+
+                    await Task.Delay(TimeSpan.FromHours(this._infrastructureSettings.Value.SqlLiteBackupHours), stoppingToken);
                 }
+                catch (Exception ex)
+                {
 
-                string sourceFilePath = $"{directoryPath}/{_connectionStrings.Value.GetSqlLiteDatabaseName()}";
-                string destinationFilePath = $"{directoryPath}/Farmer-{DateTime.UtcNow.ToString("MM/dd/yyyy")}.db";
-
-
-                File.Copy(sourceFilePath, destinationFilePath, true);
-
-                using var file = new FileStream(destinationFilePath!, FileMode.Open, FileAccess.Read);
-
-                string saveToPath = $"{_infrastructureSettings.Value.SqlLiteBackupFolderName}/" +
-                    $"{_currentEnvironment.EnvironmentName}/Farmer-{DateTime.UtcNow.ToString("MM/dd/yyyy")}.db";
-
-                var createdFileName = await _externalStorage.UploadFile(saveToPath, file);
-
-                File.Delete(destinationFilePath);
-
-                _logger.LogInformation($"New backup created {createdFileName}");
-
-                await Task.Delay(TimeSpan.FromHours(this._infrastructureSettings.Value.SqlLiteBackupHours), stoppingToken);
+                    _logger.LogError(ex.Message);
+                }
+                
             }
         }
     }
