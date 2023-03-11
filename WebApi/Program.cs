@@ -1,4 +1,5 @@
 using Application;
+using Application.Extensions;
 using Application.Services;
 using FluentValidation;
 using Infrastructure;
@@ -40,7 +41,7 @@ builder.Host.UseSerilogLogging();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsLocal())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
