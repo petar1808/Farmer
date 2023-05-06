@@ -15,6 +15,9 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- checkout: self
+  persistCredentials: true
+
 - script: dotnet restore WebApi
   displayName: 'dotnet restore'
 
@@ -32,3 +35,11 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
+
+- task: Bash@3
+  displayName: 'Tag Commit'
+  inputs:
+    targetType: 'inline'
+    script: |
+      git tag -a $(Build.BuildId)
+      git push origin $(Build.BuildId)
