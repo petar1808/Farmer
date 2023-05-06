@@ -41,5 +41,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      git config --global user.email "p.yorgov@outlook.com"
+      git config --global user.name "Petar Yorgov"
+
       git tag -a $(Build.BuildId)
       git push origin $(Build.BuildId)
