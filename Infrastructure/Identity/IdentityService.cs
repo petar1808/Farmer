@@ -158,7 +158,7 @@ namespace Infrastructure.Identity
                 return "Грешна парола или имейл!";
             }
 
-            var passwordValid = await this._userManager.CheckPasswordAsync(user, loginInputModel.Password);
+            var passwordValid = await this._userManager.CheckPasswordAsync(user, loginInputModel.Password!);
 
             if (!passwordValid)
             {
@@ -216,7 +216,7 @@ namespace Infrastructure.Identity
 
             await this._emailService.SendResetPasswordEmail(
                 user.FirstName + " " + user.LastName,
-                user.UserName,
+                user.UserName ?? "",
                 $"{forgotPasswordModel.ChangePasswordUrl}?email={user.UserName}&token={encoded}");
 
             return Result.Success;

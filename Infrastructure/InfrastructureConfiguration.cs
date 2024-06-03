@@ -45,8 +45,8 @@ namespace Infrastructure
 
             var infrastructureSettings = new InfrastructureSettings()
             {
-                DatabaseProvider = Enum.Parse<DatabaseProvider>(dbProvider),
-                Secret = secret
+                DatabaseProvider = Enum.Parse<DatabaseProvider>(dbProvider!),
+                Secret = secret!
             };
 
             services.AddDataBase(configuration, infrastructureSettings);
@@ -200,7 +200,7 @@ namespace Infrastructure
                         {
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
-                                context.Response.Headers.Add("Access-Token-Expired", "true");
+                                context.Response.Headers.TryAdd("Access-Token-Expired", "true");
                             }
                             return Task.CompletedTask;
                         }
@@ -258,11 +258,11 @@ namespace Infrastructure
 
                 if (!userManager.Users.Any())
                 {
-                    var user = new User(configuration.GetSection("DefaultUser:Email").Value, "System", "Admin", null);
+                    var user = new User(configuration.GetSection("DefaultUser:Email").Value!, "System", "Admin", null);
 
                     user.UpdateActive(true);
 
-                    userManager.CreateAsync(user, configuration.GetSection("DefaultUser:Password").Value).GetAwaiter().GetResult();
+                    userManager.CreateAsync(user, configuration.GetSection("DefaultUser:Password").Value!).GetAwaiter().GetResult();
 
                     userManager.AddToRoleAsync(user, IdentityRoles.SystemAdminRole).GetAwaiter().GetResult();
                 }
