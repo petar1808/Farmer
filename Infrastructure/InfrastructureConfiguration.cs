@@ -100,12 +100,12 @@ namespace Infrastructure
                     var azureMySqlConncetionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
                     if (!string.IsNullOrWhiteSpace(azureMySqlConncetionString))
                     {
-                        string dbhost = Regex.Match(azureMySqlConncetionString, @"Data Source=(.+?);").Groups[1].Value;
+                        string dbhost = Regex.Match(azureMySqlConncetionString, @"Data Source=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
                         string server = dbhost.Split(':')[0].ToString();
                         string port = dbhost.Split(':')[1].ToString();
-                        string dbname = Regex.Match(azureMySqlConncetionString, @"Database=(.+?);").Groups[1].Value;
-                        string dbusername = Regex.Match(azureMySqlConncetionString, @"User Id=(.+?);").Groups[1].Value;
-                        string dbpassword = Regex.Match(azureMySqlConncetionString, @"Password=(.+?)$").Groups[1].Value;
+                        string dbname = Regex.Match(azureMySqlConncetionString, @"Database=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
+                        string dbusername = Regex.Match(azureMySqlConncetionString, @"User Id=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
+                        string dbpassword = Regex.Match(azureMySqlConncetionString, @"Password=(.+?)$", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
 
                         string connectionString2 = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling = false; convert zero datetime=True;";
 
