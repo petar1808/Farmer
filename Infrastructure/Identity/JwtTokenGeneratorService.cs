@@ -25,7 +25,7 @@ namespace Infrastructure.Identity
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Email, user.Email!),
                     new Claim(ClaimTypes.Name,user.FirstName + " " + user.LastName),
                     new Claim(ClaimTypes.Role, role),
                     new Claim("TenantId", user.TenantId == null ? "" : user.TenantId.Value.ToString()),

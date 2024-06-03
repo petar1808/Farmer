@@ -45,8 +45,8 @@ namespace Infrastructure
 
             var infrastructureSettings = new InfrastructureSettings()
             {
-                DatabaseProvider = Enum.Parse<DatabaseProvider>(dbProvider),
-                Secret = secret
+                DatabaseProvider = Enum.Parse<DatabaseProvider>(dbProvider!),
+                Secret = secret!
             };
 
             services.AddDataBase(configuration, infrastructureSettings);
@@ -100,12 +100,12 @@ namespace Infrastructure
                     var azureMySqlConncetionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
                     if (!string.IsNullOrWhiteSpace(azureMySqlConncetionString))
                     {
-                        string dbhost = Regex.Match(azureMySqlConncetionString, @"Data Source=(.+?);").Groups[1].Value;
+                        string dbhost = Regex.Match(azureMySqlConncetionString, @"Data Source=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
                         string server = dbhost.Split(':')[0].ToString();
                         string port = dbhost.Split(':')[1].ToString();
-                        string dbname = Regex.Match(azureMySqlConncetionString, @"Database=(.+?);").Groups[1].Value;
-                        string dbusername = Regex.Match(azureMySqlConncetionString, @"User Id=(.+?);").Groups[1].Value;
-                        string dbpassword = Regex.Match(azureMySqlConncetionString, @"Password=(.+?)$").Groups[1].Value;
+                        string dbname = Regex.Match(azureMySqlConncetionString, @"Database=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
+                        string dbusername = Regex.Match(azureMySqlConncetionString, @"User Id=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
+                        string dbpassword = Regex.Match(azureMySqlConncetionString, @"Password=(.+?)$", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
 
                         string connectionString2 = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling = false; convert zero datetime=True;";
 
@@ -200,7 +200,7 @@ namespace Infrastructure
                         {
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
-                                context.Response.Headers.Add("Access-Token-Expired", "true");
+                                context.Response.Headers.TryAdd("Access-Token-Expired", "true");
                             }
                             return Task.CompletedTask;
                         }
@@ -258,11 +258,11 @@ namespace Infrastructure
 
                 if (!userManager.Users.Any())
                 {
-                    var user = new User(configuration.GetSection("DefaultUser:Email").Value, "System", "Admin", null);
+                    var user = new User(configuration.GetSection("DefaultUser:Email").Value!, "System", "Admin", null);
 
                     user.UpdateActive(true);
 
-                    userManager.CreateAsync(user, configuration.GetSection("DefaultUser:Password").Value).GetAwaiter().GetResult();
+                    userManager.CreateAsync(user, configuration.GetSection("DefaultUser:Password").Value!).GetAwaiter().GetResult();
 
                     userManager.AddToRoleAsync(user, IdentityRoles.SystemAdminRole).GetAwaiter().GetResult();
                 }
