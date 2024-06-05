@@ -81,6 +81,3 @@ Through the console with the **dotnet** commands or use some IDE like **Visual S
 - Implementing Unit and Integration tests
 - Adding support for mobile devices
 
-## About
-
-This project was developed by Petar Yorgov. If you have any questions or feedback, please contact me at p.yorgov@outlook.com
