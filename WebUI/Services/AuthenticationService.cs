@@ -19,7 +19,7 @@ namespace WebUI.Services
         }
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            string token = await _localStorage.GetItemAsStringAsync("token");
+            var token = await _localStorage.GetItemAsStringAsync("token");
 
             var identity = new ClaimsIdentity();
             _http.DefaultRequestHeaders.Authorization = null;

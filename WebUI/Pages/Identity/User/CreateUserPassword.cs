@@ -24,12 +24,12 @@ namespace WebUI.Pages.Identity.User
 
             if (queryStrings.TryGetValue("email", out var email))
             {
-                CreateUserPasswordModel.Email = email;
+                CreateUserPasswordModel.Email = email!;
             }
 
             if (queryStrings.TryGetValue("token", out var token))
             {
-                CreateUserPasswordModel.Token = token;
+                CreateUserPasswordModel.Token = token!;
             }
 
             await IdentityService.CreateUserPassword(CreateUserPasswordModel);

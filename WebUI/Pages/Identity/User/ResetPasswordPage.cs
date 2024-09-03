@@ -26,12 +26,12 @@ namespace WebUI.Pages.Identity.User
 
             if (queryStrings.TryGetValue("email", out var email))
             {
-                resetPasswordModel.Email = email;
+                resetPasswordModel.Email = email!;
             }
 
             if (queryStrings.TryGetValue("token", out var token))
             {
-                resetPasswordModel.Token = token;
+                resetPasswordModel.Token = token!;
             }
 
             var resetPassword = await IdentityService.ResetPassword(resetPasswordModel);
