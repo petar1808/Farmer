@@ -1,5 +1,4 @@
 ﻿using Domain.Common;
-using Domain.Exceptions;
 using static Domain.ModelConstraint.CommonConstraints;
 
 namespace Domain.Models
@@ -32,7 +31,7 @@ namespace Domain.Models
             ValidateArableLand(size);
             this.SizeInDecar = size;
             return this;
-        }   
+        }
 
         private void ValidateName(string name)
             => Guard.Guard.ForStringMaxLength(
@@ -48,5 +47,5 @@ namespace Domain.Models
             ValidateName(name);
             ValidateArableLand(size);
         }
-    } 
+    }
 }

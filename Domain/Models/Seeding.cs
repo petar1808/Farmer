@@ -1,9 +1,4 @@
 ﻿using Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Models
 {
@@ -24,7 +19,7 @@ namespace Domain.Models
 
         public ArableLand ArableLand { get; private set; }
 
-        public int WorkingSeasonId { get;  }
+        public int WorkingSeasonId { get; }
 
         public WorkingSeason WorkingSeason { get; }
 

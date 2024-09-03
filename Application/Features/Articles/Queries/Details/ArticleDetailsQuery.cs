@@ -22,7 +22,7 @@ namespace Application.Features.Articles.Queries.Details
             }
 
             public async Task<Result<ArticleDetailsQueryOutputModel>> Handle(
-                ArticleDetailsQuery request, 
+                ArticleDetailsQuery request,
                 CancellationToken cancellationToken)
             {
                 var article = farmerDbContext

@@ -2,7 +2,6 @@
 using Application.Services;
 using Domain.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Subsidies.Commands.Create
 {

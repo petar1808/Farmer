@@ -121,7 +121,7 @@ namespace Infrastructure.Identity
             if (user == null)
             {
                 return "Невалидни идентификационни данни!";
-            }    
+            }
 
             var activateEmailResult = await this._userManager
                 .ConfirmEmailAsync(
@@ -235,7 +235,7 @@ namespace Infrastructure.Identity
             {
                 return "Невалидни идентификационни данни!";
             }
-            
+
             return Result.Success;
         }
 

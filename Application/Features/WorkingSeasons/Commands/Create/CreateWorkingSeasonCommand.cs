@@ -23,7 +23,7 @@ namespace Application.Features.WorkingSeasons.Commands.Create
             {
                 var workingSeasonDate = await farmerDbContext
                 .WorkingSeasons
-                .AnyAsync(x => x.StartDate.Year == request.StartDate.Year && x.EndDate.Year == request.EndDate.Year , cancellationToken);
+                .AnyAsync(x => x.StartDate.Year == request.StartDate.Year && x.EndDate.Year == request.EndDate.Year, cancellationToken);
 
                 if (workingSeasonDate)
                 {

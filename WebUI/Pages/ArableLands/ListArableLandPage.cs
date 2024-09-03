@@ -67,7 +67,7 @@ namespace WebUI.Pages.ArableLands
 
         public async Task DeleteArableLand(int arableLandId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) => 
+            Func<int, Task<bool>> deleteFunction = (id) =>
             {
                 var funcResult = DeleteArableLandFunction(id);
                 return funcResult;

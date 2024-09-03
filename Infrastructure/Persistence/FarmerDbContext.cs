@@ -1,14 +1,13 @@
-﻿using Application.Services;
-using Domain.Models;
+﻿using Application.Models;
+using Application.Services;
 using Domain.Common;
+using Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Reflection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Application.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Infrastructure.DbContect
 {

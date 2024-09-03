@@ -1,13 +1,8 @@
-﻿using Microsoft.Extensions.Options;
-using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Application.Services;
 using MailKit.Net.Smtp;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using MimeKit;
 using MimeKit.Text;
 
 namespace Infrastructure.Email
@@ -67,7 +62,7 @@ namespace Infrastructure.Email
         {
             string body = $"Здравейте, <b>{userName}</b>," + newLine +
                           newLine +
-                          $"Вие бяхте добавен(а) в платформата на <b>Фермер</b>. За да активирате своя акаунт, моля, натиснете <a href='{url}'>тук.</a>" + newLine ;
+                          $"Вие бяхте добавен(а) в платформата на <b>Фермер</b>. За да активирате своя акаунт, моля, натиснете <a href='{url}'>тук.</a>" + newLine;
 
             return await this.SendAsync(new MailboxAddress(userName, userEmail), "Регистрация в Фермер", body);
         }

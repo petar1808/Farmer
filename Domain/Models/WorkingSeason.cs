@@ -1,9 +1,4 @@
 ﻿using Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Domain.ModelConstraint.WorkingSeasonConstraints;
 
 namespace Domain.Models
@@ -13,7 +8,7 @@ namespace Domain.Models
         public WorkingSeason(string name,
             DateTime startDate,
             DateTime endDate)
-            :this(name)
+            : this(name)
         {
             StartDate = startDate;
             EndDate = endDate;

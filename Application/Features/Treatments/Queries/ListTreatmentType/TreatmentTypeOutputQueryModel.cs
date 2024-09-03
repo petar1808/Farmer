@@ -8,7 +8,7 @@ namespace Application.Features.Treatments.Queries.ListTreatmentType
            int value,
            string name) : base(value, name)
         {
-            
+
         }
     }
 }

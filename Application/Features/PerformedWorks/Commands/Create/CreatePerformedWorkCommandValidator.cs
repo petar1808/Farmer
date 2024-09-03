@@ -1,8 +1,5 @@
 ﻿using Application.Services;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
 
 namespace Application.Features.PerformedWorks.Commands.Create
 {

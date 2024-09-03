@@ -7,7 +7,7 @@ namespace Infrastructure.Persistence
     public class SqlFarmerDbContext : FarmerDbContext
     {
         public SqlFarmerDbContext(
-            DbContextOptions options, 
+            DbContextOptions options,
             ICurrentUserService currentUserService) : base(options, currentUserService)
         {
         }

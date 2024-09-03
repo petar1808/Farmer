@@ -1,10 +1,7 @@
 ﻿using Fluxor;
-using Fluxor.Blazor.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using System;
 using WebUI.Pages.Seedings.Dialogs;
-using WebUI.Services;
 using WebUI.Services.PerformedWork;
 using WebUI.Services.Seeding;
 using WebUI.Services.Treatment;
@@ -15,7 +12,7 @@ using WebUI.Store;
 
 namespace WebUI.Pages.Seedings
 {
-    public partial class SeedingMainPage 
+    public partial class SeedingMainPage
     {
         [Parameter]
         public int WorkingSeasonsId { get; set; }

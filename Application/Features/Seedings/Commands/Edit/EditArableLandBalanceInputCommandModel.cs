@@ -1,8 +1,4 @@
-﻿using Application.Mappings;
-using AutoMapper;
-using Domain.Models;
-
-namespace Application.Features.Seedings.Commands.Edit
+﻿namespace Application.Features.Seedings.Commands.Edit
 {
     public class EditArableLandBalanceInputCommandModel
     {

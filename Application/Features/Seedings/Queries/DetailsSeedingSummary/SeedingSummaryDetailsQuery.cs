@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Seedings.Queries.DetailsSeedingSummary
 {
-    public class SeedingSummaryDetailsQuery : IRequest<Result<SeedingSummaryDetailsQueryOutputModel>>,  IMapFrom<Seeding>
+    public class SeedingSummaryDetailsQuery : IRequest<Result<SeedingSummaryDetailsQueryOutputModel>>, IMapFrom<Seeding>
     {
         public int SeedingId { get; set; }
 

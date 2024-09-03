@@ -4,7 +4,7 @@ using Domain.Models;
 
 namespace Application.Features.WorkingSeasons.Queries.List
 {
-    public class WorkingSeasonBalanceListQueryOutputModel :  CommonWorkingSeasonOutputQueryModel, IMapFrom<WorkingSeason>
+    public class WorkingSeasonBalanceListQueryOutputModel : CommonWorkingSeasonOutputQueryModel, IMapFrom<WorkingSeason>
     {
         public decimal Income { get; private set; }
 

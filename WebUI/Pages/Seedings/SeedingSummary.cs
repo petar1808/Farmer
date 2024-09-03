@@ -54,7 +54,7 @@ namespace WebUI.Pages.Seedings
         public void OnClose()
         {
             DialogService.Close(false);
-        } 
+        }
 
         public void OnDropDownChange(object value)
         {
@@ -64,7 +64,7 @@ namespace WebUI.Pages.Seedings
         public async Task OnEdit()
         {
             var dialogResult = await DialogService.OpenAsync<SeedingSummary>($"Редактиране на Сеитба за земя: {ArableLandName}-{SizeInDecar} декара",
-                new Dictionary<string, object>() { 
+                new Dictionary<string, object>() {
                     { "SeedingId", SeedingId },
                     { "IsModal", true}
                 },

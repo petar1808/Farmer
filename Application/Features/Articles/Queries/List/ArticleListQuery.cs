@@ -31,5 +31,5 @@ namespace Application.Features.Articles.Queries.List
             }
         }
 
-    }    
+    }
 }

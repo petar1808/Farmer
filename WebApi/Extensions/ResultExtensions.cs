@@ -13,7 +13,7 @@ namespace WebApi.Extensions
             {
                 return new BadRequestObjectResult(new { errors = result.Errors });
             }
-            
+
 
             return new OkObjectResult(result.Succeeded);
         }
@@ -24,7 +24,7 @@ namespace WebApi.Extensions
 
             if (!result.Succeeded)
             {
-                return new BadRequestObjectResult(new { errors = result.Errors});
+                return new BadRequestObjectResult(new { errors = result.Errors });
             }
 
             return result.Data;

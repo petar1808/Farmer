@@ -1,7 +1,5 @@
-﻿using Application.Mappings;
-using Application.Models;
+﻿using Application.Models;
 using Application.Services;
-using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

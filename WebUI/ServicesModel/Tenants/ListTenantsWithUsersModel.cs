@@ -1,6 +1,4 @@
-﻿using WebUI.Components.DataGrid;
-
-namespace WebUI.ServicesModel.Tenants
+﻿namespace WebUI.ServicesModel.Tenants
 {
     public class ListTenantsWithUsersModel
     {
