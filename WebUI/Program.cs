@@ -18,6 +18,7 @@ using WebUI.Services.Identity;
 using Fluxor;
 using WebUI.Services.Subsidies;
 using WebUI.Services.Tenants;
+using Fluxor.Blazor.Web.ReduxDevTools;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -44,7 +45,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped(sp =>
     new HttpClient
     {
-        BaseAddress = new Uri(builder.Configuration.GetValue<string>("WebApiURL"))
+        BaseAddress = new Uri(builder.Configuration.GetValue<string>("WebApiURL")!)
     });
 
 
