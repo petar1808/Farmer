@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.WebUtilities;
 using Radzen;
 using WebUI.Services.Identity;
 using WebUI.ServicesModel.Identity;
@@ -40,7 +39,7 @@ namespace WebUI.Pages.Identity.User
                 });
                 NavigationManager.NavigateTo($"{NavigationManager.BaseUri}login");
             }
-            
+
             NavigationManager.NavigateTo(NavigationManager.Uri);
         }
     }

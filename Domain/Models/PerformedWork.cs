@@ -1,10 +1,5 @@
 ﻿using Domain.Common;
 using Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Models
 {
@@ -28,15 +23,15 @@ namespace Domain.Models
         }
 
 
-        public int SeedingId { get;}
+        public int SeedingId { get; }
 
-        public Seeding Seeding { get;}
+        public Seeding Seeding { get; }
 
         public WorkType WorkType { get; private set; }
 
         public DateTime Date { get; private set; }
 
-        public decimal AmountOfFuel { get; private set; } 
+        public decimal AmountOfFuel { get; private set; }
 
         public decimal FuelPrice { get; private set; }
 

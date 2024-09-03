@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-
-namespace WebUI.Components.DataGrid
+﻿namespace WebUI.Components.DataGrid
 {
-    public class DynamicDataGridModel<TData> where TData: IDynamicDataGridModel
+    public class DynamicDataGridModel<TData> where TData : IDynamicDataGridModel
     {
         public DynamicDataGridModel(IEnumerable<TData> data, IEnumerable<DynamicDataGridColumnModel> columns)
         {
@@ -49,8 +47,8 @@ namespace WebUI.Components.DataGrid
             DeleteAction = args;
             return this;
         }
-        
-        public DynamicDataGridModel<TData> WithPaging(int pageSize = 10) 
+
+        public DynamicDataGridModel<TData> WithPaging(int pageSize = 10)
         {
             this.AllowPaging = true;
             this.PageSize = pageSize;

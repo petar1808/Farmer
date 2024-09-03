@@ -31,7 +31,7 @@ namespace WebUI.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             return await SendAsync<T>(request);
-        } 
+        }
 
 
         public async Task<T> PostAsync<T>(string uri, object content)
@@ -53,7 +53,7 @@ namespace WebUI.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, uri);
             return await SendAsync<T>(request);
-        } 
+        }
 
         private async Task<T> SendAsync<T>(HttpRequestMessage request)
         {
@@ -74,7 +74,7 @@ namespace WebUI.Services
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
                         var errorMessages = JsonSerializer.Deserialize<ApiErrorMessage>(
-                            await response.Content.ReadAsStringAsync(), 
+                            await response.Content.ReadAsStringAsync(),
                             jsonOptions)!;
 
                         notificationService.Notify(new NotificationMessage
@@ -112,7 +112,7 @@ namespace WebUI.Services
                             Duration = 10000
                         });
                     }
-  
+
                     if (!response.IsSuccessStatusCode)
                     {
                         return (T)Activator.CreateInstance(typeof(T))!;

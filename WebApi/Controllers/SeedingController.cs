@@ -71,7 +71,7 @@ namespace WebApi.Controllers
             updateSeedingModel.SetSeedingId(seedingId);
             return await this.Send(updateSeedingModel);
         }
-            
+
         #endregion
 
         #region PergormedWork
@@ -94,7 +94,7 @@ namespace WebApi.Controllers
         [HttpGet]
         [Route("performedWork/{performedWorkId:int}")]
         public async Task<ActionResult<PerformedWorkDetailsQueryOutputModel>> PerformedWorkDetails(
-            [FromRoute]PerformedWorkDetailsQuery performedWorkDetailsQuery)
+            [FromRoute] PerformedWorkDetailsQuery performedWorkDetailsQuery)
             => await this.Send(performedWorkDetailsQuery);
 
         [HttpPut]
@@ -142,7 +142,7 @@ namespace WebApi.Controllers
         [HttpDelete]
         [Route("treatment/{id:int}")]
         public async Task<ActionResult> DeleteТreatment(
-            [FromRoute]DeleteTreatmentCommand deleteTreatment)
+            [FromRoute] DeleteTreatmentCommand deleteTreatment)
             => await this.Send(deleteTreatment);
         #endregion
 

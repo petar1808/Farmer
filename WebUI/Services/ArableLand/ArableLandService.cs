@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-using WebUI.ServicesModel.ArableLand;
+﻿using WebUI.ServicesModel.ArableLand;
 
 namespace WebUI.Services.ArableLand
 {

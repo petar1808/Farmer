@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace WebUI.Services
 {
@@ -19,7 +18,7 @@ namespace WebUI.Services
         }
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            string token = await _localStorage.GetItemAsStringAsync("token");
+            var token = await _localStorage.GetItemAsStringAsync("token");
 
             var identity = new ClaimsIdentity();
             _http.DefaultRequestHeaders.Authorization = null;

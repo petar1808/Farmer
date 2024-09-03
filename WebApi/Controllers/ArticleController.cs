@@ -18,11 +18,11 @@ namespace WebApi.Controllers
         public async Task<ActionResult> CreateArticle(
             [FromBody] CreateArticleCommand articleModel)
             => await this.Send(articleModel);
-        
+
         [HttpGet]
         [Route("{id:int}")]
         public async Task<ActionResult<ArticleDetailsQueryOutputModel>> ArticleDetails(
-            [FromRoute]ArticleDetailsQuery articleDetailsQuery)
+            [FromRoute] ArticleDetailsQuery articleDetailsQuery)
             => await this.Send(articleDetailsQuery);
 
         [HttpGet]
@@ -38,7 +38,7 @@ namespace WebApi.Controllers
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<ActionResult> DeleteArticle(
-            [FromRoute]DeleteArticleCommand deleteArticle)
+            [FromRoute] DeleteArticleCommand deleteArticle)
             => await this.Send(deleteArticle);
     }
 }

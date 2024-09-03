@@ -1,8 +1,5 @@
 ﻿using Application.Services;
-using Domain.Enum;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace Application.Features.Articles.Commands.Create
 {

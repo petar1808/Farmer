@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Text.Json;
-using WebUI.ServicesModel.Identity;
+﻿using WebUI.ServicesModel.Identity;
 
 namespace WebUI.Services.Identity
 {
@@ -20,8 +18,8 @@ namespace WebUI.Services.Identity
 
         public async Task<bool> CreateUser(CreateUserModel createUserModel)
         {
-           return await httpService
-                .PostAsync<bool>($"api/identity/createUser", createUserModel);
+            return await httpService
+                 .PostAsync<bool>($"api/identity/createUser", createUserModel);
         }
 
         public async Task<bool> CreateUserPassword(CreateUserPasswordModel createUserPasswordModel)
@@ -46,7 +44,7 @@ namespace WebUI.Services.Identity
         {
             var model = new LoginInputModel { Email = email, Password = password };
 
-            var result =  await httpService
+            var result = await httpService
                 .PostAsync<IdentityResult>($"api/identity/login", model);
 
             return result?.Token ?? null;

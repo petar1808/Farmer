@@ -54,7 +54,7 @@ namespace WebUI.Pages.Seedings.Dialogs
 
             if (performedWork.Id == 0)
             {
-                addIsSuccess = await PerformedWorkService.Add(PerformedWork,SeedingId);
+                addIsSuccess = await PerformedWorkService.Add(PerformedWork, SeedingId);
             }
             else
             {

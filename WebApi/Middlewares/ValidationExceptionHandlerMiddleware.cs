@@ -1,6 +1,4 @@
 ﻿using Application.Models;
-using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Net;
 
 namespace WebApi.Middlewares

@@ -224,7 +224,7 @@ namespace Infrastructure
                 {
                     db = scope.ServiceProvider.GetRequiredService<SqlLiteFarmerDbContext>();
                 }
-                else if(infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlServer)
+                else if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlServer)
                 {
                     db = scope.ServiceProvider.GetRequiredService<SqlFarmerDbContext>();
                 }

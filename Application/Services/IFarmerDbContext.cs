@@ -7,13 +7,13 @@ namespace Application.Services
 {
     public interface IFarmerDbContext
     {
-        DbSet<ArableLand> ArableLands { get; } 
+        DbSet<ArableLand> ArableLands { get; }
 
-        DbSet<Article> Articles { get; } 
+        DbSet<Article> Articles { get; }
 
-        DbSet<PerformedWork> PerformedWorks { get; } 
+        DbSet<PerformedWork> PerformedWorks { get; }
 
-        DbSet<Seeding> Seedings { get; } 
+        DbSet<Seeding> Seedings { get; }
 
         DbSet<Subsidy> Subsidies { get; }
 

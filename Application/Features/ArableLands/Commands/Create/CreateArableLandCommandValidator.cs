@@ -1,7 +1,5 @@
 ﻿using Application.Services;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace Application.Features.ArableLands.Commands.Create
 {

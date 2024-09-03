@@ -8,7 +8,7 @@ namespace Domain.Models
     {
         public Article(string name, ArticleType articleType)
         {
-            Validate(name,articleType); 
+            Validate(name, articleType);
             Name = name;
             ArticleType = articleType;
         }

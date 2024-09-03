@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.WebUtilities;
 using Radzen;
 using WebUI.Services.Identity;
 using WebUI.ServicesModel.Identity;
-using WebUI.ServicesModel.Seeding;
-using WebUI.Store;
 
 namespace WebUI.Pages.Identity.User
 {
@@ -36,7 +33,7 @@ namespace WebUI.Pages.Identity.User
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
             var email = authState.User.Claims.FirstOrDefault(c => c.Type.ToLower() == "email");
-            
+
             if (email is not null)
             {
                 changePasswordModel.Email = email.Value;

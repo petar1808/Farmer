@@ -1,11 +1,11 @@
-﻿using static Domain.ModelConstraint.CommonConstraints;
-using Domain.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Domain.Models;
 using Infrastructure.Common;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static Domain.ModelConstraint.CommonConstraints;
 
 namespace Infrastructure.Persistence.Configuration
 {
-    internal class ArableLandConfiguration : EntityConfiguration<ArableLand,int>
+    internal class ArableLandConfiguration : EntityConfiguration<ArableLand, int>
     {
         public override void Configure(EntityTypeBuilder<ArableLand> builder)
         {

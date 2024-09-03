@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-using WebUI.ServicesModel.Common;
-using WebUI.ServicesModel.Enum;
+﻿using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.Тreatment;
 
 namespace WebUI.Services.Treatment
@@ -21,8 +18,8 @@ namespace WebUI.Services.Treatment
 
         public async Task<bool> Delete(int id)
         {
-           return await _httpService
-                .DeleteAsync <bool>($"api/seeding/treatment/{id}");
+            return await _httpService
+                 .DeleteAsync<bool>($"api/seeding/treatment/{id}");
         }
 
         public async Task<ТreatmentDetailsModel> Get(int id)

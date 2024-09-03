@@ -14,7 +14,7 @@ namespace Infrastructure.Persistence.Configuration
                 x.TenantId
             }).IsUnique();
 
-            builder.Property(p => p.Name).IsRequired(); 
+            builder.Property(p => p.Name).IsRequired();
             base.Configure(builder);
         }
     }

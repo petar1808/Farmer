@@ -15,17 +15,7 @@
     public RenderFragment ChildContent { get; set; } = default!;
 
     [Parameter]
-    public bool Expanded
-    {
-        get
-        {
-            return NavMenuItem.Expanded;
-        }
-        set
-        {
-            NavMenuItem.Expanded = value;
-        }
-    }
+    public bool Expanded { get; set; }
 
     [Parameter]
     public EventCallback<bool> ExpandedChanged { get; set; }

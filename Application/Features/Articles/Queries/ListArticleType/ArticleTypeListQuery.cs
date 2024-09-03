@@ -2,7 +2,6 @@
 using Application.Models;
 using Domain.Enum;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Articles.Queries.ListArticleType
 {
@@ -14,7 +13,7 @@ namespace Application.Features.Articles.Queries.ListArticleType
                 ArticleTypeListQuery request,
                 CancellationToken cancellationToken)
             {
-                var result = await Task.Run(() => 
+                var result = await Task.Run(() =>
                 {
                     return EnumHelper
                             .GetAllNamesAndValues<ArticleType>()

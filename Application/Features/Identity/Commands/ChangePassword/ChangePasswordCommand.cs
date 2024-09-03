@@ -19,7 +19,7 @@ namespace Application.Features.Identity.Commands.ChangePassword
                 ChangePasswordCommand request,
                 CancellationToken cancellationToken)
                 => await identityService.ChangePassword(request);
-            
+
         }
     }
 }

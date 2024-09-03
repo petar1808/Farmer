@@ -11,6 +11,6 @@
         {
             Id = default!;
         }
-        public TId Id { get;}
+        public TId Id { get; }
     }
 }

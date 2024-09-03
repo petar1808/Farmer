@@ -1,24 +1,19 @@
 ﻿using Domain.Common;
 using Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Models
 {
     public class Treatment : Entity<int>, ITenant
     {
         public Treatment(DateTime date,
-            ТreatmentType treatmentType, 
+            ТreatmentType treatmentType,
             decimal? amountOfFuel,
             decimal? fuelPrice,
             int articleId,
             decimal articleQuantity,
             int seedingId,
             decimal articlePrice)
-            :this(date, treatmentType, articleId, articleQuantity, seedingId,articlePrice)
+            : this(date, treatmentType, articleId, articleQuantity, seedingId, articlePrice)
         {
             AmountOfFuel = amountOfFuel;
             FuelPrice = fuelPrice;
@@ -50,7 +45,7 @@ namespace Domain.Models
 
         public int ArticleId { get; private set; }
 
-        public Article Article { get;  } = default!;
+        public Article Article { get; } = default!;
 
         public decimal ArticleQuantity { get; private set; }
 

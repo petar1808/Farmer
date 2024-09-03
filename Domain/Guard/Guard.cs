@@ -1,5 +1,4 @@
 ﻿using Domain.Exceptions;
-using System;
 
 namespace Domain.Guard
 {
@@ -47,7 +46,7 @@ namespace Domain.Guard
             throw new DomainException($"{name} must be positive number.");
         }
 
-        public static void ForStringMaxLengtAndMinLength(string value, int maxLength,int minLenght , string name = "Value")
+        public static void ForStringMaxLengtAndMinLength(string value, int maxLength, int minLenght, string name = "Value")
         {
             AgainstEmptyString(value, name);
 

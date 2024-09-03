@@ -1,9 +1,6 @@
-﻿using Application.Features.Identity.Commands.Login;
-using Application.Models;
+﻿using Application.Models;
 using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
-using System.Reflection;
 
 namespace Application.Behaviours
 {
@@ -38,7 +35,7 @@ namespace Application.Behaviours
                 {
                     var propertyFailures = failureGroup.ToArray();
 
-                    errors.Add($"{string.Join(", ",propertyFailures)}");
+                    errors.Add($"{string.Join(", ", propertyFailures)}");
                 }
 
                 if (typeof(TResponse) == typeof(Result))

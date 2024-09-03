@@ -5,7 +5,7 @@
         public SelectedWorkingSeasonService()
         {
 
-        }   
+        }
         public int SelectedWorkingSeasonId { get; set; } = 0;
 
         public void ChangeSelectedWorkingSeason(int selectedWorkingSeasonId)

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace WebUI.ServicesModel.Article
+﻿namespace WebUI.ServicesModel.Article
 {
     public class ArticleDetailsModel : ArticleBaseModel
     {

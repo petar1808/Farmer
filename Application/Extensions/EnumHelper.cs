@@ -1,13 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 using System.Reflection;
 
 namespace Application.Extensions
 {
     public static class EnumHelper
     {
-        public static Dictionary<int, string> GetAllNamesAndValues<TEnum>() 
+        public static Dictionary<int, string> GetAllNamesAndValues<TEnum>()
             where TEnum : Enum
         {
             return Enum.GetValues(typeof(TEnum))
@@ -29,11 +27,11 @@ namespace Application.Extensions
             if (attributes != null && attributes.Length > 0)
             {
                 return attributes[0].Description;
-            }   
+            }
             else
             {
                 return source.ToString()!;
-            }    
+            }
         }
 
         public static string GetEnumDisplayName(this Enum value)

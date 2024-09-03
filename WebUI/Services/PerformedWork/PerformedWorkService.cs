@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-using WebUI.ServicesModel.Common;
+﻿using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.PerformedWork;
 
 namespace WebUI.Services.PerformedWork

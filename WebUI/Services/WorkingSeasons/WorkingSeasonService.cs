@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-using WebUI.ServicesModel.Common;
-using WebUI.ServicesModel.WorkingSeason;
+﻿using WebUI.ServicesModel.WorkingSeason;
 
 namespace WebUI.Services.WorkingSeasons
 {
@@ -39,7 +36,7 @@ namespace WebUI.Services.WorkingSeasons
 
         public async Task<bool> Delete(int id)
         {
-           return await _httpService.DeleteAsync<bool>($"api/workingSeasons/{id}");
+            return await _httpService.DeleteAsync<bool>($"api/workingSeasons/{id}");
         }
 
         public async Task<List<ListWorkingSeasonBalanceModel>> ListWorkingSeasonsBalance()

@@ -1,13 +1,11 @@
 ﻿using Application.Services;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace Application.Features.Tenants.Commands.Create
 {
     public class CreateTenantCommandValidator : AbstractValidator<CreateTenantCommand>
     {
-        public CreateTenantCommandValidator(IFarmerDbContext farmerDbContext) 
+        public CreateTenantCommandValidator(IFarmerDbContext farmerDbContext)
         {
             this.RuleFor(x => x.Name)
                 .Length(2, 50)
