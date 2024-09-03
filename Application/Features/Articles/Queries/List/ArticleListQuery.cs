@@ -28,7 +28,8 @@ namespace Application.Features.Articles.Queries.List
             {
                 var articles = farmerDbContext.Articles.Where(x => x.ArticleType == request.ArticleType).AsQueryable();
 
-                var result = await mapper.ProjectTo<ArticleListQueryOutputModel>(articles).ToListAsync(cancellationToken);
+                var result = await mapper.ProjectTo<ArticleListQueryOutputModel>(articles)
+                    .OrderByDescending(x => x.Id).ToListAsync(cancellationToken);
 
                 return result;
             }
