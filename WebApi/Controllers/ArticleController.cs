@@ -27,7 +27,7 @@ namespace WebApi.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<ArticleListQueryOutputModel>>> ListArticles(
-            [FromHeader] ArticleListQuery articleListQuery)
+            [FromQuery] ArticleListQuery articleListQuery)
             => await this.Send(articleListQuery);
 
         [HttpPut]

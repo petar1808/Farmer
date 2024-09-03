@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Radzen;
 using System.Net;
 using System.Text;
@@ -12,18 +11,15 @@ namespace WebUI.Services
     {
         private readonly HttpClient _httpClient;
         private readonly NavigationManager _navigationManager;
-        private readonly IJSRuntime JSRuntime;
         private readonly NotificationService notificationService;
 
         public HttpService(
             HttpClient httpClient,
             NavigationManager navigationManager,
-            IJSRuntime jSRuntime,
             NotificationService notificationService)
         {
             this._httpClient = httpClient;
             _navigationManager = navigationManager;
-            JSRuntime = jSRuntime;
             this.notificationService = notificationService;
         }
 

@@ -2,4 +2,14 @@
 @attribute [Authorize]
 <PageTitle>Фермер</PageTitle>
 
-<h1>Добре дошли, Фермери!</h1>
+@* Importing the necessary CSS *@
+@using Radzen
+
+<div class="content">
+    <RadzenCard class="rz-shadow-10 rz-border-radius-10" Style="padding: 2rem; background-color: #f8f9fa;">
+        <div style="text-align: center;">
+            <h1 class="rz-text-primary">Добре дошли, Фермери!</h1>
+            <p style="font-size: 1.25rem;">Радваме се, че сте тук. Започнете да управлявате вашата ферма с лекота и ефективност.</p>
+        </div>
+    </RadzenCard>
+</div>

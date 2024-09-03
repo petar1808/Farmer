@@ -15,39 +15,51 @@ namespace WebUI.Services
             new NavMenuItem()
             {
                 Name = "Номенклатури",
-                Icon = "source",
+                Icon = "category",
                 Children = new List<NavMenuItem>()
                 {
                     new NavMenuItem()
                     {
-                        Name = "Артикули",
-                        Path = "/article/list",
-                        Icon = "grass"
+                        Name = "Семена",
+                        Path = "/article/list/1",
+                        Icon = "spa"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Торове",
+                        Path = "/article/list/2",
+                        Icon = "eco"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Препарати",
+                        Path = "/article/list/3",
+                        Icon = "science"
                     },
                     new NavMenuItem()
                     {
                         Name = "Земи",
                         Path = "/arableLand/list",
-                        Icon = "location_pin"
+                        Icon = "terrain"
                     }
                 }
             },
             new NavMenuItem()
             {
                 Name = "Жътва",
-                Icon = "agriculture",
+                Icon = "local_florist",
                 Path = "/workingSeason"
             },
             new NavMenuItem()
             {
                 Name = "Потребители",
-                Icon = "group",
+                Icon = "people",
                 Path = "/listUser"
             },
             new NavMenuItem()
             {
                 Name = "Организации и потребители",
-                Icon = "group",
+                Icon = "business",
                 Path = "/tenantsWithUsers"
             }
         };
