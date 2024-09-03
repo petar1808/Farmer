@@ -1,9 +1,10 @@
-﻿@page "/article/list"
+﻿@page "/article/list/{ArticleType:int}"
+@using WebUI.Extensions
 @using WebUI.ServicesModel.Article
 @using WebUI.Components.DataGrid
 @attribute [Authorize]
 
-<h2 class="text-center"> Aртикули </h2>
+<h2 class="text-center"> @this.ArticleType.GetEnumDisplayName() </h2>
 
 @if (DataGrid is null)
 {
@@ -11,7 +12,7 @@
 }
 else
 {
-    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArticle())"/>
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArticle(this.ArticleType))"/>
     <DynamicDataGrid TData="ListArticleModel" Data="@DataGrid"></DynamicDataGrid>
 }
 

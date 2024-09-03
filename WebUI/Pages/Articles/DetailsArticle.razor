@@ -5,7 +5,7 @@
 {
     <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Submit=@OnSubmit>
         <RadzenFieldset>
-            <div class="row mb-3">
+@*             <div class="row mb-3">
                 <div class="col-md-6">
                     <RadzenLabel Text="Тип" />
                 </div>
@@ -22,7 +22,8 @@
                         <RadzenRequiredValidator Component="ArticleType" Text="Тип артикул е задължителен" DefaultValue="0" />
                     </div>
                 </div>
-            </div>
+            </div> *@
+            <RadzenNumeric hidden Name="ArticleType" @bind-Value=@Article.ArticleType Class="w-100" />
             <div class="row mb-3">
                 <div class="col-md-6">
                     <RadzenLabel Text="Име" />

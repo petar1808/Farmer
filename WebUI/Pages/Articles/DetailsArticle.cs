@@ -3,6 +3,7 @@ using Radzen;
 using WebUI.Services.Article;
 using WebUI.ServicesModel.Article;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.Enum;
 
 namespace WebUI.Pages.Articles
 {
@@ -13,6 +14,9 @@ namespace WebUI.Pages.Articles
 
         [Parameter]
         public int ArticleId { get; set; }
+
+        [Parameter]
+        public ArticleType ArticleType { get; set; }
 
         public ArticleDetailsModel Article { get; set; } = default!;
 
@@ -27,7 +31,7 @@ namespace WebUI.Pages.Articles
 
             if (ArticleId == 0)
             {
-                Article = new ArticleDetailsModel();
+                Article = new ArticleDetailsModel((int)ArticleType);
             }
             else
             {

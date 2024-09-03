@@ -5,6 +5,7 @@ using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
 using WebUI.Services.Article;
 using WebUI.ServicesModel.Article;
+using WebUI.ServicesModel.Enum;
 
 namespace WebUI.Pages.Articles
 {
@@ -16,23 +17,41 @@ namespace WebUI.Pages.Articles
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
+        [Parameter]
+        public ArticleType ArticleType { get; set; } 
+
         public DynamicDataGridModel<ListArticleModel> DataGrid { get; set; } = default!;
 
-        protected override async Task OnInitializedAsync()
+        // Track the current ArticleType to detect changes
+        private ArticleType _currentArticleType;
+
+        protected override async Task OnParametersSetAsync()
+        {
+            if (_currentArticleType != ArticleType)
+            {
+                _currentArticleType = ArticleType;
+                await LoadDataAsync();
+            }
+        }
+
+        private async Task LoadDataAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(ListArticleModel.Id), "Ид"),
-                new DynamicDataGridColumnModel(nameof(ListArticleModel.Name), "Име"),
-                new DynamicDataGridColumnModel(nameof(ListArticleModel.ArticleType), "Тип"),
+                new DynamicDataGridColumnModel(nameof(ListArticleModel.Name), "Име")
             };
+
             DataGrid = new DynamicDataGridModel<ListArticleModel>(
-                    await ArticleService.List(),
+                    await ArticleService.List(ArticleType),
                     columns)
-                .WithEdit(async (x) => await EditArticle(x))
+                .WithEdit(async (x) => await EditArticle(x, ArticleType))
                 .WithDelete(async (x) => await DeleteArticle(x))
                 .WithPaging()
                 .WithSorting();
+
+            // Trigger UI re-render
+            StateHasChanged();
         }
 
         public async Task<bool> DeleteArticleFunction(int articleId)
@@ -40,26 +59,27 @@ namespace WebUI.Pages.Articles
             return await this.ArticleService.Delete(articleId);
         }
 
-        public async Task AddArticle()
+        public async Task AddArticle(ArticleType articleType)
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Добавяне на Артикул",
+            var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Добавяне на {this.ArticleType.GetEnumDisplayName()}",
+                new Dictionary<string, object>() { { "ArticleType", articleType } },
                 options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
             if (dialogResult == true)
             {
-                DataGrid.UpdateData(await ArticleService.List());
+                DataGrid.UpdateData(await ArticleService.List(articleType));
                 this.StateHasChanged();
             }
         }
-        public async Task EditArticle(int articleId)
+        public async Task EditArticle(int articleId, ArticleType articleType)
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Редактиране на Артикул",
+            var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Редактиране на {this.ArticleType.GetEnumDisplayName()}",
               new Dictionary<string, object>() { { "ArticleId", articleId } },
               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
 
             if (dialogResult == true)
             {
-                DataGrid.UpdateData(await ArticleService.List());
+                DataGrid.UpdateData(await ArticleService.List(articleType));
                 this.StateHasChanged();
             }
         }
@@ -73,7 +93,7 @@ namespace WebUI.Pages.Articles
             };
 
             var deleteModel = new DeleteModalModel(articleId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Изтриване на Артикул",
+            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Изтриване на {this.ArticleType.GetEnumDisplayName()}",
               new Dictionary<string, object>()
               {
                     { "ModelInput", deleteModel }

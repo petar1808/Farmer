@@ -24,10 +24,10 @@ namespace WebUI.Services.Article
                 .GetAsync<List<SelectionListModel>>($"api/assets/articleTypes");
         }
 
-        public async Task<List<ListArticleModel>> List()
+        public async Task<List<ListArticleModel>> List(ArticleType articleType)
         {
             return await _httpService
-                .GetAsync<List<ListArticleModel>>($"api/articles");
+                .GetAsync<List<ListArticleModel>>($"api/articles?{nameof(ArticleType)}={articleType}");
         }
 
         public async Task<bool> Add(ArticleDetailsModel article)

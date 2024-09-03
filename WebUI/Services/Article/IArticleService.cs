@@ -6,7 +6,7 @@ namespace WebUI.Services.Article
 {
     public interface IArticleService
     {
-        Task<List<ListArticleModel>> List();
+        Task<List<ListArticleModel>> List(ArticleType articleType);
 
         Task<ArticleDetailsModel> Get(int id);
 
