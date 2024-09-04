@@ -2,43 +2,30 @@
 @using WebUI.ServicesModel.ArableLand
 @attribute [Authorize]
 
-@if (@ArableLands is not null)
-{
-    <RadzenTemplateForm TItem="ArableLandModel" Data=@ArableLands Submit=@OnSubmit>
-        <RadzenFieldset>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Име" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenTextBox style="display: block" Name="Name" @bind-Value=@ArableLands.Name Class="w-100" />
-                    <RadzenLengthValidator Component="Name" Min="2" Text="Името трябва да съдържа поне 2 знака" Style="position: absolute" />
-                    <RadzenLengthValidator Component="Name" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style="position: absolute" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Декари" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="SizeInDecar" @bind-Value=@ArableLands.SizeInDecar Class="w-100" />
-                    ​<NumericRangeValidator Component="SizeInDecar" Text="Декарите трябва да са положително число" Min="0" />
-                </div>
-            </div>
-            <div class="row mb-1">
-                <div class="col-md-5">
-                    @if (ArableLandId == 0)
-                    {
-                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                    }
-                    else
-                    {
-                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
-                    }
-                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
-                </div>
-            </div>
-        </RadzenFieldset>
+<RadzenColumn SizeMD=12>
+    <RadzenTemplateForm TItem="ArableLandModel" Data=@ArableLands Visible="@(ArableLands is not null)" Submit=@OnSubmit>
+    <RadzenStack>
+        <RadzenFormField Text="Име" Variant="Variant.Filled">
+            <ChildContent>
+                <RadzenTextBox style="display: block; width: 100%" @bind-Value=@ArableLands.Name Name="Name" />
+            </ChildContent>
+            <Helper>
+                <RadzenLengthValidator Component="Name" Min="2" Text="Името трябва да съдържа поне 2 знака" Style="position: absolute" />
+                <RadzenLengthValidator Component="Name" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style="position: absolute" />
+            </Helper>
+        </RadzenFormField>
+        <RadzenFormField Text="Декари" Variant="Variant.Filled">
+            <ChildContent>
+                <RadzenNumeric style="display: block; width: 100%" @bind-Value=@ArableLands.SizeInDecar Name="SizeInDecar" />
+            </ChildContent>
+            <Helper>
+                <NumericRangeValidator Component="SizeInDecar" Text="Декарите трябва да са положително число" Min="0" />
+            </Helper>
+        </RadzenFormField>
+    </RadzenStack>
+    <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(ArableLandId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
+        <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
+    </RadzenStack>
     </RadzenTemplateForm>
-}
-
+</RadzenColumn>

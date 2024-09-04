@@ -54,16 +54,10 @@ namespace WebUI.Pages.Articles
             StateHasChanged();
         }
 
-        public async Task<bool> DeleteArticleFunction(int articleId)
-        {
-            return await this.ArticleService.Delete(articleId);
-        }
-
         public async Task AddArticle(ArticleType articleType)
         {
             var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Добавяне на {this.ArticleType.GetEnumDisplayName()}",
-                new Dictionary<string, object>() { { "ArticleType", articleType } },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
+                new Dictionary<string, object>() { { "ArticleType", articleType } });
 
             if (dialogResult == true)
             {
@@ -74,8 +68,7 @@ namespace WebUI.Pages.Articles
         public async Task EditArticle(int articleId, ArticleType articleType)
         {
             var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Редактиране на {this.ArticleType.GetEnumDisplayName()}",
-              new Dictionary<string, object>() { { "ArticleId", articleId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
+              new Dictionary<string, object>() { { "ArticleId", articleId } });
 
             if (dialogResult == true)
             {
@@ -86,25 +79,13 @@ namespace WebUI.Pages.Articles
 
         public async Task DeleteArticle(int articleId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(articleId) == true)
             {
-                var funcResult = DeleteArticleFunction(articleId);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(articleId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Изтриване на {this.ArticleType.GetEnumDisplayName()}",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != articleId));
-
-                this.StateHasChanged();
+                if (await this.ArticleService.Delete(articleId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != articleId));
+                    this.StateHasChanged();
+                }
             }
         }
     }

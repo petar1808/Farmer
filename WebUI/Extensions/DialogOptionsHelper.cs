@@ -41,11 +41,5 @@ namespace WebUI.Extensions
             options.Height = "170px";
             return options;
         }
-
-        // To Do: 
-        // WithWidth
-        // GetDeleteDialogDefaultOptions - for delete modal
-        // WithDefaultSize - for the common cases
-
     }
 }

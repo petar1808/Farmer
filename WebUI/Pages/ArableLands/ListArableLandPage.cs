@@ -35,16 +35,10 @@ namespace WebUI.Pages.ArableLands
                 .WithSorting();
         }
 
-        public async Task<bool> DeleteArableLandFunction(int articleId)
-        {
-            return await this.ArableLandService.Delete(articleId);
-        }
-
         public async Task EditArableLand(int arableLandId)
         {
             var dialogResult = await DialogService.OpenAsync<DetailsArableLand>($"Редактиране на Земя",
-              new Dictionary<string, object>() { { "ArableLandId", arableLandId } },
-               options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
+              new Dictionary<string, object>() { { "ArableLandId", arableLandId } });
 
             if (dialogResult == true)
             {
@@ -55,8 +49,7 @@ namespace WebUI.Pages.ArableLands
 
         public async Task AddArableLand()
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsArableLand>($"Добавяне на Земя",
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("600px"));
+            var dialogResult = await DialogService.OpenAsync<DetailsArableLand>($"Добавяне на Земя");
 
             if (dialogResult == true)
             {
@@ -67,25 +60,13 @@ namespace WebUI.Pages.ArableLands
 
         public async Task DeleteArableLand(int arableLandId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(arableLandId) == true)
             {
-                var funcResult = DeleteArableLandFunction(id);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(arableLandId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Изтриване на Земя",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != arableLandId));
-
-                this.StateHasChanged();
+                if (await this.ArableLandService.Delete(arableLandId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != arableLandId));
+                    this.StateHasChanged();
+                }
             }
         }
     }
