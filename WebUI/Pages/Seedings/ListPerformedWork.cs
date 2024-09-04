@@ -47,7 +47,8 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.AmountOfFuel), "Количество гориво общо", "{0:0.00} л."),
                 new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв."),
             };
-            DataGrid = new DynamicDataGridModel<ListPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns)
+            DataGrid = new DynamicDataGridModel<ListPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns, "Обработки")
+                .WithAdd(async () => await AddPerformedWork())
                 .WithEdit(async (x) => await EditPerformedWork(x))
                 .WithDelete(async (x) => await DeletePerformedWork(x))
                 .WithPaging()

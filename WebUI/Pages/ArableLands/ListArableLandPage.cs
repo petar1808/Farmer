@@ -28,7 +28,9 @@ namespace WebUI.Pages.ArableLands
             };
             DataGrid = new DynamicDataGridModel<ArableLandModel>(
                     await ArableLandService.List(),
-                    columns)
+                    columns,
+                    "Земи")
+                .WithAdd(async () => await AddArableLand())
                 .WithEdit(async (x) => await EditArableLand(x))
                 .WithDelete(async (x) => await DeleteArableLand(x))
                 .WithPaging()

@@ -1,11 +1,17 @@
-﻿namespace WebUI.Components.DataGrid
+﻿using System.Runtime.CompilerServices;
+
+namespace WebUI.Components.DataGrid
 {
     public class DynamicDataGridModel<TData> where TData : IDynamicDataGridModel
     {
-        public DynamicDataGridModel(IEnumerable<TData> data, IEnumerable<DynamicDataGridColumnModel> columns)
+        public DynamicDataGridModel(
+            IEnumerable<TData> data, 
+            IEnumerable<DynamicDataGridColumnModel> columns,
+            string gridName = "")
         {
-            this.Data = data;
-            this.Columns = columns;
+            Data = data;
+            Columns = columns;
+            GridName = gridName;
         }
 
         public IEnumerable<TData> Data { get; private set; } = new List<TData>();
@@ -18,6 +24,8 @@
 
         public Action<int> DeleteAction { get; private set; } = default!;
 
+        public Action AddAction { get; private set; } = default!;
+
         public bool AllowFiltering { get; private set; } = false;
 
         public bool AllowPaging { get; private set; } = false;
@@ -29,6 +37,8 @@
         public int PageSize { get; private set; } = 10;
 
         public string? DefaultColumnWidth { get; private set; } = default!;
+
+        public string GridName { get; set; }
 
 
         public void UpdateData(IEnumerable<TData> data)
@@ -45,6 +55,12 @@
         public DynamicDataGridModel<TData> WithDelete(Action<int> args)
         {
             DeleteAction = args;
+            return this;
+        }
+
+        public DynamicDataGridModel<TData> WithAdd(Action args)
+        {
+            AddAction = args;
             return this;
         }
 
@@ -78,6 +94,7 @@
             this.DefaultColumnWidth = defaultWidth;
             return this;
         }
+
     }
 
     public class DynamicDataGridColumnModel

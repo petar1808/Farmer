@@ -53,7 +53,8 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв.", width:"150px"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход", "{0:0.00} лв."),
             };
-            DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns)
+            DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns, "Третиране")
+                .WithAdd(async () => await AddTreatment())
                 .WithEdit(async (x) => await EditTreatment(x))
                 .WithDelete(async (x) => await DeleteTreatment(x))
                 .WithPaging()

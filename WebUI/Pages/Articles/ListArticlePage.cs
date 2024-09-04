@@ -44,7 +44,9 @@ namespace WebUI.Pages.Articles
 
             DataGrid = new DynamicDataGridModel<ListArticleModel>(
                     await ArticleService.List(ArticleType),
-                    columns)
+                    columns,
+                    ArticleType.GetEnumDisplayName())
+                .WithAdd(async () => await AddArticle(ArticleType))
                 .WithEdit(async (x) => await EditArticle(x, ArticleType))
                 .WithDelete(async (x) => await DeleteArticle(x))
                 .WithPaging()

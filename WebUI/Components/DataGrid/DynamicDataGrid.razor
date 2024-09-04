@@ -1,46 +1,69 @@
 ﻿@typeparam TData where TData : IDynamicDataGridModel
 
-@if (Data != null)
-{
-    <RadzenDataGrid 
-        Data="@Data.Data" 
-        TItem="TData"
-        AllowSorting="@Data.AllowSorting"
-        AllowFiltering="@Data.AllowFiltering"
-        AllowPaging="@Data.AllowPaging"
-        PageSize="@Data.PageSize"
-        ColumnWidth=@(Data.DefaultColumnWidth == null ? "" : Data.DefaultColumnWidth)
-        AllowColumnResize="@Data.AllowResizable">
-        <Columns>
-            @foreach (var column in Data.Columns)
-            {
-                @if (column.Width == null)
-                {
-                    <RadzenDataGridColumn TItem="TData" Property="@column.PropertyName" FormatString="@column.StringFormat" Title="@column.DisplayName" />
-                }
-                else
-                {
-                    <RadzenDataGridColumn TItem="TData" Width="@column.Width" Property="@column.PropertyName" FormatString="@column.StringFormat" Title="@column.DisplayName" />
-                }
-            }
-            @if (Data.EditAction != null || Data.DeleteAction != null)
-            {         
-                <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="TData" Title="Действие">
-                    <Template Context="data">
-                        @if(Data.EditAction != null)
+<RadzenStack Visible=@(Data is not null)>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenText Text="@Data.GridName" TextStyle="TextStyle.H4" TagName="TagName.H2" style="margin: 0" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                <RadzenButton Icon="add_circle_outline" Text="Добави" Click="@(() => Data.AddAction())" Variant="Variant.Flat" />
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow>
+        <RadzenColumn SizeMD=12>
+            <RadzenDataGrid Data="@Data.Data"
+                            TItem="TData"
+                            AllowSorting="@Data.AllowSorting"
+                            AllowFiltering="@Data.AllowFiltering"
+                            AllowPaging="@Data.AllowPaging"
+                            PageSize="@Data.PageSize"
+                            ColumnWidth=@(Data.DefaultColumnWidth == null ? "" : Data.DefaultColumnWidth)
+                            AllowColumnResize="@Data.AllowResizable">
+                <Columns>
+                    @foreach (var column in Data.Columns)
+                    {
+                        @if (column.Width == null)
                         {
-                            <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Class="m-1" Click=@(() => Data.EditAction(data.Id)) />
+                            <RadzenDataGridColumn TItem="TData" Property="@column.PropertyName" FormatString="@column.StringFormat" Title="@column.DisplayName" />
                         }
-                        @if(Data.DeleteAction != null)
+                        else
                         {
-                            <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Class="m-1" Click=@(() => Data.DeleteAction(data.Id)) />
+                            <RadzenDataGridColumn TItem="TData" Width="@column.Width" Property="@column.PropertyName" FormatString="@column.StringFormat" Title="@column.DisplayName" />
                         }
-                    </Template>
-                </RadzenDataGridColumn>
-            }
-        </Columns>
-    </RadzenDataGrid>
-}
+                    }
+                    @if (Data.EditAction != null || Data.DeleteAction != null)
+                    {
+                        <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="TData" Title="Действие" Width="140px" TextAlign="TextAlign.Center">
+                            
+                            <Template Context="data">
+                                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+                                @if (Data.EditAction != null)
+                                {
+                                    <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" 
+                                        Size="ButtonSize.Medium"
+                                        Shade="Shade.Lighter" Variant="Variant.Flat"
+                                        Click=@(() => Data.EditAction(data.Id))
+                                        @onclick:stopPropagation="true" />
+                                }
+                                @if (Data.DeleteAction != null)
+                                {
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" 
+                                        Size="ButtonSize.Medium"
+                                        Shade="Shade.Lighter" Variant="Variant.Flat"
+                                        Click=@(() => Data.DeleteAction(data.Id))
+                                        @onclick:stopPropagation="true" />
+                                }
+                                </RadzenStack>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    }
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenStack>
 
 
 @code {
