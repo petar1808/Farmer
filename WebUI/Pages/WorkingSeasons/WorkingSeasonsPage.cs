@@ -29,8 +29,7 @@ namespace WebUI.Pages.WorkingSeasons
 
         public async Task AddWorkingSeason()
         {
-            var dialogResult = await DialogService.OpenAsync<WorkingSeasonDialog>($"Добавяне на Сезон",
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("330px").WithWidth("600px"));
+            var dialogResult = await DialogService.OpenAsync<WorkingSeasonDialog>($"Добавяне на Сезон");
 
             if (dialogResult == true)
             {
@@ -41,8 +40,7 @@ namespace WebUI.Pages.WorkingSeasons
         public async Task EditWorkingSeason(int workingSeasonId)
         {
             var dialogResult = await DialogService.OpenAsync<WorkingSeasonDialog>($"Редактиране на Сезон",
-              new Dictionary<string, object>() { { "WorkingSeasonId", workingSeasonId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("330px").WithWidth("600px"));
+              new Dictionary<string, object>() { { "WorkingSeasonId", workingSeasonId } });
 
             if (dialogResult == true)
             {
@@ -53,36 +51,19 @@ namespace WebUI.Pages.WorkingSeasons
 
         public async Task DeleteWorkingSeason(int workingSeasonId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(workingSeasonId) == true)
             {
-                var funcResult = DeleteWorkingSeasonFunction(workingSeasonId);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(workingSeasonId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Изтриване на Сезон",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
-
-                this.StateHasChanged();
+                if (await this.WorkingSeasonService.Delete(workingSeasonId))
+                {
+                    WorkingSeasonBalance = await WorkingSeasonService.ListWorkingSeasonsBalance();
+                    this.StateHasChanged();
+                }
             }
         }
 
         public void ToSeeding(int workingSeasonId)
         {
             UriHelper.NavigateTo($"{UriHelper.Uri}/{workingSeasonId}/seeding");
-        }
-
-        private async Task<bool> DeleteWorkingSeasonFunction(int workingSeasonId)
-        {
-            return await this.WorkingSeasonService.Delete(workingSeasonId);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace WebUI.Services
                     {
                         Name = "Торове",
                         Path = "/article/list/2",
-                        Icon = "eco"
+                        Icon = "Compost"
                     },
                     new NavMenuItem()
                     {
@@ -47,7 +47,7 @@ namespace WebUI.Services
             new NavMenuItem()
             {
                 Name = "Жътва",
-                Icon = "local_florist",
+                Icon = "agriculture",
                 Path = "/workingSeason"
             },
             new NavMenuItem()
