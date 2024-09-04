@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using WebUI.Extensions;
 using WebUI.Services.Tenants;
 using WebUI.ServicesModel.Tenants;
 
@@ -23,7 +24,7 @@ namespace WebUI.Pages.Tenants
         public async Task CreateTenant()
         {
             var dialogResult = await DialogService.OpenAsync<CreateTenantDialog>($"Добавяне на Ораганизация",
-              options: new DialogOptions() { Width = "500px", Height = "230px" });
+              options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -34,7 +35,7 @@ namespace WebUI.Pages.Tenants
         public async Task CreateAdmin()
         {
             var dialogResult = await DialogService.OpenAsync<CreateAdminDialog>($"Добавяне на Админ",
-              options: new DialogOptions() { Width = "600px", Height = "400px" });
+              options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

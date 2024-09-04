@@ -58,8 +58,10 @@ namespace WebUI.Pages.Articles
 
         public async Task AddArticle(ArticleType articleType)
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Добавяне на {this.ArticleType.GetEnumDisplayName()}",
-                new Dictionary<string, object>() { { "ArticleType", articleType } });
+            var dialogResult = await DialogService.OpenAsync<DetailsArticle>(
+                $"Добавяне на {this.ArticleType.GetEnumDisplayName()}",
+                new Dictionary<string, object>() { { "ArticleType", articleType } },
+                options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -69,8 +71,10 @@ namespace WebUI.Pages.Articles
         }
         public async Task EditArticle(int articleId, ArticleType articleType)
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsArticle>($"Редактиране на {this.ArticleType.GetEnumDisplayName()}",
-              new Dictionary<string, object>() { { "ArticleId", articleId } });
+            var dialogResult = await DialogService.OpenAsync<DetailsArticle>(
+                $"Редактиране на {this.ArticleType.GetEnumDisplayName()}",
+                new Dictionary<string, object>() { { "ArticleId", articleId } }, 
+                options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

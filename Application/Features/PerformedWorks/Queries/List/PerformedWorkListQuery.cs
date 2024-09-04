@@ -37,6 +37,7 @@ namespace Application.Features.PerformedWorks.Queries.List
                 var performedWork = farmerDbContext
                     .PerformedWorks
                     .Where(x => x.SeedingId == request.SeedingId)
+                    .OrderByDescending(x => x.Date)
                     .AsQueryable();
 
                 var result = await mapper

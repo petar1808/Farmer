@@ -37,6 +37,7 @@ namespace Application.Features.Subsidies.Queries.List
                 var subsidy = farmerDbContext
                     .Subsidies
                     .Where(x => x.SeedingId == request.SeedingId)
+                    .OrderByDescending(x => x.Date)
                     .AsQueryable();
 
                 var result = await mapper

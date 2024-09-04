@@ -65,9 +65,10 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddTreatment()
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>($"Добавяне на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
-                new Dictionary<string, object>() { { "SeedingId", SeedingId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
+            var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>(
+                $"Добавяне на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
+                new Dictionary<string, object>() { { "SeedingId", SeedingId } }, 
+                options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -81,7 +82,7 @@ namespace WebUI.Pages.Seedings
         {
             var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>($"Редактиране на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "TreatmentId", treatmentId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
+              options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -93,25 +94,14 @@ namespace WebUI.Pages.Seedings
 
         public async Task DeleteTreatment(int treatmentId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(treatmentId) == true)
             {
-                var funcResult = DeleteTreatmentFunction(treatmentId);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(treatmentId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Третиране",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != treatmentId));
-                await UpdateArableLandBalance(this.SeedingId);
-                this.StateHasChanged();
+                if (await this.TreatmentService.Delete(treatmentId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != treatmentId));
+                    await UpdateArableLandBalance(this.SeedingId);
+                    this.StateHasChanged();
+                }
             }
         }
 

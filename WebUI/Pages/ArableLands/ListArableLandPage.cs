@@ -39,8 +39,10 @@ namespace WebUI.Pages.ArableLands
 
         public async Task EditArableLand(int arableLandId)
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsArableLand>($"Редактиране на Земя",
-              new Dictionary<string, object>() { { "ArableLandId", arableLandId } });
+            var dialogResult = await DialogService.OpenAsync<DetailsArableLand>(
+                $"Редактиране на Земя",
+                new Dictionary<string, object>() { { "ArableLandId", arableLandId } },
+                options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -51,7 +53,9 @@ namespace WebUI.Pages.ArableLands
 
         public async Task AddArableLand()
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsArableLand>($"Добавяне на Земя");
+            var dialogResult = await DialogService.OpenAsync<DetailsArableLand>(
+                $"Добавяне на Земя", 
+                options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

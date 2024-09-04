@@ -9,7 +9,8 @@ namespace WebUI.Extensions
             var confOptions = new ConfirmOptions()
             {
                 CancelButtonText = "Отказ",
-                OkButtonText = "Изтриване"
+                OkButtonText = "Изтриване",
+                Draggable = true
             };
 
             return await dialogService.Confirm(

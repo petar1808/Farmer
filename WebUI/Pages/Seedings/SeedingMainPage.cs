@@ -1,6 +1,7 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using WebUI.Extensions;
 using WebUI.Pages.Seedings.Dialogs;
 using WebUI.Services.PerformedWork;
 using WebUI.Services.Seeding;
@@ -86,7 +87,7 @@ namespace WebUI.Pages.Seedings
         {
             var response = await DialogService.OpenAsync<DetailsSeedingDialog>($"Добавяне на Земя",
                 parameters: new Dictionary<string, object>() { { "WorkingSeasonsId", WorkingSeasonsId } },
-                options: new DialogOptions() { Width = "500px", Height = "220px" });
+                options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (response == true)
             {
