@@ -37,11 +37,11 @@ namespace Application.Features.Treatments.Queries.List
                 var treatment = farmerDbContext
                     .Treatments
                     .Where(x => x.SeedingId == request.SeedingId)
-                    .OrderByDescending(x => x.Date)
                     .AsQueryable();
 
                 var result = await mapper
                     .ProjectTo<TreatmentListQueryOutputModel>(treatment)
+                    .OrderByDescending(x => x.Date)
                     .ToListAsync(cancellationToken);
 
                 return result;

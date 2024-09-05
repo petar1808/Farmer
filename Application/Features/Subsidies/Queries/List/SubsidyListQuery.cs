@@ -37,11 +37,11 @@ namespace Application.Features.Subsidies.Queries.List
                 var subsidy = farmerDbContext
                     .Subsidies
                     .Where(x => x.SeedingId == request.SeedingId)
-                    .OrderByDescending(x => x.Date)
                     .AsQueryable();
 
                 var result = await mapper
                     .ProjectTo<CommonSubsidyOutputQueryModel>(subsidy)
+                    .OrderByDescending(x => x.Date)
                     .ToListAsync(cancellationToken);
 
                 return result;
