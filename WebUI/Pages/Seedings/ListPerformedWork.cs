@@ -55,16 +55,12 @@ namespace WebUI.Pages.Seedings
                 .WithSorting();
         }
 
-        public async Task<bool> DeletePerformedWorkFunction(int performedWorkId)
-        {
-            return await this.PerformedWorkService.Delete(performedWorkId);
-        }
-
         public async Task AddPerformedWork()
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Добавяне на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>(
+                $"Добавяне на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
+                options: DialogOptionsHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -89,25 +85,14 @@ namespace WebUI.Pages.Seedings
 
         public async Task DeletePerformedWork(int performedWorkId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(performedWorkId) == true)
             {
-                var funcResult = DeletePerformedWorkFunction(performedWorkId);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(performedWorkId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Работа",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != performedWorkId));
-                await UpdateArableLandBalance(this.SeedingId);
-                this.StateHasChanged();
+                if (await this.PerformedWorkService.Delete(performedWorkId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != performedWorkId));
+                    await UpdateArableLandBalance(this.SeedingId);
+                    this.StateHasChanged();
+                }
             }
         }
 

@@ -105,11 +105,6 @@ namespace WebUI.Pages.Seedings
             }
         }
 
-        public async Task<bool> DeleteTreatmentFunction(int performedWorkId)
-        {
-            return await this.TreatmentService.Delete(performedWorkId);
-        }
-
         private async Task UpdateArableLandBalance(int seedingId)
         {
             this.Dispatcher.Dispatch(
