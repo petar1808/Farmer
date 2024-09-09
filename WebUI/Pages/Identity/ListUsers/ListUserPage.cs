@@ -36,7 +36,7 @@ namespace WebUI.Pages.Identity.ListUsers
         public async Task CreateUser()
         {
             var dialogResult = await DialogService.OpenAsync<CreateUser>($"Добавяне на Потребител",
-              options: DialogOptionsHelper.GetCommonDialogOptions());
+              options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

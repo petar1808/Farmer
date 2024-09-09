@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
-using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
 using WebUI.Services.Article;
 using WebUI.ServicesModel.Article;
@@ -61,7 +60,7 @@ namespace WebUI.Pages.Articles
             var dialogResult = await DialogService.OpenAsync<DetailsArticle>(
                 $"Добавяне на {this.ArticleType.GetEnumDisplayName()}",
                 new Dictionary<string, object>() { { "ArticleType", articleType } },
-                options: DialogOptionsHelper.GetCommonDialogOptions());
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -74,7 +73,7 @@ namespace WebUI.Pages.Articles
             var dialogResult = await DialogService.OpenAsync<DetailsArticle>(
                 $"Редактиране на {this.ArticleType.GetEnumDisplayName()}",
                 new Dictionary<string, object>() { { "ArticleId", articleId } }, 
-                options: DialogOptionsHelper.GetCommonDialogOptions());
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

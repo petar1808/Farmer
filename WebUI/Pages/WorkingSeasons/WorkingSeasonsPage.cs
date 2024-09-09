@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
-using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
 using WebUI.Services.WorkingSeasons;
 using WebUI.ServicesModel.WorkingSeason;

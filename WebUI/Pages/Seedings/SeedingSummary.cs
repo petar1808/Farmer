@@ -63,12 +63,13 @@ namespace WebUI.Pages.Seedings
 
         public async Task OnEdit()
         {
-            var dialogResult = await DialogService.OpenAsync<SeedingSummary>($"Редактиране на Сеитба за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<SeedingSummary>(
+                $"Редактиране на Сеитба за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() {
                     { "SeedingId", SeedingId },
                     { "IsModal", true}
                 },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("500px").WithWidth("900px"));
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

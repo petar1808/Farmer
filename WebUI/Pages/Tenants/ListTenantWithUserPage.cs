@@ -24,7 +24,7 @@ namespace WebUI.Pages.Tenants
         public async Task CreateTenant()
         {
             var dialogResult = await DialogService.OpenAsync<CreateTenantDialog>($"Добавяне на Ораганизация",
-              options: DialogOptionsHelper.GetCommonDialogOptions());
+              options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -35,7 +35,7 @@ namespace WebUI.Pages.Tenants
         public async Task CreateAdmin()
         {
             var dialogResult = await DialogService.OpenAsync<CreateAdminDialog>($"Добавяне на Админ",
-              options: DialogOptionsHelper.GetCommonDialogOptions());
+              options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

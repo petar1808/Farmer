@@ -2,7 +2,7 @@
 
 namespace WebUI.Extensions
 {
-    public static class DialogOptionsHelper
+    public static class DialogHelper
     {
         public static DialogOptions GetCommonDialogOptions()
         {
@@ -14,32 +14,19 @@ namespace WebUI.Extensions
             };
         }
 
-        public static DialogOptions WithHeight(this DialogOptions options, string height)
+        public static async Task<bool?> ShowDeleteDialog(this DialogService dialogService, int recordId)
         {
-            options.Height = height;
-            return options;
-        }
-
-        public static DialogOptions WithWidth(this DialogOptions options, string width)
-        {
-            options.Width = width;
-            return options;
-        }
-
-
-        public static DialogOptions GetDeleteDialogDefaultOptions()
-        {
-            return new DialogOptions()
+            var confOptions = new ConfirmOptions()
             {
+                CancelButtonText = "Отказ",
+                OkButtonText = "Изтриване",
                 Draggable = true
             };
-        }
 
-        public static DialogOptions WithDefaultSize(this DialogOptions options)
-        {
-            options.Width = "500px";
-            options.Height = "170px";
-            return options;
+            return await dialogService.Confirm(
+                $"Сигурни ли сте че искате да <strong>изтриете</strong> запис с <strong>ИД:{recordId}</strong>",
+                "Внимание",
+                confOptions);
         }
     }
 }

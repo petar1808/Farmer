@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
-using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
 using WebUI.Pages.Seedings.Dialogs;
 using WebUI.Services.PerformedWork;
@@ -60,7 +59,7 @@ namespace WebUI.Pages.Seedings
             var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>(
                 $"Добавяне на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions());
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -73,7 +72,7 @@ namespace WebUI.Pages.Seedings
         {
             var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Редактиране на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
+              options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

@@ -87,7 +87,7 @@ namespace WebUI.Pages.Seedings
         {
             var response = await DialogService.OpenAsync<DetailsSeedingDialog>($"Добавяне на Земя",
                 parameters: new Dictionary<string, object>() { { "WorkingSeasonsId", WorkingSeasonsId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions());
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (response == true)
             {

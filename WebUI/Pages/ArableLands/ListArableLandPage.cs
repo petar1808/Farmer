@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
-using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
 using WebUI.Services.ArableLand;
 using WebUI.ServicesModel.ArableLand;
@@ -42,7 +41,7 @@ namespace WebUI.Pages.ArableLands
             var dialogResult = await DialogService.OpenAsync<DetailsArableLand>(
                 $"Редактиране на Земя",
                 new Dictionary<string, object>() { { "ArableLandId", arableLandId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions());
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -55,7 +54,7 @@ namespace WebUI.Pages.ArableLands
         {
             var dialogResult = await DialogService.OpenAsync<DetailsArableLand>(
                 $"Добавяне на Земя", 
-                options: DialogOptionsHelper.GetCommonDialogOptions());
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
