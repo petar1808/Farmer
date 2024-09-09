@@ -1,62 +1,135 @@
-﻿<style>
-	.page_404 {
-		padding: 40px 0;
-		background: #fff;
-		font-family: 'Arvo', serif;
-	}
+﻿@using Radzen.Blazor
+@inject NavigationManager NavigationManager
 
-	.page_404 img {
-		width: 100%;
-	}
+<style>
+    /* 404 Page Styles */
+    .page_404 {
+        padding: 40px 0;
+        background: #f3f4f6;
+        font-family: 'Arvo', serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
 
-	.four_zero_four_bg {
-		background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
-		height: 400px;
-		background-position: center;
-	}
+    .page_404 .four_zero_four_bg {
+        background-image: url('./assets/dribbble.gif');
+        background-position: center;
+        background-size: cover;
+        height: 550px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
 
-	.four_zero_four_bg h1 {
-		font-size: 80px;
-	}
+    .four_zero_four_bg h1 {
+        font-size: 120px;
+        color: #2c3e50;
+        font-weight: bold;
+        animation: pulse 1.5s infinite;
+    }
 
-	.four_zero_four_bg h3 {
-		font-size: 80px;
-	}
+    .page_404 .contant_box_404 {
+        text-align: center;
+    }
 
-	.link_404 {
-		color: #fff !important;
-		padding: 10px 20px;
-		background: #39ac31;
-		margin: 20px 0;
-		display: inline-block;
-	}
+    .page_404 h3 {
+        font-size: 36px;
+        color: #34495e;
+        margin-top: 20px;
+        font-weight: 600;
+    }
 
-	.contant_box_404 {
-		margin-top: -50px;
-	}
+    .page_404 p {
+        font-size: 18px;
+        color: #7f8c8d;
+        margin-bottom: 30px;
+    }
+
+    .link_404 {
+        color: #fff !important;
+        padding: 12px 25px;
+        background: #3498db;
+        display: inline-block;
+        text-transform: uppercase;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 50px;
+        transition: background-color 0.3s ease;
+    }
+
+    .link_404:hover {
+        background-color: #2980b9;
+        text-decoration: none;
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .page_404 .four_zero_four_bg {
+            height: 250px;
+        }
+
+        .four_zero_four_bg h1 {
+            font-size: 90px;
+        }
+
+        .page_404 h3 {
+            font-size: 28px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .four_zero_four_bg h1 {
+            font-size: 70px;
+        }
+
+        .page_404 h3 {
+            font-size: 24px;
+        }
+
+        .link_404 {
+            font-size: 14px;
+        }
+    }
 </style>
 
 <section class="page_404">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12 ">
-				<div class="col-sm-10 col-sm-offset-1  text-center">
-					<div class="four_zero_four_bg">
-						<h1 class="text-center ">404</h1>
-					</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="four_zero_four_bg">
+                    <h1 class="text-center">404</h1>
+                </div>
 
-					<div class="contant_box_404">
-						<h3 class="h2">
-							Изглежда сте се загубили
-						</h3>
+                <div class="contant_box_404">
+                    <h3 class="h3">
+                        Изглежда сте се загубили
+                    </h3>
 
-						<p>страницата която търсите не съществува!</p>
+                    <p>Страницата, която търсите, не съществува или е била премахната.</p>
 
-						<a href="" class="link_404">Назад</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    <RadzenButton Text="Назад към началото" Icon="home" Click="GoBack" />
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
+@code {
+    void GoBack()
+    {
+        // Navigate to the home page or desired route
+        NavigationManager.NavigateTo("/", forceLoad: true);
+    }
+}
