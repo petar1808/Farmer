@@ -40,22 +40,9 @@ namespace WebUI.Pages.Identity.Login
             }
         }
 
-        //protected override Task OnInitializedAsync()
-        //{
-        //    infoVisible = !string.IsNullOrEmpty(info);
-        //}
-
         public async Task OnResetPassword()
         {
-            var result = await DialogService.OpenAsync<ForgotPasswordPage>("Reset password");
-
-            //if (result == true)
-            //{
-            //    infoVisible = true;
-
-            //    info = "Password reset successfully. Please check your email for further instructions.";
-            //}
-            //NavigationManager.NavigateTo($"{NavigationManager.BaseUri}forgotPassword");
+            await DialogService.OpenAsync<ForgotPasswordPage>("Reset password");
         }
     }
 }
