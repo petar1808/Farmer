@@ -41,7 +41,6 @@ namespace WebUI.Pages.Seedings
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new DynamicDataGridColumnModel(nameof(SubsidiesModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход", "{0:0.00} лв.")
             };
@@ -81,32 +80,16 @@ namespace WebUI.Pages.Seedings
             }
         }
 
-        public async Task<bool> DeleteSubsidyFunction(int subsidyId)
-        {
-            return await this.SubsidyService.Delete(subsidyId);
-        }
-
         public async Task DeleteSubsidy(int subsidyId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(subsidyId) == true)
             {
-                var funcResult = DeleteSubsidyFunction(subsidyId);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(subsidyId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Субсидия",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != subsidyId));
-                await UpdateArableLandBalance(this.SeedingId);
-                this.StateHasChanged();
+                if (await this.SubsidyService.Delete(subsidyId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != subsidyId));
+                    await UpdateArableLandBalance(this.SeedingId);
+                    this.StateHasChanged();
+                }
             }
         }
 
