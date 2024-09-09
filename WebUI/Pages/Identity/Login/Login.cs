@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Radzen;
+using WebUI.Pages.Identity.User;
 using WebUI.Services.Identity;
 
 namespace WebUI.Pages.Identity.Login
@@ -18,9 +19,14 @@ namespace WebUI.Pages.Identity.Login
         public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
+        protected DialogService DialogService { get; set; }
+
+        [Inject]
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
         public LoginInputModel LoginInput { get; set; } = new LoginInputModel();
+
+        protected bool infoVisible;
 
         public async Task OnLogin(LoginArgs args)
         {
@@ -34,9 +40,9 @@ namespace WebUI.Pages.Identity.Login
             }
         }
 
-        public void OnResetPassword()
+        public async Task OnResetPassword()
         {
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}forgotPassword");
+            await DialogService.OpenAsync<ForgotPasswordPage>("Reset password");
         }
     }
 }

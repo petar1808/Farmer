@@ -18,9 +18,12 @@ namespace WebUI.Pages.Identity.User
 
         public ForgotPasswordModel ForgotPasswordModel { get; set; } = new ForgotPasswordModel();
 
+        [Inject]
+        public DialogService DialogService { get; set; } = default!;
+
         public void OnClose()
         {
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}/login");
+            DialogService.Close(false);
         }
 
         protected async Task OnSubmit(ForgotPasswordModel forgotPasswordModel)
@@ -37,10 +40,9 @@ namespace WebUI.Pages.Identity.User
                     Detail = "Ако вашият имейл съществува в ситемата ще получите имейл с инструкции",
                     Duration = 10000
                 });
-                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}login");
             }
 
-            NavigationManager.NavigateTo(NavigationManager.Uri);
+            DialogService.Close(false);
         }
     }
 }
