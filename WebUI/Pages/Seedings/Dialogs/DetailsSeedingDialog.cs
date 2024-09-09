@@ -19,14 +19,14 @@ namespace WebUI.Pages.Seedings.Dialogs
 
         public List<SelectionListModel> ArableLands { get; set; } = new List<SelectionListModel>();
 
-        public AddSeedingModel AddSeeding { get; set; } = new AddSeedingModel();
+        public AddSeedingModel Seeding { get; set; } = new AddSeedingModel();
 
         public int SelectedArableLandId { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
             ArableLands = await SeedingService.GetAvailableArableLandSeeds(WorkingSeasonsId);
-            AddSeeding.WorkingSeasonId = WorkingSeasonsId;
+            Seeding.WorkingSeasonId = WorkingSeasonsId;
         }
 
         public void OnClose()
