@@ -41,6 +41,7 @@ namespace Application.Features.Treatments.Queries.List
 
                 var result = await mapper
                     .ProjectTo<TreatmentListQueryOutputModel>(treatment)
+                    .OrderByDescending(x => x.Date)
                     .ToListAsync(cancellationToken);
 
                 return result;

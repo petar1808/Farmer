@@ -41,6 +41,7 @@ namespace Application.Features.Subsidies.Queries.List
 
                 var result = await mapper
                     .ProjectTo<CommonSubsidyOutputQueryModel>(subsidy)
+                    .OrderByDescending(x => x.Date)
                     .ToListAsync(cancellationToken);
 
                 return result;

@@ -5,7 +5,7 @@
     <div class="row py-5">
         <div class="col">
              <RadzenCard>
-                <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                <RadzenButton ButtonStyle="ButtonStyle.Primary"
                               Icon="add_circle_outline"
                               style="margin-bottom: 10px; margin-left:10px"
                               Text="Добави Сезон"
@@ -50,15 +50,22 @@
                                     <div class="col-md-3 p-3">
                                         <div class="row d-flex">
                                             <div class="col-md-2">
-                                                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Class="mb-0"
-                                                            Click="async() =>  await EditWorkingSeason(WorkingSeasonBalance.Id)" />
+                                                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit"
+                                                              Size="ButtonSize.Medium"
+                                                              Shade="Shade.Lighter" Variant="Variant.Flat"
+                                                              Click="async() =>  await EditWorkingSeason(WorkingSeasonBalance.Id)" />
                                             </div>
                                             <div class="col-md-2">
-                                                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Class="mb-0"
-                                                            Click="async() =>await DeleteWorkingSeason(WorkingSeasonBalance.Id)" />
+                                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete"
+                                                              Size="ButtonSize.Medium"
+                                                              Shade="Shade.Lighter" Variant="Variant.Flat"
+                                                              Click="async() =>await DeleteWorkingSeason(WorkingSeasonBalance.Id)" />
                                             </div>
                                             <div class="col-md-8">
-                                                <RadzenButton Icon="agriculture" Text="Към дейности" Class="w-100" Click="() => ToSeeding(WorkingSeasonBalance.Id)" />
+                                                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="agriculture" 
+                                                              Text="Към дейности"
+                                                              Size="ButtonSize.Medium"
+                                                              Click="() => ToSeeding(WorkingSeasonBalance.Id)" />
                                             </div>
                                         </div>
                                     </div>

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
-using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
 using WebUI.Pages.Seedings.Dialogs;
 using WebUI.Services.Seeding;
@@ -41,11 +40,11 @@ namespace WebUI.Pages.Seedings
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new DynamicDataGridColumnModel(nameof(SubsidiesModel.Id), "Ид"),
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход", "{0:0.00} лв.")
             };
-            DataGrid = new DynamicDataGridModel<SubsidiesModel>(await SubsidyService.List(SeedingId), columns)
+            DataGrid = new DynamicDataGridModel<SubsidiesModel>(await SubsidyService.List(SeedingId), columns, "Субсидии")
+                .WithAdd(async () => await AddSubsidy())
                 .WithEdit(async (x) => await EditSubsidy(x))
                 .WithDelete(async (x) => await DeleteSubsidy(x))
                 .WithPaging()
@@ -56,7 +55,7 @@ namespace WebUI.Pages.Seedings
         {
             var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>($"Добавяне на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("580px"));
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -70,7 +69,7 @@ namespace WebUI.Pages.Seedings
         {
             var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>($"Редактиране на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "SubsidyId", subsidyId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("300px").WithWidth("580px"));
+              options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -80,32 +79,16 @@ namespace WebUI.Pages.Seedings
             }
         }
 
-        public async Task<bool> DeleteSubsidyFunction(int subsidyId)
-        {
-            return await this.SubsidyService.Delete(subsidyId);
-        }
-
         public async Task DeleteSubsidy(int subsidyId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(subsidyId) == true)
             {
-                var funcResult = DeleteSubsidyFunction(subsidyId);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(subsidyId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Субсидия",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != subsidyId));
-                await UpdateArableLandBalance(this.SeedingId);
-                this.StateHasChanged();
+                if (await this.SubsidyService.Delete(subsidyId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != subsidyId));
+                    await UpdateArableLandBalance(this.SeedingId);
+                    this.StateHasChanged();
+                }
             }
         }
 

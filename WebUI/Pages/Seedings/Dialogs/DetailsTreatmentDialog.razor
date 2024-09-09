@@ -2,105 +2,83 @@
 @using WebUI.ServicesModel.Тreatment
 @attribute [Authorize]
 
-
-@if (@Treatment is not null)
-{
-    <RadzenTemplateForm TItem="ТreatmentDetailsModel" Data=@Treatment Submit=@OnSubmit>
-        <RadzenFieldset>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Дата" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block" Name="Date" @bind-Value=@Treatment.Date Class="w-100" />
+<RadzenColumn SizeMD=12>
+    <RadzenTemplateForm TItem="ТreatmentDetailsModel" Data=@Treatment Visible="@(Treatment is not null)" Submit=@OnSubmit>
+        <RadzenStack>
+            <RadzenFormField Text="Дата" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block; width: 100%" Name="Date" @bind-Value=@Treatment.Date />
+                </ChildContent>
+                <Helper>
                     <RadzenRequiredValidator Component="Date" Text="Датата е задължителна" Style="position: absolute" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Тип третиране" />
-                </div>
-                <div class="col-md-6">
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Тип третиране" Variant="Variant.Filled">
+                <ChildContent>
                     <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                Data=@TreatmentTypes
-                                @bind-Value=@Treatment.TreatmentType
-                                ValueProperty="Value"
-                                TextProperty="Name"
-                                Name="TreatmentType"
-                                Change=@(args => OnDropDownChangeTreatmentType(args)) Class="w-100" />
-                    ​<div>
-                        <RadzenRequiredValidator Component="TreatmentType" Text="Тип третиране е задължителен" DefaultValue="0"/>
-                    </div>
-                </div>
-            </div>
+                                    Data=@TreatmentTypes
+                                    @bind-Value=@Treatment.TreatmentType
+                                    ValueProperty="Value"
+                                    TextProperty="Name"
+                                    Name="TreatmentType"
+                                    Change=@(args => OnDropDownChangeTreatmentType(args)) Class="w-100" />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="TreatmentType" Text="Тип третиране е задължителен" DefaultValue="0" />
+                </Helper>
+            </RadzenFormField>
             @if (Treatment.TreatmentType != 0)
             {
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <RadzenLabel Text="@treatmentTypePlaceholder" />
-                    </div>
-                    <div class="col-md-6">
+                <RadzenFormField Text="@treatmentTypePlaceholder" Variant="Variant.Filled">
+                    <ChildContent>
                         <RadzenDropDown Data=@Articles
-                                @bind-Value=@Treatment.ArticleId
-                                ValueProperty="Value"
-                                TextProperty="Name"
-                                Name="Article"
-                                Change=@(args => OnDropDownChangeTreatmentArticleType(args)) Class="w-100" />
-                        ​<div>
-                            <RadzenRequiredValidator Component="Article" Text=@($"Тип {treatmentTypePlaceholder} е задължителен") DefaultValue="0"/>
-                        </div>
-                    </div>
-                </div>
+                                        @bind-Value=@Treatment.ArticleId
+                                        ValueProperty="Value"
+                                        TextProperty="Name"
+                                        Name="Article"
+                                        Change=@(args => OnDropDownChangeTreatmentArticleType(args)) Class="w-100" />
+                    </ChildContent>
+                    <Helper>
+                        <RadzenRequiredValidator Component="Article" Text=@($"Тип {treatmentTypePlaceholder} е задължителен") DefaultValue="0" />
+                    </Helper>
+                </RadzenFormField>
             }
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="@($"Количество {treatmentTypePlaceholder} на декар в кг/л")" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="ArticleQuantity" @bind-Value=@Treatment.ArticleQuantity Class="w-100" />
+            <RadzenFormField Text="@($"Количество {treatmentTypePlaceholder} на декар в кг/л")" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenNumeric style="display: block; width: 100%" Name="ArticleQuantity" @bind-Value=@Treatment.ArticleQuantity />
+                </ChildContent>
+                <Helper>
                     <NumericRangeValidator Component="ArticleQuantity" Text=@($"Количество {treatmentTypePlaceholder} е трябва да е положително число") Min="0" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="@($"Цена на {treatmentTypePlaceholder} за кг/л")" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric  style="display: block"  Name="ArticlePrice" @bind-Value=@Treatment.ArticlePrice Class="w-100" />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="@($"Цена на {treatmentTypePlaceholder} за кг/л")" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenNumeric style="display: block; width: 100%" Name="ArticlePrice" @bind-Value=@Treatment.ArticlePrice />
+                </ChildContent>
+                <Helper>
                     <NumericRangeValidator Component="ArticlePrice" Text=@($"Цената на {treatmentTypePlaceholder} е трябва да е положително число") Min="0" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Количество гориво общо в литра" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="AmountOfFuel" @bind-Value=@Treatment.AmountOfFuel Class="w-100" />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Количество гориво общо в литра" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenNumeric style="display: block; width: 100%" Name="AmountOfFuel" @bind-Value=@Treatment.AmountOfFuel />
+                </ChildContent>
+                <Helper>
                     <NumericRangeValidator Component="AmountOfFuel" Text="Количество гориво трябва да е положително число" Min="0" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Цена на гориво на литър в лв." />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="FuelPrice" Step="any" @bind-Value=@Treatment.FuelPrice Class="w-100" />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Цена на гориво на литър в лв." Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenNumeric style="display: block; width: 100%" Name="FuelPrice" Step="any" @bind-Value=@Treatment.FuelPrice />
+                </ChildContent>
+                <Helper>
                     <NumericRangeValidator Component="FuelPrice" Text="Цената трябва да е положително число" Min="0" />
-                </div>
-            </div>
-            <div class="row mb-1">
-                <div class="col-md-5">
-                    @if (TreatmentId == 0)
-                    {
-                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                    }
-                    else
-                    {
-                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
-                    }
-                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
-                </div>
-            </div>
-        </RadzenFieldset>
+                </Helper>
+            </RadzenFormField>
+        </RadzenStack>
+        <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(TreatmentId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
+        </RadzenStack>
     </RadzenTemplateForm>
-}
+</RadzenColumn>

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
-using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
 using WebUI.Pages.Seedings.Dialogs;
 using WebUI.Services.Seeding;
@@ -53,7 +52,8 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв.", width:"150px"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход", "{0:0.00} лв."),
             };
-            DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns)
+            DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns, "Третиране")
+                .WithAdd(async () => await AddTreatment())
                 .WithEdit(async (x) => await EditTreatment(x))
                 .WithDelete(async (x) => await DeleteTreatment(x))
                 .WithPaging()
@@ -64,9 +64,10 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddTreatment()
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>($"Добавяне на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
-                new Dictionary<string, object>() { { "SeedingId", SeedingId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
+            var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>(
+                $"Добавяне на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
+                new Dictionary<string, object>() { { "SeedingId", SeedingId } }, 
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -80,7 +81,7 @@ namespace WebUI.Pages.Seedings
         {
             var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>($"Редактиране на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "TreatmentId", treatmentId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("600px").WithWidth("600px"));
+              options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -92,31 +93,15 @@ namespace WebUI.Pages.Seedings
 
         public async Task DeleteTreatment(int treatmentId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(treatmentId) == true)
             {
-                var funcResult = DeleteTreatmentFunction(treatmentId);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(treatmentId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Третиране",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != treatmentId));
-                await UpdateArableLandBalance(this.SeedingId);
-                this.StateHasChanged();
+                if (await this.TreatmentService.Delete(treatmentId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != treatmentId));
+                    await UpdateArableLandBalance(this.SeedingId);
+                    this.StateHasChanged();
+                }
             }
-        }
-
-        public async Task<bool> DeleteTreatmentFunction(int performedWorkId)
-        {
-            return await this.TreatmentService.Delete(performedWorkId);
         }
 
         private async Task UpdateArableLandBalance(int seedingId)

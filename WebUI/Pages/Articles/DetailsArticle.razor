@@ -1,52 +1,24 @@
 ﻿@using WebUI.ServicesModel.Article
 @attribute [Authorize]
 
-@if (@Article is not null)
-{
-    <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Submit=@OnSubmit>
-        <RadzenFieldset>
-@*             <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Тип" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenDropDown
-                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                Data=@ArticleTypes
-                                @bind-Value=@Article.ArticleType
-                                ValueProperty="Value"
-                                TextProperty="Name"
-                                Name="ArticleType"
-                                Change=@(args => OnDropDownChange(args)) Class="w-100" />
-                    ​<div>
-                        <RadzenRequiredValidator Component="ArticleType" Text="Тип артикул е задължителен" DefaultValue="0" />
-                    </div>
-                </div>
-            </div> *@
+<RadzenColumn SizeMD=12>
+    <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Visible="@(Article is not null)" Submit="@OnSubmit">
+        <RadzenStack>
             <RadzenNumeric hidden Name="ArticleType" @bind-Value=@Article.ArticleType Class="w-100" />
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Име" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenTextBox style="display: block" Name="Name" @bind-Value=@Article.Name Class="w-100" />
+            <RadzenFormField Text="Име" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value=@Article.Name Name="Name" />
+                </ChildContent>
+                <Helper>
                     <RadzenLengthValidator Component="Name" Min="2" Text="Името трябва да съдържа поне 2 знака" Style="position: absolute" />
-                    <RadzenLengthValidator Component="Name" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style ="position: absolute" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-5">
-                    @if (ArticleId == 0)
-                    {
-                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                    }
-                    else
-                    {
-                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
-                    }
-                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
-                </div>
-            </div>
-        </RadzenFieldset>
+                    <RadzenLengthValidator Component="Name" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style="position: absolute" />
+                </Helper>
+            </RadzenFormField>
+        </RadzenStack>
+        <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(ArticleId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
+        </RadzenStack>
     </RadzenTemplateForm>
-}
+</RadzenColumn>
+

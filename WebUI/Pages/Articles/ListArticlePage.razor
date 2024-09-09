@@ -4,15 +4,13 @@
 @using WebUI.Components.DataGrid
 @attribute [Authorize]
 
-<h2 class="text-center"> @this.ArticleType.GetEnumDisplayName() </h2>
-
+<PageTitle>@this.ArticleType.GetEnumDisplayName()</PageTitle>
 @if (DataGrid is null)
 {
     <div class="loader"></div>
 }
 else
 {
-    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => AddArticle(this.ArticleType))"/>
     <DynamicDataGrid TData="ListArticleModel" Data="@DataGrid"></DynamicDataGrid>
 }
 

@@ -41,6 +41,7 @@ namespace Application.Features.PerformedWorks.Queries.List
 
                 var result = await mapper
                     .ProjectTo<PerformedWorkListQueryOutputModel>(performedWork)
+                    .OrderByDescending(x => x.Date)
                     .ToListAsync(cancellationToken);
 
                 return result;

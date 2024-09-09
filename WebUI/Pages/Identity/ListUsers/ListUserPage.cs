@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
+using WebUI.Extensions;
 using WebUI.Services.Identity;
 using WebUI.ServicesModel.Identity;
 
@@ -35,7 +36,7 @@ namespace WebUI.Pages.Identity.ListUsers
         public async Task CreateUser()
         {
             var dialogResult = await DialogService.OpenAsync<CreateUser>($"Добавяне на Потребител",
-              options: new DialogOptions() { Width = "600px", Height = "330px" });
+              options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {

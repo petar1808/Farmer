@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
-using WebUI.Components.DeleteModal;
 using WebUI.Extensions;
 using WebUI.Pages.Seedings.Dialogs;
 using WebUI.Services.PerformedWork;
@@ -47,23 +46,20 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.AmountOfFuel), "Количество гориво общо", "{0:0.00} л."),
                 new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв."),
             };
-            DataGrid = new DynamicDataGridModel<ListPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns)
+            DataGrid = new DynamicDataGridModel<ListPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns, "Обработки")
+                .WithAdd(async () => await AddPerformedWork())
                 .WithEdit(async (x) => await EditPerformedWork(x))
                 .WithDelete(async (x) => await DeletePerformedWork(x))
                 .WithPaging()
                 .WithSorting();
         }
 
-        public async Task<bool> DeletePerformedWorkFunction(int performedWorkId)
-        {
-            return await this.PerformedWorkService.Delete(performedWorkId);
-        }
-
         public async Task AddPerformedWork()
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Добавяне на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>(
+                $"Добавяне на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
-                options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
+                options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -76,7 +72,7 @@ namespace WebUI.Pages.Seedings
         {
             var dialogResult = await DialogService.OpenAsync<DetailsPerformedWorkDialog>($"Редактиране на Обработка за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "PerformedWorkId", performedWorkId } },
-              options: DialogOptionsHelper.GetCommonDialogOptions().WithHeight("435px").WithWidth("600px"));
+              options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
@@ -88,25 +84,14 @@ namespace WebUI.Pages.Seedings
 
         public async Task DeletePerformedWork(int performedWorkId)
         {
-            Func<int, Task<bool>> deleteFunction = (id) =>
+            if (await DialogService.ShowDeleteDialog(performedWorkId) == true)
             {
-                var funcResult = DeletePerformedWorkFunction(performedWorkId);
-                return funcResult;
-            };
-
-            var deleteModel = new DeleteModalModel(performedWorkId, deleteFunction);
-            var dialogResult = await DialogService.OpenAsync<DeleteModal>($"Работа",
-              new Dictionary<string, object>()
-              {
-                    { "ModelInput", deleteModel }
-              },
-              options: DialogOptionsHelper.GetDeleteDialogDefaultOptions().WithDefaultSize());
-
-            if (dialogResult == true)
-            {
-                DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != performedWorkId));
-                await UpdateArableLandBalance(this.SeedingId);
-                this.StateHasChanged();
+                if (await this.PerformedWorkService.Delete(performedWorkId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != performedWorkId));
+                    await UpdateArableLandBalance(this.SeedingId);
+                    this.StateHasChanged();
+                }
             }
         }
 

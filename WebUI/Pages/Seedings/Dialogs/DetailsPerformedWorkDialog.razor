@@ -2,69 +2,51 @@
 @using WebUI.ServicesModel.PerformedWork
 @attribute [Authorize]
 
-@if (PerformedWork is not null)
-{
-    <RadzenTemplateForm TItem="PerformedWorkDatailsModel" Data=@PerformedWork Submit=@OnSubmit>
-        <RadzenFieldset>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Дата" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block" Name="Date" @bind-Value=@PerformedWork.Date Class="w-100" />
+<RadzenColumn SizeMD=12>
+    <RadzenTemplateForm TItem="PerformedWorkDatailsModel" Data=@PerformedWork Visible=@(PerformedWork is not null) Submit=@OnSubmit>
+        <RadzenStack>
+            <RadzenFormField Text="Дата" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block; width: 100%" Name="Date" @bind-Value=@PerformedWork.Date />
+                </ChildContent>
+                <Helper>
                     <RadzenRequiredValidator Component="Date" Text="Датата е задължителна" Style="position: absolute" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Тип обработка" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenDropDown
-                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                Data=@WorkTypes
-                                @bind-Value=@PerformedWork.WorkType
-                                ValueProperty="Value"
-                                TextProperty="Name"
-                                Name="WorkType"
-                                Change=@(args => OnDropDownChange(args)) Class="w-100" />
-                    ​<div>
-                        <RadzenRequiredValidator Component="WorkType" Text="Тип работа е задължителен" DefaultValue="0" />
-                    </div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Количество гориво общо в литра" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric style="display: block"  Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel Class="w-100" />
-                    ​<NumericRangeValidator Component="AmountOfFuel" Text="Гориво трябва да е положително число" Min="0" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <RadzenLabel Text="Цена на гориво на литър в лв." />
-                </div>
-                <div class="col-md-6">
-                    <RadzenNumeric style="display: block" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice Class="w-100" />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Тип обработка" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data=@WorkTypes
+                                    @bind-Value=@PerformedWork.WorkType
+                                    ValueProperty="Value"
+                                    TextProperty="Name"
+                                    Name="WorkType"
+                                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="WorkType" Text="Тип работа е задължителен" DefaultValue="0" />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Количество гориво общо в литра" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenNumeric style="display: block; width: 100%" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel />
+                </ChildContent>
+                <Helper>
+                    <NumericRangeValidator Component="AmountOfFuel" Text="Гориво трябва да е положително число" Min="0" />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Цена на гориво на литър в лв." Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenNumeric style="display: block; width: 100%" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice />
+                </ChildContent>
+                <Helper>
                     <NumericRangeValidator Component="FuelPrice" Text="Цената на горивото трябва да е положително число" Min="0" />
-                </div>
-            </div>
-            <div class="row mb-1">
-                <div class="col-md-5">
-                    @if (PerformedWorkId == 0)
-                    {
-                        <RadzenButton ButtonType="ButtonType.Submit" Text="Добави"></RadzenButton>
-                    }
-                    else
-                    {
-                        <RadzenButton ButtonType="ButtonType.Submit" Text="Редактирай"></RadzenButton>
-                    }
-                    <RadzenButton Text="Назад" Click=@OnClose ButtonStyle="ButtonStyle.Secondary" />
-                </div>
-            </div>
-        </RadzenFieldset>
+                </Helper>
+            </RadzenFormField>
+        </RadzenStack>
+        <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(PerformedWorkId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
+        </RadzenStack>
     </RadzenTemplateForm>
-}
-
+</RadzenColumn>
