@@ -25,7 +25,9 @@ namespace Application.Features.ArableLands.Queries.List
             {
                 var arableLands = farmerDbContext.ArableLands.AsQueryable();
 
-                var result = await mapper.ProjectTo<CommonArableLandOutputQueryModel>(arableLands).ToListAsync(cancellationToken);
+                var result = await mapper.ProjectTo<CommonArableLandOutputQueryModel>(arableLands)
+                    .OrderByDescending(x => x.Id)
+                    .ToListAsync(cancellationToken);
 
                 return result;
             }

@@ -18,6 +18,7 @@ namespace Application.Features.PerformedWorks.Queries.ListWorkType
                     return EnumHelper
                             .GetAllNamesAndValues<WorkType>()
                             .Select(x => new WorkTypeOutputQueryModel(x.Key, x.Value))
+                            .OrderBy(x => x.Name)
                             .ToList();
                 });
 

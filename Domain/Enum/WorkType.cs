@@ -15,6 +15,8 @@ namespace Domain.Enum
         [Description("Сеитба")]
         Sowing,
         [Description("Сечка")]
-        Felling
+        Felling,
+        [Description("Окопаване")]
+        Hoeing
     }
 }
