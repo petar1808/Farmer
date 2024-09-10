@@ -5,7 +5,7 @@ using WebUI.ServicesModel.Identity;
 
 namespace WebUI.Pages.Identity.User
 {
-    public partial class ForgotPasswordPage
+    public partial class ForgotPassword
     {
         [Inject]
         public IIdentityService IdentityService { get; set; } = default!;

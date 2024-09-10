@@ -8,6 +8,8 @@
 @inherits LayoutComponentBase
 @inject NavMenuService NavMenuService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILocalStorageService LocalStorageService;
+@inject NavigationManager UriHelper
 
 <RadzenDialog />
 <RadzenNotification />
@@ -16,17 +18,25 @@
 
 <RadzenLayout>
     <RadzenHeader>
-        <ChildContent>
-            <div class="row justify-content-start align-items-center">
-                <div class="col-5 d-flex align-items-center">
-                    <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
-                    </RadzenSidebarToggle>
-                    <RadzenLabel Text=@($"Фермер - {tenantName}")>
-                    </RadzenLabel>
-                </div>
-                <HeaderUserSection></HeaderUserSection>
-            </div>
-        </ChildContent>
+        <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="0">
+            <RadzenColumn Size="5">
+                <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })"></RadzenSidebarToggle>
+            </RadzenColumn>
+            <RadzenColumn Size="7">
+                <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
+                    <RadzenProfileMenu Visible="@isAuthenticated" Click="@ProfileMenuClick">
+                        <ChildContent>
+                            <RadzenProfileMenuItem Text="Смяна на парола" Value="ChangePassword" Icon="lock_reset" />
+                            <RadzenProfileMenuItem Text="Излез" Value="Logout" Icon="power_settings_new" />
+                        </ChildContent>
+                        <Template>
+                            @userName
+                            <RadzenIcon Icon="account_box" />
+                        </Template>
+                    </RadzenProfileMenu>
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
     </RadzenHeader>
     <RadzenBody @ref="@body0" @bind-Expanded="@bodyExpanded">
         <ChildContent>
@@ -81,7 +91,9 @@
 
     RadzenSidebar? sidebar0 = default!;
     RadzenBody? body0 = default!;
-    string tenantName = "";
+    string tenantName = default!;
+    bool isAuthenticated = false;
+    string userName = default!;
 
     IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
 
@@ -89,14 +101,31 @@
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-        var role = authState.User?.Claims?.FirstOrDefault(c => c.Type.ToLower() == "role")?.Value;
-        tenantName = authState.User?.Claims?.FirstOrDefault(c => c.Type.ToLower() == "tenantname")?.Value!;
+        isAuthenticated = authState?.User?.Identity?.IsAuthenticated ?? false;
+
+        var role = authState?.User?.Claims?.FirstOrDefault(c => c.Type.ToLower() == "role")?.Value;
+        tenantName = authState?.User?.Claims?.FirstOrDefault(c => c.Type.ToLower() == "tenantname")?.Value ?? "";
+        userName = authState?.User?.Claims?.FirstOrDefault(c => c.Type.ToLower() == "name")?.Value ?? "";
 
         if (role is not null)
         {
             menuItems = NavMenuService.GetMenuItems(role);
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        }
+    }
+
+    protected async Task ProfileMenuClick(RadzenProfileMenuItem args)
+    {
+        if (args.Value == "Logout")
+        {
+            await LocalStorageService.RemoveItemAsync("token");
+
+            UriHelper.NavigateTo($"{UriHelper.BaseUri}login");
+        }
+        if (args.Value == "ChangePassword")
+        {
+            UriHelper.NavigateTo($"{UriHelper.BaseUri}changePassword");
         }
     }
 }
