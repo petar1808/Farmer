@@ -1,15 +1,19 @@
 ﻿@page "/"
 @attribute [Authorize]
 <PageTitle>Фермер</PageTitle>
-
-@* Importing the necessary CSS *@
 @using Radzen
 
-<div class="content">
-    <RadzenCard class="rz-shadow-10 rz-border-radius-10" Style="padding: 2rem; background-color: #f8f9fa;">
-        <div style="text-align: center;">
-            <h1 class="rz-text-primary">Добре дошли, Фермери!</h1>
-            <p style="font-size: 1.25rem;">Радваме се, че сте тук. Започнете да управлявате вашата ферма с лекота и ефективност.</p>
-        </div>
-    </RadzenCard>
-</div>
+<PageTitle>Начало</PageTitle>
+
+<RadzenRow Gap="5" RowGap="5">
+    <RadzenColumn Size="12">
+        <RadzenText Text="Добре дошли, Фермери!" TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+        <RadzenText Text="Радваме се, че сте тук." TextStyle="Radzen.Blazor.TextStyle.H4" TagName="Radzen.Blazor.TagName.H2" class="mt-5"></RadzenText>
+        <RadzenText Text="Започнете да управлявате вашата ферма с лекота и ефективност." TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto" class="mt-4" Style="font-size: 20px; line-height: 24px"></RadzenText>
+    </RadzenColumn>
+</RadzenRow>
+@* <RadzenRow >
+    <RadzenStack AlignItems="AlignItems.Center" class="rz-mx-auto rz-my-12">
+        <RadzenImage Path="./assets/Farmer-logo.png" Style="width: 15rem;"/>
+    </RadzenStack>
+</RadzenRow> *@

@@ -42,7 +42,7 @@ namespace WebUI.Pages.Identity.Login
 
         public async Task OnResetPassword()
         {
-            await DialogService.OpenAsync<ForgotPasswordPage>("Reset password");
+            await DialogService.OpenAsync<ForgotPassword>("Забравена парола");
         }
     }
 }
