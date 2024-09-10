@@ -27,8 +27,9 @@ namespace WebUI.Pages.Identity.ListUsers
             };
             DataGrid = new DynamicDataGridModel<ListUserModel>(
                     await IdentityService.ListUser(),
-                    columns)
-                .WithFiltering()
+                    columns,
+                    "Потребители")
+                .WithAdd(async () => await CreateUser())
                 .WithPaging()
                 .WithSorting();
         }

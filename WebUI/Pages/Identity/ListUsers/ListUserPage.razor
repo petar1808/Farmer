@@ -5,8 +5,11 @@
 
 <PageTitle>Потребители</PageTitle>
 
-<h2 class="text-center"> Потребители </h2>
-
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добави" Click="@(() => CreateUser())"/>
-
-<DynamicDataGrid TData="ListUserModel" Data="@DataGrid"></DynamicDataGrid>
+@if (DataGrid is null)
+{
+    <div class="loader"></div>
+}
+else
+{
+    <DynamicDataGrid TData="ListUserModel" Data="@DataGrid"></DynamicDataGrid>
+}
