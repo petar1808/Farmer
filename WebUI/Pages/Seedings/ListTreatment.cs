@@ -44,13 +44,13 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Тип"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Артикул", width:"170px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Кол. на декар", "{0:0.00} кг/л.", width:"130px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена за кг/л.", "{0:0.00} лв." , width:"130px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Изразходвано гориво", "{0:0.00} л." , width:"170px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво", "{0:0.00} лв.", width:"130px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePriceTotal), "Разход за артикул", "{0:0.00} лв." , width:"150px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво", "{0:0.00} лв.", width:"150px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход", "{0:0.00} лв."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Кол. на декар", "{0:n2} кг/л.", width:"130px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена за кг/л.", "{0:n2} лв." , width:"130px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Изразходвано гориво", "{0:n2} л." , width:"170px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво", "{0:n2} лв.", width:"130px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePriceTotal), "Разход за артикул", "{0:n2} лв." , width:"150px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво", "{0:n2} лв.", width:"150px"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход", "{0:n2}n2 лв."),
             };
             DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns, "Третиране")
                 .WithAdd(async () => await AddTreatment())
