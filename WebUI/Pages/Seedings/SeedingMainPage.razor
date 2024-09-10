@@ -32,7 +32,7 @@
                         <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H3">Приходи</RadzenText>
                     </div>
                     <div class="col">
-                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@(SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Income.ToString() + "лв")" />
+                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@($"{SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Income:n0} лв")" />
                     </div>
                 </div>     
             </RadzenCard>
@@ -44,7 +44,7 @@
                         <RadzenText TextStyle="TextStyle.H5">Разходи</RadzenText>
                     </div>
                     <div class="col">
-                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@(SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Expenses.ToString() + "лв")" />
+                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@($"{SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Expenses:n0} лв")" />
                     </div>
                 </div>     
             </RadzenCard>
@@ -56,7 +56,7 @@
                         <RadzenText TextStyle="TextStyle.H5">Печалба</RadzenText>
                     </div>
                     <div class="col">
-                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@(SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Profit.ToString() + "лв")" />
+                        <RadzenText TextStyle="TextStyle.H5" class="float-right" Text="@($"{SeedingArableLandBalanceState.Value.ArableLandBalanceModelCurrentState.Profit:n0} лв")" />
                     </div>
                 </div>
             </RadzenCard>

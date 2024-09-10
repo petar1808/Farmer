@@ -41,7 +41,7 @@ namespace WebUI.Pages.Seedings
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход", "{0:0.00} лв.")
+                new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход", "{0:n2} лв.")
             };
             DataGrid = new DynamicDataGridModel<SubsidiesModel>(await SubsidyService.List(SeedingId), columns, "Субсидии")
                 .WithAdd(async () => await AddSubsidy())

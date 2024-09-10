@@ -37,15 +37,15 @@
                                         <div class="row d-flex">
                                             <div class="col-md-4" style="text-align: right;">
                                                 <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Приход:</RadzenText>
-                                                <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Income} лв") />
+                                                <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Income:n0} лв") />
                                             </div>
                                             <div class="col-md-4" style="text-align: right;">
                                                 <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Разход:</RadzenText>
-                                                <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Expenses} лв") />
+                                                <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Expenses:n0} лв") />
                                             </div>
                                             <div class="col-md-4" style="text-align: right;">
                                                 <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Печалба:</RadzenText>
-                                                    <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Profit} лв") />
+                                                    <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Shade="Shade.Light" Class="price-badge" Text=@($"{WorkingSeasonBalance.Profit:n0} лв") />
                                             </div>
                                         </div>
                                     </div>
