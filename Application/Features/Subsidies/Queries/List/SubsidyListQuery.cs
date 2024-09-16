@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Subsidies.Queries.List
 {
-    public class SubsidyListQuery : IRequest<Result<List<CommonSubsidyOutputQueryModel>>>
+    public class SubsidyListQuery : IRequest<Result<List<ListSubsidyOutputQueryModel>>>
     {
-        public int SeedingId { get; set; }
+        public int SeasonId { get; set; }
 
-        public class SubsidyListQueryHandler : IRequestHandler<SubsidyListQuery, Result<List<CommonSubsidyOutputQueryModel>>>
+        public class SubsidyListQueryHandler : IRequestHandler<SubsidyListQuery, Result<List<ListSubsidyOutputQueryModel>>>
         {
             private readonly IFarmerDbContext farmerDbContext;
             private readonly IMapper mapper;
@@ -21,28 +21,39 @@ namespace Application.Features.Subsidies.Queries.List
                 this.mapper = mapper;
             }
 
-            public async Task<Result<List<CommonSubsidyOutputQueryModel>>> Handle(
+            public async Task<Result<List<ListSubsidyOutputQueryModel>>> Handle(
                 SubsidyListQuery request,
                 CancellationToken cancellationToken)
             {
-                var seeding = await farmerDbContext
-                .Seedings
-                .AnyAsync(x => x.Id == request.SeedingId, cancellationToken);
-
-                if (!seeding)
-                {
-                    return $"Сеитба с Ид: {request.SeedingId} не съществува!";
-                }
-
-                var subsidy = farmerDbContext
+                var subsidy = await farmerDbContext
                     .Subsidies
-                    .Where(x => x.SeedingId == request.SeedingId)
-                    .AsQueryable();
+                    .Include(x => x.Seeding)
+                        .ThenInclude(x => x.ArableLand)
+                    .Where(x => x.Seeding.WorkingSeasonId == request.SeasonId)
+                    .ToListAsync();
 
-                var result = await mapper
-                    .ProjectTo<CommonSubsidyOutputQueryModel>(subsidy)
+                var result = subsidy
+                    .GroupBy(x => x.Date.ToString("MM-dd-yy"))
+                    .Select((x, index) => new ListSubsidyOutputQueryModel
+                    {
+                        Id = index,
+                        Date = DateTime.Parse(x.Key),
+                        Income = x.Sum(x => x.Income),
+                        ArableLands = x
+                            .Select(c => new SubsidySlitByArableLand 
+                            { 
+                                ArableLandName = c.Seeding.ArableLand.Name, 
+                                Income = c.Income
+                            })
+                            .ToList()
+                    })
                     .OrderByDescending(x => x.Date)
-                    .ToListAsync(cancellationToken);
+                    .ToList();
+
+                //var result = await mapper
+                //    .ProjectTo<ListSubsidyOutputQueryModel>(subsidy)
+                //    .OrderByDescending(x => x.Date)
+                //    .ToListAsync(cancellationToken);
 
                 return result;
             }

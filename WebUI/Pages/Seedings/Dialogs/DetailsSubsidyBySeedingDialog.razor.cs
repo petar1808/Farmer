@@ -5,7 +5,7 @@ using WebUI.ServicesModel.Subsidies;
 
 namespace WebUI.Pages.Seedings.Dialogs
 {
-    public partial class DetailsSubsidyDialog
+    public partial class DetailsSubsidyBySeedingDialog
     {
         [Inject]
         public ISubsidyService SubsidyService { get; set; } = default!;

@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.WorkingSeasons.Queries.List
 {
+    // TO DO: Rename and remove not needed properties, once the refactoring of the UI is done
     public class WorkingSeasonBalanceListQuery : IRequest<Result<List<WorkingSeasonBalanceListQueryOutputModel>>>
     {
+        
         public class WorkingSeasonBalanceListQueryHandler : IRequestHandler<WorkingSeasonBalanceListQuery, Result<List<WorkingSeasonBalanceListQueryOutputModel>>>
         {
             private readonly IFarmerDbContext farmerDbContext;

@@ -29,7 +29,13 @@ namespace WebUI.Services.Subsidies
                 .GetAsync<SubsidiesModel>($"api/seeding/subsidy/{id}");
         }
 
-        public async Task<List<SubsidiesModel>> List(int seedingId)
+        public async Task<List<SubsidiesModel>> ListBySeasonId(int seasonId)
+        {
+            return await _httpService
+                    .GetAsync<List<SubsidiesModel>>($"/api/seeding/subsidy/list/{seasonId}");
+        }
+
+        public async Task<List<SubsidiesModel>> ListBySeedingId(int seedingId)
         {
             return await _httpService
                 .GetAsync<List<SubsidiesModel>>($"api/seeding/{seedingId}/subsidy");

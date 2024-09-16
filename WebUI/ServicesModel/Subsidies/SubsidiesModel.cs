@@ -9,5 +9,14 @@ namespace WebUI.ServicesModel.Subsidies
         public decimal? Income { get; set; }
 
         public DateTime Date { get; set; } = DateTime.Now;
+
+        public ICollection<SubsidySlitByArableLand> ArableLands { get; set; } = new List<SubsidySlitByArableLand>();
+    }
+
+    public class SubsidySlitByArableLand
+    {
+        public string ArableLandName { get; set; } = string.Empty;
+
+        public decimal Income { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using WebUI.Store;
 
 namespace WebUI.Pages.Seedings
 {
-    public partial class ListSubsidy
+    public partial class ListSubsidyBySeeding
     {
         [Inject]
         public ISubsidyService SubsidyService { get; set; } = default!;
@@ -43,7 +43,7 @@ namespace WebUI.Pages.Seedings
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход", "{0:n2} лв.")
             };
-            DataGrid = new DynamicDataGridModel<SubsidiesModel>(await SubsidyService.List(SeedingId), columns, "Субсидии")
+            DataGrid = new DynamicDataGridModel<SubsidiesModel>(await SubsidyService.ListBySeedingId(SeedingId), columns, "Субсидии")
                 .WithAdd(async () => await AddSubsidy())
                 .WithEdit(async (x) => await EditSubsidy(x))
                 .WithDelete(async (x) => await DeleteSubsidy(x))
@@ -53,13 +53,13 @@ namespace WebUI.Pages.Seedings
 
         public async Task AddSubsidy()
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>($"Добавяне на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsSubsidyBySeedingDialog>($"Добавяне на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
                 new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
-                DataGrid.UpdateData(await SubsidyService.List(SeedingId));
+                DataGrid.UpdateData(await SubsidyService.ListBySeedingId(SeedingId));
                 await UpdateArableLandBalance(this.SeedingId);
                 this.StateHasChanged();
             }
@@ -67,13 +67,13 @@ namespace WebUI.Pages.Seedings
 
         public async Task EditSubsidy(int subsidyId)
         {
-            var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>($"Редактиране на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
+            var dialogResult = await DialogService.OpenAsync<DetailsSubsidyBySeedingDialog>($"Редактиране на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
               new Dictionary<string, object>() { { "SubsidyId", subsidyId } },
               options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
-                DataGrid.UpdateData(await SubsidyService.List(SeedingId));
+                DataGrid.UpdateData(await SubsidyService.ListBySeedingId(SeedingId));
                 await UpdateArableLandBalance(this.SeedingId);
                 this.StateHasChanged();
             }

@@ -3,6 +3,7 @@
 @using WebUI.Services
 @using Radzen.Blazor
 @using Microsoft.AspNetCore.Components
+@using WebUI.ServicesModel.Common
 
 @inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
@@ -19,10 +20,11 @@
 <RadzenLayout>
     <RadzenHeader>
         <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="0">
-            <RadzenColumn Size="5">
-                <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })"></RadzenSidebarToggle>
+            <RadzenColumn Size="3">
+                <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })" />
+                @* <RadzenLabel Text=@($"Фермер - {tenantName}") /> *@
             </RadzenColumn>
-            <RadzenColumn Size="7">
+            <RadzenColumn Size="9">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
                     <RadzenProfileMenu Visible="@isAuthenticated" Click="@ProfileMenuClick">
                         <ChildContent>
@@ -40,18 +42,23 @@
     </RadzenHeader>
     <RadzenBody @ref="@body0" @bind-Expanded="@bodyExpanded">
         <ChildContent>
-            <RadzenContentContainer Name="main">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12 pt-4 pb-5 px-3 px-lg-5">
-                            @Body
+            @if (isAuthenticated)
+            {
+                <FarmingSeasonPicker Visible="@(NavigationManager.Uri.Contains("/subsidy"))" />
+            }
+            
+                <RadzenContentContainer Name="main">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 pt-4 pb-5 px-3 px-lg-5">
+                                @Body
+                            </div>
                         </div>
                     </div>
-                </div>
-            </RadzenContentContainer>
+                </RadzenContentContainer>
         </ChildContent>
     </RadzenBody>
-    <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" >
+    <RadzenSidebar @bind-Expanded="@sidebarExpanded" style="z-index: 2">
         <ChildContent>
             <RadzenPanelMenu Match="NavLinkMatch.Prefix">
                 @foreach (var menuItem in menuItems)
@@ -94,8 +101,12 @@
     string tenantName = default!;
     bool isAuthenticated = false;
     string userName = default!;
+    bool showFarmingSeasonPicker = false;
 
     IEnumerable<NavMenuItem> menuItems = new List<NavMenuItem>();
+
+    [Inject]
+    NavigationManager NavigationManager { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {

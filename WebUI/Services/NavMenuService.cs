@@ -21,26 +21,32 @@ namespace WebUI.Services
                     new NavMenuItem()
                     {
                         Name = "Семена",
-                        Path = "/article/list/1",
+                        Path = "nomenclature/article/1",
                         Icon = "spa"
                     },
                     new NavMenuItem()
                     {
                         Name = "Торове",
-                        Path = "/article/list/2",
+                        Path = "nomenclature/article/2",
                         Icon = "Compost"
                     },
                     new NavMenuItem()
                     {
                         Name = "Препарати",
-                        Path = "/article/list/3",
+                        Path = "nomenclature/article/3",
                         Icon = "science"
                     },
                     new NavMenuItem()
                     {
                         Name = "Земи",
-                        Path = "/arableLand/list",
+                        Path = "nomenclature/arableLand",
                         Icon = "terrain"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Сезони",
+                        Path = "nomenclature/farmingSeason",
+                        Icon = "event"
                     }
                 }
             },
@@ -49,6 +55,12 @@ namespace WebUI.Services
                 Name = "Жътва",
                 Icon = "agriculture",
                 Path = "/workingSeason"
+            },
+            new NavMenuItem()
+            {
+                Name = "Субсидии",
+                Icon = "agriculture",
+                Path = "/subsidy"
             },
             new NavMenuItem()
             {

@@ -1,0 +1,15 @@
+﻿@page "/nomenclature/farmingSeason"
+@using WebUI.Components.DataGrid
+
+@attribute [Authorize]
+
+<PageTitle>Сезони</PageTitle>
+
+@if (DataGrid is null)
+{
+    <div class="loader"></div>
+}
+else
+{
+    <DynamicDataGrid TData="WorkingSeasonModel" Data="@DataGrid"></DynamicDataGrid>
+}

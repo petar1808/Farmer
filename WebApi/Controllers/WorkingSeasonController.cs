@@ -26,6 +26,12 @@ namespace WebApi.Controllers
             => await base.Send(workingSeasonDetailsQuery);
 
         [HttpGet]
+        public async Task<ActionResult<List<WorkingSeasonBalanceListQueryOutputModel>>> ListWorkingSeason(
+            [FromHeader] WorkingSeasonBalanceListQuery workingSeasonBalanceListQuery)
+            => await base.Send(workingSeasonBalanceListQuery);
+
+        // TO DO: remove when the UI refactoring is done
+        [HttpGet]
         [Route("balance")]
         public async Task<ActionResult<List<WorkingSeasonBalanceListQueryOutputModel>>> ListWorkingSeasonBalance(
             [FromHeader] WorkingSeasonBalanceListQuery workingSeasonBalanceListQuery)
