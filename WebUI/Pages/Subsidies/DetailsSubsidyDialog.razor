@@ -2,10 +2,35 @@
 @using WebUI.ServicesModel.Subsidies
 @attribute [Authorize]
 
+<style>
+    .rz-dropdown-items li:hover {
+        background-color: yellow;
+    }
 
+    .rz-dropdown-item:hover {
+        background-color: black;
+    }
+</style>
 <RadzenColumn SizeMD=12>
     <RadzenTemplateForm TItem="SubsidiesModel" Data=@Subsidies Visible="@(Subsidies is not null)" Submit=@OnSubmit>
         <RadzenStack>
+            <RadzenFormField Text="Дата" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenDropDown Data=@SownArableLands
+                                    @bind-Value=@SelectedValues
+                                    ValueProperty="SeedingId"
+                                    TextProperty="ArableLandName"
+                                    Multiple=true AllowClear=true
+                                    Placeholder="Изберете земи"
+                                    SelectAllText="Изберите всички"
+                                    Chips=true Style="width: 100%; background-color: transparent"
+                                    MaxSelectedLabels="5"
+                                    Name="ArableLands" />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="ArableLands" Text=@($"Избора на поне 1 земя е задължително") DefaultValue="0" />
+                </Helper>
+            </RadzenFormField>
             <RadzenFormField Text="Дата" Variant="Variant.Filled">
                 <ChildContent>
                     <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block; width: 100%" Name="Date" @bind-Value=@Subsidies.Date />
@@ -24,7 +49,7 @@
             </RadzenFormField>
         </RadzenStack>
         <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
-            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(SubsidyId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
+            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(WorkingSeasonId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
             <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
         </RadzenStack>
     </RadzenTemplateForm>

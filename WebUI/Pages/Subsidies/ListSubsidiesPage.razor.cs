@@ -14,6 +14,9 @@ namespace WebUI.Pages.Subsidies
         [Inject]
         public ISubsidyService SubsidyService { get; set; } = default!;
 
+        [Inject]
+        public DialogService DialogService { get; set; } = default!;
+
         public DynamicDataGridModel<SubsidiesModel> DataGrid { get; set; } = default!;
 
         public RadzenDataGrid<SubsidiesModel> grid;
@@ -38,8 +41,9 @@ namespace WebUI.Pages.Subsidies
 
         public async Task AddSubsidy()
         {
-            //var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>($"Добавяне на субсидия за сезон",
-            //    options: DialogHelper.GetCommonDialogOptions());
+            var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>(
+                "Добавяне на субсидия за сезон",
+                options: DialogHelper.GetCommonDialogOptions());
 
             //if (dialogResult == true)
             //{

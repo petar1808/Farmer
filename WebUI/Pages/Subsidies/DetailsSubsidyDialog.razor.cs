@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using WebUI.Services.Seeding;
 using WebUI.Services.Subsidies;
+using WebUI.ServicesModel.Seeding;
 using WebUI.ServicesModel.Subsidies;
 
 namespace WebUI.Pages.Subsidies
@@ -11,24 +13,29 @@ namespace WebUI.Pages.Subsidies
         public ISubsidyService SubsidyService { get; set; } = default!;
 
         [Inject]
+        public ISeedingService SeedingService { get; set; } = default!;
+
+        [Inject]
         public DialogService DialogService { get; set; } = default!;
 
-        public int SeedingId { get; set; }
+        public List<SownArableLandModel> SownArableLands { get; set; } = new List<SownArableLandModel>();
+
+        public IList<int> SelectedValues { get; set; } = new List<int>();
 
         [Parameter]
-        public int SubsidyId { get; set; }
+        public int WorkingSeasonId { get; set; }
 
         public SubsidiesModel Subsidies { get; set; } = default!;
 
         protected async override Task OnInitializedAsync()
         {
-            if (SubsidyId == 0)
+            SownArableLands = await SeedingService.GetSownArableLands(1);
+
+            SelectedValues = SownArableLands.Select(x => x.SeedingId).ToList();
+
+            if (WorkingSeasonId == 0)
             {
                 Subsidies = new SubsidiesModel();
-            }
-            else
-            {
-                Subsidies = await SubsidyService.Get(SubsidyId);
             }
         }
 
@@ -41,14 +48,14 @@ namespace WebUI.Pages.Subsidies
         {
             bool addIsSuccess = false;
 
-            if (subsidiesModel.Id == 0)
-            {
-                addIsSuccess = await SubsidyService.Add(Subsidies, SeedingId);
-            }
-            else
-            {
-                addIsSuccess = await SubsidyService.Update(Subsidies);
-            }
+            //if (subsidiesModel.Id == 0)
+            //{
+            //    addIsSuccess = await SubsidyService.Add(Subsidies, SeedingId);
+            //}
+            //else
+            //{
+            //    addIsSuccess = await SubsidyService.Update(Subsidies);
+            //}
             DialogService.Close(addIsSuccess);
         }
     }
