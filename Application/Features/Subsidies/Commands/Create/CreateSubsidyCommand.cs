@@ -2,18 +2,12 @@
 using Application.Services;
 using Domain.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Subsidies.Commands.Create
 {
-    public class CreateSubsidyCommand : CommonSubsidyInputCommandModel, IRequest<Result>
+    public class CreateSubsidyCommand : CreateSubsidyInputModel, IRequest<Result>
     {
-        public int SeedingId { get; private set; }
-
-        public void SetSeedingId(int seedingId)
-        {
-            SeedingId = seedingId;
-        }
-
         public class CreateSubsidyCommandHandler : IRequestHandler<CreateSubsidyCommand, Result>
         {
             private readonly IFarmerDbContext farmerDbContext;
@@ -27,11 +21,28 @@ namespace Application.Features.Subsidies.Commands.Create
                 CreateSubsidyCommand request,
                 CancellationToken cancellationToken)
             {
-                var subsidy = new Subsidy(request.SeedingId,
-                    request.Income,
-                    request.Date);
+                var seedings = await farmerDbContext.Seedings
+                    .Where(x => x.WorkingSeasonId == request.SeasonId && request.ArableLandIds.Contains(x.ArableLandId))
+                    .Select(x => new
+                    {
+                        SeedingId = x.Id,
+                        x.ArableLand.SizeInDecar,
+                    })
+                    .ToListAsync(cancellationToken);
 
-                await farmerDbContext.AddAsync(subsidy, cancellationToken);
+                var totalArea = seedings.Sum(x => x.SizeInDecar);
+
+                foreach (var seeding in seedings)
+                {
+                    var arableLandIncome = (seeding.SizeInDecar / totalArea) * request.Income;
+
+                    var subsidy = new Subsidy(seeding.SeedingId,
+                        arableLandIncome,
+                        request.Date);
+
+                    await farmerDbContext.AddAsync(subsidy, cancellationToken);
+                }
+
                 await farmerDbContext.SaveChangesAsync(cancellationToken);
 
                 return Result.Success;

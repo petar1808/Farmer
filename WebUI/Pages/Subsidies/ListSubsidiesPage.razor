@@ -9,18 +9,20 @@
 
 @if (DataGrid is null)
 {
-    <div class="loader"></div>
+    <Loader />
 }
 else
 {
-    <DynamicDataGrid TData="SubsidiesModel" Data="@DataGrid">
-        <DetailChildContent Context="order" >
-            <RadzenDataGrid Data="@order.ArableLands">
-                <Columns>
-                    <RadzenDataGridColumn Property="@nameof(SubsidySlitByArableLand.ArableLandName)" Title="Земя" FormatString="{0:dd/MM/yy}" />
-                    <RadzenDataGridColumn Property="@nameof(SubsidySlitByArableLand.Income)" Title="Приход" FormatString="{0:n2} лв." />
-                </Columns>
-            </RadzenDataGrid>
-        </DetailChildContent>
-    </DynamicDataGrid>
+    <FarmingSeasonContainer OnSeasonChanged=UpdateDataGrid>
+        <DynamicDataGrid TData="SubsidiesModel" Data="@DataGrid">
+            <DetailChildContent Context="order" >
+                <RadzenDataGrid Data="@order.ArableLands">
+                    <Columns>
+                        <RadzenDataGridColumn Property="@nameof(SubsidySlitByArableLand.ArableLandName)" Title="Земя" FormatString="{0:dd/MM/yy}" />
+                        <RadzenDataGridColumn Property="@nameof(SubsidySlitByArableLand.Income)" Title="Приход" FormatString="{0:n2} лв." />
+                    </Columns>
+                </RadzenDataGrid>
+            </DetailChildContent>
+        </DynamicDataGrid>
+    </FarmingSeasonContainer>
 }

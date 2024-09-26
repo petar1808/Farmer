@@ -66,7 +66,7 @@
 
 @if (ShowLoading)
 {
-    <div class="loader"></div>
+    <Loader />
 }
 else
 {
@@ -133,24 +133,6 @@ else
                                        ArableLandName="@arableLand.ArableLandName"
                                        SizeInDecar="@arableLand.SizeInDecar">
                                 </ListTreatment>
-                            </CollapseBody>
-                        </Collapse>
-                    </Accordion>
-                    <Accordion>
-                        <Collapse Visible="@CollapseSubsidy">
-                            <CollapseHeader>
-                                <Heading Size="HeadingSize.Is5">
-                                    <Button Clicked="@(()=>this.CollapseSubsidy = !this.CollapseSubsidy)">
-                                        Субсидии
-                                    </Button>
-                                </Heading>
-                            </CollapseHeader>
-                            <CollapseBody>
-                                <ListSubsidy 
-                                        SeedingId="@arableLand.SeedingId"
-                                        ArableLandName="@arableLand.ArableLandName"
-                                        SizeInDecar="@arableLand.SizeInDecar">
-                                </ListSubsidy>
                             </CollapseBody>
                         </Collapse>
                     </Accordion>

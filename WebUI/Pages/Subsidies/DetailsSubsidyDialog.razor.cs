@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Fluxor;
+using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Services.Seeding;
 using WebUI.Services.Subsidies;
 using WebUI.ServicesModel.Seeding;
 using WebUI.ServicesModel.Subsidies;
+using WebUI.Store.WorkingSeason;
 
 namespace WebUI.Pages.Subsidies
 {
@@ -27,6 +29,9 @@ namespace WebUI.Pages.Subsidies
 
         public SubsidiesModel Subsidies { get; set; } = default!;
 
+        [Inject]
+        public IState<SelectedWorkingSeasonState> SelectedFarmingSeasonId { get; set; } = default!;
+
         protected async override Task OnInitializedAsync()
         {
             SownArableLands = await SeedingService.GetSownArableLands(1);
@@ -46,12 +51,14 @@ namespace WebUI.Pages.Subsidies
 
         protected async Task OnSubmit(SubsidiesModel subsidiesModel)
         {
+            subsidiesModel.SeasonId = SelectedFarmingSeasonId.Value.WorkingSeasonId;
+            subsidiesModel.ArableLandIds = SelectedValues;
             bool addIsSuccess = false;
 
-            //if (subsidiesModel.Id == 0)
-            //{
-            //    addIsSuccess = await SubsidyService.Add(Subsidies, SeedingId);
-            //}
+            if (subsidiesModel.Id == 0)
+            {
+                addIsSuccess = await SubsidyService.Add(Subsidies);
+            }
             //else
             //{
             //    addIsSuccess = await SubsidyService.Update(Subsidies);

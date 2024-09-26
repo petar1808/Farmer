@@ -14,6 +14,8 @@ namespace WebUI.Services.Subsidies
 
         Task<bool> Update(SubsidiesModel subsidyModel);
 
+        Task<bool> Add(SubsidiesModel subsidyModel);
+
         Task<bool> Add(SubsidiesModel subsidyModel, int seedingId);
     }
 }

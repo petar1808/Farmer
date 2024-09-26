@@ -148,12 +148,9 @@ namespace WebApi.Controllers
 
         #region Subsidies
         [HttpPost]
-        [Route("{seedingId:int}/subsidy")]
-        public async Task<ActionResult> CreateSubsidy(
-            [FromBody] CreateSubsidyCommand subsidyModel,
-            [FromRoute] int seedingId)
+        [Route("subsidy")]
+        public async Task<ActionResult> CreateSubsidy([FromBody] CreateSubsidyCommand subsidyModel)
         {
-            subsidyModel.SetSeedingId(seedingId);
             return await this.Send(subsidyModel);
         }
 

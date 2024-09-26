@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Radzen.Blazor;
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Services.Subsidies;
 using WebUI.ServicesModel.Subsidies;
 using WebUI.Extensions;
-using WebUI.Pages.Seedings.Dialogs;
+using Fluxor;
+using WebUI.Store.WorkingSeason;
 
 namespace WebUI.Pages.Subsidies
 {
@@ -19,7 +19,8 @@ namespace WebUI.Pages.Subsidies
 
         public DynamicDataGridModel<SubsidiesModel> DataGrid { get; set; } = default!;
 
-        public RadzenDataGrid<SubsidiesModel> grid;
+        [Inject]
+        public IState<SelectedWorkingSeasonState> SelectedFarmingSeasonId { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -29,7 +30,7 @@ namespace WebUI.Pages.Subsidies
                 new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход", "{0:n2} лв.")
             };
             DataGrid = new DynamicDataGridModel<SubsidiesModel>(
-                    await SubsidyService.ListBySeasonId(1),
+                    await SubsidyService.ListBySeasonId(SelectedFarmingSeasonId.Value.WorkingSeasonId),
                     columns,
                     "Земи")
                 .WithAdd(async () => await AddSubsidy())
@@ -37,6 +38,11 @@ namespace WebUI.Pages.Subsidies
                 .WithDelete(async (x) => await DeleteSubsidy(x))
                 .WithPaging()
                 .WithSorting();
+        }
+
+        public async Task UpdateDataGrid()
+        {
+            DataGrid.UpdateData(await SubsidyService.ListBySeasonId(SelectedFarmingSeasonId.Value.WorkingSeasonId));
         }
 
         public async Task AddSubsidy()

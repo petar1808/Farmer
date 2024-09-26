@@ -11,6 +11,13 @@ namespace WebUI.Services.Subsidies
             _httpService = httpService;
         }
 
+        public async Task<bool> Add(SubsidiesModel subsidyModel)
+        {
+            return await _httpService
+                .PostAsync<bool>($"api/seeding/subsidy", subsidyModel);
+        }
+
+        // Delete
         public async Task<bool> Add(SubsidiesModel subsidyModel, int seedingId)
         {
             return await _httpService
