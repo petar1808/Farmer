@@ -10,5 +10,7 @@ namespace Application.Features.Subsidies.Queries
         public decimal Income { get; set; }
 
         public DateTime Date { get; set; }
+
+        public string Comment { get; set; } = string.Empty;
     }
 }

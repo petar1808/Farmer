@@ -1,8 +1,7 @@
-﻿using Application.Mappings;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Models;
 
-namespace Application.Features.Subsidies.Queries
+namespace Application.Features.Subsidies.Queries.List
 {
     public class ListSubsidyOutputQueryModel : CommonSubsidyOutputQueryModel
     {

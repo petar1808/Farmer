@@ -17,20 +17,21 @@ namespace WebUI.Pages.Subsidies
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
-        public DynamicDataGridModel<SubsidiesModel> DataGrid { get; set; } = default!;
+        public DynamicDataGridModel<ListSubsidiesModel> DataGrid { get; set; } = default!;
 
         [Inject]
-        public IState<SelectedWorkingSeasonState> SelectedFarmingSeasonId { get; set; } = default!;
+        public IState<SelectedWorkingSeasonState> SelectedWorkingSeasonState { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new DynamicDataGridColumnModel(nameof(SubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(SubsidiesModel.Income), "Приход", "{0:n2} лв.")
+                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
+                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Income), "Приход", "{0:n2} лв."),
+                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Comment), "Бележка")
             };
-            DataGrid = new DynamicDataGridModel<SubsidiesModel>(
-                    await SubsidyService.ListBySeasonId(SelectedFarmingSeasonId.Value.WorkingSeasonId),
+            DataGrid = new DynamicDataGridModel<ListSubsidiesModel>(
+                    await SubsidyService.List(SelectedWorkingSeasonState.Value.WorkingSeasonId),
                     columns,
                     "Земи")
                 .WithAdd(async () => await AddSubsidy())
@@ -42,48 +43,50 @@ namespace WebUI.Pages.Subsidies
 
         public async Task UpdateDataGrid()
         {
-            DataGrid.UpdateData(await SubsidyService.ListBySeasonId(SelectedFarmingSeasonId.Value.WorkingSeasonId));
+            DataGrid.UpdateData(await SubsidyService.List(SelectedWorkingSeasonState.Value.WorkingSeasonId));
         }
 
         public async Task AddSubsidy()
         {
             var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>(
-                "Добавяне на субсидия за сезон",
-                options: DialogHelper.GetCommonDialogOptions());
+                    $"Добавяне на субсидия за сезон {SelectedWorkingSeasonState.Value.Name}",
+                    new Dictionary<string, object>() { { "WorkingSeasonId", SelectedWorkingSeasonState.Value.WorkingSeasonId } },
+                    options: DialogHelper.GetCommonDialogOptions());
 
-            //if (dialogResult == true)
-            //{
-            //    DataGrid.UpdateData(await SubsidyService.ListBySeedingId(SeedingId));
-            //    await UpdateArableLandBalance(this.SeedingId);
-            //    this.StateHasChanged();
-            //}
+            if (dialogResult == true)
+            {
+                await UpdateDataGrid();
+                this.StateHasChanged();
+            }
         }
 
         public async Task EditSubsidy(int subsidyId)
         {
-            //var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>($"Редактиране на субсидия за земя: {ArableLandName}-{SizeInDecar} декара",
-            //  new Dictionary<string, object>() { { "SubsidyId", subsidyId } },
-            //  options: DialogHelper.GetCommonDialogOptions());
+            var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>(
+                    $"Редактиране на субсидия за сезон: {SelectedWorkingSeasonState.Value.Name}",
+                    new Dictionary<string, object>() { 
+                            { "SubsidyId", subsidyId },
+                            { "WorkingSeasonId", SelectedWorkingSeasonState.Value.WorkingSeasonId }
+                    },
+                    options: DialogHelper.GetCommonDialogOptions());
 
-            //if (dialogResult == true)
-            //{
-            //    DataGrid.UpdateData(await SubsidyService.ListBySeedingId(SeedingId));
-            //    await UpdateArableLandBalance(this.SeedingId);
-            //    this.StateHasChanged();
-            //}
+            if (dialogResult == true)
+            {
+                await UpdateDataGrid();
+                this.StateHasChanged();
+            }
         }
 
         public async Task DeleteSubsidy(int subsidyId)
         {
-            //if (await DialogService.ShowDeleteDialog(subsidyId) == true)
-            //{
-            //    if (await this.SubsidyService.Delete(subsidyId))
-            //    {
-            //        DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != subsidyId));
-            //        await UpdateArableLandBalance(this.SeedingId);
-            //        this.StateHasChanged();
-            //    }
-            //}
+            if (await DialogService.ShowDeleteDialog(subsidyId) == true)
+            {
+                if (await this.SubsidyService.Delete(subsidyId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != subsidyId));
+                    this.StateHasChanged();
+                }
+            }
         }
     }
 }

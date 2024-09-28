@@ -30,6 +30,7 @@ namespace Application.Features.Subsidies.Queries.List
                         .Include(x => x.SubsidyByArableLands)
                             .ThenInclude(x => x.ArableLand)
                     .Where(x => x.WorkingSeasonId == request.SeasonId)
+                    .OrderByDescending(x => x.Date)
                     .ToListAsync(cancellationToken);
 
                 var result = mapper

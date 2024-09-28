@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations.SqlLite
 {
     [DbContext(typeof(SqlLiteFarmerDbContext))]
-    partial class SqlLiteFarmerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240928163244_FixSubsidy2")]
+    partial class FixSubsidy2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.11");
@@ -273,10 +275,6 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
@@ -562,7 +560,7 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.HasOne("Domain.Models.Subsidy", null)
                         .WithMany("SubsidyByArableLands")
                         .HasForeignKey("SubsidyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("ArableLand");

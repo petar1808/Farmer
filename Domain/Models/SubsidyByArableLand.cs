@@ -19,5 +19,11 @@ namespace Domain.Models
         public int SubsidyId { get; set; }
 
         public int TenantId { get; set; }
+
+        public SubsidyByArableLand UpdateIncome(decimal income)
+        {
+            Income = income;
+            return this;
+        }
     }
 }

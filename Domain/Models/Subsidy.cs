@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using System.Xml.Linq;
 
 namespace Domain.Models
 {
@@ -8,20 +9,23 @@ namespace Domain.Models
             decimal income,
             int workingSeasonId,
             DateTime date,
-            List<SubsidyByArableLand> subsidyByArableLands)
+            List<SubsidyByArableLand> subsidyByArableLands,
+            string comment = "")
         {
             Income = income;
             Date = date;
             SubsidyByArableLands = subsidyByArableLands;
             WorkingSeasonId = workingSeasonId;
+            Comment = comment;
         }
 
-        public Subsidy()
+        private Subsidy()
         {
             Income = default!;
             Date = default!;
             SubsidyByArableLands = default!;
             WorkingSeasonId = default!;
+            Comment = default!;
         }
 
         public decimal Income { get; private set; }
@@ -31,6 +35,8 @@ namespace Domain.Models
         public int WorkingSeasonId { get; set; }
 
         public int TenantId { get; set; }
+
+        public string Comment { get; set; }
 
         public List<SubsidyByArableLand> SubsidyByArableLands { get; set; }
 
@@ -43,6 +49,12 @@ namespace Domain.Models
         public Subsidy UpdateDate(DateTime date)
         {
             this.Date = date;
+            return this;
+        }
+
+        public Subsidy UpdateComment(string comment)
+        {
+            this.Comment = comment;
             return this;
         }
     }

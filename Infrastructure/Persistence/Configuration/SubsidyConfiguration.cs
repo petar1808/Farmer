@@ -13,6 +13,12 @@ namespace Infrastructure.Persistence.Configuration
                 .HasMany(x => x.SubsidyByArableLands)
                 .WithOne()
                 .HasForeignKey(x => x.SubsidyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne<WorkingSeason>()
+                .WithMany()
+                .HasForeignKey(x => x.WorkingSeasonId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(p => p.Income).HasColumnType("decimal(12,2)").IsRequired();

@@ -4,9 +4,12 @@
     {
         public int WorkingSeasonId { get; }
 
-        public SelectedWorkingSeasonState(int workingSeasonId)
+        public string Name { get; }
+
+        public SelectedWorkingSeasonState(int workingSeasonId, string name)
         {
             WorkingSeasonId = workingSeasonId;
+            Name = name;
         }
     }
 }

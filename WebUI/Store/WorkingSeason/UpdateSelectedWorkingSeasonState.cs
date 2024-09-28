@@ -2,11 +2,14 @@
 {
     public class UpdateSelectedWorkingSeasonState
     {
-        public int SelectedWorkingSeasonId { get; set; }
+        public int WorkingSeasonId { get; set; }
 
-        public UpdateSelectedWorkingSeasonState(int selectedWorkingSeasonId)
+        public string Name { get; set; }
+
+        public UpdateSelectedWorkingSeasonState(int workingSeasonId, string name)
         {
-            SelectedWorkingSeasonId = selectedWorkingSeasonId;
+            WorkingSeasonId = workingSeasonId;
+            Name = name;
         }
     }
 }

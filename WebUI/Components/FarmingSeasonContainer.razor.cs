@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using WebUI.Services.WorkingSeasons;
 using WebUI.ServicesModel.Common;
+using WebUI.ServicesModel.WorkingSeason;
 using WebUI.Store.WorkingSeason;
 
 namespace WebUI.Components
@@ -23,13 +24,17 @@ namespace WebUI.Components
         [Inject]
         public IState<SelectedWorkingSeasonState> SelectedWorkingSeasonState { get; set; } = default!;
 
-        public IEnumerable<SelectionListModel> FarmingSeasons { get; set; } = new List<SelectionListModel>();
+        public IEnumerable<SelectionListModel> FarmingSeasonsDropDownData { get; set; } = new List<SelectionListModel>();
+
+        public int SelectedSeasonId { get; set; }
+
+        public List<WorkingSeasonModel> WorkingSeasons { get; set; } = new List<WorkingSeasonModel>();
 
         protected async override Task OnInitializedAsync()
         {
-            var seasons = await WorkingSeasonService.List();
+            WorkingSeasons = await WorkingSeasonService.List();
 
-            FarmingSeasons = seasons.Select(x => new SelectionListModel
+            FarmingSeasonsDropDownData = WorkingSeasons.Select(x => new SelectionListModel
             {
                 Value = x.Id,
                 Name = x.Name,
@@ -37,14 +42,25 @@ namespace WebUI.Components
 
             if (SelectedWorkingSeasonState.Value.WorkingSeasonId == 0)
             {
-                Dispatcher.Dispatch(new UpdateSelectedWorkingSeasonState(FarmingSeasons.FirstOrDefault()?.Value ?? 0));
+                var season = WorkingSeasons.FirstOrDefault();
+                SelectedSeasonId = season?.Id ?? default;
+
+                Dispatcher.Dispatch(
+                    new UpdateSelectedWorkingSeasonState(season?.Id ?? default, season?.Name ?? string.Empty));
             }
+            else
+            {
+                SelectedSeasonId = SelectedWorkingSeasonState.Value.WorkingSeasonId;
+            }
+
             await OnSeasonChanged.InvokeAsync(); // Notify the parent
         }
 
         public async Task OnDropDownChangeTreatmentType(object value)
         {
-            Dispatcher.Dispatch(new UpdateSelectedWorkingSeasonState((int)value));
+            var workingSeason = WorkingSeasons.SingleOrDefault(c => c.Id == (int)value);
+            Dispatcher.Dispatch(
+                new UpdateSelectedWorkingSeasonState(workingSeason?.Id ?? default, workingSeason?.Name ?? string.Empty));
             await OnSeasonChanged.InvokeAsync(); // Notify the parent
         }
     }

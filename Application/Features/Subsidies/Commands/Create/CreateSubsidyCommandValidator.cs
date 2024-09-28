@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Subsidies.Commands.Create
 {
-    public class CreateSubsidyCommandValidator : AbstractValidator<CreateSubsidyInputModel>
+    public class CreateSubsidyCommandValidator : AbstractValidator<CreateSubsidyCommand>
     {
         public CreateSubsidyCommandValidator(IFarmerDbContext farmerDbContext)
         {
@@ -17,18 +17,18 @@ namespace Application.Features.Subsidies.Commands.Create
                 .WithMessage("Датата е задължителна");
 
             this.RuleFor(x => x.SeasonId)
-                .MustAsync(async (id, token) =>
+                .Must(id=>
                 {
-                    var seeding = await farmerDbContext
+                    var seeding = farmerDbContext
                         .WorkingSeasons
-                        .AnyAsync(x => x.Id == id, token);
+                        .Any(x => x.Id == id);
 
                     return seeding;
                 })
                 .WithMessage(x => $"Сеитба с Ид: {x.SeasonId} не съществува!");
 
-            this.RuleFor(x => x.ArableLandIds)
-                .NotEmpty()
+            this.RuleFor(x => x.SelectedArableLands)
+                .Must(x => x.Any())
                 .WithMessage("Трябва да изберете поне една земя");
         }
     }

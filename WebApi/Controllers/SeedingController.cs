@@ -145,33 +145,5 @@ namespace WebApi.Controllers
             [FromRoute] DeleteTreatmentCommand deleteTreatment)
             => await this.Send(deleteTreatment);
         #endregion
-
-        #region Subsidies
-        [HttpPost]
-        [Route("subsidy")]
-        public async Task<ActionResult> CreateSubsidy([FromBody] CreateSubsidyCommand subsidyModel)
-        {
-            return await this.Send(subsidyModel);
-        }
-
-        [HttpGet]
-        [Route("subsidy/{subsidyId:int}")]
-        public async Task<ActionResult<CommonSubsidyOutputQueryModel>> SubsidyDetails(
-            [FromRoute] SubsidyDetailsQuery subsidyDetailsQuery)
-            => await this.Send(subsidyDetailsQuery);
-
-        [HttpPut]
-        [Route("subsidy")]
-        public async Task<ActionResult> EditSubsidy(
-            EditSubsidyCommand subsidyModel)
-            => await this.Send(subsidyModel);
-
-        [HttpDelete]
-        [Route("subsidy/{subsidyId:int}")]
-        public async Task<ActionResult> DeleteSubsidy(
-            [FromRoute] DeleteSubsidyCommand deleteSubsidy)
-            => await this.Send(deleteSubsidy);
-
-        #endregion
     }
 }

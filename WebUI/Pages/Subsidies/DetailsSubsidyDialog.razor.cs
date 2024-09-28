@@ -20,27 +20,32 @@ namespace WebUI.Pages.Subsidies
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
-        public List<SownArableLandModel> SownArableLands { get; set; } = new List<SownArableLandModel>();
-
-        public IList<int> SelectedValues { get; set; } = new List<int>();
-
         [Parameter]
         public int WorkingSeasonId { get; set; }
 
-        public SubsidiesModel Subsidies { get; set; } = default!;
+        [Parameter]
+        public int SubsidyId { get; set; }
+
+        public List<SownArableLandModel> SownArableLands { get; set; } = new List<SownArableLandModel>();
+
+        public DetailsSubsidyModel Subsidy { get; set; } = default!;
 
         [Inject]
         public IState<SelectedWorkingSeasonState> SelectedFarmingSeasonId { get; set; } = default!;
 
         protected async override Task OnInitializedAsync()
         {
-            SownArableLands = await SeedingService.GetSownArableLands(1);
+            SownArableLands = await SeedingService.GetSownArableLands(WorkingSeasonId);
 
-            SelectedValues = SownArableLands.Select(x => x.SeedingId).ToList();
-
-            if (WorkingSeasonId == 0)
+            if (SubsidyId == 0)
             {
-                Subsidies = new SubsidiesModel();
+                Subsidy = new DetailsSubsidyModel();
+                Subsidy.SelectedArableLands = SownArableLands.Select(x => x.ArableLandId).ToList();
+            }
+            else
+            {
+                Subsidy = await SubsidyService.Get(SubsidyId);
+                Subsidy.SelectedArableLands = Subsidy.SelectedArableLands.ToList();
             }
         }
 
@@ -49,21 +54,20 @@ namespace WebUI.Pages.Subsidies
             DialogService.Close(false);
         }
 
-        protected async Task OnSubmit(SubsidiesModel subsidiesModel)
+        protected async Task OnSubmit(DetailsSubsidyModel subsidiesModel)
         {
-            subsidiesModel.SeasonId = SelectedFarmingSeasonId.Value.WorkingSeasonId;
-            subsidiesModel.ArableLandIds = SelectedValues;
-            bool addIsSuccess = false;
+            bool isSuccess = false;
 
             if (subsidiesModel.Id == 0)
             {
-                addIsSuccess = await SubsidyService.Add(Subsidies);
+                subsidiesModel.SeasonId = WorkingSeasonId;
+                isSuccess = await SubsidyService.Add(subsidiesModel);
             }
-            //else
-            //{
-            //    addIsSuccess = await SubsidyService.Update(Subsidies);
-            //}
-            DialogService.Close(addIsSuccess);
+            else
+            {
+                isSuccess = await SubsidyService.Update(subsidiesModel);
+            }
+            DialogService.Close(isSuccess);
         }
     }
 }

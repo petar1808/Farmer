@@ -1,16 +1,16 @@
 ﻿
 
 
-<RadzenStack Visible="@(SelectedWorkingSeasonState.Value.WorkingSeasonId != 0)" 
+<RadzenStack Visible="@(SelectedSeasonId != 0)"
              Orientation="Orientation.Horizontal" 
              AlignItems="AlignItems.Center" 
              JustifyContent="JustifyContent.Center" 
              Gap="0.5rem" 
              claCenterss="rz-p-sm-12">
     <RadzenLabel Text="Сезон" Component="SeasonDropDown" />
-    <RadzenDropDown Data=@FarmingSeasons
+    <RadzenDropDown Data=@FarmingSeasonsDropDownData
                     TValue="int"
-                    Value=@SelectedWorkingSeasonState.Value.WorkingSeasonId
+                    @bind-Value=@SelectedSeasonId
                     ValueProperty="Value"
                     TextProperty="Name"
                     Name="SeasonDropDown"

@@ -6,6 +6,7 @@ namespace WebUI.Store.WorkingSeason
     {
         public override string GetName() => nameof(SelectedWorkingSeasonFeatureState);
 
-        protected override SelectedWorkingSeasonState GetInitialState() => new SelectedWorkingSeasonState(0);
+        protected override SelectedWorkingSeasonState GetInitialState() 
+            => new SelectedWorkingSeasonState(default, string.Empty);
     }
 }
