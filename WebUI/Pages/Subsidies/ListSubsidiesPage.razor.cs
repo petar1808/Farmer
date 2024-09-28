@@ -27,7 +27,7 @@ namespace WebUI.Pages.Subsidies
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Income), "Приход", "{0:n2} лв."),
+                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Income), "Приход", "{0:n2} лв.", total: GetTotal),
                 new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Comment), "Бележка")
             };
             DataGrid = new DynamicDataGridModel<ListSubsidiesModel>(
@@ -39,6 +39,11 @@ namespace WebUI.Pages.Subsidies
                 .WithDelete(async (x) => await DeleteSubsidy(x))
                 .WithPaging()
                 .WithSorting();
+        }
+
+        public decimal GetTotal()
+        {
+            return DataGrid.Data.Sum(x => x.Income) ?? 0;
         }
 
         public async Task UpdateDataGrid()

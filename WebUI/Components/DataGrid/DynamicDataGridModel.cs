@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Microsoft.AspNetCore.Components;
+using System.Runtime.CompilerServices;
 
 namespace WebUI.Components.DataGrid
 {
@@ -99,12 +100,18 @@ namespace WebUI.Components.DataGrid
 
     public class DynamicDataGridColumnModel
     {
-        public DynamicDataGridColumnModel(string propertyName, string displayName, string stringFormat = "", string? width = null)
+        public DynamicDataGridColumnModel(
+            string propertyName, 
+            string displayName, 
+            string stringFormat = "", 
+            string? width = null,
+            Func<decimal>? total = null)
         {
             PropertyName = propertyName;
             DisplayName = displayName;
             StringFormat = stringFormat;
             Width = width;
+            Total = total;
         }
 
         public string PropertyName { get; set; }
@@ -114,6 +121,8 @@ namespace WebUI.Components.DataGrid
         public string StringFormat { get; set; }
 
         public string? Width { get; set; }
+
+        public Func<decimal>? Total { get; set; }
     }
 
     public interface IDynamicDataGridModel
