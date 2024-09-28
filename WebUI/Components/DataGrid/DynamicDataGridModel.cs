@@ -95,7 +95,6 @@ namespace WebUI.Components.DataGrid
             this.DefaultColumnWidth = defaultWidth;
             return this;
         }
-
     }
 
     public class DynamicDataGridColumnModel
@@ -105,7 +104,7 @@ namespace WebUI.Components.DataGrid
             string displayName, 
             string stringFormat = "", 
             string? width = null,
-            Func<decimal>? total = null)
+            Func<string>? total = null)
         {
             PropertyName = propertyName;
             DisplayName = displayName;
@@ -122,7 +121,7 @@ namespace WebUI.Components.DataGrid
 
         public string? Width { get; set; }
 
-        public Func<decimal>? Total { get; set; }
+        public Func<string>? Total { get; set; }
     }
 
     public interface IDynamicDataGridModel

@@ -41,9 +41,9 @@ namespace WebUI.Pages.Subsidies
                 .WithSorting();
         }
 
-        public decimal GetTotal()
+        public string GetTotal()
         {
-            return DataGrid.Data.Sum(x => x.Income) ?? 0;
+            return $"{DataGrid.Data?.Sum(x => x.Income)?.ToString("N2") ?? ""} лв.";
         }
 
         public async Task UpdateDataGrid()
