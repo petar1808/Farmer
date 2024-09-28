@@ -17,13 +17,6 @@ namespace WebUI.Services.Subsidies
                 .PostAsync<bool>($"api/seeding/subsidy", subsidyModel);
         }
 
-        // Delete
-        public async Task<bool> Add(SubsidiesModel subsidyModel, int seedingId)
-        {
-            return await _httpService
-                .PostAsync<bool>($"api/seeding/{seedingId}/subsidy", subsidyModel);
-        }
-
         public async Task<bool> Delete(int id)
         {
             return await _httpService
@@ -39,7 +32,7 @@ namespace WebUI.Services.Subsidies
         public async Task<List<SubsidiesModel>> ListBySeasonId(int seasonId)
         {
             return await _httpService
-                    .GetAsync<List<SubsidiesModel>>($"/api/seeding/subsidy/list/{seasonId}");
+                    .GetAsync<List<SubsidiesModel>>($"/api/subsidy/list/{seasonId}");
         }
 
         public async Task<List<SubsidiesModel>> ListBySeedingId(int seedingId)

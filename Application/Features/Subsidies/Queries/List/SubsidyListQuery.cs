@@ -27,33 +27,13 @@ namespace Application.Features.Subsidies.Queries.List
             {
                 var subsidy = await farmerDbContext
                     .Subsidies
-                    .Include(x => x.Seeding)
-                        .ThenInclude(x => x.ArableLand)
-                    .Where(x => x.Seeding.WorkingSeasonId == request.SeasonId)
-                    .ToListAsync();
+                        .Include(x => x.SubsidyByArableLands)
+                            .ThenInclude(x => x.ArableLand)
+                    .Where(x => x.WorkingSeasonId == request.SeasonId)
+                    .ToListAsync(cancellationToken);
 
-                var result = subsidy
-                    .GroupBy(x => x.Date.ToString("MM-dd-yy"))
-                    .Select((x, index) => new ListSubsidyOutputQueryModel
-                    {
-                        Id = index,
-                        Date = DateTime.Parse(x.Key),
-                        Income = x.Sum(x => x.Income),
-                        ArableLands = x
-                            .Select(c => new SubsidySlitByArableLand 
-                            { 
-                                ArableLandName = c.Seeding.ArableLand.Name, 
-                                Income = c.Income
-                            })
-                            .ToList()
-                    })
-                    .OrderByDescending(x => x.Date)
-                    .ToList();
-
-                //var result = await mapper
-                //    .ProjectTo<ListSubsidyOutputQueryModel>(subsidy)
-                //    .OrderByDescending(x => x.Date)
-                //    .ToListAsync(cancellationToken);
+                var result = mapper
+                    .Map<List<ListSubsidyOutputQueryModel>>(subsidy);
 
                 return result;
             }

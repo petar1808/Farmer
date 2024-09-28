@@ -4,23 +4,35 @@ namespace Domain.Models
 {
     public class Subsidy : Entity<int>, ITenant
     {
-        public Subsidy(int seedingId, decimal income, DateTime date)
+        public Subsidy(
+            decimal income,
+            int workingSeasonId,
+            DateTime date,
+            List<SubsidyByArableLand> subsidyByArableLands)
         {
-            SeedingId = seedingId;
             Income = income;
             Date = date;
-            Seeding = default!;
+            SubsidyByArableLands = subsidyByArableLands;
+            WorkingSeasonId = workingSeasonId;
         }
 
-        public int SeedingId { get; }
-
-        public Seeding Seeding { get; }
+        public Subsidy()
+        {
+            Income = default!;
+            Date = default!;
+            SubsidyByArableLands = default!;
+            WorkingSeasonId = default!;
+        }
 
         public decimal Income { get; private set; }
 
         public DateTime Date { get; private set; }
 
+        public int WorkingSeasonId { get; set; }
+
         public int TenantId { get; set; }
+
+        public List<SubsidyByArableLand> SubsidyByArableLands { get; set; }
 
         public Subsidy UpdateIncome(decimal income)
         {

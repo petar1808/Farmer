@@ -30,20 +30,20 @@ namespace Application.Features.Subsidies.Commands.Create
                     })
                     .ToListAsync(cancellationToken);
 
-                var totalArea = seedings.Sum(x => x.SizeInDecar);
+                //var totalArea = seedings.Sum(x => x.SizeInDecar);
 
-                foreach (var seeding in seedings)
-                {
-                    var arableLandIncome = (seeding.SizeInDecar / totalArea) * request.Income;
+                //foreach (var seeding in seedings)
+                //{
+                //    var arableLandIncome = (seeding.SizeInDecar / totalArea) * request.Income;
 
-                    var subsidy = new Subsidy(seeding.SeedingId,
-                        arableLandIncome,
-                        request.Date);
+                //    var subsidy = new Subsidy(seeding.SeedingId,
+                //        arableLandIncome,
+                //        request.Date);
 
-                    await farmerDbContext.AddAsync(subsidy, cancellationToken);
-                }
+                //    await farmerDbContext.AddAsync(subsidy, cancellationToken);
+                //}
 
-                await farmerDbContext.SaveChangesAsync(cancellationToken);
+                //await farmerDbContext.SaveChangesAsync(cancellationToken);
 
                 return Result.Success;
             }

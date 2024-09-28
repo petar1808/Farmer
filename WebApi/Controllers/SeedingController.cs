@@ -154,19 +154,6 @@ namespace WebApi.Controllers
             return await this.Send(subsidyModel);
         }
 
-        // TO DO: Delete after refactoring
-        [HttpGet]
-        [Route("{seedingId:int}/subsidy")]
-        public async Task<ActionResult<List<CommonSubsidyOutputQueryModel>>> ListSubsidiesBySeeding(
-            [FromRoute] SubsidyBySeedingListQuery subsidyListQuery)
-            => await this.Send(subsidyListQuery);
-
-        [HttpGet]
-        [Route("subsidy/list/{seasonId:int}")]
-        public async Task<ActionResult<List<ListSubsidyOutputQueryModel>>> ListSubsidiesBySeason(
-            [FromRoute] SubsidyListQuery subsidyListQuery)
-            => await this.Send(subsidyListQuery);
-
         [HttpGet]
         [Route("subsidy/{subsidyId:int}")]
         public async Task<ActionResult<CommonSubsidyOutputQueryModel>> SubsidyDetails(

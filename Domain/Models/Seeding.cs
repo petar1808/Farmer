@@ -37,8 +37,6 @@ namespace Domain.Models
 
         public decimal ExpensesForHarvesting { get; private set; }
 
-        public List<Subsidy> Subsidies { get; } = default!;
-
         public List<Treatment> Treatments { get; } = default!;
 
         public List<PerformedWork> PerformedWorks { get; } = default!;

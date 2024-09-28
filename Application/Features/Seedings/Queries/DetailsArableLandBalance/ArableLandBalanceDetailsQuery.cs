@@ -33,7 +33,6 @@ namespace Application.Features.Seedings.Queries.DetailsArableLandBalance
                 .Include(x => x.ArableLand)
                 .Include(x => x.Treatments)
                 .Include(x => x.PerformedWorks)
-                .Include(x => x.Subsidies)
                 .FirstOrDefaultAsync(x => x.Id == request.SeedingId);
 
                 if (seeding == null)

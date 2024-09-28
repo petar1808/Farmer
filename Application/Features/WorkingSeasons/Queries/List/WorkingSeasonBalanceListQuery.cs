@@ -34,8 +34,6 @@ namespace Application.Features.WorkingSeasons.Queries.List
                 .Include(x => x.Seedings)
                     .ThenInclude(x => x.PerformedWorks)
                 .Include(x => x.Seedings)
-                    .ThenInclude(x => x.Subsidies)
-                .Include(x => x.Seedings)
                     .ThenInclude(x => x.Treatments)
                 .OrderByDescending(x => x.StartDate)
                 .ToListAsync(cancellationToken);

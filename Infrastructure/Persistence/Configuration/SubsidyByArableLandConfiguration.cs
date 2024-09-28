@@ -2,22 +2,25 @@
 using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
-    public class SubsidyConfiguration : EntityConfiguration<Subsidy, int>
+    public class SubsidyByArableLandConfiguration : EntityConfiguration<SubsidyByArableLand, int>
     {
-        public override void Configure(EntityTypeBuilder<Subsidy> builder)
+        public override void Configure(EntityTypeBuilder<SubsidyByArableLand> builder)
         {
             builder
-                .HasMany(x => x.SubsidyByArableLands)
-                .WithOne()
-                .HasForeignKey(x => x.SubsidyId)
+                .HasOne(x => x.ArableLand)
+                .WithMany()
+                .HasForeignKey(p => p.ArableLandId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(p => p.Income).HasColumnType("decimal(12,2)").IsRequired();
-            builder.Property(p => p.Date).IsRequired();
-
             base.Configure(builder);
         }
     }

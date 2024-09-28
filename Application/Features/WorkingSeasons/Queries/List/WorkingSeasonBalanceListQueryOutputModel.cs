@@ -14,7 +14,7 @@ namespace Application.Features.WorkingSeasons.Queries.List
 
         public virtual void Mapping(Profile mapper)
           => mapper.CreateMap<WorkingSeason, WorkingSeasonBalanceListQueryOutputModel>()
-               .ForMember(x => x.Income, cfg => cfg.MapFrom(c => c.Seedings.Sum(x => x.HarvestedQuantityPerDecare * x.HarvestedGrainSellingPricePerKilogram * x.ArableLand.SizeInDecar) + c.Seedings.Sum(x => x.Subsidies.Sum(s => s.Income))))
+               .ForMember(x => x.Income, cfg => cfg.MapFrom(c => c.Seedings.Sum(x => x.HarvestedQuantityPerDecare * x.HarvestedGrainSellingPricePerKilogram * x.ArableLand.SizeInDecar)))
                .ForMember(x => x.Expenses, cfg => cfg.MapFrom(c => CalculateExpenses(c)));
 
         private decimal? CalculateExpenses(WorkingSeason workingSeason)

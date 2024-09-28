@@ -16,10 +16,10 @@ else
     <FarmingSeasonContainer OnSeasonChanged=UpdateDataGrid>
         <DynamicDataGrid TData="SubsidiesModel" Data="@DataGrid">
             <DetailChildContent Context="order" >
-                <RadzenDataGrid Data="@order.ArableLands">
+                <RadzenDataGrid Data="@order.IncomeByArableLand">
                     <Columns>
-                        <RadzenDataGridColumn Property="@nameof(SubsidySlitByArableLand.ArableLandName)" Title="Земя" FormatString="{0:dd/MM/yy}" />
-                        <RadzenDataGridColumn Property="@nameof(SubsidySlitByArableLand.Income)" Title="Приход" FormatString="{0:n2} лв." />
+                        <RadzenDataGridColumn Property="Key" Title="Земя" FormatString="{0:dd/MM/yy}" />
+                        <RadzenDataGridColumn Property="Value" Title="Приход" FormatString="{0:n2} лв." />
                     </Columns>
                 </RadzenDataGrid>
             </DetailChildContent>
