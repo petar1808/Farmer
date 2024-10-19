@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configuration
 {
-    public class SubsidyConfiguration : EntityConfiguration<Subsidy, int>
+    internal class SubsidyConfiguration : EntityConfiguration<Subsidy, int>
     {
         public override void Configure(EntityTypeBuilder<Subsidy> builder)
         {

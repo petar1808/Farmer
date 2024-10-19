@@ -87,10 +87,21 @@
     [Parameter]
     public DynamicDataGridModel<TData> Data { get; set; } = default!;
 
-    [Parameter] public RenderFragment<TData>? DetailChildContent { get; set; } = null;
+    [Parameter] 
+    public RenderFragment<TData>? DetailChildContent { get; set; } = null;
+
+    [Parameter]
+    public Func<TData, bool>? RenderChild { get; set; }
 
     void RowRender(RowRenderEventArgs<TData> args)
     {
-        args.Expandable = DetailChildContent is not null;
+        if (RenderChild is not null)
+        {
+            args.Expandable = RenderChild.Invoke(args.Data);
+        }
+        else
+        {
+            args.Expandable = true;
+        }  
     }
 }

@@ -59,8 +59,14 @@ namespace WebUI.Services
             new NavMenuItem()
             {
                 Name = "Субсидии",
-                Icon = "agriculture",
+                Icon = "monetization_on",
                 Path = "/subsidy"
+            },
+            new NavMenuItem()
+            {
+                Name = "Разходи",
+                Icon = "receipt",
+                Path = "/expense"
             },
             new NavMenuItem()
             {

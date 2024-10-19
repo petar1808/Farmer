@@ -30,9 +30,6 @@ namespace WebUI.Pages.Subsidies
 
         public DetailsSubsidyModel Subsidy { get; set; } = default!;
 
-        [Inject]
-        public IState<SelectedWorkingSeasonState> SelectedFarmingSeasonId { get; set; } = default!;
-
         protected async override Task OnInitializedAsync()
         {
             SownArableLands = await SeedingService.GetSownArableLands(WorkingSeasonId);

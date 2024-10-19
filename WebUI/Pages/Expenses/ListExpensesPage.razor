@@ -1,0 +1,25 @@
+﻿@page "/expense"
+@using WebUI.Components.DataGrid
+@using WebUI.ServicesModel.Expenses
+
+<PageTitle>Субсидии</PageTitle>
+
+@if (DataGrid is null)
+{
+    <Loader />
+}
+else
+{
+    <FarmingSeasonContainer OnSeasonChanged=UpdateDataGrid>
+        <DynamicDataGrid TData="ListExpensesModel" Data="@DataGrid" RenderChild="@(x => x.ExpensesByArableLand.Any())">
+            <DetailChildContent Context="arableLands" >
+                <RadzenDataGrid Data="@arableLands.ExpensesByArableLand">
+                    <Columns>
+                        <RadzenDataGridColumn Property="Key" Title="Земя" FormatString="{0:dd/MM/yy}" />
+                        <RadzenDataGridColumn Property="Value" Title="Разход" FormatString="{0:n2} лв." />
+                    </Columns>
+                </RadzenDataGrid>
+            </DetailChildContent>
+        </DynamicDataGrid>
+    </FarmingSeasonContainer>
+}

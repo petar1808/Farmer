@@ -41,21 +41,16 @@
         </RadzenRow>
     </RadzenHeader>
     <RadzenBody @ref="@body0" @bind-Expanded="@bodyExpanded">
-        <ChildContent>
-@*             @if (isAuthenticated)
-            {
-                <FarmingSeasonPicker Visible="@(NavigationManager.Uri.Contains("/subsidy"))" />
-            } *@
-            
-                <RadzenContentContainer Name="main">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12 pt-4 pb-5 px-3 px-lg-5">
-                                @Body
-                            </div>
+        <ChildContent>            
+            <RadzenContentContainer Name="main">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 pt-4 pb-5 px-3 px-lg-5">
+                            @Body
                         </div>
                     </div>
-                </RadzenContentContainer>
+                </div>
+            </RadzenContentContainer>
         </ChildContent>
     </RadzenBody>
     <RadzenSidebar @bind-Expanded="@sidebarExpanded" style="z-index: 2">

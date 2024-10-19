@@ -1,6 +1,7 @@
 ﻿using Application.Features.Articles.Queries;
 using Application.Features.Articles.Queries.ListArticleType;
 using Application.Features.Articles.Queries.SearchArticleType;
+using Application.Features.Expenses.Queries.ListExpenseType;
 using Application.Features.PerformedWorks.Queries.ListWorkType;
 using Application.Features.Treatments.Queries.ListTreatmentType;
 using Microsoft.AspNetCore.Authorization;
@@ -37,6 +38,12 @@ namespace WebApi.Controllers
         [Route("treatmentType")]
         public async Task<ActionResult<List<TreatmentTypeOutputQueryModel>>> GetTreatmentTypes(
             [FromRoute] TreatmentTypeListQuery query)
+            => await base.Send(query);
+
+        [HttpGet]
+        [Route("expenseType")]
+        public async Task<ActionResult<List<ListExpenseTypeQueryOutputModel>>> GetExpenseTypes(
+            [FromRoute] ListExpenseTypeQuery query)
             => await base.Send(query);
     }
 }
