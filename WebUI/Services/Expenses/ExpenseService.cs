@@ -17,6 +17,11 @@ namespace WebUI.Services.Expenses
             return await _httpService.PostAsync<bool>("api/expense", model); 
         }
 
+        public async Task<DetailsExpenseModel> Get(int id)
+        {
+            return await _httpService.GetAsync<DetailsExpenseModel>($"/api/expense/{id}");
+        }
+
         public async Task<List<ExpensesConfigurations>> GetExpensesConfigurations()
         {
             return await _httpService.GetAsync<List<ExpensesConfigurations>>($"/api/expense/configurations");
@@ -31,6 +36,17 @@ namespace WebUI.Services.Expenses
         {
             return await _httpService
                     .GetAsync<List<ListExpensesModel>>($"/api/expense/list/{seasonId}");
+        }
+
+        public async Task<bool> Update(DetailsExpenseModel model)
+        {
+            return await _httpService.PutAsync<bool>("api/expense", model);
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            return await _httpService
+                 .DeleteAsync<bool>($"api/expense/{id}");
         }
     }
 }

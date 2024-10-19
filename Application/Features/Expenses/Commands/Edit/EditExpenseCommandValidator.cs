@@ -1,18 +1,16 @@
-﻿using Application.Features.Subsidies.Commands.Create;
-using Application.Services;
+﻿using Application.Services;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Features.Expenses.Commands.Create
+namespace Application.Features.Expenses.Commands.Edit
 {
-    public class CreateExpenseCommandValidator : AbstractValidator<CreateExpenseCommand>
+    public class EditExpenseCommandValidator : AbstractValidator<EditExpenseCommand>
     {
-        public CreateExpenseCommandValidator(IFarmerDbContext farmerDbContext)
+        public EditExpenseCommandValidator(IFarmerDbContext farmerDbContext)
         {
+            this.RuleFor(x => x.Id)
+                .NotEmpty()
+                .WithMessage("Ид на разхода е задължително");
+
             this.RuleFor(x => x.Quantity)
                 .ExclusiveBetween(0m, int.MaxValue)
                 .WithMessage("Количеството трябва да е положително число");
@@ -24,17 +22,6 @@ namespace Application.Features.Expenses.Commands.Create
             this.RuleFor(x => x.Date)
                 .NotEmpty()
                 .WithMessage("Датата е задължителна");
-
-            this.RuleFor(x => x.WorkingSeasonId)
-                .Must(id =>
-                {
-                    var seeding = farmerDbContext
-                        .WorkingSeasons
-                        .Any(x => x.Id == id);
-
-                    return seeding;
-                })
-                .WithMessage(x => $"Сеитба с Ид: {x.WorkingSeasonId} не съществува!");
 
             this.RuleFor(x => x.ArticleId)
                 .Must(id =>

@@ -90,11 +90,11 @@ namespace WebUI.Pages.Expenses
         {
             if (await DialogService.ShowDeleteDialog(expenseId) == true)
             {
-                //if (await this.ArticleService.Delete(articleId))
-                //{
-                //    DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != articleId));
-                //    this.StateHasChanged();
-                //}
+                if (await this.ExpenseService.Delete(expenseId))
+                {
+                    DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != expenseId));
+                    this.StateHasChanged();
+                }
             }
         }
     }

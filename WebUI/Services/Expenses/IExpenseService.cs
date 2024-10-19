@@ -7,10 +7,16 @@ namespace WebUI.Services.Expenses
     {
         Task<List<ListExpensesModel>> List(int seasonId);
 
+        Task<DetailsExpenseModel> Get(int id);
+
         Task<List<SelectionListModel>> GetExpenseTypes();
 
         Task<List<ExpensesConfigurations>> GetExpensesConfigurations();
 
         Task<bool> Add(DetailsExpenseModel model);
+
+        Task<bool> Update(DetailsExpenseModel article);
+
+        Task<bool> Delete(int id);
     }
 }

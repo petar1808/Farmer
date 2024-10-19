@@ -58,6 +58,7 @@ namespace WebUI.Pages.Expenses
             }
             else
             {
+                Expense = await ExpenseService.Get(ExpenseId);
                 ExpenseConfiguration = ExpensesConfigurations.First(x => (int)x.ExpenseType == Expense.Type);
                 if (ExpenseConfiguration.ArticleType != null)
                 {
@@ -97,10 +98,10 @@ namespace WebUI.Pages.Expenses
             {
                 isSuccess = await ExpenseService.Add(expense);
             }
-            //else
-            //{
-            //    isSuccess = await SubsidyService.Update(subsidiesModel);
-            //}
+            else
+            {
+                isSuccess = await ExpenseService.Update(expense);
+            }
             DialogService.Close(isSuccess);
         }
     }

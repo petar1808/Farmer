@@ -1,7 +1,8 @@
 ﻿using Application.Features.Expenses.Commands.Create;
+using Application.Features.Expenses.Commands.Delete;
+using Application.Features.Expenses.Commands.Edit;
 using Application.Features.Expenses.Queries.Details;
 using Application.Features.Expenses.Queries.List;
-using Application.Features.Subsidies.Commands.Create;
 using Domain;
 using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
@@ -18,19 +19,30 @@ namespace WebApi.Controllers
         [HttpGet]
         [Route("list/{seasonId:int}")]
         public async Task<ActionResult<List<ListExpensesQueryOutputModel>>> ListExpenses(
-            [FromRoute] ListExpensesQuery subsidyListQuery)
-            => await this.Send(subsidyListQuery);
+            [FromRoute] ListExpensesQuery query)
+            => await this.Send(query);
 
         [HttpGet]
         [Route("{expenseId:int}")]
         public async Task<ActionResult<DetailExpensesQueryOutputModel>> Details(
-            [FromRoute] DetailExpensesQuery subsidyListQuery)
-            => await this.Send(subsidyListQuery);
+            [FromRoute] DetailExpensesQuery query)
+            => await this.Send(query);
 
         [HttpPost]
         public async Task<ActionResult> Create(
-            [FromBody] CreateExpenseCommand subsidyModel)
-            => await this.Send(subsidyModel);
+            [FromBody] CreateExpenseCommand command)
+            => await this.Send(command);
+
+        [HttpPut]
+        public async Task<ActionResult> Edit(
+            [FromBody] EditExpenseCommand command)
+            => await this.Send(command);
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete(
+            [FromRoute] DeleteExpenseCommand command)
+            => await this.Send(command);
 
         [HttpGet]
         [Route("configurations")]
