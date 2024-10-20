@@ -14,7 +14,7 @@
 else
 {
     <FarmingSeasonContainer OnSeasonChanged=UpdateDataGrid>
-        <DynamicDataGrid TData="ListSubsidiesModel" Data="@DataGrid">
+        <DynamicDataGrid TData="ListSubsidiesModel" Data="@DataGrid" RenderChild="@(x => x.IncomeByArableLand.Any())">
             <DetailChildContent Context="arableLands" >
                 <RadzenDataGrid Data="@arableLands.IncomeByArableLand">
                     <Columns>

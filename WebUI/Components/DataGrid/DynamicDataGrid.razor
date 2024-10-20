@@ -21,6 +21,7 @@
                             PageSize="@Data.PageSize"
                             ColumnWidth=@(Data.DefaultColumnWidth == null ? "" : Data.DefaultColumnWidth)
                             AllowColumnResize="@Data.AllowResizable"
+                            FilterMode="FilterMode.CheckBoxList"
                             RowRender="@RowRender">
                 <Template Context="item">
                     @if (DetailChildContent is not null)
@@ -91,7 +92,7 @@
     public RenderFragment<TData>? DetailChildContent { get; set; } = null;
 
     [Parameter]
-    public Func<TData, bool>? RenderChild { get; set; }
+    public Func<TData, bool>? RenderChild { get; set; } = null;
 
     void RowRender(RowRenderEventArgs<TData> args)
     {
@@ -101,7 +102,7 @@
         }
         else
         {
-            args.Expandable = true;
+            args.Expandable = false;
         }  
     }
 }
