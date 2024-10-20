@@ -84,7 +84,7 @@ namespace WebUI.Services
                 {
                     new NavMenuItem()
                     {
-                        Name = "Сеидба",
+                        Name = "Реколта",
                         Icon = "compost",
                         Path = "/sowing"
                     }

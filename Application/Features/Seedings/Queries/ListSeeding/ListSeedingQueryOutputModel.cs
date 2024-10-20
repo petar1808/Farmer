@@ -25,6 +25,6 @@ namespace Application.Features.Seedings.Queries.ListSeeding
                .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name))
                .ForMember(x => x.SeedsQuantity, cfg => cfg.MapFrom(c => c.SeedsQuantityPerDecare * c.ArableLand.SizeInDecar))
                .ForMember(x => x.HarvestedQuantity, cfg => cfg.MapFrom(c => c.HarvestedQuantityPerDecare * c.ArableLand.SizeInDecar))
-               .ForMember(x => x.Income, cfg => cfg.MapFrom(c => c.ArableLand.SizeInDecar * (c.SeedsPricePerKilogram * c.SeedsQuantityPerDecare)));
+               .ForMember(x => x.Income, cfg => cfg.MapFrom(c => c.ArableLand.SizeInDecar * (c.HarvestedGrainSellingPricePerKilogram * c.HarvestedQuantityPerDecare)));
     }
 }
