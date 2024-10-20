@@ -42,6 +42,7 @@ namespace WebUI.Pages.Expenses
                 .WithEdit(async (x) => await EditExpense(x))
                 .WithDelete(async (x) => await DeleteExpense(x))
                 .WithPaging()
+                .WithFiltering()
                 .WithSorting();
         }
 
