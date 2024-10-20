@@ -8,13 +8,8 @@ using Application.Features.Seedings.Commands.Create;
 using Application.Features.Seedings.Commands.Edit;
 using Application.Features.Seedings.Queries.DetailsArableLandBalance;
 using Application.Features.Seedings.Queries.DetailsSeedingSummary;
+using Application.Features.Seedings.Queries.ListSeeding;
 using Application.Features.Seedings.Queries.ListSownArableLands;
-using Application.Features.Subsidies.Commands.Create;
-using Application.Features.Subsidies.Commands.Delete;
-using Application.Features.Subsidies.Commands.Edit;
-using Application.Features.Subsidies.Queries;
-using Application.Features.Subsidies.Queries.Details;
-using Application.Features.Subsidies.Queries.List;
 using Application.Features.Treatments.Commands.Create;
 using Application.Features.Treatments.Commands.Delete;
 using Application.Features.Treatments.Commands.Edit;
@@ -36,6 +31,12 @@ namespace WebApi.Controllers
         public async Task<ActionResult> CreateSeading(
             [FromBody] CreateSeedingCommand seedingModel)
             => await base.Send(seedingModel);
+
+        [HttpGet]
+        [Route("{seasonId:int}")]
+        public async Task<ActionResult<List<ListSeedingQueryOutputModel>>> ListSeading(
+            [FromRoute] ListSeedingQuery query)
+            => await base.Send(query);
 
         [HttpGet]
         [Route("availableArableLands/{seasonId:int}")]

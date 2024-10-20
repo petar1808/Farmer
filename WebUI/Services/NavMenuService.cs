@@ -28,7 +28,7 @@ namespace WebUI.Services
                     {
                         Name = "Торове",
                         Path = "nomenclature/article/2",
-                        Icon = "Compost"
+                        Icon = "eco"
                     },
                     new NavMenuItem()
                     {
@@ -58,15 +58,37 @@ namespace WebUI.Services
             },
             new NavMenuItem()
             {
-                Name = "Субсидии",
-                Icon = "monetization_on",
-                Path = "/subsidy"
+                Name = "Финанси",
+                Icon = "account_balance",
+                Children = new List<NavMenuItem>()
+                {
+                    new NavMenuItem()
+                    {
+                        Name = "Разходи",
+                        Icon = "receipt",
+                        Path = "/expense"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Субсидии",
+                        Icon = "monetization_on",
+                        Path = "/subsidy"
+                    }
+                }
             },
             new NavMenuItem()
             {
-                Name = "Разходи",
-                Icon = "receipt",
-                Path = "/expense"
+                Name = "Дейности",
+                Icon = "agriculture",
+                Children = new List<NavMenuItem>()
+                {
+                    new NavMenuItem()
+                    {
+                        Name = "Сеидба",
+                        Icon = "compost",
+                        Path = "/sowing"
+                    }
+                }
             },
             new NavMenuItem()
             {

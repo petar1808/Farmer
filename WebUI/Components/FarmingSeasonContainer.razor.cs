@@ -56,7 +56,7 @@ namespace WebUI.Components
             await OnSeasonChanged.InvokeAsync(); // Notify the parent
         }
 
-        public async Task OnDropDownChangeTreatmentType(object value)
+        public async Task OnDropDownChange(object value)
         {
             var workingSeason = WorkingSeasons.SingleOrDefault(c => c.Id == (int)value);
             Dispatcher.Dispatch(

@@ -14,7 +14,8 @@
                     ValueProperty="Value"
                     TextProperty="Name"
                     Name="SeasonDropDown"
-                    Change=@(args => OnDropDownChangeTreatmentType(args)) />
+                    Change=@(args => OnDropDownChange(args)) />
 </RadzenStack>
-
-@ChildContent
+<RadzenStack class="rz-pt-6">
+    @ChildContent
+</RadzenStack>
