@@ -12,12 +12,7 @@
         public decimal Sum
         {
             get => _sum;
-            set 
-            {
-                _pricePerUnit = value;
-                _quantity = 1;
-                _sum = value;
-            }
+            set => _sum = value;
         }
 
         private decimal _pricePerUnit;

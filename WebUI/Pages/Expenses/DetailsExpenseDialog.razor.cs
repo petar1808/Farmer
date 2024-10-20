@@ -81,6 +81,12 @@ namespace WebUI.Pages.Expenses
             }
         }
 
+        public void OnSumChange(decimal sum)
+        {
+            Expense.Quantity = 1;
+            Expense.PricePerUnit = sum;
+        }
+
         protected async Task OnSubmit(DetailsExpenseModel expense)
         {
             bool isSuccess = false;
