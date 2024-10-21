@@ -1,5 +1,6 @@
 ﻿@page "/sowing"
 @using WebUI.ServicesModel.Seeding
+@attribute [Authorize]
 
 <PageTitle>Сеидба</PageTitle>
 
@@ -57,6 +58,7 @@ else
                         <RadzenColumn Size="12" SizeLG="1" class="rz-p-6">
                             <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit"
                                             Size="ButtonSize.Medium"
+                                            Click=@((x) => OnEdit(seeding.Id, seeding.ArableLandName))
                                             Shade="Shade.Dark" Variant="Variant.Outlined" />
                         </RadzenColumn>
                     </RadzenRow>
