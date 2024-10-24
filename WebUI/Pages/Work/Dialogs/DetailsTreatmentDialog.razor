@@ -51,30 +51,6 @@
                     <NumericRangeValidator Component="ArticleQuantity" Text=@($"Количество {treatmentTypePlaceholder} е трябва да е положително число") Min="0" />
                 </Helper>
             </RadzenFormField>
-            <RadzenFormField Text="@($"Цена на {treatmentTypePlaceholder} за кг/л")" Variant="Variant.Filled">
-                <ChildContent>
-                    <RadzenNumeric style="display: block; width: 100%" Name="ArticlePrice" @bind-Value=@Treatment.ArticlePrice />
-                </ChildContent>
-                <Helper>
-                    <NumericRangeValidator Component="ArticlePrice" Text=@($"Цената на {treatmentTypePlaceholder} е трябва да е положително число") Min="0" />
-                </Helper>
-            </RadzenFormField>
-            <RadzenFormField Text="Количество гориво общо в литра" Variant="Variant.Filled">
-                <ChildContent>
-                    <RadzenNumeric style="display: block; width: 100%" Name="AmountOfFuel" @bind-Value=@Treatment.AmountOfFuel />
-                </ChildContent>
-                <Helper>
-                    <NumericRangeValidator Component="AmountOfFuel" Text="Количество гориво трябва да е положително число" Min="0" />
-                </Helper>
-            </RadzenFormField>
-            <RadzenFormField Text="Цена на гориво на литър в лв." Variant="Variant.Filled">
-                <ChildContent>
-                    <RadzenNumeric style="display: block; width: 100%" Name="FuelPrice" Step="any" @bind-Value=@Treatment.FuelPrice />
-                </ChildContent>
-                <Helper>
-                    <NumericRangeValidator Component="FuelPrice" Text="Цената трябва да е положително число" Min="0" />
-                </Helper>
-            </RadzenFormField>
         </RadzenStack>
         <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
             <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(TreatmentId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />

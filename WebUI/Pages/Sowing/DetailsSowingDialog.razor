@@ -34,17 +34,11 @@
         <ChildContent>
             <RadzenNumeric Disabled Name="SumSeedsQuantity" Value=@DetailsSowingData.SumSeedsQuantity style="display: block; width: 100%" />
         </ChildContent>
-        <Helper>
-             ​<NumericRangeValidator Component="SumSeedsQuantity" Text="Трябва да е положително число" Min="0" />
-        </Helper>
     </RadzenFormField>
     <RadzenFormField Text="Ожънато количество на декар в кг"  Variant="Variant.Filled">
         <ChildContent>
              <RadzenNumeric Name="HarvestedQuantityPerDecare" @bind-Value=@DetailsSowingData.HarvestedQuantityPerDecare style="display: block; width: 100%" />
         </ChildContent>
-        <Helper>
-            ​<NumericRangeValidator Component="HarvestedQuantityPerDecare" Text="Трябва да е положително число" Min="0" />
-        </Helper>
     </RadzenFormField>
     <RadzenFormField Text="Ожънато количество общо в кг"  Variant="Variant.Filled">
         <ChildContent>
@@ -58,16 +52,10 @@
         <ChildContent>
              <RadzenNumeric Name="HarvestedGrainSellingPricePerKilogram" @bind-Value=@DetailsSowingData.HarvestedGrainSellingPricePerKilogram style="display: block; width: 100%" />
         </ChildContent>
-        <Helper>
-            ​<NumericRangeValidator Component="HarvestedGrainSellingPricePerKilogram" Text="Трябва да е положително число" Min="0" />
-        </Helper>
     </RadzenFormField>
     <RadzenFormField Text="Общо приход от реколта" Variant="Variant.Filled">
         <ChildContent>
              <RadzenNumeric Disabled Name="IncomeFromHarvestedGrains" Value=@DetailsSowingData.IncomeFromHarvestedGrains style="display: block; width: 100%" />
         </ChildContent>
-        <Helper>
-             ​<NumericRangeValidator Component="IncomeFromHarvestedGrains" Text="Трябва да е положително число" Min="0" />
-        </Helper>
     </RadzenFormField>
 </FarmerFormWithButtons>

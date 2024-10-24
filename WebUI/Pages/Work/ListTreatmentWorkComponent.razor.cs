@@ -3,15 +3,17 @@ using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Extensions;
-using WebUI.Pages.Seedings.Dialogs;
+using WebUI.Pages.Work.Dialogs;
+using WebUI.Services.PerformedWork;
 using WebUI.Services.Seeding;
 using WebUI.Services.Treatment;
 using WebUI.ServicesModel.Тreatment;
 using WebUI.Store;
+using WebUI.Store.WorkingSeason;
 
-namespace WebUI.Pages.Seedings
+namespace WebUI.Pages.Work
 {
-    public partial class ListTreatment
+    public partial class ListTreatmentWorkComponent
     {
         [Inject]
         public ITreatmentService TreatmentService { get; set; } = default!;
@@ -36,6 +38,8 @@ namespace WebUI.Pages.Seedings
 
         private DynamicDataGridModel<GetTreatmentModel> DataGrid { get; set; } = default!;
 
+        [Inject]
+        public IState<SelectedWorkingSeasonState> SelectedWorkingSeasonState { get; set; } = default!;
 
         protected async override Task OnParametersSetAsync()
         {
@@ -43,14 +47,8 @@ namespace WebUI.Pages.Seedings
             {
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Тип"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Артикул", width:"170px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Кол. на декар", "{0:n2} кг/л.", width:"130px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePrice), "Цена за кг/л.", "{0:n2} лв." , width:"130px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.AmountOfFuel), "Изразходвано гориво", "{0:n2} л." , width:"170px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPrice), "Цена на гориво", "{0:n2} лв.", width:"130px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticlePriceTotal), "Разход за артикул", "{0:n2} лв." , width:"150px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.FuelPriceTotal), "Разход за гориво", "{0:n2} лв.", width:"150px"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TotalCost), "Общ разход", "{0:n2} лв."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Артикул"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Кол. на декар", "{0:n2} кг/л.")
             };
             DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns, "Третиране")
                 .WithAdd(async () => await AddTreatment())
@@ -58,22 +56,21 @@ namespace WebUI.Pages.Seedings
                 .WithDelete(async (x) => await DeleteTreatment(x))
                 .WithPaging()
                 .WithSorting()
-                .WithResizable()
-                .WithDefaultWidth("100px");
+                .WithResizable();
+
+            SelectedWorkingSeasonState.StateChanged += async (sender, state) => await ReLoadData();
         }
 
         public async Task AddTreatment()
         {
             var dialogResult = await DialogService.OpenAsync<DetailsTreatmentDialog>(
                 $"Добавяне на Третиране за земя: {ArableLandName}-{SizeInDecar} декара",
-                new Dictionary<string, object>() { { "SeedingId", SeedingId } }, 
+                new Dictionary<string, object>() { { "SeedingId", SeedingId } },
                 options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)
             {
-                DataGrid.UpdateData(await TreatmentService.List(SeedingId));
-                await UpdateArableLandBalance(this.SeedingId);
-                this.StateHasChanged();
+                await ReLoadData();
             }
         }
 
@@ -85,9 +82,7 @@ namespace WebUI.Pages.Seedings
 
             if (dialogResult == true)
             {
-                DataGrid.UpdateData(await TreatmentService.List(SeedingId));
-                await UpdateArableLandBalance(this.SeedingId);
-                this.StateHasChanged();
+                await ReLoadData();
             }
         }
 
@@ -95,20 +90,18 @@ namespace WebUI.Pages.Seedings
         {
             if (await DialogService.ShowDeleteDialog(treatmentId) == true)
             {
-                if (await this.TreatmentService.Delete(treatmentId))
+                if (await TreatmentService.Delete(treatmentId))
                 {
                     DataGrid.UpdateData(DataGrid.Data.Where(x => x.Id != treatmentId));
-                    await UpdateArableLandBalance(this.SeedingId);
-                    this.StateHasChanged();
+                    StateHasChanged();
                 }
             }
         }
 
-        private async Task UpdateArableLandBalance(int seedingId)
+        public async Task ReLoadData()
         {
-            this.Dispatcher.Dispatch(
-                new UpdateSeedingArableLandBalance(await SeedingService.GetArableLandBalance(seedingId))
-                );
+            DataGrid.UpdateData(await TreatmentService.List(SeedingId));
+            this.StateHasChanged();
         }
     }
 }

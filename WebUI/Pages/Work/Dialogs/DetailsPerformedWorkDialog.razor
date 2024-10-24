@@ -27,22 +27,6 @@
                     <RadzenRequiredValidator Component="WorkType" Text="Тип работа е задължителен" DefaultValue="0" />
                 </Helper>
             </RadzenFormField>
-            <RadzenFormField Text="Количество гориво общо в литра" Variant="Variant.Filled">
-                <ChildContent>
-                    <RadzenNumeric style="display: block; width: 100%" Name="AmountOfFuel" @bind-Value=@PerformedWork.AmountOfFuel />
-                </ChildContent>
-                <Helper>
-                    <NumericRangeValidator Component="AmountOfFuel" Text="Гориво трябва да е положително число" Min="0" />
-                </Helper>
-            </RadzenFormField>
-            <RadzenFormField Text="Цена на гориво на литър в лв." Variant="Variant.Filled">
-                <ChildContent>
-                    <RadzenNumeric style="display: block; width: 100%" Name="FuelPrice" @bind-Value=@PerformedWork.FuelPrice />
-                </ChildContent>
-                <Helper>
-                    <NumericRangeValidator Component="FuelPrice" Text="Цената на горивото трябва да е положително число" Min="0" />
-                </Helper>
-            </RadzenFormField>
         </RadzenStack>
         <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
             <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(PerformedWorkId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />

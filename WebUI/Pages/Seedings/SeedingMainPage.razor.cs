@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Extensions;
-using WebUI.Pages.Seedings.Dialogs;
+using WebUI.Pages.Work.Dialogs;
 using WebUI.Services.PerformedWork;
 using WebUI.Services.Seeding;
 using WebUI.Services.Treatment;

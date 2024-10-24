@@ -4,7 +4,7 @@ using WebUI.Services.Seeding;
 using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.Seeding;
 
-namespace WebUI.Pages.Seedings.Dialogs
+namespace WebUI.Pages.Work.Dialogs
 {
     public partial class DetailsSeedingDialog
     {

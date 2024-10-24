@@ -52,12 +52,6 @@ namespace WebUI.Services
             },
             new NavMenuItem()
             {
-                Name = "Жътва",
-                Icon = "agriculture",
-                Path = "/workingSeason"
-            },
-            new NavMenuItem()
-            {
                 Name = "Финанси",
                 Icon = "account_balance",
                 Children = new List<NavMenuItem>()
@@ -79,7 +73,7 @@ namespace WebUI.Services
             new NavMenuItem()
             {
                 Name = "Дейности",
-                Icon = "agriculture",
+                Icon = "task_alt",
                 Children = new List<NavMenuItem>()
                 {
                     new NavMenuItem()
@@ -87,6 +81,18 @@ namespace WebUI.Services
                         Name = "Реколта",
                         Icon = "compost",
                         Path = "/sowing"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Обработки",
+                        Icon = "agriculture",
+                        Path = "/performedwork"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Третирания",
+                        Icon = "science",
+                        Path = "/treatment"
                     }
                 }
             },

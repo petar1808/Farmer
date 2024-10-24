@@ -6,7 +6,7 @@ using WebUI.ServicesModel.Common;
 using WebUI.ServicesModel.Enum;
 using WebUI.ServicesModel.Тreatment;
 
-namespace WebUI.Pages.Seedings.Dialogs
+namespace WebUI.Pages.Work.Dialogs
 {
     public partial class DetailsTreatmentDialog
     {

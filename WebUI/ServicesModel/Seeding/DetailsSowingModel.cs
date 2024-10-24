@@ -2,7 +2,7 @@
 {
     public class DetailsSowingModel
     {
-        public int ArticleId { get; set; }
+        public int? ArticleId { get; set; }
 
         // Количество семена на декар
         public decimal SeedsQuantityPerDecare { get; set; } = default!;

@@ -53,7 +53,10 @@ namespace WebUI.Components
                 SelectedSeasonId = SelectedWorkingSeasonState.Value.WorkingSeasonId;
             }
 
-            await OnSeasonChanged.InvokeAsync(); // Notify the parent
+            if (OnSeasonChanged.HasDelegate)
+            {
+                await OnSeasonChanged.InvokeAsync();
+            }
         }
 
         public async Task OnDropDownChange(object value)
@@ -61,7 +64,11 @@ namespace WebUI.Components
             var workingSeason = WorkingSeasons.SingleOrDefault(c => c.Id == (int)value);
             Dispatcher.Dispatch(
                 new UpdateSelectedWorkingSeasonState(workingSeason?.Id ?? default, workingSeason?.Name ?? string.Empty));
-            await OnSeasonChanged.InvokeAsync(); // Notify the parent
+
+            if (OnSeasonChanged.HasDelegate)
+            {
+                await OnSeasonChanged.InvokeAsync();
+            }
         }
     }
 }
