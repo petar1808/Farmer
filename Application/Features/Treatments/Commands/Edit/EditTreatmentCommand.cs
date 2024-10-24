@@ -34,11 +34,8 @@ namespace Application.Features.Treatments.Commands.Edit
                 treatment
                     .UpdateDate(request.Date)
                     .UpdateТreatmentType(request.TreatmentType)
-                    .UpdateAmountOfFuel(request.AmountOfFuel)
-                    .UpdateFuelPrice(request.FuelPrice)
                     .UpdateArticle(request.ArticleId)
-                    .UpdateArticleQuantity(request.ArticleQuantity)
-                    .UpdateArticlePrice(request.ArticlePrice);
+                    .UpdateArticleQuantity(request.ArticleQuantity);
 
                 farmerDbContext.Update(treatment);
                 await farmerDbContext.SaveChangesAsync(cancellationToken);

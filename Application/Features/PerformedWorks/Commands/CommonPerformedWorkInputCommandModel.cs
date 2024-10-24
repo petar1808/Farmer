@@ -7,9 +7,5 @@ namespace Application.Features.PerformedWorks.Commands
         public WorkType WorkType { get; set; }
 
         public DateTime Date { get; set; }
-
-        public decimal AmountOfFuel { get; set; }
-
-        public decimal FuelPrice { get; set; }
     }
 }

@@ -21,13 +21,13 @@ namespace Application.Features.Seedings.Queries.DetailsArableLandBalance
         {
             var seedingSummaryExpensesSum = seeding.ArableLand.SizeInDecar * (seeding.SeedsPricePerKilogram * seeding.SeedsQuantityPerDecare);
 
-            var performedWorkExpensesSum = seeding.PerformedWorks.Sum(x => (x.AmountOfFuel * x.FuelPrice));
+            //var performedWorkExpensesSum = seeding.PerformedWorks.Sum(x => (x.AmountOfFuel * x.FuelPrice));
 
-            var treatmentExpensesSum = seeding.Treatments.Sum(x => (x.AmountOfFuel * x.FuelPrice) + (x.ArticlePrice * x.ArticleQuantity * seeding.ArableLand.SizeInDecar));
+            //var treatmentExpensesSum = seeding.Treatments.Sum(x => (x.AmountOfFuel * x.FuelPrice) + (x.ArticlePrice * x.ArticleQuantity * seeding.ArableLand.SizeInDecar));
 
             var expensesForHarvesting = seeding.ExpensesForHarvesting;
 
-            var totalExpenses = performedWorkExpensesSum + treatmentExpensesSum + seedingSummaryExpensesSum + expensesForHarvesting;
+            var totalExpenses = seedingSummaryExpensesSum + expensesForHarvesting;
 
             return totalExpenses;
         }

@@ -48,7 +48,8 @@ namespace WebUI.Pages.Work
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Date), "Дата", "{0:dd/MM/yy}"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Тип"),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Артикул"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Кол. на декар", "{0:n2} кг/л.")
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Кол. на декар", "{0:n2} кг/л."),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.SumArticleQuantity), "Общо кол.", "{0:n2} кг/л.")
             };
             DataGrid = new DynamicDataGridModel<GetTreatmentModel>(await TreatmentService.List(SeedingId), columns, "Третиране")
                 .WithAdd(async () => await AddTreatment())

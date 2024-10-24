@@ -33,9 +33,7 @@ namespace Application.Features.PerformedWorks.Commands.Edit
 
                 performedWork
                     .UpdateWorkType(request.WorkType)
-                    .UpdateDate(request.Date)
-                    .UpdateAmountOfFuel(request.AmountOfFuel)
-                    .UpdateFuelPrice(request.FuelPrice);
+                    .UpdateDate(request.Date);
 
                 farmerDbContext.Update(performedWork);
                 await farmerDbContext.SaveChangesAsync(cancellationToken);

@@ -19,17 +19,19 @@ namespace Application.Features.WorkingSeasons.Queries.List
 
         private decimal? CalculateExpenses(WorkingSeason workingSeason)
         {
-            var seedingSummaryExpensesSum = workingSeason.Seedings.Sum(x => x.ArableLand.SizeInDecar * (x.SeedsPricePerKilogram * x.SeedsQuantityPerDecare));
+            //var seedingSummaryExpensesSum = workingSeason.Seedings.Sum(x => x.ArableLand.SizeInDecar * (x.SeedsPricePerKilogram * x.SeedsQuantityPerDecare));
 
-            var performedWorkExpensesSum = workingSeason.Seedings.Sum(x => x.PerformedWorks.Sum(c => c.AmountOfFuel * c.FuelPrice));
+            //var performedWorkExpensesSum = workingSeason.Seedings.Sum(x => x.PerformedWorks.Sum(c => c.AmountOfFuel * c.FuelPrice));
 
-            var treatmentExpensesSum = workingSeason.Seedings.Sum(x => x.Treatments.Sum(c => (c.AmountOfFuel * c.FuelPrice) + (c.ArticlePrice * c.ArticleQuantity * x.ArableLand.SizeInDecar)));
+            //var treatmentExpensesSum = workingSeason.Seedings.Sum(x => x.Treatments.Sum(c => (c.AmountOfFuel * c.FuelPrice) + (c.ArticlePrice * c.ArticleQuantity * x.ArableLand.SizeInDecar)));
 
-            var expensesForHarvesting = workingSeason.Seedings.Sum(x => x.ExpensesForHarvesting);
+            //var expensesForHarvesting = workingSeason.Seedings.Sum(x => x.ExpensesForHarvesting);
 
-            var totalExpenses = performedWorkExpensesSum + treatmentExpensesSum + seedingSummaryExpensesSum + expensesForHarvesting;
+            //var totalExpenses = performedWorkExpensesSum + treatmentExpensesSum + seedingSummaryExpensesSum + expensesForHarvesting;
 
-            return totalExpenses;
+            //return totalExpenses;
+
+            return 2;
         }
     }
 }

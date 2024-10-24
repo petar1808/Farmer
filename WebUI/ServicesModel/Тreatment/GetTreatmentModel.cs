@@ -7,5 +7,7 @@ namespace WebUI.ServicesModel.Тreatment
         public string ArticleName { get; set; } = default!;
 
         public string TreatmentType { get; set; } = default!;
+
+        public decimal SumArticleQuantity { get; set; }
     }
 }

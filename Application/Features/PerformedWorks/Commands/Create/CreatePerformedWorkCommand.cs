@@ -29,9 +29,7 @@ namespace Application.Features.PerformedWorks.Commands.Create
             {
                 var performedWork = new PerformedWork(request.SeedingId,
                     request.WorkType,
-                    request.Date,
-                    request.FuelPrice,
-                    request.AmountOfFuel);
+                    request.Date);
 
                 await farmerDbContext.AddAsync(performedWork, cancellationToken);
                 await farmerDbContext.SaveChangesAsync(cancellationToken);
