@@ -98,6 +98,20 @@ namespace WebUI.Services
             },
             new NavMenuItem()
             {
+                Name = "Справки",
+                Icon = "insert_chart",
+                Children = new List<NavMenuItem>()
+                {
+                    new NavMenuItem()
+                    {
+                        Name = "Финансов Преглед",
+                        Icon = "summarize",
+                        Path = "/report/FinancialSummary"
+                    }
+                }
+            },
+            new NavMenuItem()
+            {
                 Name = "Потребители",
                 Icon = "people",
                 Path = "/listUser"

@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Features.Reporting.Queries.FinancialSummary
+{
+    public class FinancialSummaryReportOutputModel
+    {
+        public int Id { get; set; }
+
+        public string WorkingSeason { get; set; } = string.Empty;
+
+        public decimal SumIncome { get; set; }
+
+        public decimal SumExpense { get; set; }
+
+        public decimal Profit => SumIncome - SumExpense;
+
+        public List<FinancialSummaryReportIncomes> IncomesByArableLand { get; set; } = new ();
+
+        public List<FinancialSummaryReportExpenses> ExpensesByArableLand { get; set; } = new ();
+
+        public decimal ExpensesForMachinery { get; set; }
+    }
+
+    public class FinancialSummaryReportIncomes
+    {
+        public string ArableLandName { get; set; } = string.Empty;
+
+        public decimal Harvest { get; set; }
+
+        public decimal Subsidies { get; set; }
+    }
+
+    public class FinancialSummaryReportExpenses
+    {
+        public string ArableLandName { get; set; } = string.Empty;
+        public decimal Fuel { get; set; }
+        public decimal Pesticides { get; set; }
+        public decimal Fertilizers { get; set; }
+        public decimal Seeds { get; set; }
+        public decimal Rent { get; set; }
+        public decimal Harvest { get; set; }
+    }
+}

@@ -29,12 +29,14 @@ namespace Domain.Models
 
         public decimal SeedsQuantityPerDecare { get; private set; }
 
+        // Delete
         public decimal SeedsPricePerKilogram { get; private set; }
 
         public int HarvestedQuantityPerDecare { get; private set; }
 
         public decimal HarvestedGrainSellingPricePerKilogram { get; private set; }
 
+        // Delete
         public decimal ExpensesForHarvesting { get; private set; }
 
         public List<Treatment> Treatments { get; } = default!;
