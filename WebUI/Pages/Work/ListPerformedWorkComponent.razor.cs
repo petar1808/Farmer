@@ -42,14 +42,16 @@ namespace WebUI.Pages.Work
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.WorkType), "Тип обработка")
+                new DynamicDataGridColumnModel(nameof(ListPerformedWorkModel.WorkType), "Тип обработка", filterable : true)
             };
             DataGrid = new DynamicDataGridModel<ListPerformedWorkModel>(await PerformedWorkService.List(SeedingId), columns, "Обработки")
                 .WithAdd(async () => await AddPerformedWork())
                 .WithEdit(async (x) => await EditPerformedWork(x))
                 .WithDelete(async (x) => await DeletePerformedWork(x))
                 .WithPaging()
-                .WithSorting();
+                .WithFiltering()
+                .WithSorting()
+                .WithResizable();
 
             SelectedWorkingSeasonState.StateChanged += async (sender, state) => await ReLoadData();
         }

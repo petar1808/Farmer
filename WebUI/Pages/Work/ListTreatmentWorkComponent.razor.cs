@@ -46,8 +46,8 @@ namespace WebUI.Pages.Work
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Тип"),
-                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Артикул"),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.TreatmentType), "Тип", filterable : true),
+                new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleName), "Артикул", filterable : true),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.ArticleQuantity), "Кол. на декар", "{0:n2} кг/л."),
                 new DynamicDataGridColumnModel(nameof(GetTreatmentModel.SumArticleQuantity), "Общо кол.", "{0:n2} кг/л.")
             };
@@ -56,6 +56,7 @@ namespace WebUI.Pages.Work
                 .WithEdit(async (x) => await EditTreatment(x))
                 .WithDelete(async (x) => await DeleteTreatment(x))
                 .WithPaging()
+                .WithFiltering()
                 .WithSorting()
                 .WithResizable();
 

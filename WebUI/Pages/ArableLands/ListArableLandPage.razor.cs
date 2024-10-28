@@ -22,7 +22,7 @@ namespace WebUI.Pages.ArableLands
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(ArableLandModel.Id), "Ид"),
-                new DynamicDataGridColumnModel(nameof(ArableLandModel.Name), "Име"),
+                new DynamicDataGridColumnModel(nameof(ArableLandModel.Name), "Име", filterable : true),
                 new DynamicDataGridColumnModel(nameof(ArableLandModel.SizeInDecar), "Декари"),
             };
             DataGrid = new DynamicDataGridModel<ArableLandModel>(
@@ -32,6 +32,8 @@ namespace WebUI.Pages.ArableLands
                 .WithAdd(async () => await AddArableLand())
                 .WithEdit(async (x) => await EditArableLand(x))
                 .WithDelete(async (x) => await DeleteArableLand(x))
+                .WithFiltering()
+                .WithResizable()
                 .WithPaging()
                 .WithSorting();
         }

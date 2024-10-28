@@ -29,10 +29,10 @@ namespace WebUI.Pages.Expenses
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new DynamicDataGridColumnModel(nameof(ListExpensesModel.Date), "Дата", "{0:dd/MM/yy}"),
-                new DynamicDataGridColumnModel(nameof(ListExpensesModel.Type), "Тип разход"),
+                new DynamicDataGridColumnModel(nameof(ListExpensesModel.Date), "Дата", "{0:dd/MM/yy}", filterable: true),
+                new DynamicDataGridColumnModel(nameof(ListExpensesModel.Type), "Тип разход", filterable: true),
                 new DynamicDataGridColumnModel(nameof(ListExpensesModel.Sum), "Сума", "{0:n2} лв.", total: GetTotal),
-                new DynamicDataGridColumnModel(nameof(ListExpensesModel.Article), "Артикул")
+                new DynamicDataGridColumnModel(nameof(ListExpensesModel.Article), "Артикул", filterable : true)
             };
             DataGrid = new DynamicDataGridModel<ListExpensesModel>(
                     await ExpenseService.List(SelectedWorkingSeasonState.Value.WorkingSeasonId),
@@ -43,6 +43,7 @@ namespace WebUI.Pages.Expenses
                 .WithDelete(async (x) => await DeleteExpense(x))
                 .WithPaging()
                 .WithFiltering()
+                .WithResizable()
                 .WithSorting();
         }
 

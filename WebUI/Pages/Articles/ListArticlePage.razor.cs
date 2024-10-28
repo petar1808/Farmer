@@ -22,7 +22,6 @@ namespace WebUI.Pages.Articles
 
         public DynamicDataGridModel<ListArticleModel> DataGrid { get; set; } = default!;
 
-        // Track the current ArticleType to detect changes
         private ArticleType _currentArticleType;
 
         protected override async Task OnParametersSetAsync()
@@ -39,7 +38,7 @@ namespace WebUI.Pages.Articles
             var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(ListArticleModel.Id), "Ид"),
-                new DynamicDataGridColumnModel(nameof(ListArticleModel.Name), "Име")
+                new DynamicDataGridColumnModel(nameof(ListArticleModel.Name), "Име", filterable : true)
             };
 
             DataGrid = new DynamicDataGridModel<ListArticleModel>(
@@ -50,9 +49,10 @@ namespace WebUI.Pages.Articles
                 .WithEdit(async (x) => await EditArticle(x, ArticleType))
                 .WithDelete(async (x) => await DeleteArticle(x))
                 .WithPaging()
+                .WithFiltering()
+                .WithResizable()
                 .WithSorting();
 
-            // Trigger UI re-render
             StateHasChanged();
         }
 

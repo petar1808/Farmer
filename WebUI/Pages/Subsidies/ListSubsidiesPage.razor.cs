@@ -26,9 +26,9 @@ namespace WebUI.Pages.Subsidies
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Date), "Дата", "{0:dd/MM/yy}"),
+                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Date), "Дата", "{0:dd/MM/yy}", filterable: true),
                 new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Income), "Приход", "{0:n2} лв.", total: GetTotal),
-                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Comment), "Бележка")
+                new DynamicDataGridColumnModel(nameof(ListSubsidiesModel.Comment), "Бележка", filterable : true)
             };
             DataGrid = new DynamicDataGridModel<ListSubsidiesModel>(
                     await SubsidyService.List(SelectedWorkingSeasonState.Value.WorkingSeasonId),
@@ -38,6 +38,8 @@ namespace WebUI.Pages.Subsidies
                 .WithEdit(async (x) => await EditSubsidy(x))
                 .WithDelete(async (x) => await DeleteSubsidy(x))
                 .WithPaging()
+                .WithFiltering()
+                .WithResizable()
                 .WithSorting();
         }
 

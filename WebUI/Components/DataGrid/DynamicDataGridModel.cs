@@ -104,13 +104,15 @@ namespace WebUI.Components.DataGrid
             string displayName, 
             string stringFormat = "", 
             string? width = null,
-            Func<string>? total = null)
+            Func<string>? total = null,
+            bool filterable = false)
         {
             PropertyName = propertyName;
             DisplayName = displayName;
             StringFormat = stringFormat;
             Width = width;
             Total = total;
+            Filterable = filterable;
         }
 
         public string PropertyName { get; set; }
@@ -122,11 +124,12 @@ namespace WebUI.Components.DataGrid
         public string? Width { get; set; }
 
         public Func<string>? Total { get; set; }
+
+        public bool Filterable { get; set; }
     }
 
     public interface IDynamicDataGridModel
     {
         public int Id { get; set; }
     }
-
 }
