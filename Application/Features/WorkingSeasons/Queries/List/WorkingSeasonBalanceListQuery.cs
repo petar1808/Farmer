@@ -25,18 +25,9 @@ namespace Application.Features.WorkingSeasons.Queries.List
                 WorkingSeasonBalanceListQuery request,
                 CancellationToken cancellationToken)
             {
-                var workingSeasonBalance = await farmerDbContext
-                .WorkingSeasons
-                .Include(x => x.Seedings)
-                    .ThenInclude(x => x.ArableLand)
-                .Include(x => x.Seedings)
-                    .ThenInclude(x => x.Article)
-                .Include(x => x.Seedings)
-                    .ThenInclude(x => x.PerformedWorks)
-                .Include(x => x.Seedings)
-                    .ThenInclude(x => x.Treatments)
-                .OrderByDescending(x => x.StartDate)
-                .ToListAsync(cancellationToken);
+                var workingSeasonBalance = await farmerDbContext.WorkingSeasons
+                            .OrderByDescending(x => x.StartDate)
+                            .ToListAsync(cancellationToken);
 
                 var result = mapper.Map<List<WorkingSeasonBalanceListQueryOutputModel>>(workingSeasonBalance);
 

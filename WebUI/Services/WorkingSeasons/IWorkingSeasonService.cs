@@ -13,7 +13,5 @@ namespace WebUI.Services.WorkingSeasons
         Task<bool> Add(WorkingSeasonModel arableLand);
 
         Task<bool> Delete(int id);
-
-        Task<List<ListWorkingSeasonBalanceModel>> ListWorkingSeasonsBalance();
     }
 }

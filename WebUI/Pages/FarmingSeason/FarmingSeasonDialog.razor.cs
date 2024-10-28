@@ -3,9 +3,9 @@ using Radzen;
 using WebUI.Services.WorkingSeasons;
 using WebUI.ServicesModel.WorkingSeason;
 
-namespace WebUI.Pages.WorkingSeasons
+namespace WebUI.Pages.FarmingSeason
 {
-    public partial class WorkingSeasonDialog
+    public partial class FarmingSeasonDialog
     {
         [Inject]
         public IWorkingSeasonService WorkingSeasonService { get; set; } = default!;

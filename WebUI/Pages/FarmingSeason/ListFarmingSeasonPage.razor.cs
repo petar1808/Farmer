@@ -2,7 +2,6 @@
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Extensions;
-using WebUI.Pages.WorkingSeasons;
 using WebUI.Services.WorkingSeasons;
 using WebUI.ServicesModel.WorkingSeason;
 
@@ -42,7 +41,7 @@ namespace WebUI.Pages.FarmingSeason
 
         public async Task AddWorkingSeason()
         {
-            var dialogResult = await DialogService.OpenAsync<WorkingSeasonDialog>(
+            var dialogResult = await DialogService.OpenAsync<FarmingSeasonDialog>(
                 $"Добавяне на Сезон",
                 options: DialogHelper.GetCommonDialogOptions());
 
@@ -55,7 +54,7 @@ namespace WebUI.Pages.FarmingSeason
 
         public async Task EditWorkingSeason(int workingSeasonId)
         {
-            var dialogResult = await DialogService.OpenAsync<WorkingSeasonDialog>(
+            var dialogResult = await DialogService.OpenAsync<FarmingSeasonDialog>(
                 $"Редактиране на Сезон",
                 new Dictionary<string, object>() { { "WorkingSeasonId", workingSeasonId } },
                 options: DialogHelper.GetCommonDialogOptions());
