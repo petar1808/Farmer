@@ -29,15 +29,9 @@ namespace Domain.Models
 
         public decimal SeedsQuantityPerDecare { get; private set; }
 
-        // Delete
-        public decimal SeedsPricePerKilogram { get; private set; }
-
         public int HarvestedQuantityPerDecare { get; private set; }
 
         public decimal HarvestedGrainSellingPricePerKilogram { get; private set; }
-
-        // Delete
-        public decimal ExpensesForHarvesting { get; private set; }
 
         public List<Treatment> Treatments { get; } = default!;
 
@@ -51,21 +45,9 @@ namespace Domain.Models
             return this;
         }
 
-        public Seeding UpdateExpensesForHarvesting(decimal expensesForHarvesting)
-        {
-            this.ExpensesForHarvesting = expensesForHarvesting;
-            return this;
-        }
-
         public Seeding UpdateSeedsQuantityPerDecare(decimal seedsQuantityPerDecare)
         {
             this.SeedsQuantityPerDecare = seedsQuantityPerDecare;
-            return this;
-        }
-
-        public Seeding UpdateSeedsPricePerKilogram(decimal seedsPricePerKilogram)
-        {
-            this.SeedsPricePerKilogram = seedsPricePerKilogram;
             return this;
         }
 

@@ -13,16 +13,8 @@ namespace WebUI.Services.Seeding
 
         Task<List<SownArableLandModel>> GetSownArableLands(int seasonId);
 
-        // Delete
-        Task<GetSeedingSummaryModel> GetSeedingSummary(int seedingId);
-
         Task<DetailsSowingModel> GetSowingDetails(int seedingId);
-
-        // Delete
-        Task<bool> UpdateSeedingSummary(SeedingSummaryBaseModel model, int seedingId);
      
         Task<bool> UpdateSeedingSummaryNew(DetailsSowingModel model, int seedingId);
-
-        Task<GetArableLandBalanceModel> GetArableLandBalance(int seedingId);
     }
 }

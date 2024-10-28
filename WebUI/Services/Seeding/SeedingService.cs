@@ -29,28 +29,10 @@ namespace WebUI.Services.Seeding
                 .GetAsync<List<SelectionListModel>>($"api/seeding/availableArableLands/{seasonId}");
         }
 
-        public async Task<GetSeedingSummaryModel> GetSeedingSummary(int seedingId)
-        {
-            return await _httpService
-                .GetAsync<GetSeedingSummaryModel>($"api/seeding/summary/{seedingId}");
-        }
-
         public async Task<DetailsSowingModel> GetSowingDetails(int seedingId)
         {
             return await _httpService
                 .GetAsync<DetailsSowingModel>($"api/seeding/summary/{seedingId}");
-        }
-
-        public async Task<GetArableLandBalanceModel> GetArableLandBalance(int seedingId)
-        {
-            return await _httpService
-                .GetAsync<GetArableLandBalanceModel>($"api/seeding/sownArableLand/balance/{seedingId}");
-        }
-
-        public async Task<bool> UpdateSeedingSummary(SeedingSummaryBaseModel model, int seedingId)
-        {
-            return await _httpService
-                .PutAsync<bool>($"api/seeding/summary/{seedingId}", model);
         }
 
         public async Task<List<SownArableLandModel>> GetSownArableLands(int seasonId)

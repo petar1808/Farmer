@@ -6,7 +6,6 @@ using Application.Features.PerformedWorks.Queries.Details;
 using Application.Features.PerformedWorks.Queries.List;
 using Application.Features.Seedings.Commands.Create;
 using Application.Features.Seedings.Commands.Edit;
-using Application.Features.Seedings.Queries.DetailsArableLandBalance;
 using Application.Features.Seedings.Queries.DetailsSeedingSummary;
 using Application.Features.Seedings.Queries.ListSeeding;
 using Application.Features.Seedings.Queries.ListSownArableLands;
@@ -49,13 +48,6 @@ namespace WebApi.Controllers
         public async Task<ActionResult<List<SownArableLandListQueryOutputModel>>> ListSownArableLand(
             [FromRoute] SownArableLandListQuery sownArableLandListQuery)
             => await base.Send(sownArableLandListQuery);
-
-
-        [HttpGet]
-        [Route("sownArableLand/balance/{seedingId:int}")]
-        public async Task<ActionResult<ArableLandBalanceDetailsQueryOutputModel>> ArableLandBalance(
-            [FromRoute] ArableLandBalanceDetailsQuery arableLandBalanceDetailsQuery)
-            => await base.Send(arableLandBalanceDetailsQuery);
 
         [HttpGet]
         [Route("summary/{seedingId:int}")]
