@@ -16,10 +16,10 @@ namespace WebUI.Services.WorkingSeasons
                 .GetAsync<WorkingSeasonModel>($"api/workingSeasons/{id}");
         }
 
-        public async Task<List<WorkingSeasonModel>> List()
+        public async Task<List<ListWorkingSeasonModel>> List()
         {
             return await _httpService
-                .GetAsync<List<WorkingSeasonModel>>($"api/workingSeasons");
+                .GetAsync<List<ListWorkingSeasonModel>>($"api/workingSeasons");
         }
 
         public async Task<bool> Add(WorkingSeasonModel workingSeason)

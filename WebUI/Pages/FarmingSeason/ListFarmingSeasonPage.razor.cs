@@ -2,6 +2,7 @@
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Extensions;
+using WebUI.Services.Seeding;
 using WebUI.Services.WorkingSeasons;
 using WebUI.ServicesModel.WorkingSeason;
 
@@ -15,19 +16,19 @@ namespace WebUI.Pages.FarmingSeason
         [Inject]
         public DialogService DialogService { get; set; } = default!;
 
-        public DynamicDataGridModel<WorkingSeasonModel> DataGrid { get; set; } = default!;
+        public DynamicDataGridModel<ListWorkingSeasonModel> DataGrid { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
             var columns = new List<DynamicDataGridColumnModel>()
             {
-                new(nameof(WorkingSeasonModel.Id), "Ид"),
-                new(nameof(WorkingSeasonModel.Name), "Име"),
-                new(nameof(WorkingSeasonModel.StartDate), "Начална Дата", "{0:dd/MM/yy}"),
-                new(nameof(WorkingSeasonModel.EndDate), "Крайна Дата", "{0:dd/MM/yy}")
+                new(nameof(ListWorkingSeasonModel.Id), "Ид"),
+                new(nameof(ListWorkingSeasonModel.Name), "Име"),
+                new(nameof(ListWorkingSeasonModel.StartDate), "Начална Дата", "{0:dd/MM/yy}"),
+                new(nameof(ListWorkingSeasonModel.EndDate), "Крайна Дата", "{0:dd/MM/yy}")
             };
 
-            DataGrid = new DynamicDataGridModel<WorkingSeasonModel>(
+            DataGrid = new DynamicDataGridModel<ListWorkingSeasonModel>(
                     await WorkingSeasonService.List(),
                     columns,
                     "Сезони")
@@ -75,6 +76,19 @@ namespace WebUI.Pages.FarmingSeason
                     DataGrid.UpdateData(DataGrid.Data.Where(c => c.Id != workingSeasonId));
                     this.StateHasChanged();
                 }
+            }
+        }
+
+        public async Task AddArableLand(int workingSeasonsId)
+        {
+            var response = await DialogService.OpenAsync<DetailsSeedingDialog>($"Добавяне на Земя",
+                parameters: new Dictionary<string, object>() { { "WorkingSeasonsId", workingSeasonsId } },
+                options: DialogHelper.GetCommonDialogOptions());
+
+            if (response == true)
+            {
+                DataGrid.UpdateData(await WorkingSeasonService.List());
+                this.StateHasChanged();
             }
         }
     }

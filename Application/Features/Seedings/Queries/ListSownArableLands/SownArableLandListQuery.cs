@@ -38,9 +38,11 @@ namespace Application.Features.Seedings.Queries.ListSownArableLands
                     .Seedings
                     .Include(x => x.ArableLand)
                     .Where(x => x.WorkingSeasonId == request.SeasonId)
-                .AsQueryable();
+                    .AsQueryable();
 
-                var result = await mapper.ProjectTo<SownArableLandListQueryOutputModel>(arableLands).ToListAsync();
+                var result = await mapper
+                    .ProjectTo<SownArableLandListQueryOutputModel>(arableLands)
+                    .ToListAsync(cancellationToken);
 
                 return result;
             }

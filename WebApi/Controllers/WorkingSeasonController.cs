@@ -26,8 +26,8 @@ namespace WebApi.Controllers
             => await base.Send(workingSeasonDetailsQuery);
 
         [HttpGet]
-        public async Task<ActionResult<List<WorkingSeasonBalanceListQueryOutputModel>>> ListWorkingSeason(
-            [FromHeader] WorkingSeasonBalanceListQuery workingSeasonBalanceListQuery)
+        public async Task<ActionResult<List<WorkingSeasonListQueryOutputModel>>> ListWorkingSeason(
+            [FromHeader] WorkingSeasonListQuery workingSeasonBalanceListQuery)
             => await base.Send(workingSeasonBalanceListQuery);
 
         [HttpPut]

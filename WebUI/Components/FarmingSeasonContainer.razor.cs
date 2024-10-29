@@ -28,7 +28,7 @@ namespace WebUI.Components
 
         public int SelectedSeasonId { get; set; }
 
-        public List<WorkingSeasonModel> WorkingSeasons { get; set; } = new List<WorkingSeasonModel>();
+        public List<ListWorkingSeasonModel> WorkingSeasons { get; set; } = new List<ListWorkingSeasonModel>();
 
         protected async override Task OnInitializedAsync()
         {

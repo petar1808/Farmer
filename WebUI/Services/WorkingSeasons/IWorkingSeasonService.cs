@@ -4,7 +4,7 @@ namespace WebUI.Services.WorkingSeasons
 {
     public interface IWorkingSeasonService
     {
-        Task<List<WorkingSeasonModel>> List();
+        Task<List<ListWorkingSeasonModel>> List();
 
         Task<WorkingSeasonModel> Get(int id);
 
