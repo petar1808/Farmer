@@ -5,15 +5,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configuration
 {
-    public class SubsidyConfiguration : EntityConfiguration<Subsidy, int>
+    internal class SubsidyConfiguration : EntityConfiguration<Subsidy, int>
     {
         public override void Configure(EntityTypeBuilder<Subsidy> builder)
         {
             builder
-               .HasOne(x => x.Seeding)
-               .WithMany(x => x.Subsidies)
-               .HasForeignKey(p => p.SeedingId)
-               .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(x => x.SubsidyByArableLands)
+                .WithOne(x => x.Subsidy)
+                .HasForeignKey(x => x.SubsidyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne<WorkingSeason>()
+                .WithMany()
+                .HasForeignKey(x => x.WorkingSeasonId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(p => p.Income).HasColumnType("decimal(12,2)").IsRequired();
             builder.Property(p => p.Date).IsRequired();

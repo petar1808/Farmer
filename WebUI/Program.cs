@@ -12,8 +12,10 @@ using WebUI.Extensions;
 using WebUI.Services;
 using WebUI.Services.ArableLand;
 using WebUI.Services.Article;
+using WebUI.Services.Expenses;
 using WebUI.Services.Identity;
 using WebUI.Services.PerformedWork;
+using WebUI.Services.Reports;
 using WebUI.Services.Seeding;
 using WebUI.Services.Subsidies;
 using WebUI.Services.Tenants;
@@ -37,7 +39,6 @@ builder.Services
 
 builder.Services.AddSingleton<NavMenuService>();
 
-builder.Services.AddSingleton<SelectedWorkingSeasonService>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationService>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
@@ -60,6 +61,8 @@ builder.Services.AddTransient<ISeedingService, SeedingService>();
 builder.Services.AddTransient<IIdentityService, IdentityService>();
 builder.Services.AddTransient<ISubsidyService, SubsidyService>();
 builder.Services.AddTransient<ITenantService, TenantService>();
+builder.Services.AddTransient<IExpenseService, ExpenseService>();
+builder.Services.AddTransient<IReportService, ReportService>();
 
 builder.Services.AddFluxor(conf =>
 {

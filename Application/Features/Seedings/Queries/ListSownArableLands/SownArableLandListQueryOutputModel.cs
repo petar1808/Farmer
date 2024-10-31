@@ -12,6 +12,8 @@ namespace Application.Features.Seedings.Queries.ListSownArableLands
 
         public int SizeInDecar { get; set; }
 
+        public int ArableLandId { get; set; }
+
         public virtual void Mapping(Profile mapper)
           => mapper.CreateMap<Seeding, SownArableLandListQueryOutputModel>()
                 .ForMember(x => x.SeedingId, cfg => cfg.MapFrom(c => c.Id))

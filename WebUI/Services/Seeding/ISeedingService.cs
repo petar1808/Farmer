@@ -9,12 +9,14 @@ namespace WebUI.Services.Seeding
 
         Task<bool> AddSeeding(AddSeedingModel seedingModel);
 
+        Task<List<ListSeedingModel>> ListSeeding(int seasonId);
+
+        Task<List<SelectionListModel>> ListSeedingSelectionList();
+
         Task<List<SownArableLandModel>> GetSownArableLands(int seasonId);
 
-        Task<GetSeedingSummaryModel> GetSeedingSummary(int seedingId);
-
-        Task<bool> UpdateSeedingSummary(SeedingSummaryBaseModel model, int seedingId);
-
-        Task<GetArableLandBalanceModel> GetArableLandBalance(int seedingId);
+        Task<DetailsSowingModel> GetSowingDetails(int seedingId);
+     
+        Task<bool> UpdateSeedingSummaryNew(DetailsSowingModel model, int seedingId);
     }
 }

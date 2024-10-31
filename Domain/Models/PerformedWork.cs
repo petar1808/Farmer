@@ -8,17 +8,12 @@ namespace Domain.Models
 
         public PerformedWork(int seedingId,
             WorkType workType,
-            DateTime date,
-            decimal fuelPrice,
-            decimal amountOfFuel)
+            DateTime date)
         {
             ValidateWorkType(workType);
             SeedingId = seedingId;
             WorkType = workType;
             Date = date;
-            FuelPrice = fuelPrice;
-            AmountOfFuel = amountOfFuel;
-
             Seeding = default!;
         }
 
@@ -30,10 +25,6 @@ namespace Domain.Models
         public WorkType WorkType { get; private set; }
 
         public DateTime Date { get; private set; }
-
-        public decimal AmountOfFuel { get; private set; }
-
-        public decimal FuelPrice { get; private set; }
 
         public int TenantId { get; set; }
 
@@ -47,18 +38,6 @@ namespace Domain.Models
         public PerformedWork UpdateDate(DateTime date)
         {
             this.Date = date;
-            return this;
-        }
-
-        public PerformedWork UpdateAmountOfFuel(decimal amountOfFuel)
-        {
-            this.AmountOfFuel = amountOfFuel;
-            return this;
-        }
-
-        public PerformedWork UpdateFuelPrice(decimal fuelPrice)
-        {
-            this.FuelPrice = fuelPrice;
             return this;
         }
 

@@ -20,22 +20,57 @@
                             AllowPaging="@Data.AllowPaging"
                             PageSize="@Data.PageSize"
                             ColumnWidth=@(Data.DefaultColumnWidth == null ? "" : Data.DefaultColumnWidth)
-                            AllowColumnResize="@Data.AllowResizable">
+                            AllowColumnResize="@Data.AllowResizable"
+                            FilterMode="FilterMode.CheckBoxList"
+                            RowRender="@RowRender">
+                <Template Context="item">
+                    @if (DetailChildContent is not null)
+                    {
+                        @DetailChildContent(item)
+                    }
+                </Template>
+
                 <Columns>
                     @foreach (var column in Data.Columns)
                     {
-                        @if (column.Width == null)
+                        @if (column.Total != null)
                         {
-                            <RadzenDataGridColumn TItem="TData" Property="@column.PropertyName" FormatString="@column.StringFormat" Title="@column.DisplayName" />
+                            <RadzenDataGridColumn TItem="TData" 
+                                                  Width="@column.Width" 
+                                                  Property="@column.PropertyName" 
+                                                  Filterable="@column.Filterable" 
+                                                  FormatString="@column.StringFormat" 
+                                                  Title="@column.DisplayName">
+                                <HeaderTemplate>
+                                    @column.DisplayName
+                                </HeaderTemplate>
+                                <FooterTemplate>
+                                    Общо @column.Total.Invoke()
+                                </FooterTemplate>
+                            </RadzenDataGridColumn>
                         }
                         else
                         {
-                            <RadzenDataGridColumn TItem="TData" Width="@column.Width" Property="@column.PropertyName" FormatString="@column.StringFormat" Title="@column.DisplayName" />
+                            <RadzenDataGridColumn TItem="TData" 
+                                                  Width="@column.Width" 
+                                                  Property="@column.PropertyName" 
+                                                  Filterable="@column.Filterable" 
+                                                  FormatString="@column.StringFormat" 
+                                                  Title="@column.DisplayName">
+                                <HeaderTemplate>
+                                    @column.DisplayName
+                                </HeaderTemplate>
+                            </RadzenDataGridColumn>
                         }
-                    }
 
-                    <RadzenDataGridColumn Visible=@(Data.EditAction != null || Data.DeleteAction != null) Filterable="false" Sortable="false" TItem="TData" Title="Действие" Width="140px" TextAlign="TextAlign.Center">
-                            
+                    }
+                    <RadzenDataGridColumn Visible=@(Data.EditAction != null || Data.DeleteAction != null) 
+                                          Filterable="false" 
+                                          Sortable="false" 
+                                          TItem="TData" 
+                                          Title="Действие" 
+                                          Width="140px" 
+                                          TextAlign="TextAlign.Center">    
                         <Template Context="data">
                             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
                             @if (Data.EditAction != null)
@@ -68,4 +103,22 @@
 
     [Parameter]
     public DynamicDataGridModel<TData> Data { get; set; } = default!;
+
+    [Parameter] 
+    public RenderFragment<TData>? DetailChildContent { get; set; } = null;
+
+    [Parameter]
+    public Func<TData, bool>? RenderChild { get; set; } = null;
+
+    void RowRender(RowRenderEventArgs<TData> args)
+    {
+        if (RenderChild is not null)
+        {
+            args.Expandable = RenderChild.Invoke(args.Data);
+        }
+        else
+        {
+            args.Expandable = false;
+        }  
+    }
 }

@@ -1,0 +1,60 @@
+﻿@using WebUI.Components.Validators
+@using WebUI.ServicesModel.Тreatment
+@attribute [Authorize]
+
+<RadzenColumn SizeMD=12>
+    <RadzenTemplateForm TItem="ТreatmentDetailsModel" Data=@Treatment Visible="@(Treatment is not null)" Submit=@OnSubmit>
+        <RadzenStack>
+            <RadzenFormField Text="Дата" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block; width: 100%" Name="Date" @bind-Value=@Treatment.Date />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="Date" Text="Датата е задължителна" Style="position: absolute" />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Тип третиране" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data=@TreatmentTypes
+                                    @bind-Value=@Treatment.TreatmentType
+                                    ValueProperty="Value"
+                                    TextProperty="Name"
+                                    Name="TreatmentType"
+                                    Change=@(args => OnDropDownChangeTreatmentType(args)) Class="w-100" />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="TreatmentType" Text="Тип третиране е задължителен" DefaultValue="0" />
+                </Helper>
+            </RadzenFormField>
+            @if (Treatment.TreatmentType != 0)
+            {
+                <RadzenFormField Text="@treatmentTypePlaceholder" Variant="Variant.Filled">
+                    <ChildContent>
+                        <RadzenDropDown Data=@Articles
+                                        @bind-Value=@Treatment.ArticleId
+                                        ValueProperty="Value"
+                                        TextProperty="Name"
+                                        Name="Article"
+                                        Change=@(args => OnDropDownChangeTreatmentArticleType(args)) Class="w-100" />
+                    </ChildContent>
+                    <Helper>
+                        <RadzenRequiredValidator Component="Article" Text=@($"Тип {treatmentTypePlaceholder} е задължителен") DefaultValue="0" />
+                    </Helper>
+                </RadzenFormField>
+            }
+            <RadzenFormField Text="@($"Количество {treatmentTypePlaceholder} на декар в кг/л")" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenNumeric style="display: block; width: 100%" Name="ArticleQuantity" @bind-Value=@Treatment.ArticleQuantity />
+                </ChildContent>
+                <Helper>
+                    <NumericRangeValidator Component="ArticleQuantity" Text=@($"Количество {treatmentTypePlaceholder} е трябва да е положително число") Min="0" />
+                </Helper>
+            </RadzenFormField>
+        </RadzenStack>
+        <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(TreatmentId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
+        </RadzenStack>
+    </RadzenTemplateForm>
+</RadzenColumn>

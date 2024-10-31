@@ -1,24 +1,16 @@
 ﻿@using WebUI.ServicesModel.Article
 @attribute [Authorize]
 
-<RadzenColumn SizeMD=12>
-    <RadzenTemplateForm TItem="ArticleDetailsModel" Data=@Article Visible="@(Article is not null)" Submit="@OnSubmit">
-        <RadzenStack>
-            <RadzenNumeric hidden Name="ArticleType" @bind-Value=@Article.ArticleType Class="w-100" />
-            <RadzenFormField Text="Име" Variant="Variant.Filled">
-                <ChildContent>
-                    <RadzenTextBox style="display: block; width: 100%" @bind-Value=@Article.Name Name="Name" />
-                </ChildContent>
-                <Helper>
-                    <RadzenLengthValidator Component="Name" Min="2" Text="Името трябва да съдържа поне 2 знака" Style="position: absolute" />
-                    <RadzenLengthValidator Component="Name" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style="position: absolute" />
-                </Helper>
-            </RadzenFormField>
-        </RadzenStack>
-        <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
-            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(ArticleId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
-            <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
-        </RadzenStack>
-    </RadzenTemplateForm>
-</RadzenColumn>
+<FarmerFormWithButtons TModel="ArticleDetailsModel" Model="@Article" ItemId="@ArticleId" OnSubmit="@OnSubmit" OnClose="@OnClose">
+    <RadzenNumeric hidden Name="ArticleType" @bind-Value=@Article.ArticleType Class="w-100" />
+    <RadzenFormField Text="Име" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenTextBox style="display: block; width: 100%" @bind-Value=@Article.Name Name="Name" />
+        </ChildContent>
+        <Helper>
+            <RadzenLengthValidator Component="Name" Min="2" Text="Името трябва да съдържа поне 2 знака" Style="position: absolute" />
+            <RadzenLengthValidator Component="Name" Max="50" Text="Името трябва да съдържа най-много 50 знака" Style="position: absolute" />
+        </Helper>
+    </RadzenFormField>
+</FarmerFormWithButtons>
 

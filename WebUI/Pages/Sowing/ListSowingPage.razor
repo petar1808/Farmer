@@ -1,0 +1,85 @@
+﻿@page "/sowing"
+@using WebUI.ServicesModel.Seeding
+@attribute [Authorize]
+
+<PageTitle>Сеидба</PageTitle>
+
+@if (SeedingData is null)
+{
+    <Loader />
+}
+else
+{
+    <FarmingSeasonContainer OnSeasonChanged=UpdateData>
+        <RadzenDataList WrapItems="true" AllowPaging="false"
+                    Data="@SeedingData" TItem="ListSeedingModel">
+            <Template Context="seeding">
+                <RadzenCard Variant="Variant.Filled" class="rz-p-0" Style="width: 100%; overflow: hidden;">
+                    <RadzenRow Gap="0">
+                        <RadzenColumn Size="12" SizeLG="2" class="rz-p-6 product-title">
+                            <RadzenText Style="font-weight: bold;" TextStyle="TextStyle.H6" TagName="TagName.Auto">@(seeding.ArableLandName)</RadzenText>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeLG="9" class="rz-p-4">
+                            <RadzenRow Gap="0">
+                                <RadzenColumn Size="12" SizeMD="6" SizeLG="4">
+                                    <RadzenText Style="font-weight: bold;" TextStyle="TextStyle.Body1" TagName="TagName.Auto">Семе</RadzenText>
+                                    @* <RadzenText Style="font-weight: bold;" TextStyle="TextStyle.Overline" TagName="TagName.Auto">@(seeding.ArticleName)</RadzenText> *@
+                                    <RadzenBadge BadgeStyle="BadgeStyle.Secondary"
+                                                    Variant="Variant.Outlined"
+                                                    Shade="Shade.Darker"
+                                                    Text=@(seeding.ArticleName) />
+                                </RadzenColumn>
+                                <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                                    <RadzenText Style="font-weight: bold;" TextStyle="TextStyle.Body1" TagName="TagName.Auto">Засято количество</RadzenText>
+                                    <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                                    Shade="Shade.Dark"
+                                                    Variant="Variant.Outlined"
+                                                    class="price-badge"
+                                                    Text=@($"{seeding.SeedsQuantity:n0} кг") />
+                                </RadzenColumn>
+                                <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                                    <RadzenText Style="font-weight: bold;" TextStyle="TextStyle.Body1" TagName="TagName.Auto">Ожънато количество</RadzenText>
+                                    <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                                    Shade="Shade.Dark"
+                                                    Variant="Variant.Outlined"
+                                                    class="price-badge"
+                                                    Text=@($"{seeding.HarvestedQuantity:n0} кг") />
+                                </RadzenColumn>
+                                <RadzenColumn Size="12" SizeMD="6" SizeLG="2" >
+                                    <RadzenText Style="font-weight: bold;" TextStyle="TextStyle.Body1" TagName="TagName.Auto">Приход</RadzenText>
+                                    <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                                    Shade="Shade.Dark"
+                                                    Variant="Variant.Outlined"
+                                                    class="price-badge"
+                                                    Text=@($"{seeding.Income:n0} лв")/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeLG="1" class="rz-p-6">
+                            <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit"
+                                            Size="ButtonSize.Medium"
+                                            Click=@((x) => OnEdit(seeding.Id, seeding.ArableLandName))
+                                            Shade="Shade.Dark" Variant="Variant.Outlined" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                </RadzenCard>
+            </Template>
+    </RadzenDataList>
+    </FarmingSeasonContainer>
+}
+
+
+
+<style>
+    .product-title {
+        min-height: 72px;
+        background-color: var(--rz-secondary-lighter);
+    }
+
+    .price-badge {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 18px;
+        padding: 2px;
+    }
+</style>

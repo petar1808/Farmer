@@ -4,14 +4,14 @@ namespace WebUI.Services.Subsidies
 {
     public interface ISubsidyService
     {
-        Task<List<SubsidiesModel>> List(int seedingId);
+        Task<bool> Add(DetailsSubsidyModel subsidyModel);
 
-        Task<SubsidiesModel> Get(int id);
+        Task<bool> Update(DetailsSubsidyModel subsidyModel);
+
+        Task<DetailsSubsidyModel> Get(int id);
+
+        Task<List<ListSubsidiesModel>> List(int seasonId);
 
         Task<bool> Delete(int id);
-
-        Task<bool> Update(SubsidiesModel subsidyModel);
-
-        Task<bool> Add(SubsidiesModel subsidyModel, int seedingId);
     }
 }

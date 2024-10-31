@@ -1,0 +1,36 @@
+﻿@using WebUI.Components.Validators
+@using WebUI.ServicesModel.PerformedWork
+@attribute [Authorize]
+
+<RadzenColumn SizeMD=12>
+    <RadzenTemplateForm TItem="PerformedWorkDatailsModel" Data=@PerformedWork Visible=@(PerformedWork is not null) Submit=@OnSubmit>
+        <RadzenStack>
+            <RadzenFormField Text="Дата" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block; width: 100%" Name="Date" @bind-Value=@PerformedWork.Date />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="Date" Text="Датата е задължителна" Style="position: absolute" />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Тип обработка" Variant="Variant.Filled">
+                <ChildContent>
+                    <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data=@WorkTypes
+                                    @bind-Value=@PerformedWork.WorkType
+                                    ValueProperty="Value"
+                                    TextProperty="Name"
+                                    Name="WorkType"
+                                    Change=@(args => OnDropDownChange(args)) Class="w-100" />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="WorkType" Text="Тип работа е задължителен" DefaultValue="0" />
+                </Helper>
+            </RadzenFormField>
+        </RadzenStack>
+        <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(PerformedWorkId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
+        </RadzenStack>
+    </RadzenTemplateForm>
+</RadzenColumn>

@@ -9,12 +9,12 @@ namespace Application.Features.Treatments.Queries.List
     {
         public string TreatmentType { get; set; } = default!;
 
-        public decimal ArticlePriceTotal { get; set; }
+        public decimal SumArticleQuantity { get; set; }
 
         public virtual void Mapping(Profile mapper)
         => mapper.CreateMap<Treatment, TreatmentListQueryOutputModel>()
             .ForMember(x => x.TreatmentType, cfg => cfg.MapFrom(c => c.TreatmentType.GetEnumDisplayName()))
             .ForMember(x => x.ArticleName, cfg => cfg.MapFrom(c => c.Article.Name))
-            .ForMember(x => x.ArticlePriceTotal, cfg => cfg.MapFrom(c => c.Seeding.ArableLand.SizeInDecar * (c.ArticlePrice * c.ArticleQuantity)));
+            .ForMember(x => x.SumArticleQuantity, cfg => cfg.MapFrom(c => c.Seeding.ArableLand.SizeInDecar * c.ArticleQuantity));
     }
 }

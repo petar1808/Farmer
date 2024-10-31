@@ -21,34 +21,100 @@ namespace WebUI.Services
                     new NavMenuItem()
                     {
                         Name = "Семена",
-                        Path = "/article/list/1",
+                        Path = "nomenclature/article/1",
                         Icon = "spa"
                     },
                     new NavMenuItem()
                     {
                         Name = "Торове",
-                        Path = "/article/list/2",
-                        Icon = "Compost"
+                        Path = "nomenclature/article/2",
+                        Icon = "eco"
                     },
                     new NavMenuItem()
                     {
                         Name = "Препарати",
-                        Path = "/article/list/3",
+                        Path = "nomenclature/article/3",
                         Icon = "science"
                     },
                     new NavMenuItem()
                     {
                         Name = "Земи",
-                        Path = "/arableLand/list",
+                        Path = "nomenclature/arableLand",
                         Icon = "terrain"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Сезони",
+                        Path = "nomenclature/farmingSeason",
+                        Icon = "event"
                     }
                 }
             },
             new NavMenuItem()
             {
-                Name = "Жътва",
-                Icon = "agriculture",
-                Path = "/workingSeason"
+                Name = "Финанси",
+                Icon = "account_balance",
+                Children = new List<NavMenuItem>()
+                {
+                    new NavMenuItem()
+                    {
+                        Name = "Разходи",
+                        Icon = "receipt",
+                        Path = "/expense"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Субсидии",
+                        Icon = "monetization_on",
+                        Path = "/subsidy"
+                    }
+                }
+            },
+            new NavMenuItem()
+            {
+                Name = "Дейности",
+                Icon = "task_alt",
+                Children = new List<NavMenuItem>()
+                {
+                    new NavMenuItem()
+                    {
+                        Name = "Реколта",
+                        Icon = "compost",
+                        Path = "/sowing"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Обработки",
+                        Icon = "agriculture",
+                        Path = "/performedwork"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Третирания",
+                        Icon = "science",
+                        Path = "/treatment"
+                    }
+                }
+            },
+            new NavMenuItem()
+            {
+                Name = "Справки",
+                Icon = "insert_chart",
+                Children = new List<NavMenuItem>()
+                {
+                    new NavMenuItem()
+                    {
+                        Name = "Финансов Преглед",
+                        Icon = "summarize",
+                        Path = "/report/FinancialSummary"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Времево сравнение",
+                        Icon = "timeline",
+                        Path = "/report/timeline"
+                    }
+                }
             },
             new NavMenuItem()
             {

@@ -1,0 +1,16 @@
+﻿@using Fluxor.Blazor.Web.Components
+@using WebUI.Components.DataGrid
+@using WebUI.ServicesModel.Тreatment
+@attribute [Authorize]
+
+@inherits FluxorComponent
+
+
+@if (DataGrid is null)
+{
+    <Loader />
+}
+else
+{
+    <DynamicDataGrid TData="GetTreatmentModel" Data="@DataGrid"></DynamicDataGrid>
+}

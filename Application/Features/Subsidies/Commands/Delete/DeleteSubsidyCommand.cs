@@ -22,8 +22,9 @@ namespace Application.Features.Subsidies.Commands.Delete
                 CancellationToken cancellationToken)
             {
                 var subsidy = await farmerDbContext
-                .Subsidies
-                .FirstOrDefaultAsync(x => x.Id == request.SubsidyId, cancellationToken);
+                    .Subsidies
+                    .Include(x => x.SubsidyByArableLands)
+                    .FirstOrDefaultAsync(x => x.Id == request.SubsidyId, cancellationToken);
 
                 if (subsidy == null)
                 {

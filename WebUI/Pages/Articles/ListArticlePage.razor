@@ -1,4 +1,4 @@
-﻿@page "/article/list/{ArticleType:int}"
+﻿@page "/nomenclature/article/{ArticleType:int}"
 @using WebUI.Extensions
 @using WebUI.ServicesModel.Article
 @using WebUI.Components.DataGrid
@@ -7,7 +7,7 @@
 <PageTitle>@this.ArticleType.GetEnumDisplayName()</PageTitle>
 @if (DataGrid is null)
 {
-    <div class="loader"></div>
+    <Loader />
 }
 else
 {

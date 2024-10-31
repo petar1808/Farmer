@@ -35,7 +35,8 @@ namespace Application.Features.Seedings.Queries.DetailsSeedingSummary
                 .Seedings
                 .AsQueryable();
 
-                var result = await mapper.ProjectTo<SeedingSummaryDetailsQueryOutputModel>(seeding).FirstOrDefaultAsync(x => x.Id == request.SeedingId);
+                var result = await mapper.ProjectTo<SeedingSummaryDetailsQueryOutputModel>(seeding)
+                    .FirstOrDefaultAsync(x => x.Id == request.SeedingId);
 
                 if (result == null)
                 {

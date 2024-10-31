@@ -8,10 +8,6 @@ namespace WebUI.ServicesModel.Тreatment
 
         public string TreatmentType { get; set; } = default!;
 
-        public decimal? FuelPriceTotal => FuelPrice * AmountOfFuel;
-
-        public decimal ArticlePriceTotal { get; set; }
-
-        public decimal? TotalCost => FuelPriceTotal + ArticlePriceTotal;
+        public decimal SumArticleQuantity { get; set; }
     }
 }

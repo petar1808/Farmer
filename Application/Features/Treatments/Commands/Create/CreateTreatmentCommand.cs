@@ -29,12 +29,9 @@ namespace Application.Features.Treatments.Commands.Create
             {
                 var treatment = new Treatment(request.Date,
                     request.TreatmentType,
-                    request.AmountOfFuel,
-                    request.FuelPrice,
                     request.ArticleId,
                     request.ArticleQuantity,
-                    request.SeedingId,
-                    request.ArticlePrice);
+                    request.SeedingId);
 
                 await farmerDbContext.AddAsync(treatment, cancellationToken);
                 await farmerDbContext.SaveChangesAsync(cancellationToken);

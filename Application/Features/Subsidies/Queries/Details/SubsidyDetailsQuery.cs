@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Subsidies.Queries.Details
 {
-    public class SubsidyDetailsQuery : IRequest<Result<CommonSubsidyOutputQueryModel>>
+    public class SubsidyDetailsQuery : IRequest<Result<DetailsSubsidyOutputQueryModel>>
     {
         public int SubsidyId { get; set; }
 
-        public class SubsidyDetailsQueryHandler : IRequestHandler<SubsidyDetailsQuery, Result<CommonSubsidyOutputQueryModel>>
+        public class SubsidyDetailsQueryHandler : IRequestHandler<SubsidyDetailsQuery, Result<DetailsSubsidyOutputQueryModel>>
         {
             private readonly IFarmerDbContext farmerDbContext;
             private readonly IMapper mapper;
@@ -21,16 +21,14 @@ namespace Application.Features.Subsidies.Queries.Details
                 this.mapper = mapper;
             }
 
-            public async Task<Result<CommonSubsidyOutputQueryModel>> Handle(
+            public async Task<Result<DetailsSubsidyOutputQueryModel>> Handle(
                 SubsidyDetailsQuery request,
                 CancellationToken cancellationToken)
             {
-                var subsidy = farmerDbContext
-                .Subsidies
-                .AsQueryable();
+                var subsidy = farmerDbContext.Subsidies.AsQueryable();
 
                 var result = await mapper
-                    .ProjectTo<CommonSubsidyOutputQueryModel>(subsidy)
+                    .ProjectTo<DetailsSubsidyOutputQueryModel>(subsidy)
                     .FirstOrDefaultAsync(x => x.Id == request.SubsidyId);
 
                 if (result == null)

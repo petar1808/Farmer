@@ -1,0 +1,28 @@
+﻿@using WebUI.Components.DataGrid
+@using WebUI.Services.Subsidies
+@using WebUI.ServicesModel.Subsidies
+@using WebUI.Pages.Work.Dialogs;
+
+@page "/subsidy"
+
+<PageTitle>Субсидии</PageTitle>
+
+@if (DataGrid is null)
+{
+    <Loader />
+}
+else
+{
+    <FarmingSeasonContainer OnSeasonChanged=UpdateDataGrid>
+        <DynamicDataGrid TData="ListSubsidiesModel" Data="@DataGrid" RenderChild="@(x => x.IncomeByArableLand.Any())">
+            <DetailChildContent Context="arableLands" >
+                <RadzenDataGrid Data="@arableLands.IncomeByArableLand">
+                    <Columns>
+                        <RadzenDataGridColumn Property="Key" Title="Земя" FormatString="{0:dd/MM/yy}" />
+                        <RadzenDataGridColumn Property="Value" Title="Приход" FormatString="{0:n2} лв." />
+                    </Columns>
+                </RadzenDataGrid>
+            </DetailChildContent>
+        </DynamicDataGrid>
+    </FarmingSeasonContainer>
+}

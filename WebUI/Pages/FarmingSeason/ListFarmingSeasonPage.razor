@@ -1,0 +1,49 @@
+﻿@page "/nomenclature/farmingSeason"
+@using WebUI.Components.DataGrid
+
+@attribute [Authorize]
+
+<PageTitle>Сезони</PageTitle>
+
+@if (DataGrid is null)
+{
+    <Loader />
+}
+else
+{
+    <DynamicDataGrid TData="ListWorkingSeasonModel" Data="@DataGrid" RenderChild=@(x => true)>
+        <DetailChildContent Context="season">
+            <RadzenText TextStyle="TextStyle.H6">Засятите земи за сезона:</RadzenText>
+            <RadzenRow class="rz-text-align-center" Gap="0.5rem">
+                @foreach (var arableLandName in season.SownArableLnds)
+                {
+                    <RadzenColumn class="rz-p-3">
+                        <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                        Shade="Shade.Dark"
+                                        Variant="Variant.Outlined"
+                                        class="badge"
+                                        Text=@arableLandName />
+                    </RadzenColumn>
+                }
+                <RadzenColumn Size="2" class="rz-p-3">
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" 
+                                  ButtonType="ButtonType.Submit" 
+                                  Icon="add" 
+                                  Text="Добави земя" 
+                                  Variant="Variant.Flat"
+                                  Size="ButtonSize.Small"
+                                  Click="@(() => AddArableLand(season.Id))" />
+                </RadzenColumn>
+            </RadzenRow>
+        </DetailChildContent>
+    </DynamicDataGrid>
+}
+
+
+<style>
+    .badge {
+        font-size: 18px;
+        font-weight: bold;
+        line-height: 18px;
+    }
+</style>

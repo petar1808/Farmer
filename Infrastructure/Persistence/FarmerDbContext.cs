@@ -58,16 +58,72 @@ namespace Infrastructure.DbContect
 
         public DbSet<Subsidy> Subsidies { get; set; } = default!;
 
+        public DbSet<SubsidyByArableLand> SubsidyByArableLands { get; set; } = default!;
+
         public DbSet<Tenant> Tenants { get; set; } = default!;
 
+        public DbSet<Expense> Expenses { get; set; } = default!;
+        public DbSet<ExpenseByArableLand> ExpenseByArableLands { get; set; } = default!;
+
         public override async ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default)
+        {
+            AssignTenantId(entity); // Assign TenantId for new entities
+            return await base.AddAsync(entity, cancellationToken);
+        }
+
+        public override EntityEntry<TEntity> Update<TEntity>(TEntity entity)
+        {
+            //// Assign TenantId if the entity is new or if it doesn't have a TenantId set
+            //if (Entry(entity).State == EntityState.Added || (entity is ITenant tenantEntity))
+            //{
+            //    AssignTenantId(entity);
+            //}
+
+            // Check for child entities and assign TenantId for new ones
+            foreach (var property in entity.GetType().GetProperties())
+            {
+                if (typeof(IEnumerable<ITenant>).IsAssignableFrom(property.PropertyType) &&
+                    property.GetValue(entity) is IEnumerable<ITenant> childEntities)
+                {
+                    foreach (var child in childEntities)
+                    {
+                        var childEntry = Entry(child);
+                        // Assign TenantId only if the child is new (not tracked)
+                        if (childEntry.State == EntityState.Added)
+                        {
+                            AssignTenantId(child);
+                        }
+                    }
+                }
+            }
+
+            return base.Update(entity);
+        }
+
+        private void AssignTenantId(object entity)
         {
             if (entity is ITenant tenantEntity)
             {
                 tenantEntity.TenantId = _currentUserService.UserTenantId;
             }
 
-            return await base.AddAsync(entity, cancellationToken);
+            // Check for child entities and assign TenantId recursively
+            foreach (var property in entity.GetType().GetProperties())
+            {
+                if (property.PropertyType.IsAssignableTo(typeof(ITenant)) && property.GetValue(entity) is ITenant childEntity)
+                {
+                    AssignTenantId(childEntity);
+                }
+
+                // Handle collections of child entities
+                if (typeof(IEnumerable<ITenant>).IsAssignableFrom(property.PropertyType) && property.GetValue(entity) is IEnumerable<ITenant> childEntities)
+                {
+                    foreach (var child in childEntities)
+                    {
+                        AssignTenantId(child);
+                    }
+                }
+            }
         }
     }
 }

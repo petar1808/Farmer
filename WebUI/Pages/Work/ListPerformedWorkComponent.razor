@@ -1,0 +1,14 @@
+﻿@using Fluxor.Blazor.Web.Components
+@using WebUI.ServicesModel.PerformedWork
+@using WebUI.Components.DataGrid
+@attribute [Authorize]
+@inherits FluxorComponent
+
+@if (DataGrid is null)
+{
+    <Loader />
+}
+else
+{
+    <DynamicDataGrid TData="ListPerformedWorkModel" Data="@DataGrid"></DynamicDataGrid>
+}

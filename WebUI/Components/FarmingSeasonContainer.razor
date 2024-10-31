@@ -1,0 +1,21 @@
+﻿
+
+
+<RadzenStack Visible="@(SelectedSeasonId != 0)"
+             Orientation="Orientation.Horizontal" 
+             AlignItems="AlignItems.Center" 
+             JustifyContent="JustifyContent.Center" 
+             Gap="0.5rem" 
+             claCenterss="rz-p-sm-12">
+    <RadzenLabel Text="Сезон" Component="SeasonDropDown" />
+    <RadzenDropDown Data=@FarmingSeasonsDropDownData
+                    TValue="int"
+                    @bind-Value=@SelectedSeasonId
+                    ValueProperty="Value"
+                    TextProperty="Name"
+                    Name="SeasonDropDown"
+                    Change=@(args => OnDropDownChange(args)) />
+</RadzenStack>
+<RadzenStack class="rz-pt-6">
+    @ChildContent
+</RadzenStack>

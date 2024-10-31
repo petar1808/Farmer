@@ -1,0 +1,21 @@
+﻿@typeparam TModel
+
+<RadzenColumn SizeMD=12>
+    <RadzenTemplateForm TItem="TModel" Data=@Model Visible="@(Model is not null)" Submit="@OnSubmit">
+        <RadzenStack>
+            @ChildContent
+        </RadzenStack>
+        <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(ItemId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
+        </RadzenStack>
+    </RadzenTemplateForm>
+</RadzenColumn>
+
+@code {
+    [Parameter] public TModel Model { get; set; }
+    [Parameter] public int ItemId { get; set; }
+    [Parameter] public EventCallback<TModel> OnSubmit { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

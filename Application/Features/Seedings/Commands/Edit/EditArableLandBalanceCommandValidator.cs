@@ -11,9 +11,9 @@ namespace Application.Features.Seedings.Commands.Edit
                 .InclusiveBetween(0m, int.MaxValue)
                 .WithMessage("Засято семе на декар трябва да е положително число");
 
-            this.RuleFor(x => x.SeedsPricePerKilogram)
-                .InclusiveBetween(0m, int.MaxValue)
-                .WithMessage("Цената на засятото семе трябва да е положително число");
+            //this.RuleFor(x => x.SeedsPricePerKilogram)
+            //    .InclusiveBetween(0m, int.MaxValue)
+            //    .WithMessage("Цената на засятото семе трябва да е положително число");
 
             this.RuleFor(x => x.HarvestedQuantityPerDecare)
                 .InclusiveBetween(0, int.MaxValue)
@@ -23,9 +23,9 @@ namespace Application.Features.Seedings.Commands.Edit
                 .InclusiveBetween(0m, int.MaxValue)
                 .WithMessage("Продажната цена зърното трябва да е положително число");
 
-            this.RuleFor(x => x.ExpensesForHarvesting)
-                .InclusiveBetween(0m, int.MaxValue)
-                .WithMessage("Разходите за жътва трябва да са положително число");
+            //this.RuleFor(x => x.ExpensesForHarvesting)
+            //    .InclusiveBetween(0m, int.MaxValue)
+            //    .WithMessage("Разходите за жътва трябва да са положително число");
         }
     }
 }

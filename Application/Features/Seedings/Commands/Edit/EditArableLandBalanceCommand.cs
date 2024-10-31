@@ -40,10 +40,10 @@ namespace Application.Features.Seedings.Commands.Edit
 
                 seeding.UpdateArticle(request.ArticleId)
                        .UpdateSeedsQuantityPerDecare(request.SeedsQuantityPerDecare)
-                       .UpdateSeedsPricePerKilogram(request.SeedsPricePerKilogram)
+                       //.UpdateSeedsPricePerKilogram(request.SeedsPricePerKilogram)
                        .UpdateHarvestedQuantityPerDecare(request.HarvestedQuantityPerDecare)
-                       .UpdateHarvestedGrainSellingPricePerKilogram(request.HarvestedGrainSellingPricePerKilogram)
-                       .UpdateExpensesForHarvesting(request.ExpensesForHarvesting);
+                       .UpdateHarvestedGrainSellingPricePerKilogram(request.HarvestedGrainSellingPricePerKilogram);
+                       //.UpdateExpensesForHarvesting(request.ExpensesForHarvesting);
 
                 farmerDbContext.Update(seeding);
                 await farmerDbContext.SaveChangesAsync(cancellationToken);

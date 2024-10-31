@@ -17,6 +17,8 @@ namespace Application.Services
 
         DbSet<Subsidy> Subsidies { get; }
 
+        DbSet<SubsidyByArableLand> SubsidyByArableLands { get; set; }
+
         DbSet<WorkingSeason> WorkingSeasons { get; set; }
 
         DbSet<Treatment> Treatments { get; }
@@ -26,6 +28,10 @@ namespace Application.Services
         DbSet<Role> Roles { get; set; }
 
         DbSet<Tenant> Tenants { get; set; }
+
+        DbSet<Expense> Expenses { get; set; }
+
+        DbSet<ExpenseByArableLand> ExpenseByArableLands { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 

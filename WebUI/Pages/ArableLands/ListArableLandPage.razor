@@ -1,4 +1,4 @@
-﻿@page "/arableLand/list"
+﻿@page "/nomenclature/arableLand"
 @using WebUI.Components.DataGrid
 @using WebUI.ServicesModel.ArableLand
 @attribute [Authorize]
@@ -7,7 +7,7 @@
 
 @if (DataGrid is null)
 {
-    <div class="loader"></div>
+    <Loader />
 }
 else
 {

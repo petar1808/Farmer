@@ -6,15 +6,9 @@ using Application.Features.PerformedWorks.Queries.Details;
 using Application.Features.PerformedWorks.Queries.List;
 using Application.Features.Seedings.Commands.Create;
 using Application.Features.Seedings.Commands.Edit;
-using Application.Features.Seedings.Queries.DetailsArableLandBalance;
 using Application.Features.Seedings.Queries.DetailsSeedingSummary;
+using Application.Features.Seedings.Queries.ListSeeding;
 using Application.Features.Seedings.Queries.ListSownArableLands;
-using Application.Features.Subsidies.Commands.Create;
-using Application.Features.Subsidies.Commands.Delete;
-using Application.Features.Subsidies.Commands.Edit;
-using Application.Features.Subsidies.Queries;
-using Application.Features.Subsidies.Queries.Details;
-using Application.Features.Subsidies.Queries.List;
 using Application.Features.Treatments.Commands.Create;
 using Application.Features.Treatments.Commands.Delete;
 using Application.Features.Treatments.Commands.Edit;
@@ -38,6 +32,17 @@ namespace WebApi.Controllers
             => await base.Send(seedingModel);
 
         [HttpGet]
+        public async Task<ActionResult<List<ListSeedingSelectionListOutputModel>>> ListSeadingSelectionList(
+            [FromRoute] ListSeedingSelectionListQuery query)
+            => await base.Send(query);
+
+        [HttpGet]
+        [Route("{seasonId:int}")]
+        public async Task<ActionResult<List<ListSeedingQueryOutputModel>>> ListSeading(
+            [FromRoute] ListSeedingQuery query)
+            => await base.Send(query);
+
+        [HttpGet]
         [Route("availableArableLands/{seasonId:int}")]
         public async Task<ActionResult<List<SearchAvailableArableLandOutputQueryModel>>> GetAvailableArableLands(
             [FromRoute] SearchAvailableArableLandQuery searchAvailableArableLandQuery)
@@ -48,13 +53,6 @@ namespace WebApi.Controllers
         public async Task<ActionResult<List<SownArableLandListQueryOutputModel>>> ListSownArableLand(
             [FromRoute] SownArableLandListQuery sownArableLandListQuery)
             => await base.Send(sownArableLandListQuery);
-
-
-        [HttpGet]
-        [Route("sownArableLand/balance/{seedingId:int}")]
-        public async Task<ActionResult<ArableLandBalanceDetailsQueryOutputModel>> ArableLandBalance(
-            [FromRoute] ArableLandBalanceDetailsQuery arableLandBalanceDetailsQuery)
-            => await base.Send(arableLandBalanceDetailsQuery);
 
         [HttpGet]
         [Route("summary/{seedingId:int}")]
@@ -144,43 +142,6 @@ namespace WebApi.Controllers
         public async Task<ActionResult> DeleteТreatment(
             [FromRoute] DeleteTreatmentCommand deleteTreatment)
             => await this.Send(deleteTreatment);
-        #endregion
-
-        #region Subsidies
-        [HttpPost]
-        [Route("{seedingId:int}/subsidy")]
-        public async Task<ActionResult> CreateSubsidy(
-            [FromBody] CreateSubsidyCommand subsidyModel,
-            [FromRoute] int seedingId)
-        {
-            subsidyModel.SetSeedingId(seedingId);
-            return await this.Send(subsidyModel);
-        }
-
-        [HttpGet]
-        [Route("{seedingId:int}/subsidy")]
-        public async Task<ActionResult<List<CommonSubsidyOutputQueryModel>>> ListSubsidies(
-            [FromRoute] SubsidyListQuery subsidyListQuery)
-            => await this.Send(subsidyListQuery);
-
-        [HttpGet]
-        [Route("subsidy/{subsidyId:int}")]
-        public async Task<ActionResult<CommonSubsidyOutputQueryModel>> SubsidyDetails(
-            [FromRoute] SubsidyDetailsQuery subsidyDetailsQuery)
-            => await this.Send(subsidyDetailsQuery);
-
-        [HttpPut]
-        [Route("subsidy")]
-        public async Task<ActionResult> EditSubsidy(
-            EditSubsidyCommand subsidyModel)
-            => await this.Send(subsidyModel);
-
-        [HttpDelete]
-        [Route("subsidy/{subsidyId:int}")]
-        public async Task<ActionResult> DeleteSubsidy(
-            [FromRoute] DeleteSubsidyCommand deleteSubsidy)
-            => await this.Send(deleteSubsidy);
-
         #endregion
     }
 }

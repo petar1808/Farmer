@@ -1,0 +1,45 @@
+﻿@using WebUI.Components.Validators
+@using WebUI.ServicesModel.Subsidies
+@attribute [Authorize]
+
+
+<FarmerFormWithButtons TModel="DetailsSubsidyModel" Model="@Subsidy" ItemId="@SubsidyId" OnSubmit="@OnSubmit" OnClose="@OnClose">
+    <RadzenFormField Text="Дата" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenDropDown Data=@SownArableLands
+                            @bind-Value=@Subsidy.SelectedArableLands
+                            ValueProperty="ArableLandId"
+                            TextProperty="ArableLandName"
+                            Multiple=true AllowClear=true
+                            Placeholder="Изберете земи"
+                            SelectAllText="Изберите всички"
+                            Chips=true Style="width: 100%; background-color: transparent"
+                            MaxSelectedLabels="5"
+                            Name="ArableLands" />
+        </ChildContent>
+        <Helper>
+            <RadzenRequiredValidator Component="ArableLands" Text=@($"Избора на поне 1 земя е задължително") DefaultValue="0" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Text="Дата" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block; width: 100%" Name="Date" @bind-Value=@Subsidy.Date />
+        </ChildContent>
+        <Helper>
+            <RadzenRequiredValidator Component="Date" Text="Датата е задължителна" Style="position: absolute" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Text="Приход в лв." Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenNumeric style="display: block; width: 100%" Name="Income" @bind-Value=@Subsidy.Income />
+        </ChildContent>
+        <Helper>
+            ​<NumericRangeValidator Component="Income" Text="Прихода трябва да е положително число" Min="0" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Text="Бележка" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenTextBox style="display: block; width: 100%" Name="Comment" @bind-Value=@Subsidy.Comment />
+        </ChildContent>
+    </RadzenFormField>
+</FarmerFormWithButtons>

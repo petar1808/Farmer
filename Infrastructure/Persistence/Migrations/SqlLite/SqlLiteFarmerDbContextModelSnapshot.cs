@@ -192,20 +192,80 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ArticleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("PricePerUnit")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("WorkingSeasonId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("WorkingSeasonId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("Domain.Models.ExpenseByArableLand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ArableLandId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ExpenseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArableLandId");
+
+                    b.HasIndex("ExpenseId");
+
+                    b.ToTable("ExpenseByArableLands");
+                });
+
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("AmountOfFuel")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
-
-                    b.Property<decimal>("FuelPrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("INTEGER");
@@ -235,17 +295,11 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Property<int?>("ArticleId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("ExpensesForHarvesting")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<decimal>("HarvestedGrainSellingPricePerKilogram")
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("HarvestedQuantityPerDecare")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("SeedsPricePerKilogram")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<decimal>("SeedsQuantityPerDecare")
                         .HasColumnType("decimal(12,2)");
@@ -274,13 +328,42 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Income")
                         .HasColumnType("decimal(12,2)");
 
-                    b.Property<int>("SeedingId")
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("WorkingSeasonId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkingSeasonId");
+
+                    b.ToTable("Subsidies");
+                });
+
+            modelBuilder.Entity("Domain.Models.SubsidyByArableLand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ArableLandId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Income")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("SubsidyId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("TenantId")
@@ -288,9 +371,11 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SeedingId");
+                    b.HasIndex("ArableLandId");
 
-                    b.ToTable("Subsidies");
+                    b.HasIndex("SubsidyId");
+
+                    b.ToTable("SubsidyByArableLands");
                 });
 
             modelBuilder.Entity("Domain.Models.Treatment", b =>
@@ -299,23 +384,14 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal?>("AmountOfFuel")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<int>("ArticleId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("ArticlePrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<decimal>("ArticleQuantity")
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
-
-                    b.Property<decimal?>("FuelPrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("INTEGER");
@@ -474,6 +550,41 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Navigation("Tenant");
                 });
 
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.HasOne("Domain.Models.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Models.WorkingSeason", null)
+                        .WithMany()
+                        .HasForeignKey("WorkingSeasonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("Domain.Models.ExpenseByArableLand", b =>
+                {
+                    b.HasOne("Domain.Models.ArableLand", "ArableLand")
+                        .WithMany()
+                        .HasForeignKey("ArableLandId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Expense", "Expense")
+                        .WithMany("ExpenseByArableLands")
+                        .HasForeignKey("ExpenseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArableLand");
+
+                    b.Navigation("Expense");
+                });
+
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
                 {
                     b.HasOne("Domain.Models.Seeding", "Seeding")
@@ -513,13 +624,30 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
 
             modelBuilder.Entity("Domain.Models.Subsidy", b =>
                 {
-                    b.HasOne("Domain.Models.Seeding", "Seeding")
-                        .WithMany("Subsidies")
-                        .HasForeignKey("SeedingId")
+                    b.HasOne("Domain.Models.WorkingSeason", null)
+                        .WithMany()
+                        .HasForeignKey("WorkingSeasonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Models.SubsidyByArableLand", b =>
+                {
+                    b.HasOne("Domain.Models.ArableLand", "ArableLand")
+                        .WithMany()
+                        .HasForeignKey("ArableLandId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Seeding");
+                    b.HasOne("Domain.Models.Subsidy", "Subsidy")
+                        .WithMany("SubsidyByArableLands")
+                        .HasForeignKey("SubsidyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArableLand");
+
+                    b.Navigation("Subsidy");
                 });
 
             modelBuilder.Entity("Domain.Models.Treatment", b =>
@@ -602,13 +730,21 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     b.Navigation("Seedings");
                 });
 
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.Navigation("ExpenseByArableLands");
+                });
+
             modelBuilder.Entity("Domain.Models.Seeding", b =>
                 {
                     b.Navigation("PerformedWorks");
 
-                    b.Navigation("Subsidies");
-
                     b.Navigation("Treatments");
+                });
+
+            modelBuilder.Entity("Domain.Models.Subsidy", b =>
+                {
+                    b.Navigation("SubsidyByArableLands");
                 });
 
             modelBuilder.Entity("Domain.Models.WorkingSeason", b =>

@@ -1,0 +1,46 @@
+﻿@page "/treatment"
+@using Fluxor
+@using WebUI.Services.Seeding
+@using WebUI.ServicesModel.Seeding
+@using WebUI.Store.WorkingSeason
+
+<FarmingSeasonContainer OnSeasonChanged="@LoadData">
+    <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
+        <Tabs>
+            @foreach (var arableLand in SownArableLands)
+            {
+                <RadzenTabsItem Text="@arableLand.ArableLandName">
+                    <ListTreatmentWorkComponent ArableLandName="@arableLand.ArableLandName"
+                                                SeedingId="@arableLand.SeedingId"
+                                                SizeInDecar="@arableLand.SizeInDecar">
+                    </ListTreatmentWorkComponent>
+                </RadzenTabsItem>
+            }
+        </Tabs>
+    </RadzenTabs>
+</FarmingSeasonContainer>
+
+
+
+@code {
+    public int SelectedIndex { get; set; } = 0;
+
+    [Inject]
+    public ISeedingService SeedingService { get; set; } = default!;
+
+    [Inject]
+    public IState<SelectedWorkingSeasonState> SelectedWorkingSeasonState { get; set; } = default!;
+
+    public List<SownArableLandModel> SownArableLands { get; set; } = new List<SownArableLandModel>();
+
+    public async Task LoadData()
+    {
+        SownArableLands = await SeedingService.GetSownArableLands(SelectedWorkingSeasonState.Value.WorkingSeasonId);
+
+        if (SelectedIndex >= SownArableLands.Count)
+        {
+            SelectedIndex = 0;
+        }
+        this.StateHasChanged();
+    }
+}

@@ -6,6 +6,8 @@
 
         public string ArableLandName { get; set; } = default!;
 
+        public int ArableLandId { get; set; }
+
         public int SizeInDecar { get; set; }
     }
 }

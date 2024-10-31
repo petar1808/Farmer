@@ -1,0 +1,94 @@
+﻿@using WebUI.Components.Validators
+@using WebUI.Extensions
+@using WebUI.ServicesModel.Expenses
+@using WebUI.ServicesModel.Subsidies
+@attribute [Authorize]
+
+<FarmerFormWithButtons TModel="DetailsExpenseModel" Model="@Expense" ItemId="@ExpenseId" OnClose="@OnClose" OnSubmit="@OnSubmit">
+    <RadzenFormField Text="Дата" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block; width: 100%" Name="Date" @bind-Value=@Expense.Date />
+        </ChildContent>
+        <Helper>
+            <RadzenRequiredValidator Component="Date" Text="Датата е задължителна" Style="position: absolute" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Text="Тип разход" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            Data=@ExpenseTypes
+                            @bind-Value=@Expense.Type
+                            ValueProperty="Value"
+                            TextProperty="Name"
+                            Placeholder="Изберете тип разход"
+                            Name="ExpenseType"
+                            Change=@(async args => await OnExpenseTypeChange(args)) 
+                            Class="w-100" />
+        </ChildContent>
+        <Helper>
+            <RadzenRequiredValidator Component="ExpenseType" Text="Тип работа е задължителен" DefaultValue="0" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Visible="@(ExpenseConfiguration.DistributeByArableLand == true)" Text="Земя" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenDropDown Data=@SownArableLands
+                            @bind-Value=@Expense.SelectedArableLands
+                            ValueProperty="ArableLandId"
+                            TextProperty="ArableLandName"
+                            Multiple=true AllowClear=true
+                            Placeholder="Изберете земи"
+                            SelectAllText="Изберите всички"
+                            Chips=true Style="width: 100%; background-color: transparent"
+                            MaxSelectedLabels="5"
+                            Name="ArableLands" />
+        </ChildContent>
+        <Helper>
+            <RadzenRequiredValidator Component="ArableLands" Text="Избор на земята е задължително" DefaultValue="0" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Visible="@(ExpenseConfiguration.ArticleType != null)" 
+                     Text="@(ExpenseConfiguration.ArticleType?.GetEnumDisplayName() ?? string.Empty)" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            Data=@Articles
+                            @bind-Value=@Expense.ArticleId
+                            ValueProperty="Value"
+                            TextProperty="Name"
+                            Placeholder="Изберете артикул"
+                            Name="Articles"
+                            Class="w-100" />
+        </ChildContent>
+        <Helper>
+            <RadzenRequiredValidator Component="Articles" Text="Избор на артикул е задължително" DefaultValue="0" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Visible="@ExpenseConfiguration.ShowPricePerUnit" Text="Единична цена" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenNumeric style="display: block; width: 100%" Name="PricePerUnit" @bind-Value=@Expense.PricePerUnit />
+        </ChildContent>
+        <Helper>
+            ​<NumericRangeValidator Component="PricePerUnit" Text="Единична цена трябва да е положително число" Min="0" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Visible="@ExpenseConfiguration.ShowPricePerUnit" Text="Количество" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenNumeric style="display: block; width: 100%" Name="Quantity" @bind-Value=@Expense.Quantity />
+        </ChildContent>
+        <Helper>
+            ​<NumericRangeValidator Component="Quantity" Text="Прихода трябва да е положително число" Min="0" />
+        </Helper>
+    </RadzenFormField>
+    <RadzenFormField Text="Разход" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenNumeric TValue="decimal"
+                           Disabled="@(ExpenseConfiguration.ShowPricePerUnit)"
+                           Name="ExpenseSum" 
+                           Value=@Expense.Sum
+                           Change=@(args => OnSumChange(args))
+                           style="display: block; width: 100%" />
+        </ChildContent>
+        <Helper>
+            ​<NumericRangeValidator Component="ExpenseSum" Text="Разход трябва да е положително число" Min="0" />
+        </Helper>
+    </RadzenFormField>
+</FarmerFormWithButtons>
