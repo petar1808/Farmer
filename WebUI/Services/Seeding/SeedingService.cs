@@ -23,6 +23,12 @@ namespace WebUI.Services.Seeding
                 .GetAsync<List<ListSeedingModel>>($"api/seeding/{seasonId}");
         }
 
+        public async Task<List<SelectionListModel>> ListSeedingSelectionList()
+        {
+            return await _httpService
+                .GetAsync<List<SelectionListModel>>($"api/seeding");
+        }
+
         public async Task<List<SelectionListModel>> GetAvailableArableLandSeeds(int seasonId)
         {
             return await _httpService

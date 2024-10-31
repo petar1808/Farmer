@@ -63,6 +63,7 @@ namespace Infrastructure.DbContect
         public DbSet<Tenant> Tenants { get; set; } = default!;
 
         public DbSet<Expense> Expenses { get; set; } = default!;
+        public DbSet<ExpenseByArableLand> ExpenseByArableLands { get; set; } = default!;
 
         public override async ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default)
         {

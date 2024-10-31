@@ -9,6 +9,7 @@ namespace Domain.Models
             ArableLandId = arableLandId;
             Income = income;
             ArableLand = default!;
+            Subsidy = default!;
         }
         public int ArableLandId { get; set; }
 
@@ -17,6 +18,8 @@ namespace Domain.Models
         public decimal Income { get; private set; }
 
         public int SubsidyId { get; set; }
+
+        public Subsidy Subsidy { get; set; }
 
         public int TenantId { get; set; }
 

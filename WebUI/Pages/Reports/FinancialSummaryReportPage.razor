@@ -121,7 +121,7 @@ else
                 new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.ExpensesForMachinery), "Разход Машини", "{0:n2} лв.")
             };
         DataGrid = new DynamicDataGridModel<FinancialSummaryReportModel>(
-                await ReportService.GetFinancialSummaryReports(),
+                await ReportService.GetFinancialSummaryReport(),
                 columns,
                 "Справка Финансов Преглед");
     }

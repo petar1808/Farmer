@@ -31,6 +31,8 @@ namespace Application.Services
 
         DbSet<Expense> Expenses { get; set; }
 
+        DbSet<ExpenseByArableLand> ExpenseByArableLands { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : class;

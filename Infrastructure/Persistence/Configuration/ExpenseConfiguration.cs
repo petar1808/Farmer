@@ -29,7 +29,7 @@ namespace Infrastructure.Persistence.Configuration
 
             builder
                 .HasMany(x => x.ExpenseByArableLands)
-                .WithOne()
+                .WithOne(x => x.Expense)
                 .HasForeignKey(x => x.ExpenseId)
                 .OnDelete(DeleteBehavior.Cascade);
 

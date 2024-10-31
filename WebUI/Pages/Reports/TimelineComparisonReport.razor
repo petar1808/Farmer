@@ -1,0 +1,160 @@
+﻿@page "/report/timeline"
+@using WebUI.Services.Reports
+@using WebUI.Services.Seeding
+@using WebUI.ServicesModel.Common
+@using WebUI.ServicesModel.Reports
+
+
+@if (SeasonWithArableLands is null)
+{
+    <Loader />
+}
+else
+{
+    <RadzenCard class="rz-mb-6">
+        <RadzenStack Orientation="Orientation.Horizontal"
+                        AlignItems="AlignItems.Center"
+                        JustifyContent="JustifyContent.SpaceBetween"
+                        Gap="0.5rem">
+            <RadzenStack Orientation="Orientation.Horizontal"
+                            AlignItems="AlignItems.Center"
+                            JustifyContent="JustifyContent.Start">
+                <RadzenFormField Text="Първа земя за сравнение" Variant="Variant.Flat">
+                    <ChildContent>
+                        <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        Data=@SeasonWithArableLands
+                                        @bind-Value=@SeedingId1
+                                        ValueProperty="Value"
+                                        TextProperty="Name"
+                                        Name="SeasonWithArableLands1"
+                                        Style="min-width: 350px;"
+                                        Class="w-100" />
+                    </ChildContent>
+                </RadzenFormField>
+                <RadzenFormField Text="Втора земя за сравнение" Variant="Variant.Flat">
+                    <ChildContent>
+                        <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        Data=@SeasonWithArableLands
+                                        @bind-Value=@SeedingId2
+                                        ValueProperty="Value"
+                                        TextProperty="Name"
+                                        Name="SeasonWithArableLands1"
+                                        Style="min-width: 350px;"
+                                        Class="w-100" />
+                    </ChildContent>
+                </RadzenFormField>
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Horizontal"
+                            AlignItems="AlignItems.Center"
+                            JustifyContent="JustifyContent.End">
+                <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                Variant="Variant.Flat"
+                                Size="ButtonSize.Large"
+                                ButtonType="ButtonType.Submit"
+                                Icon="refresh"
+                                Click="OnSubmit"
+                                Text="Генерирай" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenCard>
+    @if (Data is null || SeedingId1 == 0 || SeedingId2 == 0)
+    {
+
+    }
+    else if (loading)
+    {
+        <Loader />
+    }
+    else
+    {
+        <RadzenCardGroup class="rz-mb-2" Responsive=true>
+            @foreach (var (title, seedName, seedsQty, harvestedQty) in new[]
+            {
+                (@SelectedSeasonWithArableLand1, @Data.SeedName1, @Data.SeedsQuantityPerDecare1, @Data.HarvestedQuantityPerDecare1),
+                (@SelectedSeasonWithArableLand2, @Data.SeedName2, @Data.SeedsQuantityPerDecare2, @Data.HarvestedQuantityPerDecare2)
+            })
+            {
+                <RadzenCard Variant="Variant.Filled">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
+                        <RadzenText TextStyle="TextStyle.H6">
+                            <strong>@SelectedSeasonWithArableLand1</strong>
+                        </RadzenText>
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Vertical" Gap="1rem" class="rz-p-4">
+                        <RadzenStack Gap="0">
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Засято семе</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@seedName</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Засято кол. на декар</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@seedsQty.ToString("N2") кг</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Ожънато кол. на декар</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@harvestedQty.ToString("N2") кг</b></RadzenText>
+                        </RadzenStack>
+                    </RadzenStack>
+                </RadzenCard>
+            }
+        </RadzenCardGroup>
+
+        <RadzenCardGroup class="rz-mb-2" Responsive=true>
+            @foreach (var arableLandData in new[] { Data.ArableLand1, Data.ArableLand2 })
+            {
+                <RadzenCard Variant="Variant.Filled">
+                    <RadzenTimeline Orientation="Orientation.Vertical"
+                                    LinePosition="LinePosition.Center"
+                                    style="max-width: 600px;margin: 0 auto;">
+                        <Items>
+                            @foreach (var item in arableLandData)
+                            {
+                                <RadzenTimelineItem>
+                                    <PointContent><RadzenIcon Icon="@item.Icon" /></PointContent>
+                                    <LabelContent><RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@item.Date</RadzenText></LabelContent>
+                                        <ChildContent>
+                                            <RadzenText TextStyle="TextStyle.Subtitle1">@item.Value</RadzenText>
+                                            <RadzenText TextStyle="TextStyle.Subtitle2">@item.AdditionalValue</RadzenText>
+                                        </ChildContent>
+                                    </RadzenTimelineItem>
+                            }
+                        </Items>
+                    </RadzenTimeline>
+                </RadzenCard>
+            }
+        </RadzenCardGroup>
+    }
+}
+
+@code {
+    [Inject]
+    public IReportService ReportService { get; set; } = default!;
+
+    [Inject]
+    public ISeedingService SeedingService { get; set; } = default!;
+
+    public TimelineComparisonReportModel Data { get; set; }
+
+    public List<SelectionListModel> SeasonWithArableLands { get; set; } = default!;
+
+    public string SelectedSeasonWithArableLand1 { get; set; } = string.Empty;
+
+    public string SelectedSeasonWithArableLand2 { get; set; } = string.Empty;
+
+    public int SeedingId1 { get; set; }
+
+    public int SeedingId2 { get; set; }
+
+    IEnumerable<int> values = new int[] { 1 };
+
+    bool loading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        SeasonWithArableLands = await SeedingService.ListSeedingSelectionList();
+    }
+
+    protected async Task OnSubmit()
+    {
+        loading = true;
+        Data = await ReportService.GetTimelineComparisonReport(SeedingId1, SeedingId2);
+        SelectedSeasonWithArableLand1 = SeasonWithArableLands.FirstOrDefault(x => x.Value == SeedingId1)?.Name ?? string.Empty;
+        SelectedSeasonWithArableLand2 = SeasonWithArableLands.FirstOrDefault(x => x.Value == SeedingId2)?.Name ?? string.Empty;
+        loading = false;
+    }
+}

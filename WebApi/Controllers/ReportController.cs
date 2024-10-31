@@ -1,4 +1,5 @@
 ﻿using Application.Features.Reporting.Queries.FinancialSummary;
+using Application.Features.Reporting.Queries.TimelineComparison;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Application.IdentityConstants;
@@ -14,6 +15,12 @@ namespace WebApi.Controllers
         [Route("FinancialSummary")]
         public async Task<ActionResult<List<FinancialSummaryReportOutputModel>>> ListExpenses(
             [FromRoute] FinancialSummaryReportQuery query)
+            => await this.Send(query);
+
+        [HttpGet]
+        [Route("TimelineComparison")]
+        public async Task<ActionResult<TimelineComparisonReportOutputModel>> TimelineComparisonReport(
+            [FromQuery] TimelineComparisonReportQuery query)
             => await this.Send(query);
     }
 }
