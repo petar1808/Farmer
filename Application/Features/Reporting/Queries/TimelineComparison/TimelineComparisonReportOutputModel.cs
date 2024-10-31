@@ -10,8 +10,13 @@ namespace Application.Features.Reporting.Queries.TimelineComparison
     public class TimelineComparisonReportOutputModel
     {
         public List<ArableLandTimeLine> ArableLand1 { get; set; } = new ();
-
+        public string SeedName1 { get; set; } = string.Empty;
+        public decimal SeedsQuantityPerDecare1 { get; set; }
+        public decimal HarvestedQuantityPerDecare1 { get; set; }
         public List<ArableLandTimeLine> ArableLand2 { get; set; } = new();
+        public string SeedName2 { get; set; } = string.Empty;
+        public decimal SeedsQuantityPerDecare2 { get; set; }
+        public decimal HarvestedQuantityPerDecare2 { get; set; }
     }
 
     public class ArableLandTimeLine
@@ -22,9 +27,7 @@ namespace Application.Features.Reporting.Queries.TimelineComparison
 
         public string Icon { get; set; } = string.Empty;
 
-        public string Type { get; set; } = string.Empty;
-
-        public string? Value { get; set; }
+        public string Value { get; set; }= string.Empty;
 
         public string? AdditionalValue { get; set; }
     }

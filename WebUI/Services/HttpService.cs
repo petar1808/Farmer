@@ -23,8 +23,23 @@ namespace WebUI.Services
             this.notificationService = notificationService;
         }
 
-        public async Task<T> GetAsync<T>(string uri)
+        public async Task<T> GetAsync<T>(string uri, Dictionary<string, string>? queryParams = null)
         {
+            if (queryParams != null && queryParams.Any())
+            {
+                var queryString = new StringBuilder();
+                queryString.Append("?");
+
+                foreach (var param in queryParams)
+                {
+                    queryString.Append($"{WebUtility.UrlEncode(param.Key)}={WebUtility.UrlEncode(param.Value)}&");
+                }
+
+                queryString.Length--;
+
+                uri += queryString.ToString();
+            }
+
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             return await SendAsync<T>(request);
         }
@@ -135,7 +150,7 @@ namespace WebUI.Services
 
     public interface IHttpService
     {
-        Task<T> GetAsync<T>(string uri);
+        Task<T> GetAsync<T>(string uri, Dictionary<string, string>? queryParams = null);
 
         Task<T> PostAsync<T>(string uri, object content);
 

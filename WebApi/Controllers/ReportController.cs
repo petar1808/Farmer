@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         [HttpGet]
         [Route("TimelineComparison")]
         public async Task<ActionResult<TimelineComparisonReportOutputModel>> TimelineComparisonReport(
-            [FromRoute] TimelineComparisonReportQuery query)
+            [FromQuery] TimelineComparisonReportQuery query)
             => await this.Send(query);
     }
 }

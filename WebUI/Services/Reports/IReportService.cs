@@ -6,6 +6,6 @@ namespace WebUI.Services.Reports
     {
         Task<List<FinancialSummaryReportModel>> GetFinancialSummaryReport();
 
-        Task<TimelineComparisonReportModel> GetTimelineComparisonReport();
+        Task<TimelineComparisonReportModel> GetTimelineComparisonReport(int SeedingId1, int SeedingId2);
     }
 }

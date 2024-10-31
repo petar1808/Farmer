@@ -1,79 +1,104 @@
 ﻿@page "/report/timeline"
 @using WebUI.Services.Reports
+@using WebUI.Services.Seeding
+@using WebUI.ServicesModel.Common
 @using WebUI.ServicesModel.Reports
 
-@if (Data is null)
+
+@if (SeasonWithArableLands is null)
 {
     <Loader />
 }
 else
 {
-        <RadzenCard class="rz-mb-6">
-            <RadzenTemplateForm TItem="TimelineComparisonReportModel">
-            <RadzenStack Orientation="Orientation.Horizontal" 
-                         AlignItems="AlignItems.Center" 
-                         JustifyContent="JustifyContent.SpaceBetween" 
-                         Gap="0.5rem">
-                <RadzenStack Orientation="Orientation.Horizontal" 
-                             AlignItems="AlignItems.Center" 
-                             JustifyContent="JustifyContent.Start">
-                        <RadzenFormField Text="Първа земя за сравнение" Variant="Variant.Flat">
-                            <ChildContent>
-                            <RadzenDropDown Data=@data TValue="MyObject" @bind-Value=@singleValue
-                                            AllowClear="true" AllowFiltering="true" Style="width: 100%; min-width: 300px;" Name="DropDownCustomObjects">
-                            </RadzenDropDown>
-                            </ChildContent>
-                        </RadzenFormField>
-                        <RadzenFormField Text="Втора земя за сравнение" Variant="Variant.Flat">
-                            <ChildContent>
-                                <RadzenDropDown Data=@data TValue="MyObject" @bind-Value=@singleValue
-                                                AllowClear="true" AllowFiltering="true" Style="width: 100%; min-width: 300px;" Name="DropDownCustomObjects">
-                                </RadzenDropDown>
-                            </ChildContent>
-                        </RadzenFormField>
-                    </RadzenStack>
-                    <RadzenStack Orientation="Orientation.Horizontal" 
-                                 AlignItems="AlignItems.Center" 
-                                 JustifyContent="JustifyContent.End">
-                        <RadzenButton ButtonStyle="ButtonStyle.Primary" 
-                                      Variant="Variant.Flat" 
-                                      ButtonType="ButtonType.Submit" 
-                                      Size="ButtonSize.Large"
-                                      Icon="refresh" 
-                                      Text="Генерирай" />
-                    </RadzenStack>
-                </RadzenStack>
-            </RadzenTemplateForm>
-        </RadzenCard>
+    <RadzenCard class="rz-mb-6">
+        <RadzenStack Orientation="Orientation.Horizontal"
+                        AlignItems="AlignItems.Center"
+                        JustifyContent="JustifyContent.SpaceBetween"
+                        Gap="0.5rem">
+            <RadzenStack Orientation="Orientation.Horizontal"
+                            AlignItems="AlignItems.Center"
+                            JustifyContent="JustifyContent.Start">
+                <RadzenFormField Text="Първа земя за сравнение" Variant="Variant.Flat">
+                    <ChildContent>
+                        <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        Data=@SeasonWithArableLands
+                                        @bind-Value=@SeedingId1
+                                        ValueProperty="Value"
+                                        TextProperty="Name"
+                                        Name="SeasonWithArableLands1"
+                                        Style="min-width: 350px;"
+                                        Class="w-100" />
+                    </ChildContent>
+                </RadzenFormField>
+                <RadzenFormField Text="Втора земя за сравнение" Variant="Variant.Flat">
+                    <ChildContent>
+                        <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        Data=@SeasonWithArableLands
+                                        @bind-Value=@SeedingId2
+                                        ValueProperty="Value"
+                                        TextProperty="Name"
+                                        Name="SeasonWithArableLands1"
+                                        Style="min-width: 350px;"
+                                        Class="w-100" />
+                    </ChildContent>
+                </RadzenFormField>
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Horizontal"
+                            AlignItems="AlignItems.Center"
+                            JustifyContent="JustifyContent.End">
+                <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                Variant="Variant.Flat"
+                                Size="ButtonSize.Large"
+                                ButtonType="ButtonType.Submit"
+                                Icon="refresh"
+                                Click="OnSubmit"
+                                Text="Генерирай" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenCard>
+    @if (Data is null || SeedingId1 == 0 || SeedingId2 == 0)
+    {
 
+    }
+    else if (loading)
+    {
+        <Loader />
+    }
+    else
+    {
         <RadzenCardGroup class="rz-mb-2" Responsive=true>
             <RadzenCard Variant="Variant.Filled">
                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
-                    <RadzenText TextStyle="TextStyle.H6"><strong>Земя 1, Година: 2024/2025</strong></RadzenText>
+                    <RadzenText TextStyle="TextStyle.H6">
+                        <strong>@SelectedSeasonWithArableLand1</strong>
+                    </RadzenText>
                 </RadzenStack>
                 <RadzenStack Orientation="Orientation.Vertical" Gap="1rem" class="rz-p-4">
                     <RadzenStack Gap="0">
                         <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Засято семе</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>Царевица</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.SeedName1</b></RadzenText>
                         <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Засято кол. на декар</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>20 кг</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Ожънато кол на декар</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>60 кг</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.SeedsQuantityPerDecare1.ToString("N2") кг</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Ожънато кол. на декар</RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.HarvestedQuantityPerDecare1.ToString("N2") кг</b></RadzenText>
                     </RadzenStack>
                 </RadzenStack>
             </RadzenCard>
             <RadzenCard Variant="Variant.Filled">
                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
-                    <RadzenText TextStyle="TextStyle.H6"><strong>Земя 1, Година: 2024/2025</strong></RadzenText>
+                    <RadzenText TextStyle="TextStyle.H6">
+                        <strong>@SelectedSeasonWithArableLand2</strong>
+                    </RadzenText>
                 </RadzenStack>
                 <RadzenStack Orientation="Orientation.Vertical" Gap="1rem" class="rz-p-4">
                     <RadzenStack Gap="0">
                         <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Засято семе</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>Царевица</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.SeedName2</b></RadzenText>
                         <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Засято кол. на декар</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>20 кг</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Ожънато кол на декар</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>60 кг</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.SeedsQuantityPerDecare2.ToString("N2") кг</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Ожънато кол. на декар</RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.HarvestedQuantityPerDecare2.ToString("N2") кг</b></RadzenText>
                     </RadzenStack>
                 </RadzenStack>
             </RadzenCard>
@@ -96,9 +121,8 @@ else
                                     </RadzenText>
                                 </LabelContent>
                                 <ChildContent>
-                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@arableLand.Type</RadzenText>
-                                        @arableLand.Value
-                                    @arableLand.AdditionalValue
+                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@arableLand.Value</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0">@arableLand.AdditionalValue</RadzenText>
                                 </ChildContent>
                             </RadzenTimelineItem>
                         }
@@ -121,9 +145,8 @@ else
                                     </RadzenText>
                                 </LabelContent>
                                 <ChildContent>
-                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@arableLand.Type</RadzenText>
-                                        @arableLand.Value
-                                    @arableLand.AdditionalValue
+                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@arableLand.Value</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0">@arableLand.AdditionalValue</RadzenText>
                                 </ChildContent>
                             </RadzenTimelineItem>
                         }
@@ -131,47 +154,43 @@ else
                 </RadzenTimeline>
             </RadzenCard>
         </RadzenCardGroup>
+    }
 }
-
 
 @code {
     [Inject]
     public IReportService ReportService { get; set; } = default!;
 
+    [Inject]
+    public ISeedingService SeedingService { get; set; } = default!;
+
     public TimelineComparisonReportModel Data { get; set; }
+
+    public List<SelectionListModel> SeasonWithArableLands { get; set; } = default!;
+
+    public string SelectedSeasonWithArableLand1 { get; set; } = string.Empty;
+
+    public string SelectedSeasonWithArableLand2 { get; set; } = string.Empty;
+
+    public int SeedingId1 { get; set; }
+
+    public int SeedingId2 { get; set; }
 
     IEnumerable<int> values = new int[] { 1 };
 
-    string value = "";
+    bool loading = false;
 
     protected override async Task OnInitializedAsync()
     {
-        Data = await ReportService.GetTimelineComparisonReport();
+        SeasonWithArableLands = await SeedingService.ListSeedingSelectionList();
     }
 
-    class MyObject
+    protected async Task OnSubmit()
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        public override bool Equals(object o)
-        {
-            var other = o as MyObject;
-
-            return other?.Id == Id;
-        }
-
-        public override string ToString()
-        {
-            return $"Година: {Id}, Земя: {Name}";
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        loading = true;
+        Data = await ReportService.GetTimelineComparisonReport(SeedingId1, SeedingId2);
+        SelectedSeasonWithArableLand1 = SeasonWithArableLands.First(x => x.Value == SeedingId1).Name;
+        SelectedSeasonWithArableLand2 = SeasonWithArableLands.First(x => x.Value == SeedingId2).Name;
+        loading = false;
     }
-
-    MyObject singleValue = new MyObject() { Id = 5, Name = "Земя 2131" };
-    IEnumerable<MyObject> data = Enumerable.Range(0, 100).Select(i => new MyObject() { Id = i, Name = $"Name{i}" });
 }

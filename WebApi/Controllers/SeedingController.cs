@@ -32,6 +32,11 @@ namespace WebApi.Controllers
             => await base.Send(seedingModel);
 
         [HttpGet]
+        public async Task<ActionResult<List<ListSeedingSelectionListOutputModel>>> ListSeadingSelectionList(
+            [FromRoute] ListSeedingSelectionListQuery query)
+            => await base.Send(query);
+
+        [HttpGet]
         [Route("{seasonId:int}")]
         public async Task<ActionResult<List<ListSeedingQueryOutputModel>>> ListSeading(
             [FromRoute] ListSeedingQuery query)

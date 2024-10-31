@@ -1,165 +1,89 @@
 ﻿using Application.Extensions;
 using Application.Models;
 using Application.Services;
+using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 
 namespace Application.Features.Reporting.Queries.TimelineComparison
 {
     public class TimelineComparisonReportQuery : IRequest<Result<TimelineComparisonReportOutputModel>>
     {
-        public int ArableLandId1 { get; set; }
-
-        public int WorkingSeasonId1 { get; set; }
-
-        public int WorkingSeasonId2 { get; set; }
-
-        public int ArableLandId2 { get; set; } 
-
+        public int SeedingId1 { get; set; }
+        public int SeedingId2 { get; set; }
 
         public class TimelineComparisonReportQueryHandler : IRequestHandler<TimelineComparisonReportQuery, Result<TimelineComparisonReportOutputModel>>
         {
-            private readonly IFarmerDbContext farmerDbContext;
+            private readonly IFarmerDbContext _farmerDbContext;
 
             public TimelineComparisonReportQueryHandler(IFarmerDbContext farmerDbContext)
             {
-                this.farmerDbContext = farmerDbContext;
+                _farmerDbContext = farmerDbContext;
             }
 
             public async Task<Result<TimelineComparisonReportOutputModel>> Handle(
-                TimelineComparisonReportQuery request, 
+                TimelineComparisonReportQuery request,
                 CancellationToken cancellationToken)
             {
-                request.WorkingSeasonId1 = 1;
-                request.WorkingSeasonId2 = 2;
-                request.ArableLandId1 = 1;
-                request.ArableLandId2 = 2;
+                var arableLand1 = await GetArableLandTimelineAsync(request.SeedingId1);
+                var arableLand2 = await GetArableLandTimelineAsync(request.SeedingId2);
 
-                var arableLand1 = new List<ArableLandTimeLine>();
-                var arableLand2 = new List<ArableLandTimeLine>();
+                var seeding1 = await GetSeedingDetailsAsync(request.SeedingId1);
+                var seeding2 = await GetSeedingDetailsAsync(request.SeedingId2);
 
-                //arableLand1.AddRange(await farmerDbContext
-                //    .ExpenseByArableLands
-                //    .Where(x => x.Expense.WorkingSeasonId == request.WorkingSeasonId1
-                //                && x.ArableLandId == request.ArableLandId1)
-                //    .Select(x => new ArableLandTimeLine
-                //    {
-                //        DateTime = x.Expense.Date,
-                //        Icon = "receipt",
-                //        Type = $"Разход({x.Expense.Type.GetEnumDisplayName()})",
-                //        Value = x.Sum.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
-                //        AdditionalValue = x.Expense.Article == null ? null : x.Expense.Article.Name
-                //    })
-                //    .ToListAsync(cancellationToken)
-                //    );
+                if (seeding1 == null || seeding2 == null)
+                {
+                    return "Не е намерена сеидба";
+                }
 
-                //arableLand1.AddRange(await farmerDbContext
-                //    .SubsidyByArableLands
-                //    .Where(x => x.Subsidy.WorkingSeasonId == request.WorkingSeasonId1
-                //            && x.ArableLandId == request.ArableLandId1)
-                //    .Select(x => new ArableLandTimeLine
-                //    {
-                //        DateTime = x.Subsidy.Date,
-                //        Icon = "monetization_on",
-                //        Type = "Субсидия",
-                //        Value = x.Income.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
-                //        AdditionalValue = x.Subsidy.Comment
-                //    })
-                //    .ToListAsync()
-                //    );
+                var result = new TimelineComparisonReportOutputModel
+                {
+                    SeedName1 = seeding1.Article?.Name ?? string.Empty,
+                    SeedsQuantityPerDecare1 = seeding1.SeedsQuantityPerDecare,
+                    HarvestedQuantityPerDecare1 = seeding1.HarvestedQuantityPerDecare,
+                    ArableLand1 = arableLand1.OrderBy(x => x.DateTime).ToList(),
+                    SeedName2 = seeding2.Article?.Name ?? string.Empty,
+                    SeedsQuantityPerDecare2 = seeding2.SeedsQuantityPerDecare,
+                    HarvestedQuantityPerDecare2 = seeding2.HarvestedQuantityPerDecare,
+                    ArableLand2 = arableLand2.OrderBy(x => x.DateTime).ToList()
+                };
 
-                arableLand1.AddRange(await farmerDbContext
-                    .Treatments
-                    .Where(x => x.Seeding.WorkingSeasonId == request.WorkingSeasonId1
-                        && x.Seeding.ArableLandId == request.ArableLandId1)
+                return result;
+            }
+
+            private async Task<List<ArableLandTimeLine>> GetArableLandTimelineAsync(int seedingId)
+            {
+                var treatmentTimeline = await _farmerDbContext.Treatments
+                    .AsNoTracking()
+                    .Where(x => x.Seeding.Id == seedingId)
                     .Select(x => new ArableLandTimeLine
                     {
                         DateTime = x.Date,
                         Icon = "science",
-                        Type = $"Третиране{x.TreatmentType.GetEnumDisplayName()}",
-                        Value = x.Article.Name,
-                        AdditionalValue = $"Количество {x.ArticleQuantity} кг/л"
+                        Value = $"{x.TreatmentType.GetEnumDisplayName()} с {x.Article.Name}",
+                        AdditionalValue = $"Кол. на декар: {x.ArticleQuantity.ToString("0.####")} кг/л"
                     })
-                    .ToListAsync());
+                    .ToListAsync();
 
-                arableLand1.AddRange(await farmerDbContext
-                    .PerformedWorks
-                    .Where(x => x.Seeding.WorkingSeasonId == request.WorkingSeasonId1
-                        && x.Seeding.ArableLandId == request.ArableLandId1)
+                var performedWorksTimeline = await _farmerDbContext.PerformedWorks
+                    .AsNoTracking()
+                    .Where(x => x.Seeding.Id == seedingId)
                     .Select(x => new ArableLandTimeLine
                     {
                         DateTime = x.Date,
                         Icon = "agriculture",
-                        Type = "Обработки",
                         Value = x.WorkType.GetEnumDisplayName()
                     })
-                    .ToListAsync());
+                    .ToListAsync();
 
-                //arableLand2.AddRange(await farmerDbContext
-                //    .ExpenseByArableLands
-                //    .Where(x => x.Expense.WorkingSeasonId == request.WorkingSeasonId2
-                //                && x.ArableLandId == request.ArableLandId2)
-                //    .Select(x => new ArableLandTimeLine
-                //    {
-                //        DateTime = x.Expense.Date,
-                //        Icon = "receipt",
-                //        Type = $"Разход({x.Expense.Type.GetEnumDisplayName()})",
-                //        Value = x.Sum.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
-                //        AdditionalValue = x.Expense.Article == null ? null : x.Expense.Article.Name
-                //    })
-                //    .ToListAsync(cancellationToken)
-                //    );
+                return treatmentTimeline.Concat(performedWorksTimeline).ToList();
+            }
 
-                //arableLand2.AddRange(await farmerDbContext
-                //    .SubsidyByArableLands
-                //    .Where(x => x.Subsidy.WorkingSeasonId == request.WorkingSeasonId2
-                //            && x.ArableLandId == request.ArableLandId2)
-                //    .Select(x => new ArableLandTimeLine
-                //    {
-                //        DateTime = x.Subsidy.Date,
-                //        Icon = "monetization_on",
-                //        Type = "Субсидия",
-                //        Value = x.Income.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
-                //        AdditionalValue = x.Subsidy.Comment
-                //    })
-                //    .ToListAsync()
-                //    );
-
-                arableLand2.AddRange(await farmerDbContext
-                        .Treatments
-                        .Where(x => x.Seeding.WorkingSeasonId == request.WorkingSeasonId2
-                            && x.Seeding.ArableLandId == request.ArableLandId2)
-                        .Select(x => new ArableLandTimeLine
-                        {
-                            DateTime = x.Date,
-                            Icon = "science",
-                            Type = $"Третиране{x.TreatmentType.GetEnumDisplayName()}",
-                            Value = x.Article.Name,
-                            AdditionalValue = $"Количество {x.ArticleQuantity} кг/л" 
-                        })
-                        .ToListAsync());
-
-                arableLand2.AddRange(await farmerDbContext
-                    .PerformedWorks
-                    .Where(x => x.Seeding.WorkingSeasonId == request.WorkingSeasonId2
-                        && x.Seeding.ArableLandId == request.ArableLandId2)
-                    .Select(x => new ArableLandTimeLine
-                    {
-                        DateTime = x.Date,
-                        Icon = "agriculture",
-                        Type = "Обработки",
-                        Value = x.WorkType.GetEnumDisplayName()
-                    })
-                    .ToListAsync());
-
-                var result = new TimelineComparisonReportOutputModel()
-                {
-                    ArableLand1 = arableLand1.OrderBy(x => x.DateTime).ToList(),
-                    ArableLand2 = arableLand2.OrderBy(x => x.DateTime).ToList(),
-                };
-
-                return result;
+            private async Task<Seeding?> GetSeedingDetailsAsync(int seedingId)
+            {
+                return await _farmerDbContext.Seedings
+                    .Include(x => x.Article)
+                    .FirstOrDefaultAsync(x => x.Id == seedingId);
             }
         }
     }

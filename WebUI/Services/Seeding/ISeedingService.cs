@@ -11,6 +11,8 @@ namespace WebUI.Services.Seeding
 
         Task<List<ListSeedingModel>> ListSeeding(int seasonId);
 
+        Task<List<SelectionListModel>> ListSeedingSelectionList();
+
         Task<List<SownArableLandModel>> GetSownArableLands(int seasonId);
 
         Task<DetailsSowingModel> GetSowingDetails(int seedingId);

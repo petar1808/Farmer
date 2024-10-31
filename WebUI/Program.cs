@@ -39,7 +39,6 @@ builder.Services
 
 builder.Services.AddSingleton<NavMenuService>();
 
-builder.Services.AddSingleton<SelectedWorkingSeasonService>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationService>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
