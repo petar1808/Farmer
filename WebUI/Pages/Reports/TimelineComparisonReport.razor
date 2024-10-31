@@ -68,91 +68,55 @@ else
     else
     {
         <RadzenCardGroup class="rz-mb-2" Responsive=true>
-            <RadzenCard Variant="Variant.Filled">
-                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
-                    <RadzenText TextStyle="TextStyle.H6">
-                        <strong>@SelectedSeasonWithArableLand1</strong>
-                    </RadzenText>
-                </RadzenStack>
-                <RadzenStack Orientation="Orientation.Vertical" Gap="1rem" class="rz-p-4">
-                    <RadzenStack Gap="0">
-                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Засято семе</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.SeedName1</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Засято кол. на декар</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.SeedsQuantityPerDecare1.ToString("N2") кг</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Ожънато кол. на декар</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.HarvestedQuantityPerDecare1.ToString("N2") кг</b></RadzenText>
+            @foreach (var (title, seedName, seedsQty, harvestedQty) in new[]
+            {
+                (@SelectedSeasonWithArableLand1, @Data.SeedName1, @Data.SeedsQuantityPerDecare1, @Data.HarvestedQuantityPerDecare1),
+                (@SelectedSeasonWithArableLand2, @Data.SeedName2, @Data.SeedsQuantityPerDecare2, @Data.HarvestedQuantityPerDecare2)
+            })
+            {
+                <RadzenCard Variant="Variant.Filled">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
+                        <RadzenText TextStyle="TextStyle.H6">
+                            <strong>@SelectedSeasonWithArableLand1</strong>
+                        </RadzenText>
                     </RadzenStack>
-                </RadzenStack>
-            </RadzenCard>
-            <RadzenCard Variant="Variant.Filled">
-                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
-                    <RadzenText TextStyle="TextStyle.H6">
-                        <strong>@SelectedSeasonWithArableLand2</strong>
-                    </RadzenText>
-                </RadzenStack>
-                <RadzenStack Orientation="Orientation.Vertical" Gap="1rem" class="rz-p-4">
-                    <RadzenStack Gap="0">
-                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Засято семе</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.SeedName2</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Засято кол. на декар</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.SeedsQuantityPerDecare2.ToString("N2") кг</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Ожънато кол. на декар</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>@Data.HarvestedQuantityPerDecare2.ToString("N2") кг</b></RadzenText>
+                    <RadzenStack Orientation="Orientation.Vertical" Gap="1rem" class="rz-p-4">
+                        <RadzenStack Gap="0">
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Засято семе</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@seedName</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Засято кол. на декар</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@seedsQty.ToString("N2") кг</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Ожънато кол. на декар</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@harvestedQty.ToString("N2") кг</b></RadzenText>
+                        </RadzenStack>
                     </RadzenStack>
-                </RadzenStack>
-            </RadzenCard>
+                </RadzenCard>
+            }
         </RadzenCardGroup>
 
         <RadzenCardGroup class="rz-mb-2" Responsive=true>
-            <RadzenCard Variant="Variant.Filled">
-                <RadzenTimeline AlignItems="AlignItems.Center"
-                                Orientation="Orientation.Vertical"
-                                LinePosition="LinePosition.Center"
-                                style="max-width: 600px;margin: 0 auto;">
-                    <Items>
-                        @foreach (var arableLand in Data.ArableLand1)
-                        {
-                            <RadzenTimelineItem>
-                                <PointContent><RadzenIcon Icon="@arableLand.Icon" /></PointContent>
-                                <LabelContent>
-                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">
-                                        @arableLand.Date
-                                    </RadzenText>
-                                </LabelContent>
-                                <ChildContent>
-                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@arableLand.Value</RadzenText>
-                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0">@arableLand.AdditionalValue</RadzenText>
-                                </ChildContent>
-                            </RadzenTimelineItem>
-                        }
-                    </Items>
-                </RadzenTimeline>
-            </RadzenCard>
-            <RadzenCard Variant="Variant.Filled">
-                <RadzenTimeline AlignItems="AlignItems.Center"
-                                Orientation="Orientation.Vertical"
-                                LinePosition="LinePosition.Center"
-                                style="--rz-timeline-line-color: var(--rz-info);max-width: 600px;margin: 0 auto;">
-                    <Items>
-                        @foreach (var arableLand in Data.ArableLand2)
-                        {
-                            <RadzenTimelineItem>
-                                <PointContent><RadzenIcon Icon="@arableLand.Icon" /></PointContent>
-                                <LabelContent>
-                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">
-                                        @arableLand.Date
-                                    </RadzenText>
-                                </LabelContent>
-                                <ChildContent>
-                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@arableLand.Value</RadzenText>
-                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0">@arableLand.AdditionalValue</RadzenText>
-                                </ChildContent>
-                            </RadzenTimelineItem>
-                        }
-                    </Items>
-                </RadzenTimeline>
-            </RadzenCard>
+            @foreach (var arableLandData in new[] { Data.ArableLand1, Data.ArableLand2 })
+            {
+                <RadzenCard Variant="Variant.Filled">
+                    <RadzenTimeline Orientation="Orientation.Vertical"
+                                    LinePosition="LinePosition.Center"
+                                    style="max-width: 600px;margin: 0 auto;">
+                        <Items>
+                            @foreach (var item in arableLandData)
+                            {
+                                <RadzenTimelineItem>
+                                    <PointContent><RadzenIcon Icon="@item.Icon" /></PointContent>
+                                    <LabelContent><RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@item.Date</RadzenText></LabelContent>
+                                        <ChildContent>
+                                            <RadzenText TextStyle="TextStyle.Subtitle1">@item.Value</RadzenText>
+                                            <RadzenText TextStyle="TextStyle.Subtitle2">@item.AdditionalValue</RadzenText>
+                                        </ChildContent>
+                                    </RadzenTimelineItem>
+                            }
+                        </Items>
+                    </RadzenTimeline>
+                </RadzenCard>
+            }
         </RadzenCardGroup>
     }
 }
@@ -189,8 +153,8 @@ else
     {
         loading = true;
         Data = await ReportService.GetTimelineComparisonReport(SeedingId1, SeedingId2);
-        SelectedSeasonWithArableLand1 = SeasonWithArableLands.First(x => x.Value == SeedingId1).Name;
-        SelectedSeasonWithArableLand2 = SeasonWithArableLands.First(x => x.Value == SeedingId2).Name;
+        SelectedSeasonWithArableLand1 = SeasonWithArableLands.FirstOrDefault(x => x.Value == SeedingId1)?.Name ?? string.Empty;
+        SelectedSeasonWithArableLand2 = SeasonWithArableLands.FirstOrDefault(x => x.Value == SeedingId2)?.Name ?? string.Empty;
         loading = false;
     }
 }
