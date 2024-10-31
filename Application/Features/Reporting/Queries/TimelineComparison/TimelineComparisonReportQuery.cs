@@ -39,35 +39,35 @@ namespace Application.Features.Reporting.Queries.TimelineComparison
                 var arableLand1 = new List<ArableLandTimeLine>();
                 var arableLand2 = new List<ArableLandTimeLine>();
 
-                arableLand1.AddRange(await farmerDbContext
-                    .ExpenseByArableLands
-                    .Where(x => x.Expense.WorkingSeasonId == request.WorkingSeasonId1
-                                && x.ArableLandId == request.ArableLandId1)
-                    .Select(x => new ArableLandTimeLine
-                    {
-                        DateTime = x.Expense.Date,
-                        Icon = "receipt",
-                        Type = $"Разход({x.Expense.Type.GetEnumDisplayName()})",
-                        Value = x.Sum.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
-                        AdditionalValue = x.Expense.Article == null ? null : x.Expense.Article.Name
-                    })
-                    .ToListAsync(cancellationToken)
-                    );
+                //arableLand1.AddRange(await farmerDbContext
+                //    .ExpenseByArableLands
+                //    .Where(x => x.Expense.WorkingSeasonId == request.WorkingSeasonId1
+                //                && x.ArableLandId == request.ArableLandId1)
+                //    .Select(x => new ArableLandTimeLine
+                //    {
+                //        DateTime = x.Expense.Date,
+                //        Icon = "receipt",
+                //        Type = $"Разход({x.Expense.Type.GetEnumDisplayName()})",
+                //        Value = x.Sum.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
+                //        AdditionalValue = x.Expense.Article == null ? null : x.Expense.Article.Name
+                //    })
+                //    .ToListAsync(cancellationToken)
+                //    );
 
-                arableLand1.AddRange(await farmerDbContext
-                    .SubsidyByArableLands
-                    .Where(x => x.Subsidy.WorkingSeasonId == request.WorkingSeasonId1
-                            && x.ArableLandId == request.ArableLandId1)
-                    .Select(x => new ArableLandTimeLine
-                    {
-                        DateTime = x.Subsidy.Date,
-                        Icon = "monetization_on",
-                        Type = "Субсидия",
-                        Value = x.Income.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
-                        AdditionalValue = x.Subsidy.Comment
-                    })
-                    .ToListAsync()
-                    );
+                //arableLand1.AddRange(await farmerDbContext
+                //    .SubsidyByArableLands
+                //    .Where(x => x.Subsidy.WorkingSeasonId == request.WorkingSeasonId1
+                //            && x.ArableLandId == request.ArableLandId1)
+                //    .Select(x => new ArableLandTimeLine
+                //    {
+                //        DateTime = x.Subsidy.Date,
+                //        Icon = "monetization_on",
+                //        Type = "Субсидия",
+                //        Value = x.Income.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
+                //        AdditionalValue = x.Subsidy.Comment
+                //    })
+                //    .ToListAsync()
+                //    );
 
                 arableLand1.AddRange(await farmerDbContext
                     .Treatments
@@ -96,35 +96,35 @@ namespace Application.Features.Reporting.Queries.TimelineComparison
                     })
                     .ToListAsync());
 
-                arableLand2.AddRange(await farmerDbContext
-                    .ExpenseByArableLands
-                    .Where(x => x.Expense.WorkingSeasonId == request.WorkingSeasonId2
-                                && x.ArableLandId == request.ArableLandId2)
-                    .Select(x => new ArableLandTimeLine
-                    {
-                        DateTime = x.Expense.Date,
-                        Icon = "receipt",
-                        Type = $"Разход({x.Expense.Type.GetEnumDisplayName()})",
-                        Value = x.Sum.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
-                        AdditionalValue = x.Expense.Article == null ? null : x.Expense.Article.Name
-                    })
-                    .ToListAsync(cancellationToken)
-                    );
+                //arableLand2.AddRange(await farmerDbContext
+                //    .ExpenseByArableLands
+                //    .Where(x => x.Expense.WorkingSeasonId == request.WorkingSeasonId2
+                //                && x.ArableLandId == request.ArableLandId2)
+                //    .Select(x => new ArableLandTimeLine
+                //    {
+                //        DateTime = x.Expense.Date,
+                //        Icon = "receipt",
+                //        Type = $"Разход({x.Expense.Type.GetEnumDisplayName()})",
+                //        Value = x.Sum.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
+                //        AdditionalValue = x.Expense.Article == null ? null : x.Expense.Article.Name
+                //    })
+                //    .ToListAsync(cancellationToken)
+                //    );
 
-                arableLand2.AddRange(await farmerDbContext
-                    .SubsidyByArableLands
-                    .Where(x => x.Subsidy.WorkingSeasonId == request.WorkingSeasonId2
-                            && x.ArableLandId == request.ArableLandId2)
-                    .Select(x => new ArableLandTimeLine
-                    {
-                        DateTime = x.Subsidy.Date,
-                        Icon = "monetization_on",
-                        Type = "Субсидия",
-                        Value = x.Income.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
-                        AdditionalValue = x.Subsidy.Comment
-                    })
-                    .ToListAsync()
-                    );
+                //arableLand2.AddRange(await farmerDbContext
+                //    .SubsidyByArableLands
+                //    .Where(x => x.Subsidy.WorkingSeasonId == request.WorkingSeasonId2
+                //            && x.ArableLandId == request.ArableLandId2)
+                //    .Select(x => new ArableLandTimeLine
+                //    {
+                //        DateTime = x.Subsidy.Date,
+                //        Icon = "monetization_on",
+                //        Type = "Субсидия",
+                //        Value = x.Income.ToString("C", new CultureInfo("bg-BG")).Replace(" BGN", " лв"),
+                //        AdditionalValue = x.Subsidy.Comment
+                //    })
+                //    .ToListAsync()
+                //    );
 
                 arableLand2.AddRange(await farmerDbContext
                         .Treatments
