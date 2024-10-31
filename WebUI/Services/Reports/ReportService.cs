@@ -12,10 +12,16 @@ namespace WebUI.Services.Reports
             _httpService = httpService;
         }
 
-        public async Task<List<FinancialSummaryReportModel>> GetFinancialSummaryReports()
+        public async Task<List<FinancialSummaryReportModel>> GetFinancialSummaryReport()
         {
             return await _httpService
                     .GetAsync<List<FinancialSummaryReportModel>>($"api/report/FinancialSummary");
+        }
+
+        public async Task<TimelineComparisonReportModel> GetTimelineComparisonReport()
+        {
+            return await _httpService
+                    .GetAsync<TimelineComparisonReportModel>($"api/report/TimelineComparison");
         }
     }
 }

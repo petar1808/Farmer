@@ -1,0 +1,179 @@
+﻿@page "/report/timeline"
+@using WebUI.Services.Reports
+@using WebUI.ServicesModel.Reports
+
+@if (Data is null)
+{
+    <Loader />
+}
+else
+{
+    <div class="rz-p-0 rz-p-md-12">
+        <RadzenCard class="rz-mb-6">
+            <RadzenRow class="rz-mb-6" AlignItems="AlignItems.End" Wrap="FlexWrap.Wrap" Gap="2rem">
+                <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                    <RadzenFormField Text="Outlined/Default" Style="width: 100%;">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                    <RadzenFormField Text="Text" Variant="Variant.Text" Style="width: 100%;">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                    <RadzenFormField Text="Flat" Variant="Variant.Flat" Style="width: 100%;">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                    <RadzenFormField Text="Filled" Variant="Variant.Filled" Style="width: 100%;">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow class="rz-mb-2" AlignItems="AlignItems.End" Wrap="FlexWrap.Wrap" Gap="1rem">
+                <RadzenColumn Size="10">
+                    <RadzenCheckBoxList @bind-Value=@values TValue="int">
+                        <Items>
+                            <RadzenCheckBoxListItem Text="Разходи" Value="1" />
+                            <RadzenCheckBoxListItem Text="Субсидии" Value="2" />
+                            <RadzenCheckBoxListItem Text="Обработки" Value="3" />
+                            <RadzenCheckBoxListItem Text="Третирания" Value="4" />
+                        </Items>
+                    </RadzenCheckBoxList>
+                </RadzenColumn>
+                <RadzenColumn Size="2">
+                     <RadzenButton 
+                        ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" 
+                        Icon="save" 
+                        Text="Генерирай" 
+                        Variant="Variant.Flat" />
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenCard>
+
+        <RadzenStack Orientation="Orientation.Horizontal" FlexWrap="FlexWrap.Wrap" Gap="1rem" class="rz-p-4 rz-mb-6">
+            <RadzenColumn SizeMD=6 Size=6>
+                <RadzenText TextStyle="TextStyle.H5">Земя 1, Година: 2024/2025</RadzenText>
+                <RadzenRow class="rz-text-align-center rz-border-color-success-darker rz-background-color-white">
+                    <RadzenColumn class="rz-p-1">
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Засято семе</RadzenText>
+                        <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                     Shade="Shade.Dark"
+                                     Variant="Variant.Outlined"
+                                     Text="Царевица" />
+                    </RadzenColumn>
+                    <RadzenColumn class="rz-p-1">
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Засято кол. на декар</RadzenText>
+                        <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                     Shade="Shade.Dark"
+                                     Variant="Variant.Outlined"
+                                     Text="20 кг" />
+                    </RadzenColumn>
+                    <RadzenColumn class="rz-p-1">
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Ожънато кол на декар</RadzenText>
+                        <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                     Shade="Shade.Dark"
+                                     Variant="Variant.Outlined"
+                                     Text="20 кг" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow>
+                    <RadzenTimeline AlignItems="AlignItems.Center"
+                                Orientation="Orientation.Vertical"
+                                LinePosition="LinePosition.Center"
+                                style="max-width: 600px;margin: 0 auto;">
+                    <Items>
+                        @foreach (var arableLand in Data.ArableLand1)
+                        {
+                            <RadzenTimelineItem>
+                                <PointContent><RadzenIcon Icon="@arableLand.Icon" /></PointContent>
+                                <LabelContent>
+                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">
+                                        @arableLand.Date
+                                    </RadzenText>
+                                </LabelContent>
+                                <ChildContent>
+                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@arableLand.Type</RadzenText>
+                                        @arableLand.Value
+                                    @arableLand.AdditionalValue
+                                </ChildContent>
+                            </RadzenTimelineItem>
+                        }
+                    </Items>
+                </RadzenTimeline>
+                </RadzenRow>
+            </RadzenColumn>
+
+            <RadzenColumn SizeMD=6 Size=6>
+                <RadzenText TextStyle="TextStyle.Subtitle1">Земя 2, Година: 2024/2025</RadzenText>
+                <RadzenRow class="rz-text-align-center rz-border-color-success-darker rz-background-color-white">
+                    <RadzenColumn class="rz-p-1">
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Засято семе</RadzenText>
+                        <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                     Shade="Shade.Dark"
+                                     Variant="Variant.Outlined"
+                                     Text="Царевица" />
+                    </RadzenColumn>
+                    <RadzenColumn class="rz-p-1">
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Засято кол. на декар</RadzenText>
+                        <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                     Shade="Shade.Dark"
+                                     Variant="Variant.Outlined"
+                                     Text="20 кг" />
+                    </RadzenColumn>
+                    <RadzenColumn class="rz-p-1">
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Ожънато кол на декар</RadzenText>
+                        <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                     Shade="Shade.Dark"
+                                     Variant="Variant.Outlined"
+                                     Text="20 кг" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow>
+                    <RadzenTimeline AlignItems="AlignItems.Center"
+                                    Orientation="Orientation.Vertical"
+                                    LinePosition="LinePosition.Center"
+                                    style="--rz-timeline-line-color: var(--rz-info);max-width: 600px;margin: 0 auto;">
+                        <Items>
+                            @foreach (var arableLand in Data.ArableLand2)
+                            {
+                                <RadzenTimelineItem>
+                                    <PointContent><RadzenIcon Icon="@arableLand.Icon" /></PointContent>
+                                    <LabelContent>
+                                        <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">
+                                            @arableLand.Date
+                                        </RadzenText>
+                                    </LabelContent>
+                                    <ChildContent>
+                                        <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@arableLand.Type</RadzenText>
+                                            @arableLand.Value
+                                        @arableLand.AdditionalValue
+                                    </ChildContent>
+                                </RadzenTimelineItem>
+                            }
+                        </Items>
+                    </RadzenTimeline>
+                </RadzenRow>              
+            </RadzenColumn>
+        </RadzenStack>
+    </div>
+}
+
+
+@code {
+    [Inject]
+    public IReportService ReportService { get; set; } = default!;
+
+    public TimelineComparisonReportModel Data { get; set; }
+
+    IEnumerable<int> values = new int[] { 1 };
+
+    string value = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Data = await ReportService.GetTimelineComparisonReport();
+    }
+}

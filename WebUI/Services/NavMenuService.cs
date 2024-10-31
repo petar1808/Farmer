@@ -107,6 +107,12 @@ namespace WebUI.Services
                         Name = "Финансов Преглед",
                         Icon = "summarize",
                         Path = "/report/FinancialSummary"
+                    },
+                    new NavMenuItem()
+                    {
+                        Name = "Времево сравнение",
+                        Icon = "timeline",
+                        Path = "/report/timeline"
                     }
                 }
             },

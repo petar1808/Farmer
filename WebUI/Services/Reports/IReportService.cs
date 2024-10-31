@@ -4,6 +4,8 @@ namespace WebUI.Services.Reports
 {
     public interface IReportService
     {
-        Task<List<FinancialSummaryReportModel>> GetFinancialSummaryReports(); 
+        Task<List<FinancialSummaryReportModel>> GetFinancialSummaryReport();
+
+        Task<TimelineComparisonReportModel> GetTimelineComparisonReport();
     }
 }

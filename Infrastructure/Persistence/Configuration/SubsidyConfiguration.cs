@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.Configuration
         {
             builder
                 .HasMany(x => x.SubsidyByArableLands)
-                .WithOne()
+                .WithOne(x => x.Subsidy)
                 .HasForeignKey(x => x.SubsidyId)
                 .OnDelete(DeleteBehavior.Cascade);
 

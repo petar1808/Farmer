@@ -10,6 +10,7 @@ namespace Domain.Models
             ArableLandId = arableLandId;
             Sum = sum;
             ArableLand = default!;
+            Expense = default!;
         }
         public int ArableLandId { get; set; }
 
@@ -18,6 +19,8 @@ namespace Domain.Models
         public decimal Sum { get; private set; }
 
         public int ExpenseId { get; set; }
+
+        public Expense Expense { get; set; }
 
         public int TenantId { get; set; }
 
