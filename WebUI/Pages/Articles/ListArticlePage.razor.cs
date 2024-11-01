@@ -18,7 +18,7 @@ namespace WebUI.Pages.Articles
         public DialogService DialogService { get; set; } = default!;
 
         [Parameter]
-        public ArticleType ArticleType { get; set; } 
+        public ArticleType ArticleType { get; set; }
 
         public DynamicDataGridModel<ListArticleModel> DataGrid { get; set; } = default!;
 
@@ -73,7 +73,7 @@ namespace WebUI.Pages.Articles
         {
             var dialogResult = await DialogService.OpenAsync<DetailsArticle>(
                 $"Редактиране на {this.ArticleType.GetEnumDisplayName()}",
-                new Dictionary<string, object>() { { "ArticleId", articleId } }, 
+                new Dictionary<string, object>() { { "ArticleId", articleId } },
                 options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)

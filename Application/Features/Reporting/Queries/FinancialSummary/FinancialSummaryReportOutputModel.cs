@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Features.Reporting.Queries.FinancialSummary
+﻿namespace Application.Features.Reporting.Queries.FinancialSummary
 {
     public class FinancialSummaryReportOutputModel
     {
@@ -18,9 +12,9 @@ namespace Application.Features.Reporting.Queries.FinancialSummary
 
         public decimal Profit => SumIncome - SumExpense;
 
-        public List<FinancialSummaryReportIncomes> IncomesByArableLand { get; set; } = new ();
+        public List<FinancialSummaryReportIncomes> IncomesByArableLand { get; set; } = new();
 
-        public List<FinancialSummaryReportExpenses> ExpensesByArableLand { get; set; } = new ();
+        public List<FinancialSummaryReportExpenses> ExpensesByArableLand { get; set; } = new();
 
         public decimal ExpensesForMachinery { get; set; }
     }

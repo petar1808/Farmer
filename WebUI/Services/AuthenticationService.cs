@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq.Dynamic.Core.Tokenizer;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 
@@ -27,7 +26,7 @@ namespace WebUI.Services
             if (!string.IsNullOrEmpty(tokenString))
             {
                 var handler = new JwtSecurityTokenHandler();
-                var jwtToken = handler.ReadJwtToken(tokenString);            
+                var jwtToken = handler.ReadJwtToken(tokenString);
 
                 if (jwtToken.ValidTo > DateTime.UtcNow)
                 {

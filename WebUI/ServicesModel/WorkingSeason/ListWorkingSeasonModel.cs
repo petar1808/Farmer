@@ -1,6 +1,4 @@
-﻿using WebUI.Components.DataGrid;
-
-namespace WebUI.ServicesModel.WorkingSeason
+﻿namespace WebUI.ServicesModel.WorkingSeason
 {
     public class ListWorkingSeasonModel : WorkingSeasonModel
     {

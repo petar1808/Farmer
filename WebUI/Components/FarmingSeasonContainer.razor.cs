@@ -9,10 +9,10 @@ namespace WebUI.Components
 {
     public partial class FarmingSeasonContainer
     {
-        [Parameter] 
+        [Parameter]
         public RenderFragment ChildContent { get; set; }
 
-        [Parameter] 
+        [Parameter]
         public EventCallback OnSeasonChanged { get; set; }
 
         [Inject]

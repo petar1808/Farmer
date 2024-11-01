@@ -8,7 +8,7 @@ namespace Application.Features.WorkingSeasons.Queries.List
 {
     public class WorkingSeasonListQuery : IRequest<Result<List<WorkingSeasonListQueryOutputModel>>>
     {
-        
+
         public class WorkingSeasonBalanceListQueryHandler : IRequestHandler<WorkingSeasonListQuery, Result<List<WorkingSeasonListQueryOutputModel>>>
         {
             private readonly IFarmerDbContext farmerDbContext;
@@ -24,7 +24,7 @@ namespace Application.Features.WorkingSeasons.Queries.List
                 WorkingSeasonListQuery request,
                 CancellationToken cancellationToken)
             {
-                var workingSeasonBalance =  farmerDbContext.WorkingSeasons
+                var workingSeasonBalance = farmerDbContext.WorkingSeasons
                             .OrderByDescending(x => x.StartDate)
                             .AsQueryable();
 

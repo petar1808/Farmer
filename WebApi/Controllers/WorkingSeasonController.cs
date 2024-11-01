@@ -2,7 +2,6 @@
 using Application.Features.WorkingSeasons.Commands.Delete;
 using Application.Features.WorkingSeasons.Commands.Edit;
 using Application.Features.WorkingSeasons.Queries.Details;
-using Application.Features.WorkingSeasons.Queries.List;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Application.IdentityConstants;
@@ -26,8 +25,9 @@ namespace WebApi.Controllers
             => await base.Send(workingSeasonDetailsQuery);
 
         [HttpGet]
-        public async Task<ActionResult<List<WorkingSeasonListQueryOutputModel>>> ListWorkingSeason(
-            [FromHeader] WorkingSeasonListQuery workingSeasonBalanceListQuery)
+        [Route("balance")]
+        public async Task<ActionResult<List<WorkingSeasonBalanceListQueryOutputModel>>> ListWorkingSeasonBalance(
+            [FromHeader] WorkingSeasonBalanceListQuery workingSeasonBalanceListQuery)
             => await base.Send(workingSeasonBalanceListQuery);
 
         [HttpPut]

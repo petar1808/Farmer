@@ -21,7 +21,7 @@ namespace Application.Features.Expenses.Queries.Details
                 this.mapper = mapper;
             }
             public async Task<Result<DetailExpensesQueryOutputModel>> Handle(
-                DetailExpensesQuery request, 
+                DetailExpensesQuery request,
                 CancellationToken cancellationToken)
             {
                 var expense = farmerDbContext.Expenses.AsQueryable();

@@ -14,7 +14,7 @@ namespace WebUI.Services.Expenses
 
         public async Task<bool> Add(DetailsExpenseModel model)
         {
-            return await _httpService.PostAsync<bool>("api/expense", model); 
+            return await _httpService.PostAsync<bool>("api/expense", model);
         }
 
         public async Task<DetailsExpenseModel> Get(int id)

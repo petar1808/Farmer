@@ -1,6 +1,4 @@
-﻿using WebUI.ServicesModel.Subsidies;
-
-namespace WebUI.Services.Subsidies
+﻿namespace WebUI.Services.Subsidies
 {
     public class SubsidyService : ISubsidyService
     {
@@ -11,34 +9,34 @@ namespace WebUI.Services.Subsidies
             _httpService = httpService;
         }
 
-        public async Task<bool> Add(DetailsSubsidyModel subsidyModel)
+        public async Task<bool> Add(SubsidiesModel subsidyModel, int seedingId)
         {
             return await _httpService
-                .PostAsync<bool>($"api/subsidy", subsidyModel);
+                .PostAsync<bool>($"api/seeding/{seedingId}/subsidy", subsidyModel);
         }
 
         public async Task<bool> Delete(int id)
         {
             return await _httpService
-                .DeleteAsync<bool>($"api/subsidy/{id}");
+                .DeleteAsync<bool>($"api/seeding/subsidy/{id}");
         }
 
-        public async Task<DetailsSubsidyModel> Get(int id)
+        public async Task<SubsidiesModel> Get(int id)
         {
             return await _httpService
-                .GetAsync<DetailsSubsidyModel>($"api/subsidy/{id}");
+                .GetAsync<SubsidiesModel>($"api/seeding/subsidy/{id}");
         }
 
-        public async Task<List<ListSubsidiesModel>> List(int seasonId)
+        public async Task<List<SubsidiesModel>> List(int seedingId)
         {
             return await _httpService
-                    .GetAsync<List<ListSubsidiesModel>>($"/api/subsidy/list/{seasonId}");
+                .GetAsync<List<SubsidiesModel>>($"api/seeding/{seedingId}/subsidy");
         }
 
-        public async Task<bool> Update(DetailsSubsidyModel subsidyModel)
+        public async Task<bool> Update(SubsidiesModel subsidyModel)
         {
             return await _httpService
-                .PutAsync<bool>("api/subsidy", subsidyModel);
+                .PutAsync<bool>("api/seeding/subsidy", subsidyModel);
         }
     }
 }

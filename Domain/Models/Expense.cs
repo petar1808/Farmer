@@ -31,7 +31,7 @@ namespace Domain.Models
         public decimal Quantity { get; private set; }
 
         public decimal Sum { get; private set; }
-        
+
         public int? ArticleId { get; private set; }
 
         public Article? Article { get; private set; }
@@ -52,7 +52,7 @@ namespace Domain.Models
         {
             // Remove arable lands that are no longer in the new list
             var arableLandsToRemove = ExpenseByArableLands
-                .Where(existing => !newArableLands.Exists(newLand => newLand.ArableLandId == existing.ArableLandId))
+                .Where(existing => !newArableLands.Any(newLand => newLand.ArableLandId == existing.ArableLandId))
                 .ToList();
 
             foreach (var arableLand in arableLandsToRemove)
@@ -62,7 +62,7 @@ namespace Domain.Models
 
             // Add new arable lands that are not in the existing list
             var arableLandsToAdd = newArableLands
-                .Where(newLand => !ExpenseByArableLands.Exists(existing => existing.ArableLandId == newLand.ArableLandId))
+                .Where(newLand => !ExpenseByArableLands.Any(existing => existing.ArableLandId == newLand.ArableLandId))
                 .ToList();
 
             foreach (var arableLand in arableLandsToAdd)
@@ -73,8 +73,7 @@ namespace Domain.Models
             // Update existing arable lands
             foreach (var existingArableLand in ExpenseByArableLands)
             {
-                var matchingNewArableLand = newArableLands
-                    .Find(newLand => newLand.ArableLandId == existingArableLand.ArableLandId);
+                var matchingNewArableLand = newArableLands.FirstOrDefault(newLand => newLand.ArableLandId == existingArableLand.ArableLandId);
                 if (matchingNewArableLand != null)
                 {
                     existingArableLand.UpdateSum(matchingNewArableLand.Sum);

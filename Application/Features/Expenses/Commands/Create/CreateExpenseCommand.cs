@@ -18,7 +18,7 @@ namespace Application.Features.Expenses.Commands.Create
             }
 
             public async Task<Result> Handle(
-                CreateExpenseCommand request, 
+                CreateExpenseCommand request,
                 CancellationToken cancellationToken)
             {
                 var expense = new Expense(
