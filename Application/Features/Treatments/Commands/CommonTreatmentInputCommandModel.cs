@@ -6,7 +6,7 @@ namespace Application.Features.Treatments.Commands
     {
         public DateTime Date { get; init; }
 
-        public ТreatmentType TreatmentType { get; init; }
+        public TreatmentType TreatmentType { get; init; }
 
         public int ArticleId { get; init; }
 

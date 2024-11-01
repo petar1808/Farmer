@@ -16,7 +16,7 @@ namespace Application.Features.Treatments.Queries.ListTreatmentType
                 var result = await Task.Run(() =>
                 {
                     return EnumHelper
-                            .GetAllNamesAndValues<ТreatmentType>()
+                            .GetAllNamesAndValues<TreatmentType>()
                             .Select(x => new TreatmentTypeOutputQueryModel(x.Key, x.Value))
                             .ToList();
                 });

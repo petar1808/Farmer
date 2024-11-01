@@ -6,7 +6,7 @@ namespace Domain.Models
     public class Treatment : Entity<int>, ITenant
     {
         public Treatment(DateTime date,
-            ТreatmentType treatmentType,
+            TreatmentType treatmentType,
             int articleId,
             decimal articleQuantity,
             int seedingId)
@@ -21,7 +21,7 @@ namespace Domain.Models
 
         public DateTime Date { get; private set; }
 
-        public ТreatmentType TreatmentType { get; private set; }
+        public TreatmentType TreatmentType { get; private set; }
 
         public int ArticleId { get; private set; }
 
@@ -36,7 +36,7 @@ namespace Domain.Models
         public int TenantId { get; set; }
 
         #region UpdateMethods
-        public Treatment UpdateТreatmentType(ТreatmentType treatmentType)
+        public Treatment UpdateТreatmentType(TreatmentType treatmentType)
         {
             ValidateТreatmentType(treatmentType);
             this.TreatmentType = treatmentType;
@@ -62,7 +62,7 @@ namespace Domain.Models
         }
         #endregion
 
-        private void ValidateТreatmentType(ТreatmentType type)
-            => Guard.Guard.ForValidEnum<ТreatmentType>((int)type, nameof(ТreatmentType));
+        private void ValidateТreatmentType(TreatmentType type)
+            => Guard.Guard.ForValidEnum<TreatmentType>((int)type, nameof(TreatmentType));
     }
 }

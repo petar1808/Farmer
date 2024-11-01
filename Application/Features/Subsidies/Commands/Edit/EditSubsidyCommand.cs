@@ -57,11 +57,13 @@ namespace Application.Features.Subsidies.Commands.Edit
                 {
                     var arableLandIncome = ((decimal)arableLand.SizeInDecar / (decimal)totalArea) * request.Income;
 
-                    var arableLandSubsidy = subsidy.SubsidyByArableLands.FirstOrDefault(x => x.ArableLandId == arableLand.Id);
+                    var arableLandSubsidy = subsidy.SubsidyByArableLands
+                        .Find(x => x.ArableLandId == arableLand.Id);
 
                     if (arableLandSubsidy == null)
                     {
-                        subsidy.SubsidyByArableLands.Add(new SubsidyByArableLand(arableLand.Id, arableLandIncome));
+                        subsidy.SubsidyByArableLands
+                            .Add(new SubsidyByArableLand(arableLand.Id, arableLandIncome));
                     }
                     else
                     {

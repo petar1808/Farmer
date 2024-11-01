@@ -22,9 +22,9 @@ namespace Application.Features.WorkingSeasons.Commands.Edit
                 EditWorkingSeasonCommand request,
                 CancellationToken cancellationToken)
             {
-                var workingSeason = farmerDbContext
+                var workingSeason = await farmerDbContext
                     .WorkingSeasons
-                    .FirstOrDefault(x => x.Id == request.Id);
+                    .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
                 if (workingSeason == null)
                 {

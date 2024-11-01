@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    public class ModelConstraint
+    public static class ModelConstraint
     {
         public static class CommonConstraints
         {

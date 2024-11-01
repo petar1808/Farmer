@@ -31,7 +31,7 @@ namespace Application.Features.Treatments.Queries.Details
 
                 var result = await mapper
                     .ProjectTo<TreatmentDetailsQueryOutputModel>(treatment)
-                    .FirstOrDefaultAsync(x => x.Id == request.TreatmentId, cancellationToken); ;
+                    .FirstOrDefaultAsync(x => x.Id == request.TreatmentId, cancellationToken);
 
                 if (result == null)
                 {

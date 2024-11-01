@@ -8,13 +8,9 @@
 
         public decimal SeedsQuantityPerDecare { get; set; }
 
-        //public decimal SeedsPricePerKilogram { get; set; }
-
         public int HarvestedQuantityPerDecare { get; set; }
 
         public decimal HarvestedGrainSellingPricePerKilogram { get; set; }
-
-        //public decimal ExpensesForHarvesting { get; set; }
 
         public void SetSeedingId(int seedingId)
         {
