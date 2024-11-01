@@ -270,54 +270,5 @@ namespace Infrastructure
             }
             return builder;
         }
-
-        public static void UseSerilogLogging(this IHostBuilder builder)
-        {
-            builder.UseSerilog((context, services, configuration) =>
-            {
-                var serilogSettings = new SerilogSettings();
-                context.Configuration.Bind(nameof(SerilogSettings), serilogSettings);
-                SetUpLogger(configuration, services, serilogSettings);
-            });
-        }
-
-        private static void SetUpLogger(
-            LoggerConfiguration configuration,
-            IServiceProvider services,
-            SerilogSettings settings)
-        {
-            if (Enum.TryParse<LogEventLevel>(settings.MinimumLevel.Default, out var defaultLevel))
-            {
-                configuration.MinimumLevel.ControlledBy(new LoggingLevelSwitch(defaultLevel));
-            }
-            if (Enum.TryParse<LogEventLevel>(settings.MinimumLevel.Override.Microsoft, out var microsoftMinLevel))
-            {
-                configuration.MinimumLevel.Override("Microsoft", new LoggingLevelSwitch(microsoftMinLevel));
-            }
-            if (Enum.TryParse<LogEventLevel>(settings.MinimumLevel.Override.System, out var systemMinLevel))
-            {
-                configuration.MinimumLevel.Override("System", new LoggingLevelSwitch(systemMinLevel));
-            }
-            SetUpConsoleLogger(configuration, settings);
-        }
-
-        private static void SetUpConsoleLogger(
-            LoggerConfiguration loggerConfiguration,
-            SerilogSettings serilogSettings)
-        {
-            if (serilogSettings.Console.IsEnabled)
-            {
-                Enum.TryParse<LogEventLevel>(serilogSettings.Console.MinLogLevel, out var minLogLevel);
-                loggerConfiguration
-                    .WriteTo.Console(minLogLevel);
-            }
-            if (serilogSettings.File.IsEnabled)
-            {
-                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                Enum.TryParse<LogEventLevel>(serilogSettings.File.MinLogLevel, out var fileminLogLevel);
-                loggerConfiguration
-                    .WriteTo.File($"{path}/{serilogSettings.File.FileName}", fileminLogLevel);
-            }
-        }
     }
 }

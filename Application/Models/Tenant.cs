@@ -9,7 +9,7 @@ namespace Application.Models
             Name = name;
         }
 
-        public string Name { get; set; } = default!;
+        public string Name { get; set; }
 
         public List<User> Users { get; set; } = new List<User>();
     }

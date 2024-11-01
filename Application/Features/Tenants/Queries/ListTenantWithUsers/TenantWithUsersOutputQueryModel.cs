@@ -32,6 +32,6 @@ namespace Application.Features.Tenants.Queries.ListTenantWithUsers
             => mapper.CreateMap<User, TenantUser>()
             .ForMember(x => x.UserEmail, cfg => cfg.MapFrom(c => c.UserName))
             .ForMember(x => x.UserName, cfg => cfg.MapFrom(c => c.FirstName + " " + c.LastName))
-            .ForMember(x => x.UserRole, cfg => cfg.MapFrom(c => c.UserRoles.First().Name));
+            .ForMember(x => x.UserRole, cfg => cfg.MapFrom(c => c.UserRoles[0].Name));
     }
 }

@@ -7,7 +7,7 @@ namespace Application.Features.Treatments.Queries.Details
 {
     public class TreatmentDetailsQueryOutputModel : CommonTreatmentOutputQueryModel, IMapFrom<Treatment>
     {
-        public ТreatmentType TreatmentType { get; set; } = default!;
+        public TreatmentType TreatmentType { get; set; } = default!;
 
         public virtual void Mapping(Profile mapper)
           => mapper.CreateMap<Treatment, TreatmentDetailsQueryOutputModel>()

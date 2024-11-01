@@ -23,6 +23,8 @@ namespace Infrastructure.Identity
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IMapper mapper;
         private readonly ICurrentUserService _currentUserService;
+
+        private const string commonError = "Невалидни идентификационни данни!";
         public IdentityService(UserManager<User> userManager,
             IEmailService emailService,
             IJwtTokenGenerator jwtTokenGenerator,
@@ -42,12 +44,10 @@ namespace Infrastructure.Identity
             var role = IdentityRoles.UserRole;
 
             var identityResult = await this._userManager.CreateAsync(user);
-            if (!identityResult.Succeeded)
+            if (!identityResult.Succeeded 
+                && identityResult.Errors.Any(x => x.Code == "DuplicateUserName"))
             {
-                if (identityResult.Errors.Any(x => x.Code == "DuplicateUserName"))
-                {
-                    return "Имейлът вече съществува!";
-                }
+                return "Имейлът вече съществува!";
             }
 
             var roleResult = await this._userManager.AddToRoleAsync(user, role);
@@ -81,12 +81,10 @@ namespace Infrastructure.Identity
             var role = IdentityRoles.AdminRole;
 
             var identityResult = await this._userManager.CreateAsync(admin);
-            if (!identityResult.Succeeded)
+            if (!identityResult.Succeeded 
+                && identityResult.Errors.Any(x => x.Code == "DuplicateUserName"))
             {
-                if (identityResult.Errors.Any(x => x.Code == "DuplicateUserName"))
-                {
-                    return "Имейлът вече съществува!";
-                }
+                return "Имейлът вече съществува!";
             }
 
             var roleResult = await this._userManager.AddToRoleAsync(admin, role);
@@ -120,7 +118,7 @@ namespace Infrastructure.Identity
 
             if (user == null)
             {
-                return "Невалидни идентификационни данни!";
+                return commonError;
             }
 
             var activateEmailResult = await this._userManager
@@ -140,7 +138,7 @@ namespace Infrastructure.Identity
 
             if (!addPasswordResult.Succeeded)
             {
-                return "Невалидни идентификационни данни!";
+                return commonError;
             }
 
             return Result.Success;
@@ -183,7 +181,7 @@ namespace Infrastructure.Identity
 
             if (user == null)
             {
-                return "Невалидни идентификационни данни!";
+                return commonError;
             }
 
             var changePasswordResult = await this._userManager.ChangePasswordAsync(
@@ -233,7 +231,7 @@ namespace Infrastructure.Identity
             var resetPasswordResult = await this._userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.NewPassword);
             if (!resetPasswordResult.Succeeded)
             {
-                return "Невалидни идентификационни данни!";
+                return commonError;
             }
 
             return Result.Success;

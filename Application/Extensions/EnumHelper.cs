@@ -15,9 +15,9 @@ namespace Application.Extensions
 
         public static string DescriptionAttribute<T>(this T source)
         {
-            if (source == null)
+            if (source is null)
             {
-                throw new ApplicationException();
+                throw new ArgumentNullException("source");
             }
             FieldInfo fi = source.GetType().GetField(source.ToString()!)!;
 

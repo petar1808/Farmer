@@ -30,6 +30,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Persistence\Migrations\MySql\**\*.cs">
+			<SonarQubeExclude>true</SonarQubeExclude>
+		</Compile>
+		<Compile Update="Persistence\Migrations\SqlLite\**\*.cs">
+			<SonarQubeExclude>true</SonarQubeExclude>
+		</Compile>
+		<Compile Update="Persistence\Migrations\SqlServer\**\*.cs">
+			<SonarQubeExclude>true</SonarQubeExclude>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Migrations\**\*.cs">
+			<SonarQubeExclude>true</SonarQubeExclude>
+		</Compile>
+	</ItemGroup>
+
+
+	<ItemGroup>
 		<ProjectReference Include="..\Application\Application.csproj" />
 	</ItemGroup>
 

@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace Domain.Enum
 {
-    public enum ТreatmentType
+    public enum TreatmentType
     {
         [Description("Торене")]
         Fertilization = 1,
