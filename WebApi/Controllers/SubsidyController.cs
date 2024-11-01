@@ -1,12 +1,11 @@
-﻿using Application.Features.Subsidies.Queries.List;
-using Application.Features.Subsidies.Queries;
+﻿using Application.Features.Subsidies.Commands.Create;
+using Application.Features.Subsidies.Commands.Delete;
+using Application.Features.Subsidies.Commands.Edit;
+using Application.Features.Subsidies.Queries.Details;
+using Application.Features.Subsidies.Queries.List;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Application.IdentityConstants;
-using Application.Features.Subsidies.Queries.Details;
-using Application.Features.Subsidies.Commands.Create;
-using Application.Features.Subsidies.Commands.Delete;
-using Application.Features.Subsidies.Commands.Edit;
 
 namespace WebApi.Controllers
 {

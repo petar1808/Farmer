@@ -1,5 +1,4 @@
-﻿using Application.Features.Seedings.Queries.DetailsSeedingSummary;
-using Application.Mappings;
+﻿using Application.Mappings;
 using AutoMapper;
 using Domain.Models;
 

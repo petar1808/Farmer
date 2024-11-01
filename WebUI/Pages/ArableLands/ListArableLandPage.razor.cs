@@ -55,7 +55,7 @@ namespace WebUI.Pages.ArableLands
         public async Task AddArableLand()
         {
             var dialogResult = await DialogService.OpenAsync<DetailsArableLand>(
-                $"Добавяне на Земя", 
+                $"Добавяне на Земя",
                 options: DialogHelper.GetCommonDialogOptions());
 
             if (dialogResult == true)

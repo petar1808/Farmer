@@ -1,8 +1,6 @@
-﻿using Application.Features.Subsidies.Queries.List;
-using Application.Models;
+﻿using Application.Models;
 using Application.Services;
 using AutoMapper;
-using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +21,7 @@ namespace Application.Features.Expenses.Queries.List
                 this.mapper = mapper;
             }
             public async Task<Result<List<ListExpensesQueryOutputModel>>> Handle(
-                ListExpensesQuery request, 
+                ListExpensesQuery request,
                 CancellationToken cancellationToken)
             {
                 var expenses = await farmerDbContext.Expenses

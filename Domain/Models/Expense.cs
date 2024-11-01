@@ -31,7 +31,7 @@ namespace Domain.Models
         public decimal Quantity { get; private set; }
 
         public decimal Sum { get; private set; }
-        
+
         public int? ArticleId { get; private set; }
 
         public Article? Article { get; private set; }

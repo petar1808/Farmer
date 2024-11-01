@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Extensions;
-using WebUI.Pages.Subsidies;
 using WebUI.Services.Expenses;
-using WebUI.Services.Subsidies;
 using WebUI.ServicesModel.Expenses;
-using WebUI.ServicesModel.Subsidies;
 using WebUI.Store.WorkingSeason;
 
 namespace WebUI.Pages.Expenses
@@ -75,7 +72,7 @@ namespace WebUI.Pages.Expenses
         {
             var dialogResult = await DialogService.OpenAsync<DetailsExpenseDialog>(
                 $"Редактиране на разход за сезон {SelectedWorkingSeasonState.Value.Name}",
-                new Dictionary<string, object>() { 
+                new Dictionary<string, object>() {
                     { "WorkingSeasonId", SelectedWorkingSeasonState.Value.WorkingSeasonId },
                     { "ExpenseId" , expenseId }
                 },

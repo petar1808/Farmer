@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Fluxor;
+using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Components.DataGrid;
+using WebUI.Extensions;
 using WebUI.Services.Subsidies;
 using WebUI.ServicesModel.Subsidies;
-using WebUI.Extensions;
-using Fluxor;
 using WebUI.Store.WorkingSeason;
 
 namespace WebUI.Pages.Subsidies
@@ -71,7 +71,7 @@ namespace WebUI.Pages.Subsidies
         {
             var dialogResult = await DialogService.OpenAsync<DetailsSubsidyDialog>(
                     $"Редактиране на субсидия за сезон: {SelectedWorkingSeasonState.Value.Name}",
-                    new Dictionary<string, object>() { 
+                    new Dictionary<string, object>() {
                             { "SubsidyId", subsidyId },
                             { "WorkingSeasonId", SelectedWorkingSeasonState.Value.WorkingSeasonId }
                     },

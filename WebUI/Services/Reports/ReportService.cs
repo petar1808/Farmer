@@ -1,5 +1,4 @@
-﻿using WebUI.ServicesModel.PerformedWork;
-using WebUI.ServicesModel.Reports;
+﻿using WebUI.ServicesModel.Reports;
 
 namespace WebUI.Services.Reports
 {
@@ -19,7 +18,7 @@ namespace WebUI.Services.Reports
         }
 
         public async Task<TimelineComparisonReportModel> GetTimelineComparisonReport(
-            int SeedingId1, 
+            int SeedingId1,
             int SeedingId2
             )
         {

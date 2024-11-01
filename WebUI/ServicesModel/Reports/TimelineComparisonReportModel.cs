@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace WebUI.ServicesModel.Reports
+﻿namespace WebUI.ServicesModel.Reports
 {
     public class TimelineComparisonReportModel
     {
