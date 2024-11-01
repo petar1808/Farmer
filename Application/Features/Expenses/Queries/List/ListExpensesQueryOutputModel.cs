@@ -1,6 +1,4 @@
 ﻿using Application.Extensions;
-using Application.Features.Subsidies.Queries.List;
-using Application.Mappings;
 using AutoMapper;
 using Domain.Models;
 

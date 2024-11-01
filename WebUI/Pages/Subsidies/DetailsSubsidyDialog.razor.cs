@@ -1,11 +1,9 @@
-﻿using Fluxor;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using WebUI.Services.Seeding;
 using WebUI.Services.Subsidies;
 using WebUI.ServicesModel.Seeding;
 using WebUI.ServicesModel.Subsidies;
-using WebUI.Store.WorkingSeason;
 
 namespace WebUI.Pages.Subsidies
 {

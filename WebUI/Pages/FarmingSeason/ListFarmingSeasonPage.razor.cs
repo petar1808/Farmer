@@ -2,7 +2,6 @@
 using Radzen;
 using WebUI.Components.DataGrid;
 using WebUI.Extensions;
-using WebUI.Services.Seeding;
 using WebUI.Services.WorkingSeasons;
 using WebUI.ServicesModel.WorkingSeason;
 

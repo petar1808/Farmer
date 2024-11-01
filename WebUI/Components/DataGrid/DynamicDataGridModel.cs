@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
-using System.Runtime.CompilerServices;
-
-namespace WebUI.Components.DataGrid
+﻿namespace WebUI.Components.DataGrid
 {
     public class DynamicDataGridModel<TData> where TData : IDynamicDataGridModel
     {
         public DynamicDataGridModel(
-            IEnumerable<TData> data, 
+            IEnumerable<TData> data,
             IEnumerable<DynamicDataGridColumnModel> columns,
             string gridName = "")
         {
@@ -100,9 +97,9 @@ namespace WebUI.Components.DataGrid
     public class DynamicDataGridColumnModel
     {
         public DynamicDataGridColumnModel(
-            string propertyName, 
-            string displayName, 
-            string stringFormat = "", 
+            string propertyName,
+            string displayName,
+            string stringFormat = "",
             string? width = null,
             Func<string>? total = null,
             bool filterable = false)

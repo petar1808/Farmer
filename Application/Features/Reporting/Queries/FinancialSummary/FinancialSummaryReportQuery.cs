@@ -3,10 +3,6 @@ using Application.Services;
 using Domain.Enum;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Application.Features.Reporting.Queries.FinancialSummary
 {

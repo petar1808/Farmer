@@ -12,7 +12,7 @@ namespace Application.Features.Seedings.Queries.ListSeeding
           => mapper.CreateMap<Seeding, ListSeedingSelectionListOutputModel>()
                .ForMember(x => x.Value, cfg => cfg.MapFrom(c => c.Id))
                .ForMember(
-                x => x.Name, 
+                x => x.Name,
                 cfg => cfg.MapFrom(c => $"Сезон:{c.WorkingSeason.Name}, Земя:{c.ArableLand.Name}")
                 );
     }
