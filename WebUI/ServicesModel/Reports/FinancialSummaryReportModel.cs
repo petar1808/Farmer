@@ -28,6 +28,8 @@ namespace WebUI.ServicesModel.Reports
         public decimal Harvest { get; set; }
 
         public decimal Subsidies { get; set; }
+
+        public decimal Sum => Harvest + Subsidies;
     }
 
     public class FinancialSummaryReportExpenses
@@ -39,5 +41,7 @@ namespace WebUI.ServicesModel.Reports
         public decimal Seeds { get; set; }
         public decimal Rent { get; set; }
         public decimal Harvest { get; set; }
+
+        public decimal Sum => Fuel + Pesticides + Fertilizers + Seeds + Rent + Harvest;
     }
 }

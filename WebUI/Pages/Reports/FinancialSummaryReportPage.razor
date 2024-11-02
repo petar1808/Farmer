@@ -16,88 +16,118 @@ else
 {
     <DynamicDataGrid TData="FinancialSummaryReportModel" Data="@DataGrid" RenderChild=@(x => true)>
         <DetailChildContent Context="reportData">
-                <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
-                    <Tabs>
-                        <RadzenTabsItem Text="Приходи">
-                            <RadzenDataGrid Density=@Density.Compact Data="@reportData.IncomesByArableLand">
-                                <Columns>
-                                    <RadzenDataGridColumn Property="ArableLandName" Title="Земя"/>
-                                    <RadzenDataGridColumn Property="Harvest" Title="Жътва" FormatString="{0:n2} лв.">
-                                        <HeaderTemplate>
-                                            Жътва
-                                        </HeaderTemplate>
-                                        <FooterTemplate>
-                                            Общо @($"{reportData.IncomesByArableLand.Select(x => x.Harvest).Sum().ToString("N2") ?? "0"} лв")
-                                        </FooterTemplate>
-                                    </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn Property="Subsidies" Title="Субсидии" FormatString="{0:n2} лв.">
-                                        <HeaderTemplate>
-                                            Субсидии
-                                        </HeaderTemplate>
-                                        <FooterTemplate>
-                                            Общо @($"{reportData.IncomesByArableLand.Select(x => x.Subsidies).Sum().ToString("N2") ?? "0"} лв")
-                                        </FooterTemplate>
-                                    </RadzenDataGridColumn>
-                                </Columns>
-                            </RadzenDataGrid>
-                        </RadzenTabsItem>
-                        <RadzenTabsItem Text="Разходи">
+            <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
+                <Tabs>
+                    <RadzenTabsItem Text="Приходи">
+                        <RadzenDataGrid Density=@Density.Compact Data="@reportData.IncomesByArableLand">
+                            <Columns>
+                                <RadzenDataGridColumn Property="ArableLandName" Title="Земя">
+                                    <HeaderTemplate>
+                                        Земя
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>Общо</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Harvest" Title="Жътва" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Жътва
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.IncomesByArableLand.Select(x => x.Harvest).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Subsidies" Title="Субсидии" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Субсидии
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.IncomesByArableLand.Select(x => x.Subsidies).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Sum" Title="Общо" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Общо за земя
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.IncomesByArableLand.Select(x => x.Sum).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                            </Columns>
+                        </RadzenDataGrid>
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Разходи">
                         <RadzenDataGrid Density=@Density.Compact Data="@reportData.ExpensesByArableLand">
-                                <Columns>
-                                    <RadzenDataGridColumn Property="ArableLandName" Title="Земя" />
-                                    <RadzenDataGridColumn Property="Fuel" Title="Гориво" FormatString="{0:n2} лв.">
-                                        <HeaderTemplate>
-                                            Гориво
-                                        </HeaderTemplate>
-                                        <FooterTemplate>
-                                            Общо @($"{reportData.ExpensesByArableLand.Select(x => x.Fuel).Sum().ToString("N2") ?? "0"} лв")
-                                        </FooterTemplate>
-                                    </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn Property="Pesticides" Title="Препарати" FormatString="{0:n2} лв.">
-                                        <HeaderTemplate>
-                                            Препарати
-                                        </HeaderTemplate>
-                                        <FooterTemplate>
-                                            Общо @($"{reportData.ExpensesByArableLand.Select(x => x.Pesticides).Sum().ToString("N2") ?? "0"} лв")
-                                        </FooterTemplate>
-                                    </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn Property="Fertilizers" Title="Торове" FormatString="{0:n2} лв.">
-                                        <HeaderTemplate>
-                                            Торове
-                                        </HeaderTemplate>
-                                        <FooterTemplate>
-                                            Общо @($"{reportData.ExpensesByArableLand.Select(x => x.Fertilizers).Sum().ToString("N2") ?? "0"} лв")
-                                        </FooterTemplate>
-                                    </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn Property="Seeds" Title="Семена" FormatString="{0:n2} лв.">
-                                        <HeaderTemplate>
-                                            Семена
-                                        </HeaderTemplate>
-                                        <FooterTemplate>
-                                            Общо @($"{reportData.ExpensesByArableLand.Select(x => x.Seeds).Sum().ToString("N2") ?? "0"} лв")
-                                        </FooterTemplate>
-                                    </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn Property="Rent" Title="Рента" FormatString="{0:n2} лв.">
-                                        <HeaderTemplate>
-                                            Рента
-                                        </HeaderTemplate>
-                                        <FooterTemplate>
-                                            Общо @($"{reportData.ExpensesByArableLand.Select(x => x.Rent).Sum().ToString("N2") ?? "0"} лв")
-                                        </FooterTemplate>
-                                    </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn Property="Harvest" Title="Жътва" FormatString="{0:n2} лв.">
-                                        <HeaderTemplate>
-                                            Жътва
-                                        </HeaderTemplate>
-                                        <FooterTemplate>
-                                            Общо @($"{reportData.ExpensesByArableLand.Select(x => x.Harvest).Sum().ToString("N2") ?? "0"} лв")
-                                        </FooterTemplate>
-                                    </RadzenDataGridColumn>
-                                </Columns>
-                            </RadzenDataGrid>
-                        </RadzenTabsItem>
-                    </Tabs>
-                </RadzenTabs>
+                            <Columns>
+                                <RadzenDataGridColumn Property="ArableLandName" Title="Земя">
+                                    <HeaderTemplate>
+                                        Земя
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>Общо</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Fuel" Title="Гориво" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Гориво
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.ExpensesByArableLand.Select(x => x.Fuel).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Pesticides" Title="Препарати" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Препарати
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.ExpensesByArableLand.Select(x => x.Pesticides).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Fertilizers" Title="Торове" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Торове
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.ExpensesByArableLand.Select(x => x.Fertilizers).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Seeds" Title="Семена" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Семена
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.ExpensesByArableLand.Select(x => x.Seeds).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Rent" Title="Рента" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Рента
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.ExpensesByArableLand.Select(x => x.Rent).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Harvest" Title="Жътва" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Жътва
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.ExpensesByArableLand.Select(x => x.Harvest).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn Property="Sum" Title="Общо" FormatString="{0:N0} лв.">
+                                    <HeaderTemplate>
+                                        Общо за земя
+                                    </HeaderTemplate>
+                                    <FooterTemplate>
+                                        <b>@($"{reportData.ExpensesByArableLand.Select(x => x.Sum).Sum().ToString("N0") ?? "0"} лв")</b>
+                                    </FooterTemplate>
+                                </RadzenDataGridColumn>
+                            </Columns>
+                        </RadzenDataGrid>
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
         </DetailChildContent>
     </DynamicDataGrid>
 }
@@ -117,10 +147,10 @@ else
         var columns = new List<DynamicDataGridColumnModel>()
             {
                 new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.WorkingSeason), "Сезон"),
-                new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.SumIncome), "Приходи", "{0:n2} лв."),
-                new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.SumExpense), "Разходи", "{0:n2} лв."),
-                new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.Profit), "Печалба(без машини)", "{0:n2} лв."),
-                new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.ExpensesForMachinery), "Разход Машини", "{0:n2} лв.")
+                new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.SumIncome), "Приходи", "{0:N0} лв."),
+                new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.SumExpense), "Разходи", "{0:N0} лв."),
+                new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.Profit), "Печалба(без машини)", "{0:N0} лв."),
+                new DynamicDataGridColumnModel(nameof(FinancialSummaryReportModel.ExpensesForMachinery), "Разход Машини", "{0:N0} лв.")
             };
         DataGrid = new DynamicDataGridModel<FinancialSummaryReportModel>(
                 await ReportService.GetFinancialSummaryReport(),

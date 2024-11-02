@@ -23,7 +23,6 @@ namespace Application.Features.Reporting.Queries.FinancialSummary
             {
                 var result = new List<FinancialSummaryReportOutputModel>();
 
-                // Retrieve data asynchronously to improve performance
                 var seedingTask = farmerDbContext.Seedings
                     .Select(x => new
                     {

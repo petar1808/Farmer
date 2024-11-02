@@ -95,7 +95,8 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     JOIN TempExpensesByArableLand als 
                     ON DATE(e.Date) = DATE(als.Date)
                     AND e.TenantId = als.TenantId
-                    AND e.WorkingSeasonId = als.WorkingSeasonId;
+                    AND e.WorkingSeasonId = als.WorkingSeasonId
+                    AND e.""Type"" = 1
                 ");
 
             // Step 3: Drop temp tables
@@ -163,7 +164,8 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     AND e.TenantId = als.TenantId
                     AND e.WorkingSeasonId = als.WorkingSeasonId
                     AND e.""Type"" = als.""Type""
-                    AND e.ArticleId = als.ArticleId;
+                    AND e.ArticleId = als.ArticleId
+                    AND e.""Type"" in (4, 3)
                 ");
 
             // Step 4: Drop the temporary table
@@ -187,7 +189,7 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                         NULL as ArticleId,
                         s.WorkingSeasonId,
                         s.TenantId 
-                    FROM  Seedings s 
+                    FROM Seedings s 
                     JOIN WorkingSeasons ws ON ws.Id = s.WorkingSeasonId
                     GROUP BY s.WorkingSeasonId, s.TenantId, DATE(ws.EndDate)
                     HAVING SUM(s.ExpensesForHarvesting) > 0;
@@ -217,7 +219,8 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                     JOIN Expenses e  
                     ON DATE(e.Date) = DATE(sor.Date)
                     AND e.TenantId = sor.TenantId
-                    AND e.WorkingSeasonId = sor.WorkingSeasonId;
+                    AND e.WorkingSeasonId = sor.WorkingSeasonId
+                    AND e.""Type"" = 7
                 ");
 
             //////////////////////////
@@ -258,7 +261,8 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                         s.ArableLandId,
                         SUM(s.SeedsPricePerKilogram) * SUM(s.SeedsQuantityPerDecare * al.SizeInDecar) as Sum,
                         s.TenantId,
-                        s.WorkingSeasonId
+                        s.WorkingSeasonId,
+                        s.ArticleId
                     FROM  Seedings s 
                     JOIN WorkingSeasons ws ON ws.Id = s.WorkingSeasonId
                     JOIN ArableLands al ON al.Id = s.ArableLandId 
@@ -268,7 +272,9 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                 JOIN Expenses e  
                 ON DATE(e.Date) = DATE(sor.Date)
                 AND e.TenantId = sor.TenantId
-                AND e.WorkingSeasonId = sor.WorkingSeasonId;
+                AND e.WorkingSeasonId = sor.WorkingSeasonId
+    	        AND e.ArticleId = sor.ArticleID
+    	        AND e.""Type"" = 5;
             ");
         }
 
