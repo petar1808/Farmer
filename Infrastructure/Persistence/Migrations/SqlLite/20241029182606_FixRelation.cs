@@ -8,16 +8,16 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ExpenseByArableLand_ArableLands_ArableLandId",
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_ExpenseByArableLand",
                 table: "ExpenseByArableLand");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_ExpenseByArableLand_Expenses_ExpenseId",
                 table: "ExpenseByArableLand");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_ExpenseByArableLand",
+            migrationBuilder.DropForeignKey(
+                name: "FK_ExpenseByArableLand_ArableLands_ArableLandId",
                 table: "ExpenseByArableLand");
 
             migrationBuilder.RenameTable(
