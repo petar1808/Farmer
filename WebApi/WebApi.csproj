@@ -25,7 +25,7 @@
 
 	<ItemGroup>
 		<SonarQubeSetting Include="sonar.exclusions">
-			<Value>\Infrastructure\Persistence\Migrations\SqlLite\**\*.cs</Value>
+			<Value>..\Infrastructure\Persistence\Migrations\SqlLite\**\*.cs</Value>
 		</SonarQubeSetting>
 	</ItemGroup>
 
