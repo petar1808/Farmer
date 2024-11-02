@@ -21,8 +21,10 @@
     <RadzenHeader>
         <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="0">
             <RadzenColumn Size="3">
-                <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })" />
-                @* <RadzenLabel Text=@($"Фермер - {tenantName}") /> *@
+                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center">
+                    <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })" />
+                    <RadzenLabel Text=@($"{tenantName}") />
+                </RadzenStack>
             </RadzenColumn>
             <RadzenColumn Size="9">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
@@ -32,8 +34,10 @@
                             <RadzenProfileMenuItem Text="Излез" Value="Logout" Icon="power_settings_new" />
                         </ChildContent>
                         <Template>
-                            @userName
-                            <RadzenIcon Icon="account_box" />
+                            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center">
+                                <RadzenLabel Text=@userName />
+                                <RadzenIcon Icon="account_box" />
+                            </RadzenStack>
                         </Template>
                     </RadzenProfileMenu>
                 </RadzenStack>
@@ -41,7 +45,7 @@
         </RadzenRow>
     </RadzenHeader>
     <RadzenBody @ref="@body0" @bind-Expanded="@bodyExpanded">
-        <ChildContent>            
+        <ChildContent>
             <RadzenContentContainer Name="main">
                 <div class="container-fluid">
                     <div class="row">

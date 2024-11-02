@@ -8,9 +8,9 @@ namespace WebUI.Services.WorkingSeasons
 
         Task<WorkingSeasonModel> Get(int id);
 
-        Task<bool> Update(WorkingSeasonModel arableLand);
+        Task<bool> Update(WorkingSeasonModel model);
 
-        Task<bool> Add(WorkingSeasonModel arableLand);
+        Task<bool> Add(WorkingSeasonModel model);
 
         Task<bool> Delete(int id);
     }

@@ -52,7 +52,7 @@ namespace WebUI.Pages.Identity.User
                 NavigationManager.NavigateTo($"{NavigationManager.BaseUri}login");
             }
 
-            NavigationManager.NavigateTo(NavigationManager.Uri);
+            NavigationManager.NavigateTo(NavigationManager.BaseUri);
         }
     }
 }

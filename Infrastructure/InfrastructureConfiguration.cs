@@ -63,75 +63,69 @@ namespace Infrastructure
             var connectionStrings = new ConnectionStrings();
             configuration.Bind(nameof(ConnectionStrings), connectionStrings);
 
-            if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlLite)
+            // Configure the database context based on the provider
+            switch (infrastructureSettings.DatabaseProvider)
             {
-                services.AddScoped<IFarmerDbContext, SqlLiteFarmerDbContext>();
-
-                services.AddDbContext<SqlLiteFarmerDbContext>(opt =>
-                {
-                    opt.UseSqlite(connectionStrings.SqlLiteConnection);
-                    if (connectionStrings.EnableSensitiveDataLogging)
+                case DatabaseProvider.SqlLite:
+                    services.AddScoped<IFarmerDbContext, SqlLiteFarmerDbContext>();
+                    services.AddDbContext<SqlLiteFarmerDbContext>(opt =>
                     {
-                        opt.EnableSensitiveDataLogging()
-                            .LogTo(Console.WriteLine);
-                    }
-                });
-            }
-            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.SqlServer)
-            {
-                services.AddScoped<IFarmerDbContext, SqlFarmerDbContext>();
+                        opt.UseSqlite(connectionStrings.SqlLiteConnection);
+                        ConfigureSensitiveDataLogging(opt, connectionStrings);
+                    });
+                    break;
 
-                services.AddDbContext<SqlFarmerDbContext>(opt =>
-                {
-                    opt.UseSqlServer(connectionStrings.SqlDefaultConnection);
-                    if (connectionStrings.EnableSensitiveDataLogging)
+                case DatabaseProvider.SqlServer:
+                    services.AddScoped<IFarmerDbContext, SqlFarmerDbContext>();
+                    services.AddDbContext<SqlFarmerDbContext>(opt =>
                     {
-                        opt.EnableSensitiveDataLogging()
-                            .LogTo(Console.WriteLine);
-                    }
-                });
-            }
-            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.MySql)
-            {
-                services.AddScoped<IFarmerDbContext, MySqlFarmerDbContext>();
+                        opt.UseSqlServer(connectionStrings.SqlDefaultConnection);
+                        ConfigureSensitiveDataLogging(opt, connectionStrings);
+                    });
+                    break;
 
-                services.AddDbContext<MySqlFarmerDbContext>(opt =>
-                {
-                    var azureMySqlConncetionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
-                    if (!string.IsNullOrWhiteSpace(azureMySqlConncetionString))
+                case DatabaseProvider.MySql:
+                    services.AddScoped<IFarmerDbContext, MySqlFarmerDbContext>();
+                    services.AddDbContext<MySqlFarmerDbContext>(opt =>
                     {
-                        string dbhost = Regex.Match(azureMySqlConncetionString, @"Data Source=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
-                        string server = dbhost.Split(':')[0].ToString();
-                        string port = dbhost.Split(':')[1].ToString();
-                        string dbname = Regex.Match(azureMySqlConncetionString, @"Database=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
-                        string dbusername = Regex.Match(azureMySqlConncetionString, @"User Id=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
-                        string dbpassword = Regex.Match(azureMySqlConncetionString, @"Password=(.+?)$", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
+                        var azureMySqlConnectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+                        if (!string.IsNullOrWhiteSpace(azureMySqlConnectionString))
+                        {
+                            string dbhost = Regex.Match(azureMySqlConnectionString, @"Data Source=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
+                            string[] hostParts = dbhost.Split(':');
+                            string server = hostParts[0];
+                            string port = hostParts.Length > 1 ? hostParts[1] : string.Empty; // Handle cases without port
+                            string dbname = Regex.Match(azureMySqlConnectionString, @"Database=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
+                            string dbusername = Regex.Match(azureMySqlConnectionString, @"User Id=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
+                            string dbpassword = Regex.Match(azureMySqlConnectionString, @"Password=(.+?)$", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
 
-                        string connectionString2 = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling = false; convert zero datetime=True;";
+                            connectionStrings.MySqlConnection = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling=false;convert zero datetime=True;";
+                        }
 
-
-                        connectionStrings.MySqlConnection = connectionString2;
-                    }
-
-                    opt.UseMySql(
-                        connectionStrings.MySqlConnection,
-                        ServerVersion.AutoDetect(connectionStrings.MySqlConnection)
+                        opt.UseMySql(
+                            connectionStrings.MySqlConnection,
+                            ServerVersion.AutoDetect(connectionStrings.MySqlConnection)
                         );
 
-                    if (connectionStrings.EnableSensitiveDataLogging)
-                    {
-                        opt.EnableSensitiveDataLogging()
-                            .LogTo(Console.WriteLine);
-                    }
-                });
-            }
-            else
-            {
-                throw new NotImplementedException("Unsupported database provider");
+                        ConfigureSensitiveDataLogging(opt, connectionStrings);
+                    });
+                    break;
+
+                default:
+                    throw new NotImplementedException("Unsupported database provider");
             }
 
             return services;
         }
+
+        private static void ConfigureSensitiveDataLogging(DbContextOptionsBuilder optionsBuilder, ConnectionStrings connectionStrings)
+        {
+            if (connectionStrings.EnableSensitiveDataLogging)
+            {
+                optionsBuilder.EnableSensitiveDataLogging().LogTo(Console.WriteLine);
+            }
+        }
+
 
         private static IServiceCollection AddIdentity(
             this IServiceCollection services,
