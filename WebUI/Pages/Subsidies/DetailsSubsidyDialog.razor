@@ -34,7 +34,7 @@
             <RadzenNumeric style="display: block; width: 100%" Name="Income" @bind-Value=@Subsidy.Income />
         </ChildContent>
         <Helper>
-            ​<NumericRangeValidator Component="Income" Text="Прихода трябва да е положително число" Min="0" />
+            <FarmerPositiveNumericValidator Component="Income" />
         </Helper>
     </RadzenFormField>
     <RadzenFormField Text="Бележка" Variant="Variant.Filled">

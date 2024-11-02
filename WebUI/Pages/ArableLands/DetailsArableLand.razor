@@ -19,7 +19,7 @@
                 <RadzenNumeric style="display: block; width: 100%" @bind-Value=@ArableLands.SizeInDecar Name="SizeInDecar" />
             </ChildContent>
             <Helper>
-                <NumericRangeValidator Component="SizeInDecar" Text="Декарите трябва да са положително число" Min="0" />
+                <FarmerPositiveNumericValidator Component="SizeInDecar" />
             </Helper>
         </RadzenFormField>
     </RadzenStack>

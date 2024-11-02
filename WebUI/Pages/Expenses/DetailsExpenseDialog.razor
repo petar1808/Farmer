@@ -67,7 +67,7 @@
             <RadzenNumeric style="display: block; width: 100%" Name="PricePerUnit" @bind-Value=@Expense.PricePerUnit />
         </ChildContent>
         <Helper>
-            ​<NumericRangeValidator Component="PricePerUnit" Text="Единична цена трябва да е положително число" Min="0" />
+            <FarmerPositiveNumericValidator Component="PricePerUnit" />
         </Helper>
     </RadzenFormField>
     <RadzenFormField Visible="@ExpenseConfiguration.ShowPricePerUnit" Text="Количество" Variant="Variant.Filled">
@@ -75,7 +75,7 @@
             <RadzenNumeric style="display: block; width: 100%" Name="Quantity" @bind-Value=@Expense.Quantity />
         </ChildContent>
         <Helper>
-            ​<NumericRangeValidator Component="Quantity" Text="Прихода трябва да е положително число" Min="0" />
+            <FarmerPositiveNumericValidator Component="Quantity" />
         </Helper>
     </RadzenFormField>
     <RadzenFormField Text="Разход" Variant="Variant.Filled">
@@ -88,7 +88,7 @@
                            style="display: block; width: 100%" />
         </ChildContent>
         <Helper>
-            ​<NumericRangeValidator Component="ExpenseSum" Text="Разход трябва да е положително число" Min="0" />
+            <FarmerPositiveNumericValidator Component="ExpenseSum" />
         </Helper>
     </RadzenFormField>
 </FarmerFormWithButtons>

@@ -48,7 +48,7 @@
                     <RadzenNumeric style="display: block; width: 100%" Name="ArticleQuantity" @bind-Value=@Treatment.ArticleQuantity />
                 </ChildContent>
                 <Helper>
-                    <NumericRangeValidator Component="ArticleQuantity" Text=@($"Количество {treatmentTypePlaceholder} е трябва да е положително число") Min="0" />
+                    <FarmerPositiveNumericValidator Component="ArticleQuantity" />
                 </Helper>
             </RadzenFormField>
         </RadzenStack>
