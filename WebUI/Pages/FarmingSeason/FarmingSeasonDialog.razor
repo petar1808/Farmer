@@ -2,39 +2,35 @@
 @using WebUI.ServicesModel.WorkingSeason
 @attribute [Authorize]
 
-<RadzenColumn SizeMD=12>
-    <RadzenTemplateForm TItem="WorkingSeasonModel" Data=@WorkingSeason Visible="@(WorkingSeason is not null)" Submit="@OnSubmit">
-        <RadzenStack>
-            <RadzenFormField Text="Име" Variant="Variant.Filled">
-                <ChildContent>
-                    <RadzenTextBox style="display: block; width: 100%" Disabled @bind-Value=@WorkingSeason.Name Name="Name" />
-                </ChildContent>
-            </RadzenFormField>
-            <RadzenFormField Text="Начало" Variant="Variant.Filled">
-                 <ChildContent>
-                     <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block"
-                                       Name="StartDate" @bind-Value=@WorkingSeason.StartDate Class="w-100"
-                                       Change=@(args => OnStartDateChange(args)) />
-                 </ChildContent>
-            </RadzenFormField>
-            <RadzenFormField Text="Край" Variant="Variant.Filled">
-                 <ChildContent>
-                     <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block"
-                                       Name="EndDate" @bind-Value=@WorkingSeason.EndDate Class="w-100"
-                                       Change=@(args => OnEndDateChange(args)) />
-                 </ChildContent>
-                 <Helper>
-                     <CompareDateTimeByYearValidator Component="EndDate"
-                                                     Text="Края трябва да е с 1 година повече от началото"
-                                                     FromYear="@WorkingSeason.StartDate"
-                                                     MustBeBiggerWithNumberOfYears="1" />
-                 </Helper>
-             </RadzenFormField>
-        </RadzenStack>
-         <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
-             <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@(WorkingSeasonId == 0 ? "Добави": "Редактирай")" Variant="Variant.Flat" />
-             <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
-         </RadzenStack>
-    </RadzenTemplateForm>
-</RadzenColumn>
+<FarmerFormWithButtons TModel="WorkingSeasonModel"
+                       Model="@WorkingSeason"
+                       ItemId="@WorkingSeasonId"
+                       OnSubmit="@OnSubmit"
+                       OnClose="@OnClose">
+    <RadzenFormField Text="Име" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenTextBox style="display: block; width: 100%" Disabled @bind-Value=@WorkingSeason.Name Name="Name" />
+         </ChildContent>
+     </RadzenFormField>
+     <RadzenFormField Text="Начало" Variant="Variant.Filled">
+         <ChildContent>
+             <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block"
+                               Name="StartDate" @bind-Value=@WorkingSeason.StartDate Class="w-100"
+                               Change=@(args => OnStartDateChange(args)) />
+         </ChildContent>
+     </RadzenFormField>
+     <RadzenFormField Text="Край" Variant="Variant.Filled">
+         <ChildContent>
+             <RadzenDatePicker DateFormat="dd/MM/yy" style="display: block"
+                               Name="EndDate" @bind-Value=@WorkingSeason.EndDate Class="w-100"
+                               Change=@(args => OnEndDateChange(args)) />
+         </ChildContent>
+         <Helper>
+             <CompareDateTimeByYearValidator Component="EndDate"
+                                             Text="Края трябва да е с 1 година повече от началото"
+                                             FromYear="@WorkingSeason.StartDate"
+                                             MustBeBiggerWithNumberOfYears="1" />
+         </Helper>
+     </RadzenFormField>
+ </FarmerFormWithButtons>
 
