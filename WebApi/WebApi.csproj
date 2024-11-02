@@ -23,4 +23,8 @@
 		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
 	</ItemGroup>
 
+	<SonarQubeSetting Include="sonar.exclusions">
+		<Value>..\Infrastructure\Persistence\Migrations\SqlLite\**\*.cs</Value>
+	</SonarQubeSetting>
+
 </Project>
