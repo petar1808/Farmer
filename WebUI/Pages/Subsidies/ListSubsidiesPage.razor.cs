@@ -33,7 +33,7 @@ namespace WebUI.Pages.Subsidies
             DataGrid = new DynamicDataGridModel<ListSubsidiesModel>(
                     await SubsidyService.List(SelectedWorkingSeasonState.Value.WorkingSeasonId),
                     columns,
-                    "Земи")
+                    "Субсидии")
                 .WithAdd(async () => await AddSubsidy())
                 .WithEdit(async (x) => await EditSubsidy(x))
                 .WithDelete(async (x) => await DeleteSubsidy(x))

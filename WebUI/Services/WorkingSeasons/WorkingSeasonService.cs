@@ -22,16 +22,16 @@ namespace WebUI.Services.WorkingSeasons
                 .GetAsync<List<ListWorkingSeasonModel>>($"api/workingSeasons");
         }
 
-        public async Task<bool> Add(WorkingSeasonModel workingSeason)
+        public async Task<bool> Add(WorkingSeasonModel model)
         {
             return await _httpService
-                .PostAsync<bool>("api/workingSeasons", workingSeason);
+                .PostAsync<bool>("api/workingSeasons", model);
         }
 
-        public async Task<bool> Update(WorkingSeasonModel workingSeason)
+        public async Task<bool> Update(WorkingSeasonModel model)
         {
             return await _httpService
-                .PutAsync<bool>("api/workingSeasons", workingSeason);
+                .PutAsync<bool>("api/workingSeasons", model);
         }
 
         public async Task<bool> Delete(int id)

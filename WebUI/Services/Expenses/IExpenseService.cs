@@ -15,7 +15,7 @@ namespace WebUI.Services.Expenses
 
         Task<bool> Add(DetailsExpenseModel model);
 
-        Task<bool> Update(DetailsExpenseModel article);
+        Task<bool> Update(DetailsExpenseModel model);
 
         Task<bool> Delete(int id);
     }
