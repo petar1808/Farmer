@@ -30,18 +30,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<SonarQubeSetting Include="sonar.exclusions">
-			<Value>Persistence\Migrations\SqlLite\**\*.cs</Value>
-		</SonarQubeSetting>
-		<SonarQubeSetting Include="sonar.exclusions">
-			<Value>Persistence\Migrations\MySql\**\*.cs</Value>
-		</SonarQubeSetting>
-		<SonarQubeSetting Include="sonar.exclusions">
-			<Value>Persistence\Migrations\SqlServer\**\*.cs</Value>
-		</SonarQubeSetting>
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\Application\Application.csproj" />
 	</ItemGroup>
 </Project>

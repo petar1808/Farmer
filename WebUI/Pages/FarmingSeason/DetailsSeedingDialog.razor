@@ -1,26 +1,22 @@
 ﻿@using WebUI.ServicesModel.Seeding
 @attribute [Authorize]
 
-<RadzenColumn SizeMD=12>
-    <RadzenTemplateForm TItem="AddSeedingModel" Data=@Seeding Submit=@OnSubmit>
-    <RadzenStack>
-            <RadzenFormField Text="Земя" Variant="Variant.Filled">
-            <ChildContent>
-                    <RadzenDropDown Data=@ArableLands
-                                    @bind-Value=@Seeding.ArableLandId
-                                    ValueProperty="Value"
-                                    TextProperty="Name"
-                                    Name="ArableLand"
-                                    Class="w-100" />
-            </ChildContent>
-            <Helper>
-                    <RadzenRequiredValidator Component="ArableLand" Text="Земята е задължителна" DefaultValue="0" />
-            </Helper>
-        </RadzenFormField>
-    </RadzenStack>
-    <RadzenStack style="margin-top:1rem;" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
-        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Добави" Variant="Variant.Flat" />
-        <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Назад" Variant="Variant.Flat" Click="@OnClose" />
-    </RadzenStack>
-    </RadzenTemplateForm>
-</RadzenColumn>
+<FarmerFormWithButtons TModel="AddSeedingModel"
+                       Model="@Seeding"
+                       ItemId="0"
+                       OnSubmit="@OnSubmit"
+                       OnClose="@OnClose">
+    <RadzenFormField Text="Земя" Variant="Variant.Filled">
+        <ChildContent>
+            <RadzenDropDown Data=@ArableLands
+                            @bind-Value=@Seeding.ArableLandId
+                            ValueProperty="Value"
+                            TextProperty="Name"
+                            Name="ArableLand"
+                            Class="w-100" />
+        </ChildContent>
+        <Helper>
+            <RadzenRequiredValidator Component="ArableLand" Text="Земята е задължителна" DefaultValue="0" />
+        </Helper>
+    </RadzenFormField>
+</FarmerFormWithButtons>
