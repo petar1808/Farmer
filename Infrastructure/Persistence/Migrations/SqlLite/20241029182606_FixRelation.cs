@@ -16,6 +16,7 @@ namespace Infrastructure.Persistence.Migrations.SqlLite
                 name: "FK_ExpenseByArableLand_Expenses_ExpenseId",
                 table: "ExpenseByArableLand");
 
+
             migrationBuilder.DropPrimaryKey(
                 name: "PK_ExpenseByArableLand",
                 table: "ExpenseByArableLand");
