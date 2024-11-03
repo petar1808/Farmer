@@ -1,53 +1,66 @@
-# Agriculture Resource Management Web Application
+# 🌾 Agriculture Resource Management Web Application
 
-This web application aims to help small agriculture companies manage their resources. It started as a university project but has been developed to cover the basic needs for managing small agriculture companies.
+This web application is designed to assist small-scale grain producers and agricultural companies in managing their resources efficiently. Initially developed as a university project, the application has evolved to address the foundational needs of managing operations in small-scale agriculture.
 
-## Functionalities
+## 🚀 Features
 
-- Multitenancy
-- User management
-- Managing various types of articles:
-  - Seeds
-  - Fertilizers
-  - Preparations
-- Management of arable land
-- Management of working seasons with the following functionalities:
-  - Income
-  - Expenses
-  - Profit
-  - Seeding
-  - Performed work
-  - Treatment
-  - Subsidy
+- **Catalog Management**
+  - **Seed Catalog** for managing seed information.
+  - **Fertilizers Catalog** to track various fertilizers.
+  - **Crop Protection Products** for pesticide and herbicide management.
+  - **Arable Land Records** to manage land parcels and their details.
+  - **Season Management** to organize agricultural seasons, timelines, and tasks.
 
-## Architecture
+- **Financial Management**
+  - **Expense Tracking** for recording and categorizing operational costs.
+  - **Subsidy Management** to handle and track agricultural subsidies.
+
+- **Activity Tracking**
+  - **Harvesting** management for crop yield and harvest data.
+  - **Fieldwork** tracking for soil preparation, planting, and maintenance.
+  - **Crop Treatment** tracking for pest control, fertilization, and crop health.
+
+- **Reports** 
+  - **Financial Overview** to comprehensively view income, expenses, and profits.
+  - **Timeline Comparison** for seasonal comparisons and historical data analysis.
+
+- **User and Organization Management**
+  - **User Management** is used to add and manage system users.
+  - **Organization and User Management** to support multi-organizational setups with user roles.
+## 🏛️ Architecture
 
 ### Frontend
-
-- Built with: **Blazor Webassembly**, **Bootstrap**
-- Languages: **C#**, **HTML**, **CSS**
+- **Built with**: **Blazor WebAssembly** and **Bootstrap**.
+- **State Management**: Utilizes **Fluxor** for state management.
+- **UI Components**: Incorporates interactive components from **Radzen Blazor**.
 
 ### Backend
+- **Technologies:** ASP.NET 6 Web API, Entity Framework Core 6, Microsoft Identity
+- **Languages:** C#
+- **Database:** Microsoft SQL Server for production; SQLite for development
+- **Architecture Pattern:** Clean Architecture
 
-- Built with: **ASP.NET 6 Web API**, **Entity Framework 6**, **Microsoft Identity Server**
-- Languages: **C#**
-- DB: **Microsoft SQL Server** and **SQLite** for development
+The application follows **Clean Architecture** principles, organized into distinct layers to separate concerns and improve scalability.
 
-The Backend follows the Clean Architecture Pattern
+- **Domain Layer**: Contains core entities and business rules specific to grain production and resource management.
 
-- **Domain**: database objects with their business rules
-- **Application**: the business logic of the application
-- **Infrastructure**: the database connection and external services
-- **WebAPI**: handles the HTTP requests
+- **Application Layer**: Manages the business logic, using **CQRS** to separate reads and writes, and **MediatR** for a decoupled command and query flow. **FluentValidation** handles validation to ensure consistent data input.
 
-![Architecture Diagram](https://netsharpdev.com/images/posts/shape.png)
+- **Infrastructure Layer**: Provides database access (SQL Server, SQLite for development) and integrates external services like **Microsoft Identity Server** for authentication.
 
-## Build and Running the Application
+- **WebAPI Layer**: Exposes RESTful endpoints to connect the frontend and backend, with **Swagger** for easy API documentation.
 
-Through the console with the **dotnet** commands or use some IDE like **Visual Studio 2022**
+## Build and Run Instructions
 
-- The start-up project for the **frontend** is **WebUI** The application settings can be configured through the wwwroot/appsettings.json file
-- The start-up project for the **backend** is **WebApi**. The application settings can be configured through the appsettings.json file
+1. Use the `.NET CLI` in the command line or an IDE such as Visual Studio 2022.
+
+2. **Frontend (WebUI):**
+   - Set `WebUI` as the startup project.
+   - Configure application settings in `wwwroot/appsettings.json`.
+
+3. **Backend (WebApi):**
+   - Set `WebApi` as the startup project.
+   - Configure backend settings in `appsettings.json`.
 
 ## Contributing
 
@@ -59,10 +72,7 @@ Through the console with the **dotnet** commands or use some IDE like **Visual S
 
 ## Roadmap
 
-- Integration with external storage service for managing files 
-- Implementing Scheduler
-- Implementing CQRS, Mediator and FluentValidation
-- Improving the user interface
-- Implementing Unit and Integration tests
-- Adding support for mobile devices
-
+- Developing unit and integration tests
+- Integration with external storage for file management
+- Scheduling functionality for automated tasks
+- Expanding support to mobile devices
