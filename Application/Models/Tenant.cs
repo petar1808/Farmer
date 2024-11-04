@@ -1,13 +1,13 @@
-﻿using Domain.Common;
-
-namespace Application.Models
+﻿namespace Application.Models
 {
-    public class Tenant : Entity<int>
+    public class Tenant
     {
         public Tenant(string name)
         {
             Name = name;
         }
+
+        public int Id { get; }
 
         public string Name { get; set; }
 

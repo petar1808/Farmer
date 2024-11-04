@@ -6,18 +6,25 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Principal;
 
 namespace Infrastructure.DbContect
 {
     public class FarmerDbContext : IdentityDbContext<User, Role, string>, IFarmerDbContext
     {
         private readonly ICurrentUserService _currentUserService;
-        public FarmerDbContext(DbContextOptions options, ICurrentUserService currentUserService)
+        private readonly ILogger<FarmerDbContext> _logger;
+        public FarmerDbContext(
+            DbContextOptions options, 
+            ICurrentUserService currentUserService, 
+            ILogger<FarmerDbContext> logger)
             : base(options)
         {
             _currentUserService = currentUserService;
+            _logger = logger;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -63,67 +70,36 @@ namespace Infrastructure.DbContect
         public DbSet<Tenant> Tenants { get; set; } = default!;
 
         public DbSet<Expense> Expenses { get; set; } = default!;
+
         public DbSet<ExpenseByArableLand> ExpenseByArableLands { get; set; } = default!;
 
-        public override async ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default)
+        public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            AssignTenantId(entity); // Assign TenantId for new entities
-            return await base.AddAsync(entity, cancellationToken);
-        }
+            int saveResult;
+            var addedEntries = ChangeTracker
+                .Entries<IEntity>()
+                .Where(x => x.State == EntityState.Added);
 
-        public override EntityEntry<TEntity> Update<TEntity>(TEntity entity)
-        {
-            //// Assign TenantId if the entity is new or if it doesn't have a TenantId set
-            //if (Entry(entity).State == EntityState.Added || (entity is ITenant tenantEntity))
-            //{
-            //    AssignTenantId(entity);
-            //}
-
-            // Check for child entities and assign TenantId for new ones
-            foreach (var property in entity.GetType().GetProperties())
+            foreach (var entityEntry in addedEntries)
             {
-                if (typeof(IEnumerable<ITenant>).IsAssignableFrom(property.PropertyType) &&
-                    property.GetValue(entity) is IEnumerable<ITenant> childEntities)
+                if (entityEntry.Entity is ITenant tenantEntity)
                 {
-                    foreach (var child in childEntities)
-                    {
-                        var childEntry = Entry(child);
-                        // Assign TenantId only if the child is new (not tracked)
-                        if (childEntry.State == EntityState.Added)
-                        {
-                            AssignTenantId(child);
-                        }
-                    }
+                    tenantEntity.TenantId = _currentUserService.UserTenantId;
                 }
             }
 
-            return base.Update(entity);
-        }
 
-        private void AssignTenantId(object entity)
-        {
-            if (entity is ITenant tenantEntity)
+            try
             {
-                tenantEntity.TenantId = _currentUserService.UserTenantId;
+                saveResult = await base.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _logger.LogError(ex, "A database concurrency exception occured.");
+                throw;
             }
 
-            // Check for child entities and assign TenantId recursively
-            foreach (var property in entity.GetType().GetProperties())
-            {
-                if (property.PropertyType.IsAssignableTo(typeof(ITenant)) && property.GetValue(entity) is ITenant childEntity)
-                {
-                    AssignTenantId(childEntity);
-                }
-
-                // Handle collections of child entities
-                if (typeof(IEnumerable<ITenant>).IsAssignableFrom(property.PropertyType) && property.GetValue(entity) is IEnumerable<ITenant> childEntities)
-                {
-                    foreach (var child in childEntities)
-                    {
-                        AssignTenantId(child);
-                    }
-                }
-            }
+            return saveResult;
         }
     }
 }

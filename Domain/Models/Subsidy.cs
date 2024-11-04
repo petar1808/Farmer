@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class Subsidy : Entity<int>, ITenant
+    public class Subsidy : Entity<int>
     {
         public Subsidy(
             decimal income,
@@ -32,8 +32,6 @@ namespace Domain.Models
         public DateTime Date { get; private set; }
 
         public int WorkingSeasonId { get; set; }
-
-        public int TenantId { get; set; }
 
         public string Comment { get; set; }
 

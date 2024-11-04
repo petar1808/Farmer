@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Infrastructure.DbContect;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Persistence
 {
@@ -8,7 +9,9 @@ namespace Infrastructure.Persistence
     {
         public SqlLiteFarmerDbContext(
             DbContextOptions options,
-            ICurrentUserService currentUserService) : base(options, currentUserService)
+            ICurrentUserService currentUserService,
+            ILogger<SqlLiteFarmerDbContext> logger) 
+            : base(options, currentUserService, logger)
         {
         }
     }

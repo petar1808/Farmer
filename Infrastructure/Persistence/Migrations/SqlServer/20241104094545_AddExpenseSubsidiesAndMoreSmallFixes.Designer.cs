@@ -3,44 +3,50 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Persistence.Migrations.MySql
+namespace Infrastructure.Persistence.Migrations.SqlServer
 {
-    [DbContext(typeof(MySqlFarmerDbContext))]
-    partial class MySqlFarmerDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(SqlFarmerDbContext))]
+    [Migration("20241104094545_AddExpenseSubsidiesAndMoreSmallFixes")]
+    partial class AddExpenseSubsidiesAndMoreSmallFixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.11")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Application.Models.Role", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });
@@ -51,10 +57,12 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -67,68 +75,68 @@ namespace Infrastructure.Persistence.Migrations.MySql
             modelBuilder.Entity("Application.Models.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -137,7 +145,8 @@ namespace Infrastructure.Persistence.Migrations.MySql
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("TenantId");
 
@@ -150,10 +159,12 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("SizeInDecar")
                         .HasColumnType("int");
@@ -175,13 +186,15 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<int>("ArticleType")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -194,20 +207,86 @@ namespace Infrastructure.Persistence.Migrations.MySql
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PricePerUnit")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkingSeasonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("WorkingSeasonId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("Domain.Models.ExpenseByArableLand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ArableLandId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpenseId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArableLandId");
+
+                    b.HasIndex("ExpenseId");
+
+                    b.ToTable("ExpenseByArableLands");
+                });
+
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<decimal>("AmountOfFuel")
-                        .HasColumnType("decimal(12,2)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal>("FuelPrice")
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("int");
@@ -231,23 +310,19 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<int>("ArableLandId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ExpensesForHarvesting")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<decimal>("HarvestedGrainSellingPricePerKilogram")
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("HarvestedQuantityPerDecare")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("SeedsPricePerKilogram")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<decimal>("SeedsQuantityPerDecare")
                         .HasColumnType("decimal(12,2)");
@@ -276,13 +351,46 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Income")
                         .HasColumnType("decimal(12,2)");
 
-                    b.Property<int>("SeedingId")
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkingSeasonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkingSeasonId");
+
+                    b.ToTable("Subsidies");
+                });
+
+            modelBuilder.Entity("Domain.Models.SubsidyByArableLand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ArableLandId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Income")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("SubsidyId")
                         .HasColumnType("int");
 
                     b.Property<int>("TenantId")
@@ -290,9 +398,11 @@ namespace Infrastructure.Persistence.Migrations.MySql
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SeedingId");
+                    b.HasIndex("ArableLandId");
 
-                    b.ToTable("Subsidies");
+                    b.HasIndex("SubsidyId");
+
+                    b.ToTable("SubsidyByArableLands");
                 });
 
             modelBuilder.Entity("Domain.Models.Treatment", b =>
@@ -301,23 +411,16 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("AmountOfFuel")
-                        .HasColumnType("decimal(12,2)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("ArticlePrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<decimal>("ArticleQuantity")
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal?>("FuelPrice")
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("int");
@@ -343,15 +446,17 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -370,15 +475,17 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -393,15 +500,17 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -413,17 +522,17 @@ namespace Infrastructure.Persistence.Migrations.MySql
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -435,10 +544,10 @@ namespace Infrastructure.Persistence.Migrations.MySql
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -450,16 +559,16 @@ namespace Infrastructure.Persistence.Migrations.MySql
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -474,6 +583,41 @@ namespace Infrastructure.Persistence.Migrations.MySql
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.HasOne("Domain.Models.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Models.WorkingSeason", null)
+                        .WithMany()
+                        .HasForeignKey("WorkingSeasonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("Domain.Models.ExpenseByArableLand", b =>
+                {
+                    b.HasOne("Domain.Models.ArableLand", "ArableLand")
+                        .WithMany()
+                        .HasForeignKey("ArableLandId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Expense", "Expense")
+                        .WithMany("ExpenseByArableLands")
+                        .HasForeignKey("ExpenseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArableLand");
+
+                    b.Navigation("Expense");
                 });
 
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
@@ -515,13 +659,30 @@ namespace Infrastructure.Persistence.Migrations.MySql
 
             modelBuilder.Entity("Domain.Models.Subsidy", b =>
                 {
-                    b.HasOne("Domain.Models.Seeding", "Seeding")
-                        .WithMany("Subsidies")
-                        .HasForeignKey("SeedingId")
+                    b.HasOne("Domain.Models.WorkingSeason", null)
+                        .WithMany()
+                        .HasForeignKey("WorkingSeasonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Models.SubsidyByArableLand", b =>
+                {
+                    b.HasOne("Domain.Models.ArableLand", "ArableLand")
+                        .WithMany()
+                        .HasForeignKey("ArableLandId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Seeding");
+                    b.HasOne("Domain.Models.Subsidy", "Subsidy")
+                        .WithMany("SubsidyByArableLands")
+                        .HasForeignKey("SubsidyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArableLand");
+
+                    b.Navigation("Subsidy");
                 });
 
             modelBuilder.Entity("Domain.Models.Treatment", b =>
@@ -604,13 +765,21 @@ namespace Infrastructure.Persistence.Migrations.MySql
                     b.Navigation("Seedings");
                 });
 
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.Navigation("ExpenseByArableLands");
+                });
+
             modelBuilder.Entity("Domain.Models.Seeding", b =>
                 {
                     b.Navigation("PerformedWorks");
 
-                    b.Navigation("Subsidies");
-
                     b.Navigation("Treatments");
+                });
+
+            modelBuilder.Entity("Domain.Models.Subsidy", b =>
+                {
+                    b.Navigation("SubsidyByArableLands");
                 });
 
             modelBuilder.Entity("Domain.Models.WorkingSeason", b =>

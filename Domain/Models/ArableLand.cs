@@ -3,7 +3,7 @@ using static Domain.ModelConstraint.CommonConstraints;
 
 namespace Domain.Models
 {
-    public class ArableLand : Entity<int>, ITenant
+    public class ArableLand : Entity<int>
     {
         public ArableLand(string name, int sizeInDecar)
         {
@@ -17,8 +17,7 @@ namespace Domain.Models
         public int SizeInDecar { get; private set; }
 
         public List<Seeding> Seedings { get; } = default!;
-        public int TenantId { get; set; }
-
+       
         public ArableLand UpdateName(string name)
         {
             ValidateName(name);

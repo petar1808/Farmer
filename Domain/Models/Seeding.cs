@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class Seeding : Entity<int>, ITenant
+    public class Seeding : Entity<int>
     {
         public Seeding(int arableLandId,
              int workingSeasonId)
@@ -36,8 +36,6 @@ namespace Domain.Models
         public List<Treatment> Treatments { get; } = default!;
 
         public List<PerformedWork> PerformedWorks { get; } = default!;
-
-        public int TenantId { get; set; }
 
         public Seeding UpdateArticle(int? articleId)
         {

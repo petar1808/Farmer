@@ -64,7 +64,11 @@
     </RadzenFormField>
     <RadzenFormField Visible="@ExpenseConfiguration.ShowPricePerUnit" Text="Единична цена" Variant="Variant.Filled">
         <ChildContent>
-            <RadzenNumeric style="display: block; width: 100%" Name="PricePerUnit" @bind-Value=@Expense.PricePerUnit />
+            <RadzenNumeric TValue="decimal"
+                           Change=@(args => OnPricePerUnitChange(args))
+                           style="display: block; width: 100%"
+                           Name="PricePerUnit" 
+                           @bind-Value=@Expense.PricePerUnit />
         </ChildContent>
         <Helper>
             <FarmerPositiveNumericValidator Component="PricePerUnit" />
@@ -72,7 +76,11 @@
     </RadzenFormField>
     <RadzenFormField Visible="@ExpenseConfiguration.ShowPricePerUnit" Text="Количество" Variant="Variant.Filled">
         <ChildContent>
-            <RadzenNumeric style="display: block; width: 100%" Name="Quantity" @bind-Value=@Expense.Quantity />
+            <RadzenNumeric  TValue="decimal"
+                           Change=@(args => OnQuantityChange(args))
+                           style="display: block; width: 100%" 
+                            Name="Quantity" 
+                            @bind-Value=@Expense.Quantity />
         </ChildContent>
         <Helper>
             <FarmerPositiveNumericValidator Component="Quantity" />
@@ -83,7 +91,7 @@
             <RadzenNumeric TValue="decimal"
                            Disabled="@(ExpenseConfiguration.ShowPricePerUnit)"
                            Name="ExpenseSum" 
-                           Value=@Expense.Sum
+                           @bind-Value=@Expense.Sum
                            Change=@(args => OnSumChange(args))
                            style="display: block; width: 100%" />
         </ChildContent>

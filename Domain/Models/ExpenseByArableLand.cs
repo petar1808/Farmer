@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class ExpenseByArableLand : Entity<int>, ITenant
+    public class ExpenseByArableLand : Entity<int>
     {
 
         public ExpenseByArableLand(int arableLandId, decimal sum)
@@ -21,8 +21,6 @@ namespace Domain.Models
         public int ExpenseId { get; set; }
 
         public Expense Expense { get; set; }
-
-        public int TenantId { get; set; }
 
         public ExpenseByArableLand UpdateSum(decimal sum)
         {

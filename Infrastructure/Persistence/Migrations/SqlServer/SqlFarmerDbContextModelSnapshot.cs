@@ -205,6 +205,76 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PricePerUnit")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkingSeasonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("WorkingSeasonId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("Domain.Models.ExpenseByArableLand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ArableLandId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpenseId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArableLandId");
+
+                    b.HasIndex("ExpenseId");
+
+                    b.ToTable("ExpenseByArableLands");
+                });
+
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
                 {
                     b.Property<int>("Id")
@@ -213,14 +283,8 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal>("AmountOfFuel")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal>("FuelPrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("int");
@@ -252,17 +316,11 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Property<int?>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ExpensesForHarvesting")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<decimal>("HarvestedGrainSellingPricePerKilogram")
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("HarvestedQuantityPerDecare")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("SeedsPricePerKilogram")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<decimal>("SeedsQuantityPerDecare")
                         .HasColumnType("decimal(12,2)");
@@ -293,13 +351,44 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Income")
                         .HasColumnType("decimal(12,2)");
 
-                    b.Property<int>("SeedingId")
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkingSeasonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkingSeasonId");
+
+                    b.ToTable("Subsidies");
+                });
+
+            modelBuilder.Entity("Domain.Models.SubsidyByArableLand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ArableLandId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Income")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("SubsidyId")
                         .HasColumnType("int");
 
                     b.Property<int>("TenantId")
@@ -307,9 +396,11 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SeedingId");
+                    b.HasIndex("ArableLandId");
 
-                    b.ToTable("Subsidies");
+                    b.HasIndex("SubsidyId");
+
+                    b.ToTable("SubsidyByArableLands");
                 });
 
             modelBuilder.Entity("Domain.Models.Treatment", b =>
@@ -320,23 +411,14 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal?>("AmountOfFuel")
-                        .HasColumnType("decimal(12,2)");
-
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("ArticlePrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<decimal>("ArticleQuantity")
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("FuelPrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("SeedingId")
                         .HasColumnType("int");
@@ -501,6 +583,41 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Navigation("Tenant");
                 });
 
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.HasOne("Domain.Models.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Models.WorkingSeason", null)
+                        .WithMany()
+                        .HasForeignKey("WorkingSeasonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("Domain.Models.ExpenseByArableLand", b =>
+                {
+                    b.HasOne("Domain.Models.ArableLand", "ArableLand")
+                        .WithMany()
+                        .HasForeignKey("ArableLandId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Expense", "Expense")
+                        .WithMany("ExpenseByArableLands")
+                        .HasForeignKey("ExpenseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArableLand");
+
+                    b.Navigation("Expense");
+                });
+
             modelBuilder.Entity("Domain.Models.PerformedWork", b =>
                 {
                     b.HasOne("Domain.Models.Seeding", "Seeding")
@@ -540,13 +657,30 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
 
             modelBuilder.Entity("Domain.Models.Subsidy", b =>
                 {
-                    b.HasOne("Domain.Models.Seeding", "Seeding")
-                        .WithMany("Subsidies")
-                        .HasForeignKey("SeedingId")
+                    b.HasOne("Domain.Models.WorkingSeason", null)
+                        .WithMany()
+                        .HasForeignKey("WorkingSeasonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Models.SubsidyByArableLand", b =>
+                {
+                    b.HasOne("Domain.Models.ArableLand", "ArableLand")
+                        .WithMany()
+                        .HasForeignKey("ArableLandId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Seeding");
+                    b.HasOne("Domain.Models.Subsidy", "Subsidy")
+                        .WithMany("SubsidyByArableLands")
+                        .HasForeignKey("SubsidyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArableLand");
+
+                    b.Navigation("Subsidy");
                 });
 
             modelBuilder.Entity("Domain.Models.Treatment", b =>
@@ -629,13 +763,21 @@ namespace Infrastructure.Persistence.Migrations.SqlServer
                     b.Navigation("Seedings");
                 });
 
+            modelBuilder.Entity("Domain.Models.Expense", b =>
+                {
+                    b.Navigation("ExpenseByArableLands");
+                });
+
             modelBuilder.Entity("Domain.Models.Seeding", b =>
                 {
                     b.Navigation("PerformedWorks");
 
-                    b.Navigation("Subsidies");
-
                     b.Navigation("Treatments");
+                });
+
+            modelBuilder.Entity("Domain.Models.Subsidy", b =>
+                {
+                    b.Navigation("SubsidyByArableLands");
                 });
 
             modelBuilder.Entity("Domain.Models.WorkingSeason", b =>

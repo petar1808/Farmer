@@ -33,11 +33,11 @@ namespace Application.Services
 
         DbSet<ExpenseByArableLand> ExpenseByArableLands { get; set; }
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
         EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : class;
 
-        ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default(CancellationToken));
+        ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken);
 
         EntityEntry Remove(object entity);
     }

@@ -3,7 +3,7 @@ using Domain.Enum;
 
 namespace Domain.Models
 {
-    public class Expense : Entity<int>, ITenant
+    public class Expense : Entity<int>
     {
         public Expense(
             DateTime date,
@@ -38,8 +38,6 @@ namespace Domain.Models
 
         public int WorkingSeasonId { get; private set; }
 
-        public int TenantId { get; set; }
-
         public List<ExpenseByArableLand> ExpenseByArableLands { get; set; }
 
         public Expense AddExpenseByArableLands(List<ExpenseByArableLand> arableLands)
@@ -69,6 +67,7 @@ namespace Domain.Models
             {
                 ExpenseByArableLands.Add(arableLand);
             }
+
 
             // Update existing arable lands
             foreach (var existingArableLand in ExpenseByArableLands)

@@ -1,7 +1,6 @@
 ﻿using Application.Models;
 using Application.Services;
 using Infrastructure.Common;
-using Infrastructure.Common.LoggingSettings;
 using Infrastructure.DbContect;
 using Infrastructure.Email;
 using Infrastructure.Identity;
@@ -12,15 +11,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using static Application.IdentityConstants;
 
 namespace Infrastructure
@@ -31,23 +24,14 @@ namespace Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
-
             services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
             services.Configure<InfrastructureSettings>(configuration.GetSection(nameof(InfrastructureSettings)));
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IJwtTokenGenerator, JwtTokenGeneratorService>();
 
-            var dbProvider = configuration.GetValue<string>(
-                $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.DatabaseProvider)}");
-            var secret = configuration.GetValue<string>(
-                $"{nameof(InfrastructureSettings)}:{nameof(InfrastructureSettings.Secret)}");
-
-            var infrastructureSettings = new InfrastructureSettings()
-            {
-                DatabaseProvider = Enum.Parse<DatabaseProvider>(dbProvider!),
-                Secret = secret!
-            };
+            var infrastructureSettings = new InfrastructureSettings();
+            configuration.Bind(nameof(InfrastructureSettings), infrastructureSettings);
 
             services.AddDataBase(configuration, infrastructureSettings);
             services.AddIdentity(infrastructureSettings);
@@ -71,7 +55,7 @@ namespace Infrastructure
                     services.AddDbContext<SqlLiteFarmerDbContext>(opt =>
                     {
                         opt.UseSqlite(connectionStrings.SqlLiteConnection);
-                        ConfigureSensitiveDataLogging(opt, connectionStrings);
+                        ConfigureSensitiveDataLogging(opt, infrastructureSettings.EnableSensitiveDataLogging);
                     });
                     break;
 
@@ -80,34 +64,7 @@ namespace Infrastructure
                     services.AddDbContext<SqlFarmerDbContext>(opt =>
                     {
                         opt.UseSqlServer(connectionStrings.SqlDefaultConnection);
-                        ConfigureSensitiveDataLogging(opt, connectionStrings);
-                    });
-                    break;
-
-                case DatabaseProvider.MySql:
-                    services.AddScoped<IFarmerDbContext, MySqlFarmerDbContext>();
-                    services.AddDbContext<MySqlFarmerDbContext>(opt =>
-                    {
-                        var azureMySqlConnectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
-                        if (!string.IsNullOrWhiteSpace(azureMySqlConnectionString))
-                        {
-                            string dbhost = Regex.Match(azureMySqlConnectionString, @"Data Source=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
-                            string[] hostParts = dbhost.Split(':');
-                            string server = hostParts[0];
-                            string port = hostParts.Length > 1 ? hostParts[1] : string.Empty; // Handle cases without port
-                            string dbname = Regex.Match(azureMySqlConnectionString, @"Database=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
-                            string dbusername = Regex.Match(azureMySqlConnectionString, @"User Id=(.+?);", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
-                            string dbpassword = Regex.Match(azureMySqlConnectionString, @"Password=(.+?)$", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups[1].Value;
-
-                            connectionStrings.MySqlConnection = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling=false;convert zero datetime=True;";
-                        }
-
-                        opt.UseMySql(
-                            connectionStrings.MySqlConnection,
-                            ServerVersion.AutoDetect(connectionStrings.MySqlConnection)
-                        );
-
-                        ConfigureSensitiveDataLogging(opt, connectionStrings);
+                        ConfigureSensitiveDataLogging(opt, infrastructureSettings.EnableSensitiveDataLogging);
                     });
                     break;
 
@@ -118,9 +75,11 @@ namespace Infrastructure
             return services;
         }
 
-        private static void ConfigureSensitiveDataLogging(DbContextOptionsBuilder optionsBuilder, ConnectionStrings connectionStrings)
+        private static void ConfigureSensitiveDataLogging(
+            DbContextOptionsBuilder optionsBuilder, 
+            bool enableSensitiveDataLogging)
         {
-            if (connectionStrings.EnableSensitiveDataLogging)
+            if (enableSensitiveDataLogging)
             {
                 optionsBuilder.EnableSensitiveDataLogging().LogTo(Console.WriteLine);
             }
@@ -151,17 +110,6 @@ namespace Infrastructure
                         options.SignIn.RequireConfirmedAccount = true;
                     })
                     .AddEntityFrameworkStores<SqlFarmerDbContext>()
-                    .AddDefaultTokenProviders();
-            }
-            else if (infrastructureSettings.DatabaseProvider == DatabaseProvider.MySql)
-            {
-                services
-                    .AddIdentity<User, Role>(options =>
-                    {
-                        options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
-                        options.SignIn.RequireConfirmedAccount = true;
-                    })
-                    .AddEntityFrameworkStores<MySqlFarmerDbContext>()
                     .AddDefaultTokenProviders();
             }
             else
@@ -212,24 +160,7 @@ namespace Infrastructure
             {
                 var infrastructureSettings = scope.ServiceProvider.GetRequiredService<IOptions<InfrastructureSettings>>();
 
-                FarmerDbContext db;
-
-                if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlLite)
-                {
-                    db = scope.ServiceProvider.GetRequiredService<SqlLiteFarmerDbContext>();
-                }
-                else if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlServer)
-                {
-                    db = scope.ServiceProvider.GetRequiredService<SqlFarmerDbContext>();
-                }
-                else if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.MySql)
-                {
-                    db = scope.ServiceProvider.GetRequiredService<MySqlFarmerDbContext>();
-                }
-                else
-                {
-                    throw new NotImplementedException("Unsupported database provider");
-                }
+                FarmerDbContext db = GetDbContext(scope, infrastructureSettings);
 
                 db.Database.Migrate();
 
@@ -263,6 +194,26 @@ namespace Infrastructure
 
             }
             return builder;
+        }
+
+        private static FarmerDbContext GetDbContext(IServiceScope scope, IOptions<InfrastructureSettings> infrastructureSettings)
+        {
+            FarmerDbContext db;
+
+            if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlLite)
+            {
+                db = scope.ServiceProvider.GetRequiredService<SqlLiteFarmerDbContext>();
+            }
+            else if (infrastructureSettings.Value.DatabaseProvider == DatabaseProvider.SqlServer)
+            {
+                db = scope.ServiceProvider.GetRequiredService<SqlFarmerDbContext>();
+            }
+            else
+            {
+                throw new NotImplementedException("Unsupported database provider");
+            }
+
+            return db;
         }
     }
 }
