@@ -22,24 +22,29 @@ stages:
   - job: SonarCloudAnalyze
     displayName: Run SonarCloud Analysis
     steps:
-    - task: SonarCloudPrepare@1
+    - task: SonarCloudPrepare@3
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
-        scannerMode: 'CLI'
-        configMode: 'manual'
-        cliProjectKey: 'petar1808_Farmer'
-        cliProjectName: 'Farmer'
-        cliSources: 'WebApi'
+        scannerMode: 'dotnet'
+        projectKey: 'petar1808_Farmer'
+        projectName: 'Farmer'
+
+    - script: dotnet restore WebApi
+      displayName: 'dotnet restore'
 
     - script: dotnet build WebApi --configuration $(buildConfiguration)
       displayName: 'dotnet build for SonarCloud'
 
-    - task: SonarCloudAnalyze@1
+    - task: SonarCloudAnalyze@3
+      inputs:
+        jdkversion: 'JAVA_HOME_17_X64'
       displayName: 'Run SonarCloud Analysis'
 
-    - task: SonarCloudPublish@1
-      displayName: 'Publish SonarCloud Quality Gate Result'
+    - task: SonarCloudPublish@3
+      inputs:
+        pollingTimeoutSec: '300'
+      displayName: 'Publish'
 
 - stage: Build
   displayName: Docker Build and Push Stage
