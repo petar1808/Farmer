@@ -24,7 +24,7 @@ namespace Application.Features.WorkingSeasons.Commands.Delete
             {
                 var workingSeason = await farmerDbContext
                 .WorkingSeasons
-                .FirstOrDefaultAsync(x => x.Id == request.Id);
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
                 if (workingSeason == null)
                 {
@@ -33,7 +33,7 @@ namespace Application.Features.WorkingSeasons.Commands.Delete
 
                 var workingSeasonSeeding = await farmerDbContext
                     .Seedings
-                    .AnyAsync(x => x.WorkingSeasonId == request.Id);
+                    .AnyAsync(x => x.WorkingSeasonId == request.Id, cancellationToken);
 
                 if (workingSeasonSeeding)
                 {

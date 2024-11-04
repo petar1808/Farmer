@@ -17,7 +17,7 @@ namespace Application.Extensions
         {
             if (source is null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
             FieldInfo fi = source.GetType().GetField(source.ToString()!)!;
 

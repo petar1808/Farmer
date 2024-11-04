@@ -29,7 +29,7 @@ namespace Application.Features.Subsidies.Queries.Details
 
                 var result = await mapper
                     .ProjectTo<DetailsSubsidyOutputQueryModel>(subsidy)
-                    .FirstOrDefaultAsync(x => x.Id == request.SubsidyId);
+                    .FirstOrDefaultAsync(x => x.Id == request.SubsidyId, cancellationToken);
 
                 if (result == null)
                 {

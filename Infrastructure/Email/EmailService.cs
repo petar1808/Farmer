@@ -18,26 +18,20 @@ namespace Infrastructure.Email
             this._logger = logger;
         }
 
-        private async Task<bool> SendAsync(MailboxAddress receiver, string subject, string body)
+        private MimeMessage CreateMessage(MailboxAddress receiver, string subject, string body)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(_smtpSettings.Server, _smtpSettings.UserName));
+            message.To.Add(receiver);
+            message.Subject = subject;
+            message.Body = new TextPart(TextFormat.Html) { Text = body };
+            return message;
+        }
+
+        private async Task<bool> SendAsync(MimeMessage message)
         {
             try
             {
-                var message = new MimeMessage();
-
-                message.To.Add(receiver);
-
-                message.From.Add(
-                    new MailboxAddress(
-                        this._smtpSettings.Server,
-                        this._smtpSettings.UserName));
-
-                message.Subject = subject;
-
-                message.Body = new TextPart(TextFormat.Html)
-                {
-                    Text = body
-                };
-
                 using (var emailClient = new SmtpClient())
                 {
                     await emailClient.ConnectAsync(this._smtpSettings.Server, this._smtpSettings.Port);
@@ -49,11 +43,12 @@ namespace Infrastructure.Email
                     await emailClient.DisconnectAsync(true);
                 }
 
+                _logger.LogInformation("Email sent successfully to {Recipient}.", message.To);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(default(EventId), ex, ex.Message);
+                _logger.LogError(ex, "Error occurred while sending email to {Recipient}.", message.To);
                 return false;
             }
         }
@@ -64,7 +59,9 @@ namespace Infrastructure.Email
                           newLine +
                           $"Вие бяхте добавен(а) в платформата на <b>Фермер</b>. За да активирате своя акаунт, моля, натиснете <a href='{url}'>тук.</a>" + newLine;
 
-            return await this.SendAsync(new MailboxAddress(userName, userEmail), "Регистрация в Фермер", body);
+            var message = CreateMessage(new MailboxAddress(userName, userEmail), "Регистрация в Фермер", body);
+
+            return await this.SendAsync(message);
         }
 
         public async Task SendResetPasswordEmail(string userName, string userEmail, string url)
@@ -74,7 +71,9 @@ namespace Infrastructure.Email
                           $"Забравили сте Вашата парола за платформата на <b>Фермер</b>? " + newLine +
                           $"За да смените паролата си, моля, натиснете <a href='{url}'>тук.</a>" + newLine;
 
-            await this.SendAsync(new MailboxAddress(userName, userEmail), "Смяна на парола в Фермер", body);
+            var message = CreateMessage(new MailboxAddress(userName, userEmail), "Смяна на парола в Фермер", body);
+
+            await this.SendAsync(message);
         }
     }
 }

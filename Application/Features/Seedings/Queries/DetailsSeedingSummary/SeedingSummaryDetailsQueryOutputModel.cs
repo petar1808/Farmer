@@ -18,7 +18,7 @@ namespace Application.Features.Seedings.Queries.DetailsSeedingSummary
 
         public string ArticleName { get; set; } = default!;
 
-        public decimal IncomeFromHarvestedGrains { get; private set; }
+        public decimal IncomeFromHarvestedGrains { get; set; }
 
         public int ArableLandSize { get; set; }
 

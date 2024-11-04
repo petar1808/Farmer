@@ -21,7 +21,7 @@ namespace Application.Features.Expenses.Commands.Edit
             {
                 var expense = await farmerDbContext.Expenses
                     .Include(x => x.ExpenseByArableLands)
-                    .FirstOrDefaultAsync(x => x.Id == request.Id);
+                    .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
                 if (expense == null)
                 {

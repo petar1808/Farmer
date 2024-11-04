@@ -171,7 +171,7 @@ namespace Infrastructure
 
                 if (roleManager == null || userManager == null)
                 {
-                    throw new ApplicationException("Role manager or User Manage not found");
+                    throw new ArgumentNullException("Role manager or User Manage not found");
                 }
 
                 if (!roleManager.Roles.Any())
