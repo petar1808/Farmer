@@ -8,35 +8,11 @@
 
         public int Type { get; set; }
 
-        private decimal _sum;
-        public decimal Sum
-        {
-            get => _sum;
-            set => _sum = value;
-        }
+        public decimal Sum { get; set; }
 
-        private decimal _pricePerUnit;
-        public decimal PricePerUnit
-        {
-            get => _pricePerUnit;
-            set
-            {
-                _pricePerUnit = value;
-                _sum = _pricePerUnit * _quantity;
-            }
-        }
+        public decimal PricePerUnit { get; set; }
 
-        private decimal _quantity;
-        public decimal Quantity
-        {
-            get => _quantity;
-            set
-            {
-                _quantity = value;
-                _sum = _pricePerUnit * _quantity;
-            }
-        }
-
+        public decimal Quantity { get; set; }
         public int? ArticleId { get; set; }
 
         public int WorkingSeasonId { get; set; }

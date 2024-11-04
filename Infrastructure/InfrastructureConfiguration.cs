@@ -24,7 +24,6 @@ namespace Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
-
             services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
             services.Configure<InfrastructureSettings>(configuration.GetSection(nameof(InfrastructureSettings)));
             services.AddTransient<IEmailService, EmailService>();

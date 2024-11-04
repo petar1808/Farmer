@@ -35,7 +35,7 @@ namespace Application.Features.Expenses.Commands.Edit
                     .UpdateQuantity(request.Quantity)
                     .UpdateArticleId(request.ArticleId);
 
-                if (request.SelectedArableLands.Any())
+                if (request.SelectedArableLands.Any() || expense.ExpenseByArableLands.Any())
                 {
                     var newExpenseByArableLands = await CalculateExpenseByArableLand(
                         request.SelectedArableLands,
@@ -44,6 +44,8 @@ namespace Application.Features.Expenses.Commands.Edit
 
                     expense.UpdateExpenseByArableLands(newExpenseByArableLands);
                 }
+
+                farmerDbContext.Update(expense);
 
                 await farmerDbContext.SaveChangesAsync(cancellationToken);
 

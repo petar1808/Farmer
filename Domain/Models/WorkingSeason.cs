@@ -3,7 +3,7 @@ using static Domain.ModelConstraint.WorkingSeasonConstraints;
 
 namespace Domain.Models
 {
-    public class WorkingSeason : Entity<int>, ITenant
+    public class WorkingSeason : Entity<int>
     {
         public WorkingSeason(string name,
             DateTime startDate,
@@ -28,8 +28,6 @@ namespace Domain.Models
         public DateTime EndDate { get; private set; }
 
         public List<Seeding> Seedings { get; private set; }
-
-        public int TenantId { get; set; }
 
         public WorkingSeason UpdateName(string name)
         {
@@ -56,7 +54,6 @@ namespace Domain.Models
           MaxLenghtName,
           MinLenghtName,
           nameof(this.Name));
-
 
         private void Validate(string name)
         {

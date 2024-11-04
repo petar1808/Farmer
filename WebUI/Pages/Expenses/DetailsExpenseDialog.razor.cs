@@ -77,6 +77,29 @@ namespace WebUI.Pages.Expenses
             {
                 Articles = await ArticleService.GetArticles(ExpenseConfiguration.ArticleType!.Value);
             }
+
+            Expense.ArticleId = null;
+
+            if (ExpenseConfiguration.ShowPricePerUnit == false)
+            {
+                Expense.Quantity = 1;
+                Expense.PricePerUnit = Expense.Sum;
+            }
+
+            if (!ExpenseConfiguration.DistributeByArableLand)
+            {
+                Expense.SelectedArableLands = Enumerable.Empty<int>();
+            }
+        }
+
+        public void OnPricePerUnitChange(decimal pricePerUnit)
+        {
+            Expense.Sum = pricePerUnit * Expense.Quantity;
+        }
+
+        public void OnQuantityChange(decimal quantity)
+        {
+            Expense.Sum = quantity * Expense.PricePerUnit;
         }
 
         public void OnSumChange(decimal sum)

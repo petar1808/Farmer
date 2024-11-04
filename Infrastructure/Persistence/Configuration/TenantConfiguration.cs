@@ -1,19 +1,19 @@
 ﻿using Application.Models;
-using Infrastructure.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Domain.ModelConstraint.CommonConstraints;
 
 namespace Infrastructure.Persistence.Configuration
 {
-    internal class TenantConfiguration : EntityConfiguration<Tenant, int>
+    internal class TenantConfiguration : IEntityTypeConfiguration<Tenant>
     {
-        public override void Configure(EntityTypeBuilder<Tenant> builder)
+        public void Configure(EntityTypeBuilder<Tenant> builder)
         {
+            builder.HasKey(x => x.Id);
+
             builder.HasIndex(x => x.Name).IsUnique();
 
             builder.Property(x => x.Name).HasMaxLength(MaxNameLenght).IsRequired();
-
-            base.Configure(builder);
         }
     }
 }

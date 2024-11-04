@@ -3,7 +3,7 @@ using Domain.Enum;
 
 namespace Domain.Models
 {
-    public class PerformedWork : Entity<int>, ITenant
+    public class PerformedWork : Entity<int>
     {
 
         public PerformedWork(int seedingId,
@@ -25,8 +25,6 @@ namespace Domain.Models
         public WorkType WorkType { get; private set; }
 
         public DateTime Date { get; private set; }
-
-        public int TenantId { get; set; }
 
         public PerformedWork UpdateWorkType(WorkType workType)
         {

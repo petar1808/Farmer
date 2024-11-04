@@ -3,7 +3,7 @@ using Domain.Enum;
 
 namespace Domain.Models
 {
-    public class Treatment : Entity<int>, ITenant
+    public class Treatment : Entity<int>
     {
         public Treatment(DateTime date,
             TreatmentType treatmentType,
@@ -32,8 +32,6 @@ namespace Domain.Models
         public int SeedingId { get; private set; }
 
         public Seeding Seeding { get; } = default!;
-
-        public int TenantId { get; set; }
 
         #region UpdateMethods
         public Treatment UpdateТreatmentType(TreatmentType treatmentType)

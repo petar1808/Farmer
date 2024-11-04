@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class SubsidyByArableLand : Entity<int>, ITenant
+    public class SubsidyByArableLand : Entity<int>
     {
         public SubsidyByArableLand(int arableLandId, decimal income)
         {
@@ -20,8 +20,6 @@ namespace Domain.Models
         public int SubsidyId { get; set; }
 
         public Subsidy Subsidy { get; set; }
-
-        public int TenantId { get; set; }
 
         public SubsidyByArableLand UpdateIncome(decimal income)
         {
