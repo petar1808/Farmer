@@ -63,7 +63,7 @@ namespace Application.Features.Reporting.Queries.FinancialSummary
 
                     var subsidyForSeason = subsidies
                         .Where(x => x.WorkingSeasonId == seasonId)
-                        .Sum(x => x.SubsidyByArableLands.Sum(sa => sa.Income));
+                        .Sum(x => x.SubsidyByArableLands.Select(x => x.Income).Sum());
 
                     var expenseForSeason = expenses
                         .Where(x => x.WorkingSeasonId == seasonId)

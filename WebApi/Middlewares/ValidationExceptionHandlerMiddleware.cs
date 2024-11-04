@@ -30,7 +30,7 @@ namespace WebApi.Middlewares
                     message = "Грешка в сървара";
                 }
 
-                logger.LogError(default(EventId), ex, ex.Message);
+                logger.LogError(default(EventId), ex, "A database concurrency exception occured: {Message}", ex.Message);
 
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

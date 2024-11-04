@@ -28,7 +28,7 @@ namespace Application.Features.Expenses.Queries.Details
 
                 var result = await mapper
                     .ProjectTo<DetailExpensesQueryOutputModel>(expense)
-                    .FirstOrDefaultAsync(x => x.Id == request.ExpenseId);
+                    .FirstOrDefaultAsync(x => x.Id == request.ExpenseId, cancellationToken);
 
                 if (result == null)
                 {

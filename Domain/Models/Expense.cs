@@ -34,7 +34,7 @@ namespace Domain.Models
 
         public int? ArticleId { get; private set; }
 
-        public Article? Article { get; private set; }
+        public Article? Article { get; set; }
 
         public int WorkingSeasonId { get; private set; }
 

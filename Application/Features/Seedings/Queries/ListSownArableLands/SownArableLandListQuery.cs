@@ -27,7 +27,7 @@ namespace Application.Features.Seedings.Queries.ListSownArableLands
             {
                 var workingSeason = await farmerDbContext
                 .WorkingSeasons
-                .AnyAsync(x => x.Id == request.SeasonId);
+                .AnyAsync(x => x.Id == request.SeasonId, cancellationToken);
 
                 if (!workingSeason)
                 {

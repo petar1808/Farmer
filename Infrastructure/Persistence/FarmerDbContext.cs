@@ -27,24 +27,24 @@ namespace Infrastructure.DbContect
             _logger = logger;
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             Expression<Func<ITenant, bool>> filterExpr = bm => bm.TenantId == _currentUserService.UserTenantId;
-            foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes())
-            {
-                if (mutableEntityType.ClrType.IsAssignableTo(typeof(ITenant)))
-                {
-                    var parameter = Expression.Parameter(mutableEntityType.ClrType);
-                    var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
-                    var lambdaExpression = Expression.Lambda(body, parameter);
 
-                    mutableEntityType.SetQueryFilter(lambdaExpression);
-                }
+            var entityTypes = builder.Model.GetEntityTypes().Where(x => x.ClrType.IsAssignableTo(typeof(ITenant)));
+
+            foreach (var mutableEntityType in entityTypes)
+            {
+                var parameter = Expression.Parameter(mutableEntityType.ClrType);
+                var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters[0], parameter, filterExpr.Body);
+                var lambdaExpression = Expression.Lambda(body, parameter);
+
+                mutableEntityType.SetQueryFilter(lambdaExpression);
             }
 
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
         }
 
         public DbSet<ArableLand> ArableLands { get; set; } = default!;
@@ -95,7 +95,7 @@ namespace Infrastructure.DbContect
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _logger.LogError(ex, "A database concurrency exception occured.");
+                _logger.LogError(ex, "A database concurrency exception occured: {Message}", ex.Message);
                 throw;
             }
 
