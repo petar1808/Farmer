@@ -15,16 +15,23 @@ namespace WebApi.Services
 
         private int GetUserTenantId()
         {
-            var tenantIdClaim = this._httpContextAccessor
-                    .HttpContext?
-                    .User?
-                    .FindFirstValue("TenantId") ??
-                throw new ArgumentNullException("Този потребител няма TenantId");
+            var tenantIdClaim = _httpContextAccessor.HttpContext?
+                .User?
+                .FindFirstValue("TenantId");
+
+            if (tenantIdClaim == null)
+            {
+                throw new InvalidOperationException("Този потребител няма TenantId");
+            }
 
             if (int.TryParse(tenantIdClaim, out int tenantId))
+            {
                 return tenantId;
+            }
             else
-                throw new ArgumentNullException("Този потребител има грешен TenantId");
+            {
+                throw new FormatException("Този потребител има грешен TenantId");
+            }
         }
     }
 }

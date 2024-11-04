@@ -169,9 +169,13 @@ namespace Infrastructure
                 var roleManager = serviceProvider.GetService<RoleManager<Role>>();
                 var userManager = serviceProvider.GetService<UserManager<User>>();
 
-                if (roleManager == null || userManager == null)
+                if (roleManager == null)
                 {
-                    throw new ArgumentNullException("Role manager or User Manage not found");
+                    throw new ArgumentNullException(nameof(roleManager), "Role manager not found");
+                }
+                if (userManager == null)
+                {
+                    throw new ArgumentNullException(nameof(userManager), "User manager not found");
                 }
 
                 if (!roleManager.Roles.Any())
