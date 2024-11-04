@@ -29,6 +29,8 @@ stages:
         scannerMode: 'dotnet'
         projectKey: 'petar1808_Farmer'
         projectName: 'Farmer'
+        extraProperties: |
+          sonar.exclusions=../Infrastructure/Persistence/Migrations/Migrations/**
 
     - script: dotnet restore WebApi
       displayName: 'dotnet restore'
