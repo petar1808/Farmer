@@ -61,6 +61,36 @@ The application follows **Clean Architecture** principles, organized into distin
 3. **Backend (WebApi):**
    - Set `WebApi` as the startup project.
    - Configure backend settings in `appsettings.json`.
+  
+The application settings are structured as follows:
+
+```
+{
+  "InfrastructureSettings": {
+    "Secret": "", // Secret key for JWT token used for securing API requests
+    "DatabaseProvider": "", // Specifies the database provider (e.g., SqlServer, SqlLite)
+    "EnableSensitiveDataLogging": false // Enables detailed logging of sensitive data (true/false)
+  },
+  "Serilog": {
+    // Check the official Serilog documentation for more information on logging configuration and usage.
+  },
+  "ConnectionStrings": {
+    "SqlDefaultConnection": "", // Connection string for SQL Server database
+    "SqlLiteConnection": "" // Connection string for SQLite database
+  },
+  "AllowedHosts": "*", // Specifies which hosts are allowed to access the application (e.g., "*" for all hosts)
+  "DefaultUser": {
+    "Email": "", // Default email address for the system admin user
+    "Password": "" // Default password for the system admin user
+  },
+  "EmailSettings": {
+    "Server": "", // SMTP server address for sending emails
+    "Port": 587, // Port number for the SMTP server (typically 587 for TLS)
+    "UserName": "", // SMTP username for authentication
+    "Password": "" // SMTP password for authentication
+  }
+}
+```
 
 ## Contributing
 
