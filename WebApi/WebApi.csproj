@@ -25,10 +25,10 @@
 
 	<ItemGroup>
 		<SonarQubeSetting Include="sonar.exclusions">
-			<Value>..\Infrastructure\Persistence\Migrations\**\*.cs</Value>
+			<Value>..\Infrastructure\Persistence\Migrations\SqlLite\**\*.cs</Value>
 		</SonarQubeSetting>
 		<SonarQubeSetting Include="sonar.exclusions">
-			<Value>..\Infrastructure\Persistence\Configuration\**\*.cs</Value>
+			<Value>..\Infrastructure\Persistence\Migrations\SqlServer\**\*.cs</Value>
 		</SonarQubeSetting>
 	</ItemGroup>
 </Project>

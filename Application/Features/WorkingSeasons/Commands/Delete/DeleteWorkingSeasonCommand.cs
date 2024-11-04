@@ -41,7 +41,7 @@ namespace Application.Features.WorkingSeasons.Commands.Delete
                 }
 
                 farmerDbContext.WorkingSeasons.Remove(workingSeason);
-                await farmerDbContext.SaveChangesAsync();
+                await farmerDbContext.SaveChangesAsync(cancellationToken);
 
                 return Result.Success;
             }
