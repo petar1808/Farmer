@@ -71,7 +71,7 @@ app.UseHttpsRedirection()
 
 try
 {
-    app.Run();
+    await app.RunAsync();
 }
 catch (Exception ex)
 {

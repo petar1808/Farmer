@@ -17,41 +17,6 @@ namespace Infrastructure.Email
             this._logger = logger;
         }
 
-        private MimeMessage CreateMessage(MailboxAddress receiver, string subject, string body)
-        {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(_smtpSettings.Server, _smtpSettings.UserName));
-            message.To.Add(receiver);
-            message.Subject = subject;
-            message.Body = new TextPart(TextFormat.Html) { Text = body };
-            return message;
-        }
-
-        private async Task<bool> SendAsync(MimeMessage message)
-        {
-            try
-            {
-                using (var emailClient = new SmtpClient())
-                {
-                    await emailClient.ConnectAsync(this._smtpSettings.Server, this._smtpSettings.Port);
-
-                    await emailClient.AuthenticateAsync(this._smtpSettings.UserName, this._smtpSettings.Password);
-
-                    await emailClient.SendAsync(message);
-
-                    await emailClient.DisconnectAsync(true);
-                }
-
-                _logger.LogInformation("Email sent successfully to {Recipient}.", message.To);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while sending email to {Recipient}.", message.To);
-                return false;
-            }
-        }
-
         public async Task<bool> SendUserCreatedEmail(string userName, string userEmail, string url)
         {
             var body = $@"<div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;'>
@@ -110,6 +75,41 @@ namespace Infrastructure.Email
             var message = CreateMessage(new MailboxAddress(userName, userEmail), "Смяна на парола в Фермер", body);
 
             await this.SendAsync(message);
+        }
+
+        private MimeMessage CreateMessage(MailboxAddress receiver, string subject, string body)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(_smtpSettings.Server, _smtpSettings.UserName));
+            message.To.Add(receiver);
+            message.Subject = subject;
+            message.Body = new TextPart(TextFormat.Html) { Text = body };
+            return message;
+        }
+
+        private async Task<bool> SendAsync(MimeMessage message)
+        {
+            try
+            {
+                using (var emailClient = new SmtpClient())
+                {
+                    await emailClient.ConnectAsync(this._smtpSettings.Server, this._smtpSettings.Port);
+
+                    await emailClient.AuthenticateAsync(this._smtpSettings.UserName, this._smtpSettings.Password);
+
+                    await emailClient.SendAsync(message);
+
+                    await emailClient.DisconnectAsync(true);
+                }
+
+                _logger.LogInformation("Email sent successfully to {Recipient}.", message.To);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while sending email to {Recipient}.", message.To);
+                return false;
+            }
         }
     }
 }

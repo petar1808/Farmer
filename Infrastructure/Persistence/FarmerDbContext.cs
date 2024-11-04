@@ -38,7 +38,7 @@ namespace Infrastructure.DbContect
             foreach (var mutableEntityType in entityTypes)
             {
                 var parameter = Expression.Parameter(mutableEntityType.ClrType);
-                var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
+                var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters[0], parameter, filterExpr.Body);
                 var lambdaExpression = Expression.Lambda(body, parameter);
 
                 mutableEntityType.SetQueryFilter(lambdaExpression);
@@ -95,7 +95,7 @@ namespace Infrastructure.DbContect
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _logger.LogError(ex, "A database concurrency exception occured.");
+                _logger.LogError(ex, "A database concurrency exception occured: {Message}", ex.Message);
                 throw;
             }
 
