@@ -14,21 +14,52 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- script: dotnet restore WebApi
-  displayName: 'dotnet restore'
+stages:
 
-- script: dotnet build  WebApi --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- stage: Analyze
+  displayName: SonarCloud Analysis Stage
+  jobs:
+  - job: SonarCloudAnalyze
+    displayName: Run SonarCloud Analysis
+    steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'petar1808'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'petar1808_Farmer'
+        cliProjectName: 'Farmer'
+        cliSources: 'WebApi'
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet publish $(buildConfiguration)'
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: 'WebApi'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
+    - script: dotnet build WebApi --configuration $(buildConfiguration)
+      displayName: 'dotnet build for SonarCloud'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'publish artifacts'
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarCloud Analysis'
+
+    - task: SonarCloudPublish@1
+      displayName: 'Publish SonarCloud Quality Gate Result'
+
+- stage: Build
+  displayName: Docker Build and Push Stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    steps:
+    - script: dotnet restore WebApi
+      displayName: 'dotnet restore'
+    - script: dotnet build  WebApi --configuration $(buildConfiguration)
+      displayName: 'dotnet build $(buildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet publish $(buildConfiguration)'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: 'WebApi'
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: True
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'publish artifacts'
