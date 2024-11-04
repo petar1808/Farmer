@@ -47,7 +47,7 @@ stages:
       displayName: 'Publish'
 
 - stage: Build
-  displayName: Docker Build and Push Stage
+  displayName: Build and Publish Stage
   jobs:  
   - job: Build
     displayName: Build
