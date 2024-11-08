@@ -49,7 +49,7 @@ stages:
 - stage: Build
   displayName: Build and Publish Stage
   dependsOn: Analyze
-  condition: and(succeeded())
+  condition: succeeded()
   jobs:  
   - job: Build
     displayName: Build
