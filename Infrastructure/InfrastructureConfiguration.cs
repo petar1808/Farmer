@@ -5,10 +5,12 @@ using Infrastructure.DbContect;
 using Infrastructure.Email;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
+using Infrastructure.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -27,6 +29,7 @@ namespace Infrastructure
             services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
             services.Configure<InfrastructureSettings>(configuration.GetSection(nameof(InfrastructureSettings)));
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IStorageService, BlobStorageService>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IJwtTokenGenerator, JwtTokenGeneratorService>();
 
@@ -35,6 +38,8 @@ namespace Infrastructure
 
             services.AddDataBase(configuration, infrastructureSettings);
             services.AddIdentity(infrastructureSettings);
+
+            services.AddAzureStorage(configuration);
 
             return services;
         }
@@ -57,6 +62,10 @@ namespace Infrastructure
                         opt.UseSqlite(connectionStrings.SqlLiteConnection);
                         ConfigureSensitiveDataLogging(opt, infrastructureSettings.EnableSensitiveDataLogging);
                     });
+                    if (infrastructureSettings.BackupEnabled)
+                    {
+                        services.AddHostedService<SqlLiteBackupHostedService>();
+                    }
                     break;
 
                 case DatabaseProvider.SqlServer:
@@ -148,6 +157,21 @@ namespace Infrastructure
                         }
                     };
                 });
+
+            return services;
+        }
+
+        public static IServiceCollection AddAzureStorage(this IServiceCollection services, IConfiguration configuration)
+        {
+            var storageSettingsSection = configuration.GetSection(nameof(BlobStorageSettings));
+            var storageSettings = storageSettingsSection.Get<BlobStorageSettings>();
+
+            services.AddAzureClients(builder =>
+            {
+                builder.AddBlobServiceClient(storageSettings.ConnectionString);
+            });
+
+            services.Configure<BlobStorageSettings>(storageSettingsSection);
 
             return services;
         }
