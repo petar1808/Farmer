@@ -29,6 +29,7 @@ stages:
         organization: 'petar1808'
         scannerMode: 'cli'
         configMode: 'file'
+        configFile: '$(System.DefaultWorkingDirectory)/src/API/sonar-project.properties'
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
@@ -40,17 +41,19 @@ stages:
       inputs:
         command: 'build'
         projects: '**/WebApi.csproj'
+        arguments: '--no-restore'
     - task: DotNetCoreCLI@2
       displayName: Test
       inputs:
         command: 'test'
         projects: '**/*.Tests.csproj'
         arguments: '--collect "Code Coverage"'
+        testRunTitle: 'Api tests'
       continueOnError: false
     - task: SonarCloudAnalyze@3
       displayName: 'Run SonarCloud Analysis'
       inputs:
-        jdkversion: 'JAVA_HOME_17_X64' 
+        jdkversion: 'JAVA_HOME_17_X64'
     - task: SonarCloudPublish@3
       displayName: 'Publish'
       inputs:
