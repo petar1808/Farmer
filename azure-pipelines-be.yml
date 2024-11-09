@@ -22,6 +22,7 @@ stages:
     displayName: Run SonarCloud Analysis
     steps:
     - task: SonarCloudPrepare@3
+      displayName: Prepare
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
@@ -30,25 +31,33 @@ stages:
         projectName: 'Farmer'
         extraProperties: |
           sonar.exclusions=Infrastructure/Persistence/Migrations/**/*,WebUI
-    - script: dotnet restore WebApi
-      displayName: 'dotnet restore'
-    - script: dotnet build WebApi --configuration $(testConfiguration) --no-restore
-      displayName: 'dotnet build for SonarCloud'
     - task: DotNetCoreCLI@2
-      displayName: 'Test'
+      displayName: Restore
       inputs:
-        command: test
+        command: 'restore'
+        projects: 'Farmer.sln'
+        feedsToUse: 'select'
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: 'Farmer.sln'
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: 'test'
         projects: '**/**.csproj'
-        arguments: '--configuration $(testConfiguration) --no-build --no-restore --collect "Code Coverage"'
+        arguments: '--configuration $(testConfiguration) --collect "Code Coverage"'
       continueOnError: false
     - task: SonarCloudAnalyze@3
-      inputs:
-        jdkversion: 'JAVA_HOME_17_X64'
       displayName: 'Run SonarCloud Analysis'
+      inputs:
+        jdkversion: 'JAVA_HOME_17_X64' 
     - task: SonarCloudPublish@3
+      displayName: 'Publish'
       inputs:
         pollingTimeoutSec: '300'
-      displayName: 'Publish'
+      
 
 - stage: Build
   displayName: Build and Publish Stage
