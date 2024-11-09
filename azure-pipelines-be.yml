@@ -29,7 +29,9 @@ stages:
         projectKey: 'petar1808_farmerapi'
         projectName: 'Farmer'
         extraProperties: |
-          sonar.exclusions=**/Infrastructure/Persistence/Migrations/**/*, **/WebUI
+          sonar.sources=WebApi,Domain,Application,Infrastructure
+          sonar.exclusions=Infrastructure/Persistence/Migrations/**/*,WebUI
+          sonar.pullrequest.base=main
 
     - script: dotnet restore WebApi
       displayName: 'dotnet restore'
