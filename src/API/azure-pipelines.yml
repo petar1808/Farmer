@@ -4,7 +4,8 @@ trigger:
       - main
   paths:
     exclude:
-      - WebUI
+      - src/UI
+      - README.md
 
 pool:
   vmImage: ubuntu-latest
@@ -43,8 +44,8 @@ stages:
       displayName: Test
       inputs:
         command: 'test'
-        projects: '**/**.csproj'
-        arguments: '--configuration $(testConfiguration) --collect "Code Coverage"'
+        projects: '**/**.Tests.csproj'
+        arguments: '--collect "Code Coverage"'
       continueOnError: false
     - task: SonarCloudAnalyze@3
       displayName: 'Run SonarCloud Analysis'
@@ -55,7 +56,6 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
       
-
 - stage: Build
   displayName: Build and Publish Stage
   dependsOn: Analyze
