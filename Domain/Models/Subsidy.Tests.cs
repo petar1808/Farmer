@@ -4,11 +4,11 @@ using Xunit;
 
 namespace Domain.Models
 {
-    public class SubsidyTest
+    public class SubsidyTests
     {
         private readonly Faker _faker;
 
-        public SubsidyTest()
+        public SubsidyTests()
         {
             _faker = new Faker();
         }
