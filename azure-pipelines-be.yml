@@ -30,26 +30,21 @@ stages:
         projectName: 'Farmer'
         extraProperties: |
           sonar.exclusions=Infrastructure/Persistence/Migrations/**/*,WebUI
-
     - script: dotnet restore WebApi
       displayName: 'dotnet restore'
-
     - script: dotnet build WebApi --configuration $(testConfiguration) --no-restore
       displayName: 'dotnet build for SonarCloud'
-    
     - task: DotNetCoreCLI@2
-      displayName: 'dotnet test'
+      displayName: 'Test'
       inputs:
         command: test
         projects: '**/**.csproj'
-        arguments: '--configuration $(testConfiguration) --no-build --no-restore'
+        arguments: '--configuration $(testConfiguration) --no-build --no-restore --collect "Code Coverage"'
       continueOnError: false
-
     - task: SonarCloudAnalyze@3
       inputs:
         jdkversion: 'JAVA_HOME_17_X64'
       displayName: 'Run SonarCloud Analysis'
-
     - task: SonarCloudPublish@3
       inputs:
         pollingTimeoutSec: '300'
