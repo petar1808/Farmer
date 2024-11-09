@@ -30,7 +30,6 @@ stages:
         projectName: 'Farmer'
         extraProperties: |
           sonar.exclusions=Infrastructure/Persistence/Migrations/**/*,WebUI
-          sonar.project.monorepo.enabled=true
 
     - script: dotnet restore WebApi
       displayName: 'dotnet restore'
