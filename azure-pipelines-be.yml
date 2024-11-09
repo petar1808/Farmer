@@ -29,7 +29,6 @@ stages:
         projectKey: 'petar1808_FarmerAPI'
         projectName: 'Farmer'
         extraProperties: |
-          sonar.sources=WebApi,Domain,Application,Infrastructure
           sonar.exclusions=Infrastructure/Persistence/Migrations/**/*,WebUI
           sonar.project.monorepo.enabled=true
 
