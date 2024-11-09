@@ -26,7 +26,7 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
         scannerMode: 'dotnet'
-        projectKey: 'petar1808_FarmerAPI'
+        projectKey: 'petar1808_Farmer'
         projectName: 'Farmer'
         extraProperties: |
           sonar.exclusions=Infrastructure/Persistence/Migrations/**/*,WebUI
