@@ -26,12 +26,12 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
         scannerMode: 'dotnet'
-        projectKey: 'petar1808_farmerapi'
+        projectKey: 'petar1808_FarmerAPI'
         projectName: 'Farmer'
         extraProperties: |
           sonar.sources=WebApi,Domain,Application,Infrastructure
           sonar.exclusions=Infrastructure/Persistence/Migrations/**/*,WebUI
-          sonar.pullrequest.base=main
+          sonar.project.monorepo.enabled=true
 
     - script: dotnet restore WebApi
       displayName: 'dotnet restore'
