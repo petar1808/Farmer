@@ -14,7 +14,7 @@ stages:
     steps:
     - task: FileTransform@1
       inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/WebUI'
+        folderPath: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         fileType: 'json'
         targetFiles: 'staticwebapp.config.json'
     - task: AzureStaticWebApp@0
@@ -34,7 +34,7 @@ stages:
     steps:
     - task: FileTransform@1
       inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/WebUI'
+        folderPath: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         fileType: 'json'
         targetFiles: 'staticwebapp.config.json'
     - task: AzureStaticWebApp@0
@@ -54,7 +54,7 @@ stages:
     steps:
     - task: FileTransform@1
       inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/WebUI'
+        folderPath: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         fileType: 'json'
         targetFiles: 'staticwebapp.config.json'
 
