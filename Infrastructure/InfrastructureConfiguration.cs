@@ -15,11 +15,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using static Application.IdentityConstants;
 
 namespace Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public static class InfrastructureConfiguration
     {
         public static IServiceCollection AddInfrastructure(
@@ -195,11 +197,11 @@ namespace Infrastructure
 
                 if (roleManager == null)
                 {
-                    throw new ArgumentNullException(nameof(roleManager), "Role manager not found");
+                    throw new InvalidOperationException("RoleManager is not properly configured in the DI container.");
                 }
                 if (userManager == null)
                 {
-                    throw new ArgumentNullException(nameof(userManager), "User manager not found");
+                    throw new InvalidOperationException("UserManager is not properly configured in the DI container.");
                 }
 
                 if (!roleManager.Roles.Any())

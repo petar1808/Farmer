@@ -26,10 +26,10 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
         scannerMode: 'dotnet'
-        projectKey: 'petar1808_Farmer'
+        projectKey: 'petar1808_farmerapi'
         projectName: 'Farmer'
         extraProperties: |
-          sonar.exclusions=Infrastructure/Persistence/Migrations/**/*
+          sonar.exclusions=**/Infrastructure/Persistence/Migrations/**/*, **/WebUI
 
     - script: dotnet restore WebApi
       displayName: 'dotnet restore'
