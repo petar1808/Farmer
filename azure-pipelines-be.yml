@@ -11,6 +11,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  testConfiguration: 'Debug'
 
 stages:
 
@@ -33,8 +34,16 @@ stages:
     - script: dotnet restore WebApi
       displayName: 'dotnet restore'
 
-    - script: dotnet build WebApi --configuration $(buildConfiguration)
+    - script: dotnet build WebApi --configuration $(testConfiguration) --no-restore
       displayName: 'dotnet build for SonarCloud'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet test'
+      inputs:
+        command: test
+        projects: '**/**.csproj'
+        arguments: '--configuration $(testConfiguration) --no-build --no-restore'
+      continueOnError: false
 
     - task: SonarCloudAnalyze@3
       inputs:
@@ -49,7 +58,7 @@ stages:
 - stage: Build
   displayName: Build and Publish Stage
   dependsOn: Analyze
-  condition: succeeded()
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'],'refs/heads/main'), startsWith(variables['Build.SourceBranch'],'refs/heads/release/')))
   jobs:  
   - job: Build
     displayName: Build
