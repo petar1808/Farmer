@@ -33,18 +33,18 @@ stages:
       displayName: Restore
       inputs:
         command: 'restore'
-        projects: 'Farmer.sln'
+        projects: 'WebApi/WebApi.csproj'
         feedsToUse: 'select'
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: 'build'
-        projects: 'Farmer.sln'
+        projects: 'WebApi/WebApi.csproj'
     - task: DotNetCoreCLI@2
       displayName: Test
       inputs:
         command: 'test'
-        projects: '**/**.Tests.csproj'
+        projects: '**.Tests.csproj'
         arguments: '--collect "Code Coverage"'
       continueOnError: false
     - task: SonarCloudAnalyze@3

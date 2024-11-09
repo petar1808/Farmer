@@ -19,7 +19,7 @@ stages:
         targetFiles: 'staticwebapp.config.json'
     - task: AzureStaticWebApp@0
       inputs:
-        app_location: 'WebUI'
+        app_location: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         app_build_command: 'dotnet build WebUI'
         output_location: 'wwwroot'
         config_file_location: 'WebUI'
@@ -39,7 +39,7 @@ stages:
         targetFiles: 'staticwebapp.config.json'
     - task: AzureStaticWebApp@0
       inputs:
-        app_location: 'WebUI'
+        app_location: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         app_build_command: 'dotnet build WebUI'
         output_location: 'wwwroot'
         config_file_location: 'WebUI'
@@ -60,7 +60,7 @@ stages:
 
     - task: AzureStaticWebApp@0
       inputs:
-        app_location: 'WebUI'
+        app_location: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         app_build_command: 'dotnet build WebUI'
         output_location: 'wwwroot'
         config_file_location: 'WebUI'
