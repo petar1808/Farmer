@@ -3,10 +3,12 @@ using Application.Mappings;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Application
 {
+    [ExcludeFromCodeCoverage]
     public static class ApplicationConfigration
     {
         public static IServiceCollection AddApplication(this IServiceCollection services,

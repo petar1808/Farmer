@@ -8,9 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public class SqlLiteBackupHostedService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
@@ -105,7 +107,7 @@ namespace Infrastructure
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning(ex, $"Attempt {attempt} to upload backup failed.");
+                    _logger.LogWarning(ex,"Backup upload attempt {Attempt}/{RetryCount} failed.", attempt, _retryCount);
                 }
 
                 if (attempt < _retryCount)
