@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{96CCA8B3-81B6-44BC-8E25-F984496959A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\API\Domain\Domain.csproj", "{96CCA8B3-81B6-44BC-8E25-F984496959A1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{16832FE6-8DCB-4163-9EA5-FDB9FA25F43D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\API\Application\Application.csproj", "{16832FE6-8DCB-4163-9EA5-FDB9FA25F43D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0E355B28-70A8-4F17-B0AE-B86435CBFEBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\API\Infrastructure\Infrastructure.csproj", "{0E355B28-70A8-4F17-B0AE-B86435CBFEBB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI", "WebUI\WebUI.csproj", "{F6FA545D-8CE2-435D-B166-D27F1F566FA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI", "src\UI\WebUI\WebUI.csproj", "{F6FA545D-8CE2-435D-B166-D27F1F566FA6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{66F53571-256B-442E-880C-304FD916CE51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "src\API\WebApi\WebApi.csproj", "{66F53571-256B-442E-880C-304FD916CE51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
