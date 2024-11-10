@@ -15,6 +15,7 @@ variables:
   system.debug: 'true'
 
 stages:
+
 - stage: Analyze
   displayName: SonarCloud Analysis Stage
   jobs:
@@ -23,20 +24,6 @@ stages:
     steps:
     - checkout: self
       fetchDepth: 0
-    
-    - task: VisualStudioTestPlatformInstaller@1
-      inputs:
-        packageFeedSelector: 'nugetOrg'
-        versionSelector: 'latestStable'
-
-    - task: UseDotNet@2
-      inputs:
-        packageType: 'sdk'
-        version: '6.x'
-    - task: NuGetToolInstaller@1
-      inputs:
-        checkLatest: true
-
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
@@ -48,31 +35,23 @@ stages:
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
-        scannerMode: 'dotnet'
-        projectKey: 'petar1808_farmerapi'
-        projectName: 'FarmerAPI'
-
+        scannerMode: 'cli'
+        configMode: 'file'
+        configFile: '$(System.DefaultWorkingDirectory)/src/API/sonar-project.properties'
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: 'build'
         projects: '**/WebApi.csproj'
-        arguments: '/nr:false'
-
-    - task: VSTest@3
+        arguments: '--no-restore'
+    - task: DotNetCoreCLI@2
+      displayName: Test
       inputs:
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: |
-          **\bin\**\*test.dll
-          **\bin\**\*tests.dll
-        searchFolder: '$(System.DefaultWorkingDirectory)\src\API'
-
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'XUnit'
-        testResultsFiles: '**/TEST-*.xml'
-        searchFolder: '$(Agent.TempDirectory)\TestResults'
-        
+        command: 'test'
+        projects: '**/*.Tests.csproj'
+        arguments: '--collect "Code Coverage"'
+        testRunTitle: 'Api tests'
+      continueOnError: false
     - task: SonarCloudAnalyze@3
       displayName: 'Run SonarCloud Analysis'
       inputs:
@@ -86,8 +65,6 @@ stages:
   displayName: Build and Publish Stage
   dependsOn: Analyze
   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'],'refs/heads/main'), startsWith(variables['Build.SourceBranch'],'refs/heads/release/')))
-  pool:
-    vmImage: 'ubuntu-latest'
   jobs:  
   - job: Build
     displayName: Build
