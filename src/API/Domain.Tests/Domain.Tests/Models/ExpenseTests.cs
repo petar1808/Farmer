@@ -123,6 +123,20 @@ namespace Domain.Tests.Models
         }
 
         [Fact]
+        public void UpdateArticleId_ShouldUpdateArticleId()
+        {
+            // Arrange
+            var expense = CreateSampleExpense();
+            var articleId = _faker.Random.Int(min:1);
+
+            // Act
+            expense.UpdateArticleId(articleId);
+
+            // Assert
+            expense.ArticleId.Should().Be(articleId);
+        }
+
+        [Fact]
         public void UpdateType_ShouldUpdateExpenseType()
         {
             // Arrange

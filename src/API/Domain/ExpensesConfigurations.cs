@@ -1,7 +1,9 @@
 ﻿using Domain.Enum;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Domain
 {
+    [ExcludeFromCodeCoverage]
     public class ExpensesConfigurations
     {
         public ExpenseType ExpenseType { get; set; }

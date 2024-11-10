@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using System.Reflection;
 
 namespace Domain.Tests.Models
 {
@@ -69,6 +70,25 @@ namespace Domain.Tests.Models
                 date ?? _faker.Date.Past(),
                 subsidyByArableLands ?? new List<SubsidyByArableLand>(),
                 comment ?? _faker.Lorem.Sentence());
+        }
+
+        [Fact]
+        public void PrivateConstructor_ShouldInitializeDefaultValues()
+        {
+            // Act: Use reflection to invoke the private constructor
+            var subsidy = (Subsidy)Activator.CreateInstance(
+                typeof(Subsidy),
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                null,
+                null)!;
+
+            // Assert: Check that all default values are set correctly
+            subsidy.Income.Should().Be(default);
+            subsidy.Date.Should().Be(default);
+            subsidy.WorkingSeasonId.Should().Be(default);
+            subsidy.Comment.Should().Be(default);
+            subsidy.SubsidyByArableLands.Should().BeNull();
         }
     }
 }
