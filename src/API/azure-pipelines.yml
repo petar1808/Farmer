@@ -39,13 +39,12 @@ stages:
         feedsToUse: 'select'
 
     - task: SonarCloudPrepare@3
-      displayName: Prepare SonarCloud Analysis
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
-        scannerMode: 'cli'
-        configMode: 'file'
-        configFile: '$(System.DefaultWorkingDirectory)/src/API/sonar-project.properties'
+        scannerMode: 'dotnet'
+        projectKey: 'petar1808_farmerapi'
+        projectName: 'FarmerAPI'
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -59,21 +58,8 @@ stages:
       inputs:
         command: 'test'
         projects: '**/*.Tests.csproj'
-        arguments: '--collect "Code Coverage" --results-directory "$(Agent.TempDirectory)/TestResults" --logger "trx;LogFileName=test_results.trx" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover'
-        testRunTitle: 'Api tests'
+        arguments: '--collect "Code Coverage"'
       continueOnError: false
-
-    - task: PublishTestResults@2
-      displayName: Publish Test Results
-      inputs:
-        testResultsFormat: 'VSTest'
-        testResultsFiles: '$(Agent.TempDirectory)/TestResults/test_results.trx'
-        failTaskOnFailedTests: true
-
-    - task: PublishCodeCoverageResults@2
-      displayName: Publish Code Coverage Results
-      inputs:
-        summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/coverage.opencover.xml'
 
     - task: SonarCloudAnalyze@3
       displayName: Run SonarCloud Analysis
