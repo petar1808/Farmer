@@ -23,49 +23,60 @@ stages:
     steps:
     - checkout: self
       fetchDepth: 0
+
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
         command: 'restore'
         projects: '**/WebApi.csproj'
         feedsToUse: 'select'
+
     - task: SonarCloudPrepare@3
-      displayName: Prepare
+      displayName: Prepare SonarCloud Analysis
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
         scannerMode: 'cli'
         configMode: 'file'
         configFile: '$(System.DefaultWorkingDirectory)/src/API/sonar-project.properties'
+
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: 'build'
         projects: '**/WebApi.csproj'
         arguments: '--no-restore'
+
     - task: DotNetCoreCLI@2
       displayName: Test
       inputs:
         command: 'test'
         projects: '**/*.Tests.csproj'
-        arguments: '--collect "Code Coverage" --results-directory $(Agent.TempDirectory)/TestResults --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover'
+        arguments: '--collect "Code Coverage" --results-directory $(Agent.TempDirectory)/TestResults --logger trx;LogFileName=test_results.trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover'
         testRunTitle: 'Api tests'
       continueOnError: false
+
     - task: PublishTestResults@2
-      displayName: 'Publish Test Results'
+      displayName: Publish Test Results
       inputs:
         testResultsFormat: 'VSTest'
-        testResultsFiles: '$(Agent.TempDirectory)/TestResults/*.trx'
+        testResultsFiles: '$(Agent.TempDirectory)/TestResults/test_results.trx'
         failTaskOnFailedTests: true
+
     - task: PublishCodeCoverageResults@2
+      displayName: Publish Code Coverage Results
       inputs:
-        summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/*.opencover.xml'
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/coverage.opencover.xml'
+        reportDirectory: '$(Agent.TempDirectory)/TestResults/'
+
     - task: SonarCloudAnalyze@3
-      displayName: 'Run SonarCloud Analysis'
+      displayName: Run SonarCloud Analysis
       inputs:
         jdkversion: 'JAVA_HOME_17_X64'
+
     - task: SonarCloudPublish@3
-      displayName: 'Publish'
+      displayName: Publish SonarCloud Analysis
       inputs:
         pollingTimeoutSec: '300'
 
@@ -98,4 +109,4 @@ stages:
         arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
         zipAfterPublish: True
     - task: PublishBuildArtifacts@1
-      displayName: 'publish artifacts'
+      displayName: 'Publish Artifacts'
