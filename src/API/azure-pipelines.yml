@@ -23,19 +23,13 @@ stages:
     steps:
     - checkout: self
       fetchDepth: 0
-    
-    - task: VisualStudioTestPlatformInstaller@1
-      inputs:
-        packageFeedSelector: 'nugetOrg'
-        versionSelector: 'latestStable'
 
     - task: UseDotNet@2
+      displayName: 'Install .NET SDK'
       inputs:
         packageType: 'sdk'
-        version: '6.x'
-    - task: NuGetToolInstaller@1
-      inputs:
-        checkLatest: true
+        version: '6.0.x'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
 
     - task: DotNetCoreCLI@2
       displayName: Restore
@@ -43,8 +37,8 @@ stages:
         command: 'restore'
         projects: '**/WebApi.csproj'
         feedsToUse: 'select'
+
     - task: SonarCloudPrepare@3
-      displayName: Prepare
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
@@ -57,37 +51,30 @@ stages:
       inputs:
         command: 'build'
         projects: '**/WebApi.csproj'
-        arguments: '/nr:false'
+        arguments: '--no-restore'
 
-    - task: VSTest@3
+    - task: DotNetCoreCLI@2
+      displayName: Test
       inputs:
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: |
-          **\bin\**\*test.dll
-          **\bin\**\*tests.dll
-        searchFolder: '$(System.DefaultWorkingDirectory)\src\API'
+        command: 'test'
+        projects: '**/*.Tests.csproj'
+        arguments: '--collect "Code Coverage"'
+      continueOnError: false
 
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'XUnit'
-        testResultsFiles: '**/TEST-*.xml'
-        searchFolder: '$(Agent.TempDirectory)\TestResults'
-        
     - task: SonarCloudAnalyze@3
-      displayName: 'Run SonarCloud Analysis'
+      displayName: Run SonarCloud Analysis
       inputs:
         jdkversion: 'JAVA_HOME_17_X64'
+
     - task: SonarCloudPublish@3
-      displayName: 'Publish'
+      displayName: Publish SonarCloud Analysis
       inputs:
         pollingTimeoutSec: '300'
-      
+
 - stage: Build
   displayName: Build and Publish Stage
   dependsOn: Analyze
   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'],'refs/heads/main'), startsWith(variables['Build.SourceBranch'],'refs/heads/release/')))
-  pool:
-    vmImage: 'ubuntu-latest'
   jobs:  
   - job: Build
     displayName: Build
@@ -98,14 +85,12 @@ stages:
         command: 'restore'
         projects: '**/WebApi.csproj'
         feedsToUse: 'select'
-    
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: 'build'
         projects: '**/WebApi.csproj'
         arguments: '--no-restore --configuration $(buildConfiguration)'
-
     - task: DotNetCoreCLI@2
       displayName: 'dotnet publish $(buildConfiguration)'
       inputs:
@@ -114,6 +99,5 @@ stages:
         projects: 'WebApi'
         arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
         zipAfterPublish: True
-
     - task: PublishBuildArtifacts@1
-      displayName: 'publish artifacts'
+      displayName: 'Publish Artifacts'
