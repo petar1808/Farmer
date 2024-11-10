@@ -57,10 +57,8 @@ stages:
         testResultsFormat: 'VSTest'
         testResultsFiles: '$(Agent.TempDirectory)/TestResults/*.trx'
         failTaskOnFailedTests: true
-    - task: PublishCodeCoverageResults@1
-      displayName: 'Publish Code Coverage Results'
+    - task: PublishCodeCoverageResults@2
       inputs:
-        codeCoverageTool: 'Cobertura'
         summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/*.opencover.xml'
     - task: SonarCloudAnalyze@3
       displayName: 'Run SonarCloud Analysis'
