@@ -54,11 +54,11 @@ The application follows **Clean Architecture** principles, organized into distin
 
 1. Use the `.NET CLI` in the command line or an IDE such as Visual Studio 2022.
 
-2. **Frontend (WebUI):**
+2. **Frontend (src/UI/WebUI):**
    - Set `WebUI` as the startup project.
    - Configure application settings in `wwwroot/appsettings.json`.
 
-3. **Backend (WebApi):**
+3. **Backend (src/API/WebApi):**
    - Set `WebApi` as the startup project.
    - Configure backend settings in `appsettings.json`.
   

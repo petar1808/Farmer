@@ -49,11 +49,13 @@ namespace Domain.Models
         }
 
         private void ValidateName(string name)
-            => Guard.Guard.ForStringMaxLengtAndMinLength(
-          name,
-          MaxLenghtName,
-          MinLenghtName,
-          nameof(this.Name));
+        {
+            Guard.Guard.ForStringMaxAndMinLength(
+                          name,
+                          MaxLenghtName,
+                          MinLenghtName,
+                          nameof(this.Name));
+        }
 
         private void Validate(string name)
         {

@@ -14,17 +14,17 @@ stages:
     steps:
     - task: FileTransform@1
       inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/WebUI'
+        folderPath: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         fileType: 'json'
         targetFiles: 'staticwebapp.config.json'
     - task: AzureStaticWebApp@0
       inputs:
-        app_location: 'WebUI'
-        app_build_command: 'dotnet build WebUI'
+        app_location: '/src/UI/WebUI'
+        app_build_command: 'dotnet build'
         output_location: 'wwwroot'
-        config_file_location: 'WebUI'
+        config_file_location: '/src/UI/WebUI'
         build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: "$(azure-static-web-app-token-development)"
+        azure_static_web_apps_api_token: '$(azure-static-web-app-token-development)'
 
 - stage: Demo  
   jobs:  
@@ -34,15 +34,15 @@ stages:
     steps:
     - task: FileTransform@1
       inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/WebUI'
+        folderPath: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         fileType: 'json'
         targetFiles: 'staticwebapp.config.json'
     - task: AzureStaticWebApp@0
       inputs:
-        app_location: 'WebUI'
-        app_build_command: 'dotnet build WebUI'
+        app_location: '/src/UI/WebUI'
+        app_build_command: 'dotnet build'
         output_location: 'wwwroot'
-        config_file_location: 'WebUI'
+        config_file_location: '/src/UI/WebUI'
         build_timeout_in_minutes: 5
         azure_static_web_apps_api_token: "$(azure-static-web-app-token-demo)"
         
@@ -54,15 +54,15 @@ stages:
     steps:
     - task: FileTransform@1
       inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/WebUI'
+        folderPath: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
         fileType: 'json'
         targetFiles: 'staticwebapp.config.json'
 
     - task: AzureStaticWebApp@0
       inputs:
-        app_location: 'WebUI'
-        app_build_command: 'dotnet build WebUI'
+        app_location: '/src/UI/WebUI'
+        app_build_command: 'dotnet build'
         output_location: 'wwwroot'
-        config_file_location: 'WebUI'
+        config_file_location: '/src/UI/WebUI'
         build_timeout_in_minutes: 5
         azure_static_web_apps_api_token: "$(azure-static-web-app-token-production)"

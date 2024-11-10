@@ -1,8 +1,6 @@
-﻿using Bogus;
-using FluentAssertions;
-using Xunit;
+﻿using Domain.Models;
 
-namespace Domain.Models
+namespace Domain.Tests.Models
 {
     public class SubsidyTests
     {

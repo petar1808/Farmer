@@ -4,7 +4,8 @@ trigger:
       - main
   paths:
     exclude:
-      - WebUI
+      - src/UI
+      - README.md
 
 pool:
   vmImage: ubuntu-latest
@@ -26,39 +27,38 @@ stages:
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'petar1808'
-        scannerMode: 'dotnet'
-        projectKey: 'petar1808_Farmer'
-        projectName: 'Farmer'
-        extraProperties: |
-          sonar.exclusions=Infrastructure/Persistence/Migrations/**/*,WebUI
+        scannerMode: 'cli'
+        configMode: 'file'
+        configFile: '$(System.DefaultWorkingDirectory)/src/API/sonar-project.properties'
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
         command: 'restore'
-        projects: 'Farmer.sln'
+        projects: '**/WebApi.csproj'
         feedsToUse: 'select'
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: 'build'
-        projects: 'Farmer.sln'
+        projects: '**/WebApi.csproj'
+        arguments: '--no-restore'
     - task: DotNetCoreCLI@2
       displayName: Test
       inputs:
         command: 'test'
-        projects: '**/**.csproj'
-        arguments: '--configuration $(testConfiguration) --collect "Code Coverage"'
+        projects: '**/*.Tests.csproj'
+        arguments: '--collect "Code Coverage"'
+        testRunTitle: 'Api tests'
       continueOnError: false
     - task: SonarCloudAnalyze@3
       displayName: 'Run SonarCloud Analysis'
       inputs:
-        jdkversion: 'JAVA_HOME_17_X64' 
+        jdkversion: 'JAVA_HOME_17_X64'
     - task: SonarCloudPublish@3
       displayName: 'Publish'
       inputs:
         pollingTimeoutSec: '300'
       
-
 - stage: Build
   displayName: Build and Publish Stage
   dependsOn: Analyze
