@@ -66,9 +66,7 @@ stages:
     - task: PublishCodeCoverageResults@2
       displayName: Publish Code Coverage Results
       inputs:
-        codeCoverageTool: 'Cobertura'
         summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/coverage.opencover.xml'
-        reportDirectory: '$(Agent.TempDirectory)/TestResults/'
 
     - task: SonarCloudAnalyze@3
       displayName: Run SonarCloud Analysis
