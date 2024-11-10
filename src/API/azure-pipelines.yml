@@ -15,7 +15,6 @@ variables:
   system.debug: 'true'
 
 stages:
-
 - stage: Analyze
   displayName: SonarCloud Analysis Stage
   jobs:
@@ -49,9 +48,20 @@ stages:
       inputs:
         command: 'test'
         projects: '**/*.Tests.csproj'
-        arguments: '--collect "Code Coverage"'
+        arguments: '--collect "Code Coverage" --results-directory $(Agent.TempDirectory)/TestResults --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover'
         testRunTitle: 'Api tests'
       continueOnError: false
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
+      inputs:
+        testResultsFormat: 'VSTest'
+        testResultsFiles: '$(Agent.TempDirectory)/TestResults/*.trx'
+        failTaskOnFailedTests: true
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish Code Coverage Results'
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/*.opencover.xml'
     - task: SonarCloudAnalyze@3
       displayName: 'Run SonarCloud Analysis'
       inputs:
@@ -60,7 +70,7 @@ stages:
       displayName: 'Publish'
       inputs:
         pollingTimeoutSec: '300'
-      
+
 - stage: Build
   displayName: Build and Publish Stage
   dependsOn: Analyze
@@ -75,14 +85,12 @@ stages:
         command: 'restore'
         projects: '**/WebApi.csproj'
         feedsToUse: 'select'
-    
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: 'build'
         projects: '**/WebApi.csproj'
         arguments: '--no-restore --configuration $(buildConfiguration)'
-
     - task: DotNetCoreCLI@2
       displayName: 'dotnet publish $(buildConfiguration)'
       inputs:
@@ -91,6 +99,5 @@ stages:
         projects: 'WebApi'
         arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
         zipAfterPublish: True
-
     - task: PublishBuildArtifacts@1
       displayName: 'publish artifacts'
