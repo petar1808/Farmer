@@ -45,6 +45,8 @@ stages:
         scannerMode: 'dotnet'
         projectKey: 'petar1808_farmerapi'
         projectName: 'FarmerAPI'
+        extraProperties: |
+          sonar.exclusions=Infrastructure/Persistence/Migrations/**/*
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -96,7 +98,7 @@ stages:
       inputs:
         command: publish
         publishWebProjects: false
-        projects: 'WebApi'
+        projects: '**/WebApi.csproj'
         arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
         zipAfterPublish: True
     - task: PublishBuildArtifacts@1
