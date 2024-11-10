@@ -46,7 +46,7 @@ stages:
         projectKey: 'petar1808_farmerapi'
         projectName: 'FarmerAPI'
         extraProperties: |
-          sonar.exclusions=**/Migrations/**/*
+          sonar.exclusions=**/Migrations/**/*.cs
 
     - task: DotNetCoreCLI@2
       displayName: Build
