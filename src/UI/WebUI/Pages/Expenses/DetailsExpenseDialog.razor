@@ -62,7 +62,7 @@
             <RadzenRequiredValidator Component="Articles" Text="Избор на артикул е задължително" DefaultValue="0" />
         </Helper>
     </RadzenFormField>
-    <RadzenFormField Visible="@ExpenseConfiguration.ShowPricePerUnit" Text="Единична цена" Variant="Variant.Filled">
+    <RadzenFormField Visible="@ExpenseConfiguration.ShowPricePerUnit" Text="Единична цена на кг/л." Variant="Variant.Filled">
         <ChildContent>
             <RadzenNumeric TValue="decimal"
                            Change=@(args => OnPricePerUnitChange(args))
@@ -86,7 +86,7 @@
             <FarmerPositiveNumericValidator Component="Quantity" />
         </Helper>
     </RadzenFormField>
-    <RadzenFormField Text="Разход" Variant="Variant.Filled">
+    <RadzenFormField Text="Общо разход" Variant="Variant.Filled">
         <ChildContent>
             <RadzenNumeric TValue="decimal"
                            Disabled="@(ExpenseConfiguration.ShowPricePerUnit)"

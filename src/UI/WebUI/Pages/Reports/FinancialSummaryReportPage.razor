@@ -29,9 +29,9 @@ else
                                         <b>Общо</b>
                                     </FooterTemplate>
                                 </RadzenDataGridColumn>
-                                <RadzenDataGridColumn Property="Harvest" Title="Жътва" FormatString="{0:N0} лв.">
+                                <RadzenDataGridColumn Property="Harvest" Title="Реколта" FormatString="{0:N0} лв.">
                                     <HeaderTemplate>
-                                        Жътва
+                                        Реколта
                                     </HeaderTemplate>
                                     <FooterTemplate>
                                         <b>@($"{reportData.IncomesByArableLand.Select(x => x.Harvest).Sum().ToString("N0") ?? "0"} лв")</b>
