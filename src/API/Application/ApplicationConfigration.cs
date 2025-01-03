@@ -15,7 +15,10 @@ namespace Application
                 IConfiguration configuration)
         {
             services.AddAutoMapper()
-                    .AddMediatR(Assembly.GetExecutingAssembly())
+                    .AddMediatR(cfg =>
+                    {
+                        cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                    })
                     .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             return services;

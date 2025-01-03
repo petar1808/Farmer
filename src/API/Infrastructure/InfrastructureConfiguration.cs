@@ -170,7 +170,7 @@ namespace Infrastructure
 
             services.AddAzureClients(builder =>
             {
-                builder.AddBlobServiceClient(storageSettings.ConnectionString);
+                builder.AddBlobServiceClient(storageSettings!.ConnectionString);
             });
 
             services.Configure<BlobStorageSettings>(storageSettingsSection);
