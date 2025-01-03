@@ -28,8 +28,7 @@ stages:
       displayName: 'Install .NET SDK'
       inputs:
         packageType: 'sdk'
-        version: '6.0.x'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
+        version: '8.0.x'
 
     - task: DotNetCoreCLI@2
       displayName: Restore
