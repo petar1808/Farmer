@@ -75,8 +75,6 @@ stages:
 
 - stage: Build
   displayName: Build and Publish Stage
-  dependsOn: Analyze
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'],'refs/heads/main'), startsWith(variables['Build.SourceBranch'],'refs/heads/release/')))
   jobs:  
   - job: Build
     displayName: Build
