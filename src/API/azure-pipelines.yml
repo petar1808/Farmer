@@ -26,13 +26,13 @@ stages:
     - task: Docker@2
       displayName: Login to Docker Hub
       inputs:
-        containerRegistry: 'DockerHub'
+        containerRegistry: 'DockerHubFarmer'
         command: 'login'
     
     - task: Docker@2
       displayName: Build Docker Image
       inputs:
-        containerRegistry: 'DockerHub'
+        containerRegistry: 'DockerHubFarmer'
         repository: 'farmer-api'
         command: 'build'
         Dockerfile: '**/Dockerfile'
@@ -41,7 +41,7 @@ stages:
     - task: Docker@2
       displayName: Push Docker Image
       inputs:
-        containerRegistry: 'DockerHub'
+        containerRegistry: 'DockerHubFarmer'
         repository: 'farmer-api'
         command: 'push'
         tags: '$(Build.BuildId)'
