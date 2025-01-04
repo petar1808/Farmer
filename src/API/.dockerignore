@@ -1,0 +1,55 @@
+# Node modules and other dependencies
+node_modules
+bower_components
+
+# Logs and temp files
+*.log
+logs/
+*.temp
+*.tmp
+tmp/
+temp/
+
+# Build outputs
+bin/
+obj/
+
+# User-specific files
+*.swp
+*~
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Docker-specific files
+Dockerfile*
+docker-compose*
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Git and version control
+.git/
+.gitignore
+.gitattributes
+
+# NuGet packages
+packages/
+*.nupkg
+*.snupkg
+
+# Rider project settings
+.idea/
+
+# Exclude anything not required for the app to run
+wwwroot/node_modules/
+
+sonar-project*
+azure-pipelines*
