@@ -15,88 +15,31 @@ variables:
   system.debug: 'true'
 
 stages:
-- stage: Analyze
-  displayName: SonarCloud Analysis Stage
-  jobs:
-  - job: SonarCloudAnalyze
-    displayName: Run SonarCloud Analysis
-    steps:
-    - checkout: self
-      fetchDepth: 0
-
-    - task: UseDotNet@2
-      displayName: 'Install .NET SDK'
-      inputs:
-        packageType: 'sdk'
-        version: '8.0.x'
-
-    - task: DotNetCoreCLI@2
-      displayName: Restore
-      inputs:
-        command: 'restore'
-        projects: '**/WebApi.csproj'
-        feedsToUse: 'select'
-
-    - task: SonarCloudPrepare@3
-      inputs:
-        SonarCloud: 'SonarCloud'
-        organization: 'petar1808'
-        scannerMode: 'dotnet'
-        projectKey: 'petar1808_farmerapi'
-        projectName: 'FarmerAPI'
-        extraProperties: |
-          sonar.exclusions=**/Migrations/**/*.cs,**/*.Tests/*
-
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        command: 'build'
-        projects: '**/WebApi.csproj'
-        arguments: '--no-restore'
-
-    - task: DotNetCoreCLI@2
-      displayName: Test
-      inputs:
-        command: 'test'
-        projects: '**/*.Tests.csproj'
-        arguments: '--collect "Code Coverage"'
-      continueOnError: false
-
-    - task: SonarCloudAnalyze@3
-      displayName: Run SonarCloud Analysis
-      inputs:
-        jdkversion: 'JAVA_HOME_17_X64'
-
-    - task: SonarCloudPublish@3
-      displayName: Publish SonarCloud Analysis
-      inputs:
-        pollingTimeoutSec: '300'
-
 - stage: Build
   displayName: Build and Publish Stage
   jobs:  
   - job: Build
     displayName: Build
     steps:
-    - task: DotNetCoreCLI@2
-      displayName: Restore
+    - task: Docker@2
+      displayName: Login to Docker Hub
       inputs:
-        command: 'restore'
-        projects: '**/WebApi.csproj'
-        feedsToUse: 'select'
-    - task: DotNetCoreCLI@2
-      displayName: Build
+        containerRegistry: 'DockerHub'
+        command: 'login'
+    
+    - task: Docker@2
+      displayName: Build Docker Image
       inputs:
+        containerRegistry: 'DockerHub'
+        repository: 'farmer-api'
         command: 'build'
-        projects: '**/WebApi.csproj'
-        arguments: '--no-restore --configuration $(buildConfiguration)'
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet publish $(buildConfiguration)'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(Build.BuildId)'
+    
+    - task: Docker@2
+      displayName: Push Docker Image
       inputs:
-        command: publish
-        publishWebProjects: false
-        projects: '**/WebApi.csproj'
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
-        zipAfterPublish: True
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifacts'
+        containerRegistry: 'DockerHub'
+        repository: 'farmer-api'
+        command: 'push'
+        tags: '$(Build.BuildId)'
