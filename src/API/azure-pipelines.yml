@@ -16,6 +16,8 @@ variables:
 
 stages:
 - stage: Build
+  pool:
+    vmImage: 'ubuntu-latest'
   displayName: Build and Publish Stage
   jobs:  
   - job: Build
