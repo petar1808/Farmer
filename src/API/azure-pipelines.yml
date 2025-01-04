@@ -33,7 +33,7 @@ stages:
       displayName: Build Docker Image
       inputs:
         containerRegistry: 'DockerHubFarmer'
-        repository: 'farmer-api'
+        repository: 'petaryorgov/farmer-api'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(Build.BuildId)'
@@ -42,6 +42,6 @@ stages:
       displayName: Push Docker Image
       inputs:
         containerRegistry: 'DockerHubFarmer'
-        repository: 'farmer-api'
+        repository: 'petaryorgov/farmer-api'
         command: 'push'
         tags: '$(Build.BuildId)'
