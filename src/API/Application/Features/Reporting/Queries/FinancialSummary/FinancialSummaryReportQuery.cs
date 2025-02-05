@@ -23,7 +23,7 @@ namespace Application.Features.Reporting.Queries.FinancialSummary
             {
                 var result = new List<FinancialSummaryReportOutputModel>();
 
-                var seedingTask = farmerDbContext.Seedings
+                var seedingTask = await farmerDbContext.Seedings
                     .Select(x => new
                     {
                         x.ArableLandId,
@@ -34,25 +34,23 @@ namespace Application.Features.Reporting.Queries.FinancialSummary
                     })
                     .ToListAsync(cancellationToken);
 
-                var subsidiesTask = farmerDbContext.Subsidies
+                var subsidiesTask = await farmerDbContext.Subsidies
                     .Include(x => x.SubsidyByArableLands)
                     .ToListAsync(cancellationToken);
 
-                var expensesTask = farmerDbContext.Expenses
+                var expensesTask = await farmerDbContext.Expenses
                     .Include(x => x.ExpenseByArableLands)
                         .ThenInclude(x => x.ArableLand)
                     .ToListAsync(cancellationToken);
 
-                var workingSeasonsTask = farmerDbContext.WorkingSeasons
+                var workingSeasonsTask = await farmerDbContext.WorkingSeasons
                     .OrderByDescending(c => c.StartDate)
                     .ToListAsync(cancellationToken);
 
-                await Task.WhenAll(seedingTask, subsidiesTask, expensesTask, workingSeasonsTask);
-
-                var seeding = seedingTask.Result;
-                var subsidies = subsidiesTask.Result;
-                var expenses = expensesTask.Result;
-                var workingSeasons = workingSeasonsTask.Result;
+                var seeding = seedingTask;
+                var subsidies = subsidiesTask;
+                var expenses = expensesTask;
+                var workingSeasons = workingSeasonsTask;
 
                 foreach (var workingSeason in workingSeasons)
                 {
