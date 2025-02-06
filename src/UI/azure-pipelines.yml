@@ -6,7 +6,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:  
-- stage: Development  
+- stage: Development-Old  
   jobs:  
   - job: BuildAndRelease  
     variables:
@@ -26,11 +26,11 @@ stages:
         build_timeout_in_minutes: 5
         azure_static_web_apps_api_token: '$(azure-static-web-app-token-development)'
 
-- stage: Demo  
+- stage: Dev  
   jobs:  
   - job: BuildAndRelease  
     variables:
-      globalHeaders.Blazor-Environment: Demo
+      globalHeaders.Blazor-Environment: Development
     steps:
     - task: FileTransform@1
       inputs:
@@ -44,7 +44,7 @@ stages:
         output_location: 'wwwroot'
         config_file_location: '/src/UI/WebUI'
         build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: "$(azure-static-web-app-token-demo)"
+        azure_static_web_apps_api_token: "$(stapp-farmerapp-dev-ui-token)"
         
 - stage: Production  
   jobs:  
