@@ -6,27 +6,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:  
-- stage: Development-Old  
-  jobs:  
-  - job: BuildAndRelease  
-    variables:
-      globalHeaders.Blazor-Environment: Development
-    steps:
-    - task: FileTransform@1
-      inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
-        fileType: 'json'
-        targetFiles: 'staticwebapp.config.json'
-    - task: AzureStaticWebApp@0
-      inputs:
-        app_location: '/src/UI/WebUI'
-        app_build_command: 'dotnet build'
-        output_location: 'wwwroot'
-        config_file_location: '/src/UI/WebUI'
-        build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: '$(azure-static-web-app-token-development)'
-
-- stage: Dev  
+- stage: Development  
   jobs:  
   - job: BuildAndRelease  
     variables:
