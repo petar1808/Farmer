@@ -34,6 +34,7 @@ stages:
       inputs:
         containerRegistry: 'DockerHubFarmer'
         repository: 'petaryorgov/farmer-api'
+        arguments: '--build-arg version=$(Build.BuildId) --label version:$(Build.BuildId)'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(Build.BuildId)'

@@ -1,3 +1,4 @@
+ARG version=1.0.0
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 WORKDIR /src
@@ -10,9 +11,9 @@ COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
 RUN dotnet restore "WebApi/WebApi.csproj"
 
 COPY . .
-
+ARG version
 RUN dotnet build "WebApi/WebApi.csproj" -c Release -o /app/build
-RUN dotnet publish "WebApi/WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "WebApi/WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false /p:Version=$version
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
