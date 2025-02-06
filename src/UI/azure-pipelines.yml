@@ -6,7 +6,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:  
-- stage: Development-Old  
+- stage: DevelopmentOld  
   jobs:  
   - job: BuildAndRelease  
     variables:
