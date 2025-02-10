@@ -24,27 +24,7 @@ stages:
         output_location: 'wwwroot'
         config_file_location: '/src/UI/WebUI'
         build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: '$(azure-static-web-app-token-development)'
-
-- stage: Demo  
-  jobs:  
-  - job: BuildAndRelease  
-    variables:
-      globalHeaders.Blazor-Environment: Demo
-    steps:
-    - task: FileTransform@1
-      inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/src/UI/WebUI'
-        fileType: 'json'
-        targetFiles: 'staticwebapp.config.json'
-    - task: AzureStaticWebApp@0
-      inputs:
-        app_location: '/src/UI/WebUI'
-        app_build_command: 'dotnet build'
-        output_location: 'wwwroot'
-        config_file_location: '/src/UI/WebUI'
-        build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: "$(azure-static-web-app-token-demo)"
+        azure_static_web_apps_api_token: "$(stapp-farmerui-dev-token)"
         
 - stage: Production  
   jobs:  
@@ -65,4 +45,4 @@ stages:
         output_location: 'wwwroot'
         config_file_location: '/src/UI/WebUI'
         build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: "$(azure-static-web-app-token-production)"
+        azure_static_web_apps_api_token: "$(stapp-farmerui-prod-token)"

@@ -28,7 +28,7 @@ stages:
       displayName: 'Install .NET SDK'
       inputs:
         packageType: 'sdk'
-        version: '6.0.x'
+        version: '8.0.x'
         installationPath: $(Agent.ToolsDirectory)/dotnet
 
     - task: DotNetCoreCLI@2
@@ -74,6 +74,8 @@ stages:
         pollingTimeoutSec: '300'
 
 - stage: Build
+  pool:
+    vmImage: 'ubuntu-latest'
   displayName: Build and Publish Stage
   dependsOn: Analyze
   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'],'refs/heads/main'), startsWith(variables['Build.SourceBranch'],'refs/heads/release/')))
@@ -81,25 +83,26 @@ stages:
   - job: Build
     displayName: Build
     steps:
-    - task: DotNetCoreCLI@2
-      displayName: Restore
+    - task: Docker@2
+      displayName: Login to Docker Hub
       inputs:
-        command: 'restore'
-        projects: '**/WebApi.csproj'
-        feedsToUse: 'select'
-    - task: DotNetCoreCLI@2
-      displayName: Build
+        containerRegistry: 'DockerHubFarmer'
+        command: 'login'
+    
+    - task: Docker@2
+      displayName: Build Docker Image
       inputs:
+        containerRegistry: 'DockerHubFarmer'
+        repository: 'petaryorgov/farmer-api'
+        arguments: '--build-arg version=$(Build.BuildId) --label version:$(Build.BuildId)'
         command: 'build'
-        projects: '**/WebApi.csproj'
-        arguments: '--no-restore --configuration $(buildConfiguration)'
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet publish $(buildConfiguration)'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(Build.BuildId)'
+    
+    - task: Docker@2
+      displayName: Push Docker Image
       inputs:
-        command: publish
-        publishWebProjects: false
-        projects: '**/WebApi.csproj'
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
-        zipAfterPublish: True
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifacts'
+        containerRegistry: 'DockerHubFarmer'
+        repository: 'petaryorgov/farmer-api'
+        command: 'push'
+        tags: '$(Build.BuildId)'

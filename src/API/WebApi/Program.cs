@@ -43,10 +43,10 @@ builder.Host.UseSerilog((context, services, configuration) =>
     configuration.ReadFrom.Services(services);
 });
 
-if (builder.Configuration.GetValue<string?>("ApplicationInsights:InstrumentationKey") != null)
-{
-    builder.Services.AddApplicationInsightsTelemetry();
-}
+//if (builder.Configuration.GetValue<string?>("ApplicationInsights:InstrumentationKey") != null)
+//{
+//    builder.Services.AddApplicationInsightsTelemetry();
+//}
 
 builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 builder.Services.AddValidatorsFromAssembly(Assembly.Load(nameof(Application)));
