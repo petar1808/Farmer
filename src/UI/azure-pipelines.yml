@@ -24,7 +24,7 @@ stages:
         output_location: 'wwwroot'
         config_file_location: '/src/UI/WebUI'
         build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: "$(stapp-farmerapp-dev-ui-token)"
+        azure_static_web_apps_api_token: "$(stapp-farmerui-dev-token)"
         
 - stage: Production  
   jobs:  
@@ -45,4 +45,4 @@ stages:
         output_location: 'wwwroot'
         config_file_location: '/src/UI/WebUI'
         build_timeout_in_minutes: 5
-        azure_static_web_apps_api_token: "$(azure-static-web-app-token-production)"
+        azure_static_web_apps_api_token: "$(stapp-farmerui-prod-token)"

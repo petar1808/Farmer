@@ -15,10 +15,70 @@ variables:
   system.debug: 'true'
 
 stages:
+- stage: Analyze
+  displayName: SonarCloud Analysis Stage
+  jobs:
+  - job: SonarCloudAnalyze
+    displayName: Run SonarCloud Analysis
+    steps:
+    - checkout: self
+      fetchDepth: 0
+
+    - task: UseDotNet@2
+      displayName: 'Install .NET SDK'
+      inputs:
+        packageType: 'sdk'
+        version: '8.0.x'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: 'restore'
+        projects: '**/WebApi.csproj'
+        feedsToUse: 'select'
+
+    - task: SonarCloudPrepare@3
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'petar1808'
+        scannerMode: 'dotnet'
+        projectKey: 'petar1808_farmerapi'
+        projectName: 'FarmerAPI'
+        extraProperties: |
+          sonar.exclusions=**/Migrations/**/*.cs,**/*.Tests/*
+
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: '**/WebApi.csproj'
+        arguments: '--no-restore'
+
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: 'test'
+        projects: '**/*.Tests.csproj'
+        arguments: '--collect "Code Coverage"'
+      continueOnError: false
+
+    - task: SonarCloudAnalyze@3
+      displayName: Run SonarCloud Analysis
+      inputs:
+        jdkversion: 'JAVA_HOME_17_X64'
+
+    - task: SonarCloudPublish@3
+      displayName: Publish SonarCloud Analysis
+      inputs:
+        pollingTimeoutSec: '300'
+
 - stage: Build
   pool:
     vmImage: 'ubuntu-latest'
   displayName: Build and Publish Stage
+  dependsOn: Analyze
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'],'refs/heads/main'), startsWith(variables['Build.SourceBranch'],'refs/heads/release/')))
   jobs:  
   - job: Build
     displayName: Build
