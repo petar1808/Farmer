@@ -3,17 +3,29 @@
 
 <PageTitle>Login</PageTitle>
 <RadzenText Text="Влизане" TextStyle="Radzen.Blazor.TextStyle.H5" class="mb-4" TagName="Radzen.Blazor.TagName.H2" />
-<RadzenRow>
-    <RadzenColumn SizeMD="12">
-        <RadzenTemplateForm Data=@LoginInput>
-            <RadzenLogin UserText="Имейл"
-                         PasswordText="Парола"
-                         AllowRegister="false"
-                         AllowResetPassword="true"
-                         ResetPasswordText="Забравена парола"
-                         ResetPassword="(args => OnResetPassword())"
-                         LoginText="Влез"
-                         Login=@(args => OnLogin(args)) />
-        </RadzenTemplateForm>
-    </RadzenColumn>
-</RadzenRow>
+
+
+@if (loading == true)
+{
+    <Loader />
+}
+else
+{
+    <RadzenRow>
+        <RadzenColumn SizeMD="12">
+
+
+            <RadzenTemplateForm Data=@LoginInput>
+                <RadzenLogin UserText="Имейл"
+                             PasswordText="Парола"
+                             AllowRegister="false"
+                             AllowResetPassword="true"
+                             ResetPasswordText="Забравена парола"
+                             ResetPassword="(args => OnResetPassword())"
+                             LoginText="Влез"
+                             Login=@(args => OnLogin(args)) />
+            </RadzenTemplateForm>
+
+        </RadzenColumn>
+    </RadzenRow>
+}

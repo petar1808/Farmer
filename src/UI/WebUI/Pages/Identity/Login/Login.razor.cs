@@ -26,10 +26,12 @@ namespace WebUI.Pages.Identity.Login
 
         public LoginInputModel LoginInput { get; set; } = new LoginInputModel();
 
-        protected bool infoVisible;
+        public bool loading = false;
 
         public async Task OnLogin(LoginArgs args)
         {
+            loading = true;
+
             var token = await this.IdentityService.Login(args.Username, args.Password);
 
             if (token != null)
@@ -38,6 +40,7 @@ namespace WebUI.Pages.Identity.Login
                 await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 NavigationManager.NavigateTo(NavigationManager.BaseUri);
             }
+            loading = false;
         }
 
         public async Task OnResetPassword()
