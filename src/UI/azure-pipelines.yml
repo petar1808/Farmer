@@ -1,4 +1,10 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - src/UI
 
 pr: none 
 
@@ -27,6 +33,7 @@ stages:
         azure_static_web_apps_api_token: "$(stapp-farmerui-dev-token)"
         
 - stage: Production  
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
   jobs:  
   - job: BuildAndRelease  
     variables:
