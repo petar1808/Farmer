@@ -74,7 +74,14 @@ namespace Infrastructure
                     services.AddScoped<IFarmerDbContext, SqlFarmerDbContext>();
                     services.AddDbContext<SqlFarmerDbContext>(opt =>
                     {
-                        opt.UseSqlServer(connectionStrings.SqlDefaultConnection);
+                        opt.UseSqlServer(connectionStrings.SqlDefaultConnection, sqlOptions =>
+                        {
+                            sqlOptions.EnableRetryOnFailure(
+                                maxRetryCount: 3, 
+                                maxRetryDelay: TimeSpan.FromSeconds(1), 
+                                errorNumbersToAdd: null
+                            );
+                        });
                         ConfigureSensitiveDataLogging(opt, infrastructureSettings.EnableSensitiveDataLogging);
                     });
                     break;
