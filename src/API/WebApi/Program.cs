@@ -1,9 +1,12 @@
 using Application;
 using Application.Services;
 using FluentValidation;
+using HealthChecks.UI.Client;
 using Infrastructure;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 using System.Reflection;
+using WebApi;
 using WebApi.Filters;
 using WebApi.Middlewares;
 using WebApi.Services;
@@ -30,6 +33,9 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<FilterInvalidModelStateResponse>(int.MinValue);
 });
+
+//Congiguring Health Ckeck
+builder.Services.ConfigureHealthChecks(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -68,6 +74,19 @@ app.UseHttpsRedirection()
     .UseAuthorization()
     .UseMiddleware<ValidationExceptionHandlerMiddleware>()
     .UseEndpoints(endpoints => endpoints.MapControllers());
+
+
+//HealthCheck Middleware
+app.MapHealthChecks("/api/health", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.UseHealthChecksUI(conf => 
+{
+    conf.UIPath = "/healthcheck-ui";
+});
 
 try
 {
