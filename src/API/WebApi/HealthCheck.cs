@@ -15,12 +15,18 @@ namespace WebApi
                     tags: new[] { "Database" }
                     );
 
+            var hostName = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
+
+            var baseUrl = !string.IsNullOrWhiteSpace(hostName)
+                ? $"https://{hostName}"
+                : "https://localhost:8080";
+
             services.AddHealthChecksUI(opt =>
             {
                 opt.SetEvaluationTimeInSeconds(300);   
                 opt.MaximumHistoryEntriesPerEndpoint(60);
                 opt.SetApiMaxActiveRequests(1);  
-                opt.AddHealthCheckEndpoint("Farmer Api", "/api/health"); 
+                opt.AddHealthCheckEndpoint("Farmer Api", $"{baseUrl}/api/health"); 
             })
             .AddInMemoryStorage();
         }
